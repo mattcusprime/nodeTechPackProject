@@ -2,15 +2,13 @@
   "name": "nw.hello.world",
   "description": "Simple file explorer.",
   "version": "0.1",
-  "main": "indexV2.html",
+  "main": "index.html",
   "window": {
     "title": "Tech Pack Generator",
 	"toolbar": false,
-    "fullscreen": false,
+    "fullscreen": true,
 	"position": "center",
-	"kiosk": false,
-	"width": 800,
-	"height": 600
+	"kiosk": false
 	
   }
 }

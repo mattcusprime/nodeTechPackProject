@@ -78,6 +78,10 @@ function garmentProduct(strName, arrAttributes, arrSpecs, arrSources, objColorwa
     this.colorwayDetails = arrColorwayData;
     this.blockWeightsSpreadTableString = strBlockWeightsSpreadTableString;
 };
+//importing node js utility libraries for desktop version
+var fs = require('fs');
+
+//
 /**
  * @method of @class GarmentProduct, should take existing elements of the garment product and produce a pdf using the
  * jsPdf Library
@@ -721,6 +725,10 @@ garmentProduct.prototype.thenCallSpecs = function (objectForCallback, objSelfRef
     objSelfReference.getAllMyDataForMyActiveSpec(strUrlPrefix, objSelfReference.activeSpecId, objSelfReference);
     //createComponentTable(objSelfReference);
     var garmentProductString = JSON.stringify(objSelfReference);
+    fs.writeFile(objSelfReference.name + '.json', garmentProductString, function (err) {
+        if (err) throw err;
+        console.log('saved ' + objSelfReference.name);
+    });
     localStorage.setItem('garmentProductString', garmentProductString);
     //makeMeScrollToDefinedTarget('#reportsHeader', 1000,100);
 };
@@ -951,9 +959,10 @@ garmentProduct.prototype.getMyBlockWeightsTrim = function (strUrlPrefix) {
 
 };
 
-
-
-
+function createGarmentProductFromLocalFile(strJsonFileData) {
+    var objNewGarmentProduct = JSON.parse(strJsonFileData);
+    return objNewGarmentProduct;
+};
 //utility functions to work with garmentProduct class below
 /*
  * @param {String} strkey key value of item in list to be passed to key array to get back display
