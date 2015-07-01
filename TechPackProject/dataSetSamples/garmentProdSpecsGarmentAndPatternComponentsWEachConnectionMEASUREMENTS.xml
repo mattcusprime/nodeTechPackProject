@@ -1,0 +1,271 @@
+<queryResult>
+<script id="tinyhippos-injected"/>
+<metadata>
+<name>
+garmentProdSpecsGarmentAndPatternComponentsWEachConnectionMEASUREMENTS
+</name>
+<description/>
+<objectIdentifier>wt.query.template.ReportTemplate:9953962</objectIdentifier>
+<sourceSystem>http://wsflexwebprd1v.res.hbi.net:80/Windchill</sourceSystem>
+<sourceGateway>
+http://wsflexwebprd1v.res.hbi.net/Windchill/servlet/WindchillAuthGW/
+</sourceGateway>
+<executingPrincipal>
+<fullName>menglish</fullName>
+<objectIdentifier>wt.org.WTUser:150128</objectIdentifier>
+</executingPrincipal>
+<timeOfExecution>2015-06-14 00:01:38 GMT</timeOfExecution>
+<locale>en_US</locale>
+</metadata>
+<auxData>
+<dataItem name="xsl2"/>
+<dataItem name="oid">OR:wt.query.template.ReportTemplate:9953962</dataItem>
+<dataItem name="xsl1"/>
+<dataItem name="action">ExecuteReport</dataItem>
+<dataItem name="gSpecId">5535179</dataItem>
+<dataItem name="format">formatDelegate</dataItem>
+<dataItem name="delegateName">XML</dataItem>
+<dataItem name="garmentProductName">GP 10188 Boys Knit Brief ExpWB B252</dataItem>
+<dataItem name="jrb">wt.query.template.reportTemplateRB</dataItem>
+</auxData>
+<qml bypassAccessControl="true">
+<parameter name="garmentProductName" type="java.lang.String"/>
+<parameter name="gSpecId" type="java.lang.Object"/>
+<statement>
+<query>
+<select distinct="true" group="false">
+<object alias="Garment Product" heading="Garment Product" propertyName=""/>
+<column alias="Garment Spec" heading="Name" isExternal="false" propertyName="name" selectOnly="false" type="java.lang.String">master>name</column>
+<column alias="com.lcs.wc.season.LCSSeason" heading="com.lcs.wc.season.LCSSeason Name" isExternal="false" propertyName="name" selectOnly="false" type="java.lang.String">master>name</column>
+<column alias="Garment Product" heading="Att1" isExternal="false" propertyName="att1" selectOnly="false" type="java.lang.String">att1</column>
+<column alias="Garment Spec" heading="Pattern Spec Att1" isExternal="false" propertyName="att1" selectOnly="false" type="java.lang.String">att1</column>
+<column alias="Garment Product" heading="Number" isExternal="false" propertyName="number" selectOnly="false" type="java.lang.String">master>number</column>
+<column alias="com.lcs.wc.season.LCSSeason" heading="Persist Info.Object Identifier.Id" isExternal="false" propertyName="persistInfo.objectIdentifier.id" selectOnly="false" type="long">thePersistInfo.theObjectIdentifier.id</column>
+<column alias="Garment Spec" heading="Garment Spec Persist Info.Object Identifier.Id" isExternal="false" propertyName="persistInfo.objectIdentifier.id" selectOnly="false" type="long">thePersistInfo.theObjectIdentifier.id</column>
+<object alias="Pattern Spec" heading="Pattern Spec" propertyName=""/>
+<column alias="Pattern Spec" heading="Pattern Spec Name" isExternal="false" propertyName="name" selectOnly="false" type="java.lang.String">master>name</column>
+<column alias="com.lcs.wc.specification.FlexSpecToComponentLink" heading="Component Type" isExternal="false" propertyName="componentType" selectOnly="false" type="java.lang.String">componentType</column>
+<column alias="com.lcs.wc.specification.FlexSpecToComponentLink" heading="Component Parent Id" isExternal="false" propertyName="componentParentId" selectOnly="false" type="java.lang.String">componentParentId</column>
+<column alias="com.lcs.wc.specification.FlexSpecToComponentLink" heading="Spec Version" isExternal="false" propertyName="specVersion" selectOnly="false" type="java.lang.String">specVersion</column>
+<column alias="Pattern Spec" heading="Flex Type Id Path" isExternal="false" propertyName="flexTypeIdPath" selectOnly="false" type="java.lang.String">flexTypeIdPath</column>
+<column alias="com.lcs.wc.specification.FlexSpecToComponentLink" heading="Component Reference.Object Id.Id" isExternal="false" propertyName="componentReference.objectId.id" selectOnly="false" type="long">componentReference.key.id</column>
+<column alias="com.lcs.wc.measurements.LCSMeasurementsMaster" heading="Measurements Name" isExternal="false" propertyName="measurementsName" selectOnly="false" type="java.lang.String">measurementsName</column>
+<object alias="com.lcs.wc.measurements.LCSMeasurementsMaster" heading="com.lcs.wc.measurements.LCSMeasurementsMaster" propertyName=""/>
+<column alias="com.lcs.wc.measurements.LCSMeasurementsMaster" heading="productSizeCategoryReference.key.branchId" isExternal="false" selectOnly="false" type="long">productSizeCategoryReference.key.branchId</column>
+<object alias="com.lcs.wc.measurements.LCSMeasurements" heading="com.lcs.wc.measurements.LCSMeasurements Name" propertyName="name">
+<property name="name"/>
+</object>
+<column alias="com.lcs.wc.measurements.LCSMeasurements" heading="branchIdForTaskCall" isExternal="false" propertyName="branchIdentifier" selectOnly="false" type="long">iterationInfo.branchId</column>
+</select>
+<from>
+<table alias="Garment Product" isExternal="false">com.lcs.wc.product.LCSProduct</table>
+<table alias="Garment Spec" isExternal="false">com.lcs.wc.specification.FlexSpecification</table>
+<table alias="com.lcs.wc.season.LCSSeason" isExternal="false">com.lcs.wc.season.LCSSeason</table>
+<table alias="specToSpecLink" isExternal="false">com.lcs.wc.specification.SpecToSpecLink</table>
+<table alias="Pattern Spec" isExternal="false">com.lcs.wc.specification.FlexSpecification</table>
+<table alias="com.lcs.wc.specification.FlexSpecToComponentLink" isExternal="false">com.lcs.wc.specification.FlexSpecToComponentLink</table>
+<table alias="com.lcs.wc.measurements.LCSMeasurementsMaster" isExternal="false">com.lcs.wc.measurements.LCSMeasurementsMaster</table>
+<table alias="com.lcs.wc.measurements.LCSMeasurements" isExternal="false">com.lcs.wc.measurements.LCSMeasurements</table>
+</from>
+<where>
+<compositeCondition type="and">
+<condition>
+<operand>
+<column alias="Garment Product" heading="Iteration (iterationInfo).Latest" isExternal="false" propertyName="iterationInfo.latest" selectOnly="false" type="boolean">iterationInfo.latest</column>
+</operand>
+<operator type="equal"/>
+<operand>
+<constant heading="1" isMacro="false" type="java.lang.Object">1</constant>
+</operand>
+</condition>
+<condition>
+<operand>
+<column alias="Garment Spec" heading="Spec Owner Reference.Object Id.Id" isExternal="false" propertyName="specOwnerReference.objectId.id" selectOnly="false" type="long">specOwnerReference.key.id</column>
+</operand>
+<operator type="equal"/>
+<operand>
+<column alias="Garment Product" heading="Master Reference.Object Id.Id" isExternal="false" propertyName="masterReference.objectId.id" selectOnly="false" type="long">masterReference.key.id</column>
+</operand>
+</condition>
+<condition>
+<operand>
+<column alias="Garment Spec" heading="Latest Iteration" isExternal="false" propertyName="latestIteration" selectOnly="false" type="boolean">iterationInfo.latest</column>
+</operand>
+<operator type="equal"/>
+<operand>
+<constant heading="1" isMacro="false" type="java.lang.Object">1</constant>
+</operand>
+</condition>
+<condition>
+<operand>
+<column alias="Garment Product" heading="Flex Type Id Path" isExternal="false" propertyName="flexTypeIdPath" selectOnly="false" type="java.lang.String">flexTypeIdPath</column>
+</operand>
+<operator type="like"/>
+<operand>
+<constant heading="%1157890%" isMacro="false" type="java.lang.String">%1157890%</constant>
+</operand>
+</condition>
+<condition>
+<operand>
+<column alias="Garment Product" heading="Name" isExternal="false" propertyName="name" selectOnly="false" type="java.lang.String">master>name</column>
+</operand>
+<operator type="equal"/>
+<operand>
+<parameterTarget name="garmentProductName"/>
+</operand>
+</condition>
+<condition>
+<operand>
+<column alias="Garment Product" heading="Season Master Reference.Object Id.Id" isExternal="false" propertyName="seasonMasterReference.objectId.id" selectOnly="false" type="long">seasonMasterReference.key.id</column>
+</operand>
+<operator type="equal"/>
+<operand>
+<column alias="com.lcs.wc.season.LCSSeason" heading="Master Reference.Object Id.Id" isExternal="false" propertyName="masterReference.objectId.id" selectOnly="false" type="long">masterReference.key.id</column>
+</operand>
+</condition>
+<condition>
+<operand>
+<column alias="com.lcs.wc.season.LCSSeason" heading="iterationInfo.identifier.iterationId" isExternal="false" selectOnly="false" type="java.lang.String">iterationInfo.identifier.iterationId</column>
+</operand>
+<operator type="equal"/>
+<operand>
+<constant heading="1" isMacro="false" type="java.lang.String">1</constant>
+</operand>
+</condition>
+<condition>
+<operand>
+<column alias="Garment Spec" heading="Master Reference.Object Id.Id" isExternal="false" propertyName="masterReference.objectId.id" selectOnly="false" type="long">masterReference.key.id</column>
+</operand>
+<operator type="equal"/>
+<operand>
+<column alias="specToSpecLink" heading="roleAObjectRef.key.id" isExternal="false" selectOnly="false" type="long">roleAObjectRef.key.id</column>
+</operand>
+</condition>
+<condition>
+<operand>
+<column alias="Pattern Spec" heading="Master Reference.Object Id.Id" isExternal="false" propertyName="masterReference.objectId.id" selectOnly="false" type="long">masterReference.key.id</column>
+</operand>
+<operator type="equal"/>
+<operand>
+<column alias="specToSpecLink" heading="roleBObjectRef.key.id" isExternal="false" selectOnly="false" type="long">roleBObjectRef.key.id</column>
+</operand>
+</condition>
+<condition>
+<operand>
+<column alias="Pattern Spec" heading="iterationInfo.identifier.iterationId" isExternal="false" selectOnly="false" type="java.lang.String">iterationInfo.identifier.iterationId</column>
+</operand>
+<operator type="equal"/>
+<operand>
+<constant heading="1" isMacro="false" type="java.lang.Object">1</constant>
+</operand>
+</condition>
+<compositeCondition type="or">
+<condition>
+<operand>
+<column alias="com.lcs.wc.specification.FlexSpecToComponentLink" heading="Specification Master Reference.Object Id.Id" isExternal="false" propertyName="specificationMasterReference.objectId.id" selectOnly="false" type="long">specificationMasterReference.key.id</column>
+</operand>
+<operator type="equal"/>
+<operand>
+<column alias="Pattern Spec" heading="master>thePersistInfo.theObjectIdentifier.id" isExternal="false" selectOnly="false" type="long">master>thePersistInfo.theObjectIdentifier.id</column>
+</operand>
+</condition>
+<condition>
+<operand>
+<column alias="com.lcs.wc.specification.FlexSpecToComponentLink" heading="Specification Master Reference.Object Id.Id" isExternal="false" propertyName="specificationMasterReference.objectId.id" selectOnly="false" type="long">specificationMasterReference.key.id</column>
+</operand>
+<operator type="equal"/>
+<operand>
+<column alias="Garment Spec" heading="master>thePersistInfo.theObjectIdentifier.id" isExternal="false" selectOnly="false" type="long">master>thePersistInfo.theObjectIdentifier.id</column>
+</operand>
+</condition>
+</compositeCondition>
+<condition>
+<operand>
+<column alias="com.lcs.wc.measurements.LCSMeasurementsMaster" heading="Persist Info.Object Identifier.Id" isExternal="false" propertyName="persistInfo.objectIdentifier.id" selectOnly="false" type="long">thePersistInfo.theObjectIdentifier.id</column>
+</operand>
+<operator type="equal"/>
+<operand>
+<column alias="com.lcs.wc.specification.FlexSpecToComponentLink" heading="Component Reference.Object Id.Id" isExternal="false" propertyName="componentReference.objectId.id" selectOnly="false" type="long">componentReference.key.id</column>
+</operand>
+</condition>
+<condition>
+<operand>
+<column alias="Garment Spec" heading="Persist Info.Object Identifier.Id" isExternal="false" propertyName="persistInfo.objectIdentifier.id" selectOnly="false" type="long">thePersistInfo.theObjectIdentifier.id</column>
+</operand>
+<operator type="equal"/>
+<operand>
+<parameterTarget name="gSpecId"/>
+</operand>
+</condition>
+<condition>
+<operand>
+<column alias="com.lcs.wc.measurements.LCSMeasurements" heading="master>thePersistInfo.theObjectIdentifier.id" isExternal="false" selectOnly="false" type="long">master>thePersistInfo.theObjectIdentifier.id</column>
+</operand>
+<operator type="equal"/>
+<operand>
+<column alias="com.lcs.wc.measurements.LCSMeasurementsMaster" heading="Persist Info.Object Identifier.Id" isExternal="false" propertyName="persistInfo.objectIdentifier.id" selectOnly="false" type="long">thePersistInfo.theObjectIdentifier.id</column>
+</operand>
+</condition>
+<condition>
+<operand>
+<column alias="com.lcs.wc.measurements.LCSMeasurements" heading="iterationInfo.identifier.iterationId" isExternal="false" selectOnly="false" type="java.lang.String">iterationInfo.identifier.iterationId</column>
+</operand>
+<operator type="equal"/>
+<operand>
+<constant heading="1" isMacro="false" type="java.lang.Object">1</constant>
+</operand>
+</condition>
+</compositeCondition>
+</where>
+</query>
+</statement>
+</qml>
+<actualParameter parameterId="gSpecId" displayName="5535179">5535179</actualParameter>
+<actualParameter parameterId="garmentProductName" displayName="GP 10188 Boys Knit Brief ExpWB B252">GP 10188 Boys Knit Brief ExpWB B252</actualParameter>
+<result>
+<heading type="com.lcs.wc.product.LCSProduct" tag="Garment_Product">Garment Product</heading>
+<heading type="java.lang.String" tag="Name">Name</heading>
+<heading type="java.lang.String" tag="com_lcs_wc_season_LCSSeason_Name">com.lcs.wc.season.LCSSeason Name</heading>
+<heading type="java.lang.String" tag="Att_">Att1</heading>
+<heading type="java.lang.String" tag="Pattern_Spec_Att_">Pattern Spec Att1</heading>
+<heading type="java.lang.String" tag="Number">Number</heading>
+<heading type="java.lang.Long" tag="Persist_Info_Object_Identifier_Id">Persist Info.Object Identifier.Id</heading>
+<heading type="java.lang.Long" tag="Garment_Spec_Persist_Info_Object_Identifier_Id">Garment Spec Persist Info.Object Identifier.Id</heading>
+<heading type="com.lcs.wc.specification.FlexSpecification" tag="Pattern_Spec">Pattern Spec</heading>
+<heading type="java.lang.String" tag="Pattern_Spec_Name">Pattern Spec Name</heading>
+<heading type="java.lang.String" tag="Component_Type">Component Type</heading>
+<heading type="java.lang.String" tag="Component_Parent_Id">Component Parent Id</heading>
+<heading type="java.lang.String" tag="Spec_Version">Spec Version</heading>
+<heading type="java.lang.String" tag="Flex_Type_Id_Path">Flex Type Id Path</heading>
+<heading type="java.lang.Long" tag="Component_Reference_Object_Id_Id">Component Reference.Object Id.Id</heading>
+<heading type="java.lang.String" tag="Measurements_Name">Measurements Name</heading>
+<heading type="com.lcs.wc.measurements.LCSMeasurementsMaster" tag="com_lcs_wc_measurements_LCSMeasurementsMaster">com.lcs.wc.measurements.LCSMeasurementsMaster</heading>
+<heading type="java.lang.Long" tag="productSizeCategoryReference_key_branchId">productSizeCategoryReference.key.branchId</heading>
+<heading type="java.lang.String" tag="com_lcs_wc_measurements_LCSMeasurements_Name">com.lcs.wc.measurements.LCSMeasurements Name</heading>
+<heading type="java.lang.Long" tag="branchIdForTaskCall">branchIdForTaskCall</heading>
+<row idx="1">
+<Garment_Product type="com.lcs.wc.product.LCSProduct" objectId="2384183" branchId="2384182">B252 Boys Ctn Knit Rib ExpWB (Garment BIW)</Garment_Product>
+<Name>002 :</Name>
+<com_lcs_wc_season_LCSSeason_Name>Garment BIW</com_lcs_wc_season_LCSSeason_Name>
+<Att_>B252 Boys Ctn Knit Rib ExpWB</Att_>
+<Pattern_Spec_Att_>002 :</Pattern_Spec_Att_>
+<Number>PRODUCT:10309</Number>
+<Persist_Info_Object_Identifier_Id>2382466</Persist_Info_Object_Identifier_Id>
+<Garment_Spec_Persist_Info_Object_Identifier_Id>5535179</Garment_Spec_Persist_Info_Object_Identifier_Id>
+<Pattern_Spec type="com.lcs.wc.specification.FlexSpecification" objectId="2394172" branchId="2394171">FLEXSPEC:10941, A.1</Pattern_Spec>
+<Pattern_Spec_Name>001 :</Pattern_Spec_Name>
+<Component_Type>MEASUREMENTS</Component_Type>
+<Component_Parent_Id isNull="true"/>
+<Spec_Version>A</Spec_Version>
+<Flex_Type_Id_Path>\20171\2377296</Flex_Type_Id_Path>
+<Component_Reference_Object_Id_Id>2394284</Component_Reference_Object_Id_Id>
+<Measurements_Name>001 : T0409A FGM</Measurements_Name>
+<com_lcs_wc_measurements_LCSMeasurementsMaster type="com.lcs.wc.measurements.LCSMeasurementsMaster" objectId="2394284">
+com.lcs.wc.measurements.LCSMeasurementsMaster:2394284
+</com_lcs_wc_measurements_LCSMeasurementsMaster>
+<productSizeCategoryReference_key_branchId>2394158</productSizeCategoryReference_key_branchId>
+<com_lcs_wc_measurements_LCSMeasurements_Name>001 : T0409A FGM</com_lcs_wc_measurements_LCSMeasurements_Name>
+<branchIdForTaskCall>2394285</branchIdForTaskCall>
+</row>
+</result>
+</queryResult>
