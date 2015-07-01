@@ -53,17 +53,25 @@
     <!--PrettyLoader-->
     <!--jsPdf-->
     <script src="jsPdf/jspdf.js"></script>
+    <script src="jsPdf/jspdf.plugin.addhtml.js"></script>
+    <script src="jsPdf/jspdf.plugin.autoprint.js"></script>
     <script src="jsPdf/libs/Deflate/adler32cs.js"></script>
-    <script src="jsPdf/libs/FileSaver.js/FileSaver.js"></script>
     <script src="jsPdf/libs/Blob.js/BlobBuilder.js"></script>
     <script src="jsPdf/jspdf.plugin.addimage.js"></script>
     <script src="jsPdf/libs/png_support/zlib.js"></script>
     <script src="jsPdf/libs/png_support/png.js"></script>
     <script src="jsPdf/jspdf.plugin.png_support.js"></script>
+    <script src="jsPdf/libs/FileSaver.js/FileSaver.js"></script>
     <script src="jsPdf/jspdf.plugin.standard_fonts_metrics.js"></script>
     <script src="jsPdf/jspdf.plugin.split_text_to_size.js"></script>
     <script src="jsPdf/jspdf.plugin.from_html.js"></script>
     <script src="jsPdf/examples/js/basic.js"></script>
+    <script src="jsPdf/jspdf.plugin.javascript.js"></script>
+    <script src="jsPdf/jspdf.plugin.png_support.js"></script>
+    <script src="jsPdf/jspdf.plugin.sillysvgrenderer.js"></script>
+    <script src="jsPdf/jspdf.PLUGINTEMPLATE.js"></script>
+
+
     <script src="js/jquery.prompt.js"></script>
     <script src="js/imagesloaded.pkgd.min.js"></script>
     <!--My Scripts begin here-->
@@ -183,7 +191,24 @@
             }
         };
 
+        function pdfElement() {
+            var doc = new jsPDF();
+            var elementHandler = {
+                '#navTopDiv': function (element, renderer) {
+                    return true;
+                }
+            };
+            var source = window.document.getElementsByTagName("body")[0];
+            doc.fromHTML(
+                source,
+                15,
+                15,
+                {
+                    'width': 180, 'elementHandlers': elementHandler
+                });
 
+            doc.output("dataurlnewwindow");
+        };
 
     </script>
 
@@ -213,7 +238,7 @@
                     <li><a href="javascript:createComponentTable('measurementDiv', 'measurements', currentGarmentProduct.measurementTableString);makeMeScrollToDefinedTarget('#measurementDiv',100,-20);">Measurements</a></li>
                     <li id="runNew"><a href='javascript:runNewProduct();'>Run a New Product</a></li>
                     <li><a href='javascript:currentGarmentProduct.saveMe(currentGarmentProduct);'>Save Garment</a></li>
-                    <li><a href="javascript:pdfElement('#measurementDiv','Measurements');">PDF</a></li>
+                    <li><a href="javascript:pdfElement();">PDF</a></li>
                     <!-- <li><a href='javascript:pdfFromHtml("specs");'>PDF</a></li>
                         <li class="active"><a href="#">Top</a></li>
                     <li><a href="#about">Help</a></li>

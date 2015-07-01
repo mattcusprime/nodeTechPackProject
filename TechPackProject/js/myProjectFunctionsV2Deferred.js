@@ -538,13 +538,10 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
             objComponent.dataUri = fs.readFileSync(strImgViewerPrefix3 + objComponent.vaultFileName, function (err, data) {
                 if (err) throw err;
                 console.log(data);
-            });*/
-            //objComponent.image = '<div class="item" <h2>' + objComponent.name + '-' + objComponent.fileName + '</h2></br><img width="' + objComponent.width + '" height="' + objComponent.length + '" class="img-responsive hideImg" src="' + strImgViewerPrefix3 + objComponent.vaultFileName + '" /></div>';
+            })*/
+            objComponent.image = '<div class="item" <h2>' + objComponent.name + '-' + objComponent.fileName + '</h2></br><img width="' + objComponent.width + '" height="' + objComponent.length + '" class="img-responsive hideImg" src="' + strImgViewerPrefix3 + objComponent.vaultFileName + '" /></div>';
             objComponent.imageUrl = '<img width="' + objComponent.width + '" height="' + objComponent.height + '" class="img-responsive" src="' + objComponent.fullVaultUrl + '" />';
-            fs.readFileSync(objComponent.fullVaultUrl + '.png', function (err, data) {
-                if (err) throw err;
-                console.log(data);
-            })
+            
             //objComponent.image = '<div class="item" <h2>' + objComponent.name + '-' + objComponent.fileName + '</h2></br><img width="800" height="800" src="' + strImgViewerPrefix3 + objComponent.vaultFileName + '" /></div>';
             //later will change this to img in order to test it.
 
