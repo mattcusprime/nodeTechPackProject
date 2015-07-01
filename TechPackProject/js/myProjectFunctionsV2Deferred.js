@@ -80,7 +80,7 @@ function garmentProduct(strName, arrAttributes, arrSpecs, arrSources, objColorwa
 };
 //importing node js utility libraries for desktop version
 
-var fs = require('fs');
+//var fs = require('fs');
 
 //
 /**
@@ -764,12 +764,16 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
         var boolHavePatternSpread = false;
         var boolHavePatternTrimStraight = false;
         var boolHavePatternTrimBias = false;
-        for (var i = 0; i < arrBoms.length; i++) {
-            var strBomType = arrBoms[i].flexType;
-            if (strBomType == 'Pattern Product Trim Bias BOM') { boolHavePatternTrimBias = true; }
-            if (strBomType == 'Garment Cut') { boolHaveGarmentCut = true; }
-            if (strBomType == 'Pattern Product Trim Straight BOM') { boolHavePatternTrimStraight = true; }
-            if (strBomType == 'Pattern Product Spread BOM') { boolHavePatternSpread = true; }
+        if (typeof (arrBoms) != 'undefined') {
+            for (var i = 0; i < arrBoms.length; i++) {
+
+                var strBomType = arrBoms[i].flexType;
+                if (strBomType == 'Pattern Product Trim Bias BOM') { boolHavePatternTrimBias = true; }
+                if (strBomType == 'Garment Cut') { boolHaveGarmentCut = true; }
+                if (strBomType == 'Pattern Product Trim Straight BOM') { boolHavePatternTrimStraight = true; }
+                if (strBomType == 'Pattern Product Spread BOM') { boolHavePatternSpread = true; }
+
+            };
         };
         var strBlockWeightBomScenario;
         if (boolHaveGarmentCut && boolHavePatternSpread && boolHavePatternTrimStraight && boolHavePatternTrimBias) {
@@ -790,9 +794,11 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
 
     if (typeof (objSelfReference.documents != 'undefined')) {
         var arrdocs = objSelfReference.documents;
-        for (i = 0; i < arrdocs.length; i++) {
-            reportTable.row.add([sortOrder, arrdocs[i].name, arrdocs[i].imageUrl]);
-            sortOrder++;
+        if (typeof (arrdocs) != 'undefined') {
+            for (i = 0; i < arrdocs.length; i++) {
+                reportTable.row.add([sortOrder, arrdocs[i].name, arrdocs[i].imageUrl]);
+                sortOrder++;
+            };
         };
 
     };
@@ -816,6 +822,7 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
 
     });
 };
+
 
 garmentProduct.prototype.getMyValueLists = function (strUrlPrefix, arrListIds, objSelfReference) {
     //http://wsflexwebprd1v.res.hbi.net/Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?attValueListId=2381876%2C102771%2C2381693&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A10596321&action=ExecuteReport
@@ -956,6 +963,11 @@ garmentProduct.prototype.getMyBlockWeightsTrim = function (strUrlPrefix) {
 
 
 };
+
+garmentProduct.prototype.readMeToFile = function () {
+
+};
+
 
 //utility functions to work with garmentProduct class below
 /*

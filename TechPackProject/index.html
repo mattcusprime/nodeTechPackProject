@@ -100,7 +100,7 @@
         var returnArrays;
         var arrOfAttributeValueListIds = ['2381876', '102771', '2381693', '368058', '100575'];
         $('document').ready(function () {
-            document.getElementById('fileinput').addEventListener('change', readSingleFile, false);
+            //document.getElementById('fileinput').addEventListener('change', readSingleFile, false);
             $.prettyLoader();
             getLogin(arrOfAttributeValueListIds, currentGarmentProduct);
             /*applyTypeAheadToElement(gProdQueryURL, '#gProd', 'Garment_Product_Name');
@@ -114,8 +114,11 @@
                 localStorage.setItem('lastGarmentRan', nameToUse);
                 currentGarmentProduct.getSpecByName(strUrlPrefix, nameToUse, currentGarmentProduct.thenCallSpecs, returnArrays, currentGarmentProduct);
             });
-            $('#fromSaved').click(function () {
-                currentGarmentProduct.generateAvailableReportsList(currentGarmentProduct);
+            $('#fileinput').on("change", function (e) {
+                readSingleFile(e, currentGarmentProduct);
+                $('#garmentFormContainer').fadeOut();
+                $('#runNew,.clearThisComponentOnNewGarmentLoad').fadeIn();
+                
             });
             //invoke prettyloader
 
@@ -144,16 +147,25 @@
         });
 
 
-        function readSingleFile(evt) {
+        function readSingleFile(evt,objGarmentProduct) {
             //Retrieve the first (and only!) File from the FileList object
             var f = evt.target.files[0];
 
             if (f) {
                 var r = new FileReader();
-                r.onload = function (e) {
+                r.onloadend = function (e) {
                     var contents = e.target.result;
-                    currentGarmentProduct = JSON.parse(contents);
-                    
+                    var objFunctionObject;
+                    objFunctionObject = JSON.parse(contents);
+                    var keyNames = Object.keys(objFunctionObject);
+                    for (var i = 0; i < keyNames.length; i++) {
+                        var strPropName = keyNames[i];
+                        var objPropValue = $(objFunctionObject).prop(strPropName);
+                        $(objGarmentProduct).prop(strPropName, objPropValue);
+                    };
+                    console.log(objFunctionObject,objGarmentProduct);
+                    objGarmentProduct.generateAvailableReportsList(objGarmentProduct);
+                    //$('body').append(contents);
                     //console.log(currentGarmentProduct);
                     /*alert("Got the file.n"
                           + "name: " + f.name + "n"
