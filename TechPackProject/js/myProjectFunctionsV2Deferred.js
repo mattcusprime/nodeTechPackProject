@@ -79,6 +79,7 @@ function garmentProduct(strName, arrAttributes, arrSpecs, arrSources, objColorwa
     this.blockWeightsSpreadTableString = strBlockWeightsSpreadTableString;
 };
 //importing node js utility libraries for desktop version
+
 var fs = require('fs');
 
 //
@@ -652,7 +653,7 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
         arrMeasurementDetailDataContainer = objDefferedMeasurement[0];
         objSelfReference.getMyConstruction(strHostUrlPrefix, objSelfReference.construction.branchId, arrConstructionDetailDataContainer, objSelfReference);
         objSelfReference.getMyMeasurement(strHostUrlPrefix, objSelfReference.measurement.branchId, arrMeasurementDetailDataContainer, objSelfReference);
-
+        saveGarmentProd(objSelfReference);
     });
 
 };
@@ -705,6 +706,7 @@ garmentProduct.prototype.getAllMyDataForMyActiveSpec = function (strHostUrlPrefi
         objSelfReference.getSpecComponentsForActiveSpec(strHostUrlPrefix, objDocData, objConData, objMeasData, objBomData, objProdLinkData, objSelfReference);
         console.log(objSelfReference);
         objSelfReference.generateAvailableReportsList(objSelfReference);
+        //saveGarmentProd(objSelfReference);
         //further sequential callbacks should be put here.  Like for constructiong the pom data on measurements and constructions since all data
         //should more or less be available at this juncture.
     });
@@ -724,11 +726,7 @@ garmentProduct.prototype.thenCallSpecs = function (objectForCallback, objSelfRef
     objSelfReference.name = objectForCallback.gProdName;
     objSelfReference.getAllMyDataForMyActiveSpec(strUrlPrefix, objSelfReference.activeSpecId, objSelfReference);
     //createComponentTable(objSelfReference);
-    var garmentProductString = JSON.stringify(objSelfReference);
-    fs.writeFile(objSelfReference.name + '.json', garmentProductString, function (err) {
-        if (err) throw err;
-        console.log('saved ' + objSelfReference.name);
-    });
+    
     localStorage.setItem('garmentProductString', garmentProductString);
     //makeMeScrollToDefinedTarget('#reportsHeader', 1000,100);
 };
@@ -933,7 +931,7 @@ garmentProduct.prototype.getMyBlockWeightsSpread = function (strUrlPrefix,objSel
           arrOfRowsForFunctionScope.push(objRow);
           //potential later use for duplicate removal
           arrDupChecker.push(numDupChecker);
-            
+          
 
       });
       strSpreadTableString += '</tbody></table>';
@@ -959,10 +957,6 @@ garmentProduct.prototype.getMyBlockWeightsTrim = function (strUrlPrefix) {
 
 };
 
-function createGarmentProductFromLocalFile(strJsonFileData) {
-    var objNewGarmentProduct = JSON.parse(strJsonFileData);
-    return objNewGarmentProduct;
-};
 //utility functions to work with garmentProduct class below
 /*
  * @param {String} strkey key value of item in list to be passed to key array to get back display
@@ -973,4 +967,12 @@ function getValueDisplayFromKey(strkey, objGarmentProduct) {
     var numIndexPositionOfKeyInKeyArray = objGarmentProduct.displayKeys.indexOf(strkey);
     var strvalue = objGarmentProduct.displayValues[numIndexPositionOfKeyInKeyArray];
     return strvalue;
+};
+
+function saveGarmentProd(objGarmentProductToSave) {
+    var garmentProductString = JSON.stringify(objGarmentProductToSave);
+    fs.writeFile(objGarmentProductToSave.name.replace(' ', '') + '.json', garmentProductString, function (err) {
+        if (err) throw err;
+        alert('saved ' + objGarmentProductToSave.name.replace(' ', ''));
+    });
 };
