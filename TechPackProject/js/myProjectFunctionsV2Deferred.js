@@ -80,7 +80,7 @@ function garmentProduct(strName, arrAttributes, arrSpecs, arrSources, objColorwa
 };
 //importing node js utility libraries for desktop version
 
-//var fs = require('fs');
+var fs = require('fs');
 
 //
 /**
@@ -653,7 +653,7 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
         arrMeasurementDetailDataContainer = objDefferedMeasurement[0];
         objSelfReference.getMyConstruction(strHostUrlPrefix, objSelfReference.construction.branchId, arrConstructionDetailDataContainer, objSelfReference);
         objSelfReference.getMyMeasurement(strHostUrlPrefix, objSelfReference.measurement.branchId, arrMeasurementDetailDataContainer, objSelfReference);
-        saveGarmentProd(objSelfReference);
+//       saveGarmentProd(objSelfReference);
     });
 
 };
@@ -727,7 +727,7 @@ garmentProduct.prototype.thenCallSpecs = function (objectForCallback, objSelfRef
     objSelfReference.getAllMyDataForMyActiveSpec(strUrlPrefix, objSelfReference.activeSpecId, objSelfReference);
     //createComponentTable(objSelfReference);
     
-    localStorage.setItem('garmentProductString', garmentProductString);
+    //localStorage.setItem('garmentProductString', garmentProductString);
     //makeMeScrollToDefinedTarget('#reportsHeader', 1000,100);
 };
 /**
@@ -872,90 +872,103 @@ garmentProduct.prototype.getMyBlockWeightsSpread = function (strUrlPrefix,objSel
     strSpecNameForParam = strSpecNameForParam.replace(' ', '%20');
     var fullSpreadUrl = strUrlPrefix + reportStringSpread + strSeasonNameForParam + reportStringSpread2 + strPnameForParam + reportStringSpread3 + strSpecNameForParam + reportStringSpread4;
     //var fullSpreadUrl = 'dataSetSamples/spread.xml';
-    $.get(fullSpreadUrl, function (data) { }).done(function (data) {
-        $('row', data).each(function () {
-            
-          var objRow = {};
-          strSpreadTableString += '<tr>';
-          objRow.pProdSpread = $(this).find("Pattern_Product").text();
-          objRow.pMastSpread = $(this).find("Pattern_Master_Material").text();
-          objRow.gProdSpread = $(this).find("Garment_product").text();
-          objRow.seasonSpread = $(this).find("Season").text();
-          objRow.specNameSpread = $(this).find("Spec_Name").text();
-          objRow.sizeSpreadForLookUp = $(this).find("Size").text();
-          objRow.sizeSpread = "  " + objRow.sizeSpreadForLookUp + "  ";
-          objRow.pCodeSpread = $(this).find("Part_Code").text();
-          objRow.allowanceSpread = $(this).find("Allowance__").text();
-          objRow.numGarmentsSpread = $(this).find("__Garments").text();
-          objRow.manfOptionSpread = $(this).find("Manufacturing_option").text();
-          objRow.conWidthSpread = $(this).find("Conditioned_Width").text();
-          objRow.plySpread = $(this).find("Ply").text();
-          objRow.totLengthSpread = $(this).find("Total_Length").text();
-          objRow.totLengthSpread = Math.round(objRow.totLengthSpread * 10000) / 10000;
-          objRow.useYdDzSpread = $(this).find("Usage_Yd_Dz").text();
-          objRow.useYdDzSpread = Math.round(objRow.useYdDzSpread * 100) / 100;
-          objRow.cMethCodeSpread = $(this).find("Cut_Method_Code").text();
-          objRow.muSpread = $(this).find("MU_").text();
-          objRow.shadeSpread = $(this).find("Shade").text().toUpperCase().substring(0, 1);
-          objRow.shadeSpread = "  " + objRow.shadeSpread + "  ";
-          objRow.gBOMallowanceSpread = $(this).find("Garment_BOM_Allowance").text();
-          objRow.manfFabricWeightSpread = $(this).find("Manf__Option___Weight__oz_yd__").text();
-          objRow.pMastTypeSpread = $(this).find("Pattern_Master_Material_Type").text();
-          objRow.cylinderValueSpread = $(this).find("Cylinder").text();
-          objRow.usageLBDZSpread = Math.round((objRow.conWidthSpread * objRow.totLengthSpread / objRow.numGarmentsSpread * 12 * objRow.plySpread / 36 / 36) * (objRow.manfFabricWeightSpread / 16) * 100) / 100;
-          
-          var sortLookup = "size" + objRow.sizeSpreadForLookUp;
-          var sortValue = sortingArray.indexOf(sortLookup);
-          objRow.patternDimId = $(this).find('patDimId').text();
-          objRow.garDimId = $(this).find('garDimID').text();
-          objRow.combinedDimId = objRow.patternDimId + objRow.garDimId;
-          var numDupChecker = objRow.combinedDimId;
-          
-          //formatting changes *from old, re-evaluate
-          objRow.plySpread = "   " + objRow.plySpread + "   ";
-          objRow.conWidthSpread = "   " + objRow.conWidthSpread + "   ";
-          for (var name in objRow) {
-              if (typeof (name) == 'undefined') {
-                  objRow.name = '';
-                  //this is catching the data errors but need to find out what they are.
-              }
-          };
-          strSpreadTableString += '<td>' + objRow.pCodeSpread + '</td>';
-          strSpreadTableString += '<td>' + objRow.cMethCodeSpread + '</td>';
-          strSpreadTableString += '<td>' + objRow.manfOptionSpread + '</td>';
-          strSpreadTableString += '<td>' + sortValue + '</td>';
-          strSpreadTableString += '<td>' + objRow.shadeSpread + '</td>';
-          strSpreadTableString += '<td>' + objRow.sizeSpread + '</td>';
-          strSpreadTableString += '<td>' + objRow.pMastSpread + '</td>';
-          strSpreadTableString += '<td>' + objRow.conWidthSpread + '</td>';
-          strSpreadTableString += '<td>' + objRow.numGarmentsSpread + '</td>';
-          strSpreadTableString += '<td>' + objRow.muSpread + '</td>';
-          strSpreadTableString += '<td>' + objRow.totLengthSpread + '</td>';
-          strSpreadTableString += '<td>' + objRow.plySpread + '</td>';
-          strSpreadTableString += '<td>' + objRow.useYdDzSpread + '</td>';
-          strSpreadTableString += '<td>' + objRow.usageLBDZSpread + '</td>';
-          strSpreadTableString += '</tr>';
-          arrOfRowsForFunctionScope.push(objRow);
-          //potential later use for duplicate removal
-          arrDupChecker.push(numDupChecker);
-          
+    if (typeof (objSelfReference.blockWeightSpread) == 'undefined') {
+        $.get(fullSpreadUrl, function (data) { }).done(function (data) {
+            $('row', data).each(function () {
 
-      });
-      strSpreadTableString += '</tbody></table>';
-      objSelfReference.blockWeightsSpreadTableString = strSpreadTableString;
-      objSelfReference.blockWeightSpread = arrOfRowsForFunctionScope;
-      console.log(objSelfReference);
-        //createComponentTable('blockWeightSpreadDiv', 'tblBlockWeightSpread', objSelfReference.blockWeightsSpreadTableString);
-      //$('#blockWeightSpreadDiv').append('<div class="row"><h1 class="col-md-4></h1><h1 class="col-md-4>Block Weights</h1><h1 class="col-md-4></h1></div>');
-      $('#blockWeightSpreadDiv').append(objSelfReference.blockWeightsSpreadTableString);
-      $('#spreadReport').DataTable({
-          'scrollY': 500,
-          'paging': false,
-          'order': [[0, 'asc'], [1, 'asc'], [2, 'asc'], [3, 'asc']],
-          'responsive': false
-      });
-  });
+                var objRow = {};
+                strSpreadTableString += '<tr>';
+                objRow.pProdSpread = $(this).find("Pattern_Product").text();
+                objRow.pMastSpread = $(this).find("Pattern_Master_Material").text();
+                objRow.gProdSpread = $(this).find("Garment_product").text();
+                objRow.seasonSpread = $(this).find("Season").text();
+                objRow.specNameSpread = $(this).find("Spec_Name").text();
+                objRow.sizeSpreadForLookUp = $(this).find("Size").text();
+                objRow.sizeSpread = "  " + objRow.sizeSpreadForLookUp + "  ";
+                objRow.pCodeSpread = $(this).find("Part_Code").text();
+                objRow.allowanceSpread = $(this).find("Allowance__").text();
+                objRow.numGarmentsSpread = $(this).find("__Garments").text();
+                objRow.manfOptionSpread = $(this).find("Manufacturing_option").text();
+                objRow.conWidthSpread = $(this).find("Conditioned_Width").text();
+                objRow.plySpread = $(this).find("Ply").text();
+                objRow.totLengthSpread = $(this).find("Total_Length").text();
+                objRow.totLengthSpread = Math.round(objRow.totLengthSpread * 10000) / 10000;
+                objRow.useYdDzSpread = $(this).find("Usage_Yd_Dz").text();
+                objRow.useYdDzSpread = Math.round(objRow.useYdDzSpread * 100) / 100;
+                objRow.cMethCodeSpread = $(this).find("Cut_Method_Code").text();
+                objRow.muSpread = $(this).find("MU_").text();
+                objRow.shadeSpread = $(this).find("Shade").text().toUpperCase().substring(0, 1);
+                objRow.shadeSpread = "  " + objRow.shadeSpread + "  ";
+                objRow.gBOMallowanceSpread = $(this).find("Garment_BOM_Allowance").text();
+                objRow.manfFabricWeightSpread = $(this).find("Manf__Option___Weight__oz_yd__").text();
+                objRow.pMastTypeSpread = $(this).find("Pattern_Master_Material_Type").text();
+                objRow.cylinderValueSpread = $(this).find("Cylinder").text();
+                objRow.usageLBDZSpread = Math.round((objRow.conWidthSpread * objRow.totLengthSpread / objRow.numGarmentsSpread * 12 * objRow.plySpread / 36 / 36) * (objRow.manfFabricWeightSpread / 16) * 100) / 100;
+
+                var sortLookup = "size" + objRow.sizeSpreadForLookUp;
+                var sortValue = sortingArray.indexOf(sortLookup);
+                objRow.patternDimId = $(this).find('patDimId').text();
+                objRow.garDimId = $(this).find('garDimID').text();
+                objRow.combinedDimId = objRow.patternDimId + objRow.garDimId;
+                var numDupChecker = objRow.combinedDimId;
+
+                //formatting changes *from old, re-evaluate
+                objRow.plySpread = "   " + objRow.plySpread + "   ";
+                objRow.conWidthSpread = "   " + objRow.conWidthSpread + "   ";
+                for (var name in objRow) {
+                    if (typeof (name) == 'undefined') {
+                        objRow.name = '';
+                        //this is catching the data errors but need to find out what they are.
+                    }
+                };
+                strSpreadTableString += '<td>' + objRow.pCodeSpread + '</td>';
+                strSpreadTableString += '<td>' + objRow.cMethCodeSpread + '</td>';
+                strSpreadTableString += '<td>' + objRow.manfOptionSpread + '</td>';
+                strSpreadTableString += '<td>' + sortValue + '</td>';
+                strSpreadTableString += '<td>' + objRow.shadeSpread + '</td>';
+                strSpreadTableString += '<td>' + objRow.sizeSpread + '</td>';
+                strSpreadTableString += '<td>' + objRow.pMastSpread + '</td>';
+                strSpreadTableString += '<td>' + objRow.conWidthSpread + '</td>';
+                strSpreadTableString += '<td>' + objRow.numGarmentsSpread + '</td>';
+                strSpreadTableString += '<td>' + objRow.muSpread + '</td>';
+                strSpreadTableString += '<td>' + objRow.totLengthSpread + '</td>';
+                strSpreadTableString += '<td>' + objRow.plySpread + '</td>';
+                strSpreadTableString += '<td>' + objRow.useYdDzSpread + '</td>';
+                strSpreadTableString += '<td>' + objRow.usageLBDZSpread + '</td>';
+                strSpreadTableString += '</tr>';
+                arrOfRowsForFunctionScope.push(objRow);
+                //potential later use for duplicate removal
+                arrDupChecker.push(numDupChecker);
+
+
+            });
+            strSpreadTableString += '</tbody></table>';
+            objSelfReference.blockWeightsSpreadTableString = strSpreadTableString;
+            objSelfReference.blockWeightSpread = arrOfRowsForFunctionScope;
+            console.log(objSelfReference);
+
+            //createComponentTable('blockWeightSpreadDiv', 'tblBlockWeightSpread', objSelfReference.blockWeightsSpreadTableString);
+            //$('#blockWeightSpreadDiv').append('<div class="row"><h1 class="col-md-4></h1><h1 class="col-md-4>Block Weights</h1><h1 class="col-md-4></h1></div>');
+            $('#blockWeightSpreadDiv').append(objSelfReference.blockWeightsSpreadTableString);
+            $('#spreadReport').DataTable({
+                'scrollY': 500,
+                'paging': false,
+                'order': [[0, 'asc'], [1, 'asc'], [2, 'asc'], [3, 'asc']],
+                'responsive': false
+            });
+        });
+    }
+    else {
+        $('#blockWeightSpreadDiv').append(objSelfReference.blockWeightsSpreadTableString);
+        $('#spreadReport').DataTable({
+            'scrollY': 500,
+            'paging': false,
+            'order': [[0, 'asc'], [1, 'asc'], [2, 'asc'], [3, 'asc']],
+            'responsive': false
+        });
     
+    };
+
 
 };
 
@@ -964,8 +977,13 @@ garmentProduct.prototype.getMyBlockWeightsTrim = function (strUrlPrefix) {
 
 };
 
-garmentProduct.prototype.readMeToFile = function () {
-
+garmentProduct.prototype.saveMe = function () {
+    var objFunctionObject = $(this);
+    var garmentProductString = JSON.stringify(objFunctionObject);
+    fs.writeFile(objFunctionObject.name + '.json', garmentProductString, function (err) {
+        if (err) throw err;
+        alert('saved ' + objFunctionObject.name);
+    });
 };
 
 
@@ -979,12 +997,4 @@ function getValueDisplayFromKey(strkey, objGarmentProduct) {
     var numIndexPositionOfKeyInKeyArray = objGarmentProduct.displayKeys.indexOf(strkey);
     var strvalue = objGarmentProduct.displayValues[numIndexPositionOfKeyInKeyArray];
     return strvalue;
-};
-
-function saveGarmentProd(objGarmentProductToSave) {
-    var garmentProductString = JSON.stringify(objGarmentProductToSave);
-    fs.writeFile(objGarmentProductToSave.name.replace(' ', '') + '.json', garmentProductString, function (err) {
-        if (err) throw err;
-        alert('saved ' + objGarmentProductToSave.name.replace(' ', ''));
-    });
 };
