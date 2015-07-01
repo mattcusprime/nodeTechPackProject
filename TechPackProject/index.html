@@ -212,7 +212,8 @@
                     <li><a href="javascript:createComponentTable('constructionDiv', 'construction', currentGarmentProduct.constructionTableString);makeMeScrollToDefinedTarget('#constructionDiv', 100, 50);">Construction</a></li>
                     <li><a href="javascript:createComponentTable('measurementDiv', 'measurements', currentGarmentProduct.measurementTableString);makeMeScrollToDefinedTarget('#measurementDiv',100,-20);">Measurements</a></li>
                     <li id="runNew"><a href='javascript:runNewProduct();'>Run a New Product</a></li>
-                    <li><a href='javascript:currentGarmentProduct.saveMe();'>Save Garment</a></li>
+                    <li><a href='javascript:currentGarmentProduct.saveMe(currentGarmentProduct);'>Save Garment</a></li>
+                    <li><a href="javascript:pdfElement('#measurementDiv','Measurements');">PDF</a></li>
                     <!-- <li><a href='javascript:pdfFromHtml("specs");'>PDF</a></li>
                         <li class="active"><a href="#">Top</a></li>
                     <li><a href="#about">Help</a></li>

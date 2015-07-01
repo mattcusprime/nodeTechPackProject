@@ -249,9 +249,9 @@ function createComponentTable(strParentJquerySelectorJustStringNoPound, strChild
             { visible: false, targets: 0 }
         ],
         responsive: false,
-        dom: 'lfrtip',
+        dom: 'Tlfrtip',
         tableTools: {
-            "sSwfPath": "DataTables-1.10.7/extensions/TableTools/swf/copy_csv_xls_pdf.swf"
+            "sSwfPath": "C:/nodeTechPackProject/TechPackProject/js/copy_csv_xls_pdf.swf"
         },
         paging: true
         
@@ -308,3 +308,23 @@ function runNewProduct() {
     
 
 };
+
+function pdfElement(strElementWithPound,pdfName) {
+    var doc = new jsPDF();
+
+    // We'll make our own renderer to skip this editor
+    var specialElementHandlers = {
+        '#editor': function (element, renderer) {
+            return true;
+        }
+    };
+
+    doc.fromHTML($(strElementWithPound).get(0), 15, 15, {
+        'width': 170,
+        'elementHandlers': specialElementHandlers
+    });
+    //doc.save('Test.pdf');
+    doc.save(pdfName + '.pdf');
+    
+};
+

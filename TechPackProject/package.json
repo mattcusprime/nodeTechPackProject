@@ -5,7 +5,7 @@
   "main": "index.html",
   "window": {
     "title": "Tech Pack Generator",
-	"toolbar": false,
+	"toolbar": true,
     "fullscreen": true,
 	"position": "center",
 	"kiosk": false

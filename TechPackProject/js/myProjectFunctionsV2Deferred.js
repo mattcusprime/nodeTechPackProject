@@ -89,9 +89,7 @@ var fs = require('fs');
  *
  */
 garmentProduct.prototype.savePDF = function () {
-    this.garmentDoc.text('Colorway Product:   ' + this.colorwayProduct.name, 0, 40);
-    this.garmentDoc.text('Pattern Product:  ' + this.patternProduct.name, 0, 80);
-    this.garmentDoc.save(this.name + '.pdf');
+  
 
 };
 /**
@@ -488,8 +486,10 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
                 //var strImgViewerPrefix3 = "http://res.hbi.net/dfs/BrandedApparel/Activewear/FlexApp/Prod/";
             }
             else {
-
             };
+            
+            ////res.hbi.net/dfs/BrandedApparel/Activewear/FlexApp/Prod/000000000009f4
+
             var name = $(this).find('Document_Master_Name').text();
             var strpSpecId = $(this).find('patternSpecId').text();
             var strgSpecId = $(this).find('garmentSpecId').text();
@@ -530,13 +530,21 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
             var roleA = $(this).find('roleAObjectRef_key_id').text();
             var roleB = $(this).find('roleBObjectRef_key_id').text();
             //objComponent.iframe = '<div class="item"><img width="' + objComponent.width + '" height="' + objComponent.height + '" class="hideIframe" src="' + strImgViewerPrefix1 + roleB + strImgViewerPrefix2 + roleA + '" border="1"></img></div>';
-            convertImgToBase64(strImgViewerPrefix3 + objComponent.vaultFileName, function (base64Img) {
-                //console.log('IMAGE:', base64Img);
+            /*convertImgToBase64(strImgViewerPrefix3 + objComponent.vaultFileName, function (base64Img) {
+                
                 objComponent.dataUri = 'IMAGE:', base64Img;
 
             });
+            objComponent.dataUri = fs.readFileSync(strImgViewerPrefix3 + objComponent.vaultFileName, function (err, data) {
+                if (err) throw err;
+                console.log(data);
+            });*/
             //objComponent.image = '<div class="item" <h2>' + objComponent.name + '-' + objComponent.fileName + '</h2></br><img width="' + objComponent.width + '" height="' + objComponent.length + '" class="img-responsive hideImg" src="' + strImgViewerPrefix3 + objComponent.vaultFileName + '" /></div>';
-            objComponent.imageUrl = '<img width="' + objComponent.width + '" height="' + objComponent.length + '" class="img-responsive" src="' + objComponent.fullVaultUrl + '" />';
+            objComponent.imageUrl = '<img width="' + objComponent.width + '" height="' + objComponent.height + '" class="img-responsive" src="' + objComponent.fullVaultUrl + '" />';
+            fs.readFileSync(objComponent.fullVaultUrl + '.png', function (err, data) {
+                if (err) throw err;
+                console.log(data);
+            })
             //objComponent.image = '<div class="item" <h2>' + objComponent.name + '-' + objComponent.fileName + '</h2></br><img width="800" height="800" src="' + strImgViewerPrefix3 + objComponent.vaultFileName + '" /></div>';
             //later will change this to img in order to test it.
 
@@ -740,7 +748,10 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
     $('#reportsHeader').append('<table cellpadding="0" cellspacing="0" border="0" class="display compact cell-border" id="reports"><thead><th>Sort Order</th><th>Report</th><th>Name</th></thead><tbody></tbody></table>');
     var reportTable = $('#reports').DataTable({
         'pageLength': 5,
-        'dom': 'plrti',
+        'dom': 'Tplrti',
+        "tableTools": {
+            "sSwfPath": "C:/nodeTechPackProject/TechPackProject/js/copy_csv_xls_pdf.swf"
+        },
         "responsive": false,
         "columnDefs": [
             {
@@ -977,12 +988,11 @@ garmentProduct.prototype.getMyBlockWeightsTrim = function (strUrlPrefix) {
 
 };
 
-garmentProduct.prototype.saveMe = function () {
-    var objFunctionObject = $(this);
-    var garmentProductString = JSON.stringify(objFunctionObject);
-    fs.writeFile(objFunctionObject.name + '.json', garmentProductString, function (err) {
+garmentProduct.prototype.saveMe = function (objSelfReference) {
+    var garmentProductString = JSON.stringify(objSelfReference);
+    fs.writeFile(objSelfReference.name + '.json', garmentProductString, function (err) {
         if (err) throw err;
-        alert('saved ' + objFunctionObject.name);
+        alert('saved ' + objSelfReference.name);
     });
 };
 
@@ -998,3 +1008,11 @@ function getValueDisplayFromKey(strkey, objGarmentProduct) {
     var strvalue = objGarmentProduct.displayValues[numIndexPositionOfKeyInKeyArray];
     return strvalue;
 };
+
+/*
+fs.readFile(image_origial, function (err, original_data) {
+    fs.writeFile('image_orig.jpg', original_data, function (err) { });
+    var base64Image = original_data.toString('base64');
+    var decodedImage = new Buffer(base64Image, 'base64');
+    fs.writeFile('image_decoded.jpg', decodedImage, function (err) { });
+});*/
