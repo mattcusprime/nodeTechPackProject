@@ -88,23 +88,11 @@ function pdfPage(objForFile) {
     var pageHtml = $('body').html();
     var allHtml = header + pageHtml;
     var fileName = 'testFile.html';
-    /*fs.writeFile('testFile.html', allHtml, function (err) {
-        
-    });*/
-    
-    /*
-    child = executeFile("\wkhtmltopdf\bin\wkhtmltopdf.exe", ["file:///nodeTechPackProject/TechPackProject/testFile.html?dontRunReport","Tryme.pdf"], function (error, stdout, stderr) {
-        console.log(stdout);
-    });
-    
-   
-    child_process.exec('C:\wkhtmltopdf\bin\wkhtmltopdf.exe ' + pageHtml + ' testFile.pdf', function (error, stdout, stderr) {
-        console.log(stdout);
-    });*/
+    //add in error catching for if file exists
     fs.writeFileSync('testFile.html', allHtml);
 
     var filePath = '/wkhtmltopdf/bin/wkhtmltopdf';
-    child = execFile(filePath,['file:///nodeTechPackProject/TechPackProject/testFile.html?dontRunPrompt','tryMe.pdf'],function (error, stdout, stderr) {
+    child = execFile(filePath,['file:///nodeTechPackProject/TechPackProject/testFile.html?dontRunPrompt',objForFile.name + '.pdf'],function (error, stdout, stderr) {
            if (error) {
                console.log(error.stack);
                console.log('Error code: ' + error.code);
@@ -247,7 +235,7 @@ garmentProduct.prototype.getMyConstruction = function (strHostUrlPrefix, numCons
 
     strTableBodyString += '</tr>';
     strTableBodyString += '</tbody>';
-    objSelfReference.constructionTableString = '<table id="construction" class="display responsive col-md-12 compact cell-border">' + strTableHeaderString + strTableBodyString + '</table>';
+    objSelfReference.constructionTableString = '<h2>Constructions</h2><table id="construction" class="display responsive col-md-12 compact cell-border">' + strTableHeaderString + strTableBodyString + '</table>';
 
     console.log(objSelfReference);
     console.dir(objSelfReference);
@@ -362,7 +350,7 @@ garmentProduct.prototype.getMyMeasurement = function (strHostUrlPrefix, numMeasu
         strTableBodyString += '</tr>';
     };
     strTableBodyString += '</tbody>';
-    objSelfReference.measurementTableString = '<table id="measurements" class="display responsive col-md-12 compact cell-border">' + strTableHeaderString + strTableBodyString + '</table>';
+    objSelfReference.measurementTableString = '<h2>Measurements</h2><table id="measurements" class="display responsive col-md-12 compact cell-border">' + strTableHeaderString + strTableBodyString + '</table>';
     //console.log(strTableBodyString);
 
     //});
