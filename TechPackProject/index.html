@@ -81,16 +81,17 @@
     <!--end construction of prototype of Garment Product Class-->
 
     <style>
-        @media print {
             .page {
-                page-break-before: always;
+                page-break-after: always;
             }
-        }
+        
     </style>
     <script>
         //begin code for type ahead in g prod form
         //use below for prd
-        
+        var url = location.href;
+        var parsedObject = $.parseParams(url);
+        console.log(parsedObject);
         var strUrlPrefix = 'http://wsflexwebprd1v.res.hbi.net/';
         //use below for dev
         //var strUrlPrefix = 'http://wsflexwebdev1v.res.hbi.net/';
@@ -110,7 +111,11 @@
         $('document').ready(function () {
             //document.getElementById('fileinput').addEventListener('change', readSingleFile, false);
             $.prettyLoader();
-            getLogin(arrOfAttributeValueListIds, currentGarmentProduct);
+            var urlChecker = location.href;
+            console.log(urlChecker);
+            if (urlChecker.search('dontRunPrompt') == -1) {
+                getLogin(arrOfAttributeValueListIds, currentGarmentProduct);
+            };
             /*applyTypeAheadToElement(gProdQueryURL, '#gProd', 'Garment_Product_Name');
             currentGarmentProduct.getMyValueLists(arrOfAttributeValueListIds, currentGarmentProduct);*/
             $('#garmentProd').submit(function (e) {
@@ -191,24 +196,7 @@
             }
         };
 
-        function pdfElement() {
-            var doc = new jsPDF();
-            var elementHandler = {
-                '#navTopDiv': function (element, renderer) {
-                    return true;
-                }
-            };
-            var source = window.document.getElementsByTagName("body")[0];
-            doc.fromHTML(
-                source,
-                15,
-                15,
-                {
-                    'width': 180, 'elementHandlers': elementHandler
-                });
-
-            doc.output("dataurlnewwindow");
-        };
+       
 
     </script>
 
@@ -238,7 +226,7 @@
                     <li><a href="javascript:createComponentTable('measurementDiv', 'measurements', currentGarmentProduct.measurementTableString);makeMeScrollToDefinedTarget('#measurementDiv',100,-20);">Measurements</a></li>
                     <li id="runNew"><a href='javascript:runNewProduct();'>Run a New Product</a></li>
                     <li><a href='javascript:currentGarmentProduct.saveMe(currentGarmentProduct);'>Save Garment</a></li>
-                    <li><a href="javascript:pdfElement();">PDF</a></li>
+                    <li><a href="javascript:pdfPage(currentGarmentProduct);">PDF</a></li>
                     <!-- <li><a href='javascript:pdfFromHtml("specs");'>PDF</a></li>
                         <li class="active"><a href="#">Top</a></li>
                     <li><a href="#about">Help</a></li>

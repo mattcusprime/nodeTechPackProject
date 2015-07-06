@@ -78,10 +78,46 @@ function garmentProduct(strName, arrAttributes, arrSpecs, arrSources, objColorwa
     this.colorwayDetails = arrColorwayData;
     this.blockWeightsSpreadTableString = strBlockWeightsSpreadTableString;
 };
-//importing node js utility libraries for desktop version
 
-var fs = require('fs');
+var fs = require('fs.extra');
+var execFile = require('child_process').execFile, child;
+var wkhtmltopdf = require('wkhtmltopdf');
+var gui = require('nw.gui');
+function pdfPage(objForFile) {
+    var header = $('head').html();
+    var pageHtml = $('body').html();
+    var allHtml = header + pageHtml;
+    var fileName = 'testFile.html';
+    /*fs.writeFile('testFile.html', allHtml, function (err) {
+        
+    });*/
+    
+    /*
+    child = executeFile("\wkhtmltopdf\bin\wkhtmltopdf.exe", ["file:///nodeTechPackProject/TechPackProject/testFile.html?dontRunReport","Tryme.pdf"], function (error, stdout, stderr) {
+        console.log(stdout);
+    });
+    
+   
+    child_process.exec('C:\wkhtmltopdf\bin\wkhtmltopdf.exe ' + pageHtml + ' testFile.pdf', function (error, stdout, stderr) {
+        console.log(stdout);
+    });*/
+    fs.writeFileSync('testFile.html', allHtml);
 
+    var filePath = '/wkhtmltopdf/bin/wkhtmltopdf';
+    child = execFile(filePath,['file:///nodeTechPackProject/TechPackProject/testFile.html?dontRunPrompt','tryMe.pdf'],function (error, stdout, stderr) {
+           if (error) {
+               console.log(error.stack);
+               console.log('Error code: ' + error.code);
+               console.log('Signal received: ' +
+                      error.signal);
+           }
+           console.log('Child Process stdout: ' + stdout);
+           console.log('Child Process stderr: ' + stderr);
+       });
+
+
+
+};
 //
 /**
  * @method of @class GarmentProduct, should take existing elements of the garment product and produce a pdf using the
@@ -745,7 +781,7 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
     $('#reportsHeader').append('<table cellpadding="0" cellspacing="0" border="0" class="display compact cell-border" id="reports"><thead><th>Sort Order</th><th>Report</th><th>Name</th></thead><tbody></tbody></table>');
     var reportTable = $('#reports').DataTable({
         'pageLength': 5,
-        'dom': 'Tplrti',
+        'dom': 'plrti',
         "tableTools": {
             "sSwfPath": "C:/nodeTechPackProject/TechPackProject/js/copy_csv_xls_pdf.swf"
         },
