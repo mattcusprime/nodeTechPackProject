@@ -81,17 +81,14 @@
     <!--end construction of prototype of Garment Product Class-->
 
     <style>
-            .page {
-                page-break-after: always;
-            }
-        
+        .page {
+            page-break-after: always;
+        }
     </style>
     <script>
         //begin code for type ahead in g prod form
         //use below for prd
         var url = location.href;
-        var parsedObject = $.parseParams(url);
-        console.log(parsedObject);
         var strUrlPrefix = 'http://wsflexwebprd1v.res.hbi.net/';
         //use below for dev
         //var strUrlPrefix = 'http://wsflexwebdev1v.res.hbi.net/';
@@ -120,18 +117,29 @@
             currentGarmentProduct.getMyValueLists(arrOfAttributeValueListIds, currentGarmentProduct);*/
             $('#garmentProd').submit(function (e) {
                 e.preventDefault();
+                var nameToUse = $('#gProd').val();
+                if(arrGarmentProductsArrayForTypeAhead.indexOf(nameToUse) != -1){
+
                 $('#garmentFormContainer').fadeOut();
                 $('.clearThisComponentOnNewGarmentLoad *').remove();
                 $('#runNew,.clearThisComponentOnNewGarmentLoad').fadeIn();
-                var nameToUse = $('#gProd').val();
                 localStorage.setItem('lastGarmentRan', nameToUse);
                 currentGarmentProduct.getSpecByName(strUrlPrefix, nameToUse, currentGarmentProduct.thenCallSpecs, returnArrays, currentGarmentProduct);
+                }
+                else
+                {
+                    $('#gProd').val('');
+                    $('#gProd').focus();
+                    $('#garmentHeader').append('<p class="clearThisComponentOnNewGarmentLoad" id="noGarment">' + nameToUse + ' is not in the list of valid choices for a garment product.  Please use the typeahead to select a valid option.</p>')
+                    $('#noGarment').delay(2500).fadeOut();
+                }
+
             });
             $('#fileinput').on("change", function (e) {
                 readSingleFile(e, currentGarmentProduct);
                 $('#garmentFormContainer').fadeOut();
                 $('#runNew,.clearThisComponentOnNewGarmentLoad').fadeIn();
-                
+
             });
             //invoke prettyloader
 
@@ -163,7 +171,7 @@
         });
 
 
-        function readSingleFile(evt,objGarmentProduct) {
+        function readSingleFile(evt, objGarmentProduct) {
             //Retrieve the first (and only!) File from the FileList object
             var f = evt.target.files[0];
 
@@ -179,7 +187,7 @@
                         var objPropValue = $(objFunctionObject).prop(strPropName);
                         $(objGarmentProduct).prop(strPropName, objPropValue);
                     };
-                    console.log(objFunctionObject,objGarmentProduct);
+                    console.log(objFunctionObject, objGarmentProduct);
                     objGarmentProduct.generateAvailableReportsList(objGarmentProduct);
                     //$('body').append(contents);
                     //console.log(currentGarmentProduct);
@@ -196,7 +204,7 @@
             }
         };
 
-       
+
 
     </script>
 
@@ -221,9 +229,11 @@
             <div id="navbar" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
                     <li><a href='#tblRelationships'>Relationships</a></li>
-                    <li><a href="javascript:makeMeScrollToDefinedTarget('#search', 100, 10);">Reports</a></li>
-                    <li><a href="javascript:createComponentTable('constructionDiv', 'construction', currentGarmentProduct.constructionTableString);makeMeScrollToDefinedTarget('#constructionDiv', 100, 50);">Construction</a></li>
-                    <li><a href="javascript:createComponentTable('measurementDiv', 'measurements', currentGarmentProduct.measurementTableString);makeMeScrollToDefinedTarget('#measurementDiv',100,-20);">Measurements</a></li>
+                    <li><a href="javascript:makeMeScrollToDefinedTarget('#search',50,-100);">Reports</a></li>
+                    <li><a href="javascript:makeMeScrollToDefinedTarget('#imagesDiv',50,-100);">Images</a></li>
+                    <li><a href="javascript:createComponentTable('constructionDiv', 'construction', currentGarmentProduct.constructionTableString);makeMeScrollToDefinedTarget('#constructionDiv',50, -100);">Construction</a></li>
+                    <li><a href="javascript:createComponentTable('measurementDiv', 'measurements', currentGarmentProduct.measurementTableString);makeMeScrollToDefinedTarget('#measurementDiv',50,-100);">Measurements</a></li>
+                    <li><a href="javascript:makeMeScrollToDefinedTarget('#blockWeightSpreadDiv',50,-100);">Block Weights</a></li>
                     <li id="runNew"><a href='javascript:runNewProduct();'>Run a New Product</a></li>
                     <li><a href='javascript:currentGarmentProduct.saveMe(currentGarmentProduct);'>Save Garment</a></li>
                     <li><a href="javascript:pdfPage(currentGarmentProduct);">PDF</a></li>
@@ -235,57 +245,66 @@
             </div>
         </div>
     </nav>
+    <hr>
     <div class="container-fluid" id="garmentFormContainer">
         <div class="col-md-10 starter-template row">
             <form id="garmentProd">
 
-                
+
                 <input class=".col-md-4" type="text" name="Product Name" size="50" id="gProd" placeholder="Enter Garment Product">
                 <input class=".col-md-4" type="submit">
                 <!--<input id="fileinput" type="file" class=".col-md-offset-4 .col-md-4 .col-md-offset-4 filestyle" data-classbutton="btn btn-primary" data-input="false" data-classicon="icon-plus" data-buttontext="Load Garment From File">-->
-                
+
             </form>
 
         </div>
-        
+
         <div class="col-md-2 starter-template row" style="padding:10px;font-weight:bolder; background-color:#446655;color: white;margin-top:10px;width:112px;overflow: hidden;">
             Load File From Garment<input id="fileinput" style="width:100px;color:#446655;display: inline;" type="file" />
         </div>
 
     </div>
-    
-            
-            <div class="page">
-                <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="garmentHeader">
 
-                </div>
-            </div>
-            <!-- /.container -->
-            <div class="page" id="search">
-                <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="reportsHeader">
+    <hr>
+    <div class="page">
+        <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="garmentHeader">
 
-                </div>
-                <!-- container -->
-            </div>
-            <div class="page">
-                <div id="measurementDiv" class="container-fluid clearThisComponentOnNewGarmentLoad">
+        </div>
+    </div>
+    <hr>
+    <!-- /.container -->
+    <div class="page" id="search">
+        <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="reportsHeader">
 
-                </div>
-                <!-- container -->
-            </div>
+        </div>
+        <!-- container -->
+    </div>
+    <hr>
+    <div class="page">
+        <div id="measurementDiv" class="container-fluid clearThisComponentOnNewGarmentLoad">
 
-            <div class="page">
-                <div id="constructionDiv" class="container-fluid clearThisComponentOnNewGarmentLoad">
+        </div>
+        <!-- container -->
+    </div>
+    <hr>
+    <div class="page">
+        <div id="constructionDiv" class="container-fluid clearThisComponentOnNewGarmentLoad">
 
-                </div>
-                <!-- container -->
-            </div>
-            <div class="page">
-                <div id="blockWeightSpreadDiv" class="container-fluid clearThisComponentOnNewGarmentLoad">
+        </div>
+        <!-- container -->
+    </div>
+    <hr>
+    <div class="page">
+        <div id="blockWeightSpreadDiv" class="container-fluid clearThisComponentOnNewGarmentLoad">
 
-                </div>
-                <!-- container -->
-            </div>
+        </div>
+        <!-- container -->
+    </div>
+    <hr>
+    <div class="page">
+        <div id="imagesDiv" class="container-fluid clearThisComponentOnNewGarmentLoad">
 
+        </div>
+    </div>
 </body>
 </html>

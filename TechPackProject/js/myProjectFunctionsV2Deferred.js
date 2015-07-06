@@ -800,8 +800,8 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
     // like front back images that come from pattern products
     var sortOrder = 0;
 
-    if (typeof (objSelfReference.construction) != 'undefined') { reportTable.row.add([sortOrder, '<button id="getConstructionReport">Construction</button>', objSelfReference.construction.name]); sortOrder++; };
-    if (typeof (objSelfReference.measurement) != 'undefined') { reportTable.row.add([sortOrder, '<button id="getMeasurementReport">Measurements</button>', objSelfReference.measurement.name]); sortOrder++; };
+    if (typeof (objSelfReference.construction) != 'undefined') { reportTable.row.add([sortOrder, '<a href="#" id="getConstructionReport">Construction</a>', objSelfReference.construction.name]); sortOrder++; };
+    if (typeof (objSelfReference.measurement) != 'undefined') { reportTable.row.add([sortOrder, '<a href="#" id="getMeasurementReport">Measurements</a>', objSelfReference.measurement.name]); sortOrder++; };
     if (typeof (objSelfReference.boms != 'undefined')) {
         var arrBoms = objSelfReference.boms;
         var boolHaveGarmentCut = false;
@@ -832,7 +832,7 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
         else if (boolHaveGarmentCut && boolHavePatternSpread) {
             strBlockWeightBomScenario = 'Spread, Trim Straight and Trim Bias';
         };
-        reportTable.row.add([sortOrder, '<button class="blockWeights" id="generateBlockWeights">Block Weights Report</button>', strBlockWeightBomScenario]);
+        reportTable.row.add([sortOrder, '<a href="#" class="blockWeights" id="generateBlockWeights">Block Weights Report</a>', strBlockWeightBomScenario]);
         sortOrder++;
     };
 
@@ -840,8 +840,9 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
         var arrdocs = objSelfReference.documents;
         if (typeof (arrdocs) != 'undefined') {
             for (i = 0; i < arrdocs.length; i++) {
-                reportTable.row.add([sortOrder, arrdocs[i].name, arrdocs[i].imageUrl]);
-                sortOrder++;
+                //reportTable.row.add([sortOrder, arrdocs[i].name, arrdocs[i].imageUrl]);
+                $('#imagesDiv').append('<div class="page"><h1>' + arrdocs[i].name + '</h1>' + arrdocs[i].imageUrl + '</div>');
+                //sortOrder++;
             };
         };
 
@@ -852,13 +853,13 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
         //createComponentTable(currentGarmentProduct);
         //shortHandCreateMeasurementsAndScroll();
         createComponentTable('measurementDiv', 'measurements', objSelfReference.measurementTableString);
-        makeMeScrollToDefinedTarget('#measurementDiv',0,0);
+        makeMeScrollToDefinedTarget('#measurementDiv',50,-100);
 
     });
     $('#getConstructionReport').click(function () {
         //shortHandCreateConstructionAndScroll();
         createComponentTable('constructionDiv', 'construction', objSelfReference.constructionTableString);
-        makeMeScrollToDefinedTarget('#constructionDiv', 0, 0);
+        makeMeScrollToDefinedTarget('#constructionDiv', 50,-100);
     });
     var strTempUrlStrUrlPrefix = 'http://wsflexwebprd1v.res.hbi.net/';
     $('.blockWeights').click(function () {
@@ -997,6 +998,7 @@ garmentProduct.prototype.getMyBlockWeightsSpread = function (strUrlPrefix,objSel
             $('#spreadReport').DataTable({
                 'scrollY': 500,
                 'paging': false,
+                'length': 1000,
                 'order': [[0, 'asc'], [1, 'asc'], [2, 'asc'], [3, 'asc']],
                 'responsive': false
             });
@@ -1007,6 +1009,7 @@ garmentProduct.prototype.getMyBlockWeightsSpread = function (strUrlPrefix,objSel
         $('#spreadReport').DataTable({
             'scrollY': 500,
             'paging': false,
+            'length': 1000,
             'order': [[0, 'asc'], [1, 'asc'], [2, 'asc'], [3, 'asc']],
             'responsive': false
         });
