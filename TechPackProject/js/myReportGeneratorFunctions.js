@@ -311,22 +311,29 @@ function runNewProduct() {
     
 
 };
+/*
+Step 1 In your html file, add a Input tag block like below:
 
-function pdfElement(strElementWithPound,pdfName) {
-    var doc = new jsPDF();
+<input id="export_file" type="file" nwsaveas style="display:none" nwworkingdir=""/>
 
-    // We'll make our own renderer to skip this editor
-    var specialElementHandlers = {
-        '#editor': function (element, renderer) {
-            return true;
-        }
-    };
+Step 2 Add a new function in your javascript file like below:
+*/
+function saveFile(name, tableDataSourceElementId) {
+        var table = $(tableDataSourceElementId).DataTable();
+        var data = table.data();
+        fs.writeFileSync("blockSpread.csv", data);
+        alert('file saved!')
 
-    doc.fromHTML($(strElementWithPound).get(0), 15, 15, {
-        'width': 170,
-        'elementHandlers': specialElementHandlers
-    });
-    //doc.save('Test.pdf');
-    doc.save(pdfName + '.pdf');
-    
 };
+/*
+Step 3 Save your file where ever you like by using saveFile(name,data) function like below:
+
+...
+
+_exportCSV="you data to save";
+
+saveFile('#export_file',_exportCSV);
+
+
+
+*/

@@ -83,30 +83,7 @@ var fs = require('fs.extra');
 var execFile = require('child_process').execFile, child;
 var wkhtmltopdf = require('wkhtmltopdf');
 var gui = require('nw.gui');
-function pdfPage(objForFile) {
-    var header = $('head').html();
-    var pageHtml = $('body').html();
-    var allHtml = header + pageHtml;
-    var fileName = 'testFile.html';
-    //add in error catching for if file exists
-    fs.writeFileSync('testFile.html', allHtml);
 
-    var filePath = '/wkhtmltopdf/bin/wkhtmltopdf';
-    child = execFile(filePath,['file:///nodeTechPackProject/TechPackProject/testFile.html?dontRunPrompt',objForFile.name + '.pdf'],function (error, stdout, stderr) {
-           if (error) {
-               console.log(error.stack);
-               console.log('Error code: ' + error.code);
-               console.log('Signal received: ' +
-                      error.signal);
-           }
-           console.log('Child Process stdout: ' + stdout);
-           console.log('Child Process stderr: ' + stderr);
-       });
-
-
-
-};
-//
 /**
  * @method of @class GarmentProduct, should take existing elements of the garment product and produce a pdf using the
  * jsPdf Library
@@ -682,7 +659,7 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
         arrMeasurementDetailDataContainer = objDefferedMeasurement[0];
         objSelfReference.getMyConstruction(strHostUrlPrefix, objSelfReference.construction.branchId, arrConstructionDetailDataContainer, objSelfReference);
         objSelfReference.getMyMeasurement(strHostUrlPrefix, objSelfReference.measurement.branchId, arrMeasurementDetailDataContainer, objSelfReference);
-//       saveGarmentProd(objSelfReference);
+        //       saveGarmentProd(objSelfReference);
     });
 
 };
@@ -1007,9 +984,130 @@ garmentProduct.prototype.getMyBlockWeightsSpread = function (strUrlPrefix,objSel
 
 };
 
-garmentProduct.prototype.getMyBlockWeightsTrim = function (strUrlPrefix) {
 
+garmentProduct.prototype.getBlockWeightsTrim = function updateTrim(strUrlPrefix, objSelfReference) {
 
+    //param = $("#gProd").val();
+    //paramSpecTrim = $("#spec").val();
+    //paramSeasonTrim = $("#season").val();
+    //paramSeasonTrim = "Garment  " + paramSeasonTrim;
+    var sortingArray = ['sizeXXS', '1', 'sizeXS', '2', 'sizeS', '3', 'sizeM', '4', 'sizeL', '5', 'sizeXL', '6', 'size2X', '7', 'size3X', '8', 'size4X', '9', 'size5X', '10', 'size6X', '11', 'size3M', '1', 'size6M', '2', 'size9M', '3', 'size12M', '4', 'size18M', '5', 'size24M', '6', 'size2T', '7', 'size3T', '8', 'size4T', '9', 'size5T', '10', 'size2', '1', 'size4', '2', 'size5', '3', 'size6', '4', 'size7', '5', 'size8', '6', 'size9', '7', 'size10', '8', 'size11', '9', 'size12', '10', 'size13', '11', 'size14', '12', 'size16', '13', 'size18', '14', 'size20', '15', 'size22', '16', 'size24', '17', 'size26', '18', 'size28', '19', 'size30', '20', 'size32', '21', 'size34', '22', 'size36', '23', 'size38', '24', 'size40', '25', 'size42', '26', 'size44', '27', 'size46', '28', 'size48', '29', 'size50', '30', 'size52', '31', 'size54', '32', 'size56', '33', 'size58', '34', 'size60', '35', 'size62', '36', 'sizeS/M', '1', 'sizeL/XL', '2', 'size16W', '1', 'size20W', '2', 'size24W', '3', 'size28W', '4', 'size32W', '5', 'size36W', '6'];
+    var param = objSelfReference.name;
+    var paramSeasonTrim = objSelfReference.activeSeason;
+    var paramSpecTrim = objSelfReference.activeSpecName;
+    strPnameForParam = strPnameForParam.replace(' ', '%20');
+    strSeasonNameForParam = strSeasonNameForParam.replace(' ', '%20');
+    strSpecNameForParam = strSpecNameForParam.replace(' ', '%20');
+    //var oTable = $('#trimReport').DataTable();
+    var reportStringTrim1 = "http://wsflexwebprd1v.res.hbi.net/Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?Garment+Product+Season="
+    var reportStringTrim2 = "&Product+Name=";
+    var reportStringTrim3 = "&Spec+Name=";
+    var reportStringTrim4 = "&oid=OR%3Awt.query.template.ReportTemplate%3A4490123&action=ExecuteReport";
+    var fullReportString = reportStringTrim1 + paramSeasonTrim + reportStringTrim2 + param + reportStringTrim3 + paramSpecTrim + reportStringTrim4;
+    
+    //var fullReportString = "blockWeights.xml";
+    if (typeof (objSelfReference.blockWeightTrim) == 'undefined') {
+        $.get(fullReportString, function (result) {
+            populateHeader(result);
+            var dimIdArrays = [];
+            var arrRowsArray = [];
+            $('row', result).each(function () {
+                var objRow = {}; //objRow.
+                objRow.pProd = $(this).find("Pattern_Product").text();
+                objRow.pMast = $(this).find("Pattern_Master_Material").text();
+                objRow.gProd = $(this).find("Garment_product").text();
+                objRow.season = $(this).find("Season").text();
+                objRow.specName = $(this).find("Spec_Name").text();
+                objRow.sizeForLookUp = $(this).find("Size").text();
+                size objRow.= "  " + sizeForLookUp + "  ";
+                objRow.pCode = $(this).find("Part_Code").text();
+                objRow.allowance = $(this).find("Allowance__").text();
+                objRow.trimCutWidth = $(this).find("Trim_Cut_Width").text();
+                objRow.numGarments = $(this).find("__Garments").text();
+                objRow.edgeLoss = $(this).find("Edge_Loss__IN_").text();
+                objRow.runoff = $(this).find("Runoff").text();
+                //using Pattern num and version in place of this
+                //trimMaterial = $(this).find("Pattern_Master_Material").text();
+                objRow.manfOption = $(this).find("Manufacturing_option").text();
+                //conWidth = $(this).find("Conditioned_Width").text();
+                objRow.ply = $(this).find("Ply").text();
+                objRow.totLength = $(this).find("Total_Length").text();
+                objRow.useYdDz = $(this).find("Usage_Yd_Dz").text().substring(0, 6);
+                objRow.cMethCode = $(this).find("Cut_Method_Code").text();
+                objRow.mu = $(this).find("MU_").text();
+                objRow.shade = $(this).find("Shade").text().toUpperCase().substring(0, 1);
+                objRow.shade = "  " + shade + "  ";
+                objRow.gBOMallowance = $(this).find("Garment_BOM_Allowance").text();
+                objRow.cylinder = $(this).find("Cylinder").text();
+                objRow.manfFabricWeight = $(this).find("Manf__Option___Weight__oz_yd__").text();
+                objRow.pMastType = $(this).find("Pattern_Master_Material_Type").text();
+                objRow.trimPatternNumAndVersion = $(this).find("patternNumVersion").text();
+                objRow.usageLBDZ = 0;
+
+                if (objRow.pMastType == "Bias") {
+                    objRow.usageLBDZ = (objRow.trimCutWidth * objRow.totLength * 12 / objRow.numGarments / 1296 * objRow.manfFabricWeight / 16)
+                };
+                if (objRow.pMastType == "Straight") {
+                    objRow.usageLBDZ = (objRow.trimCutWidth * objRow.totLength * 12 / objRow.numGarments / 1296 * objRow.manfFabricWeight / 16)
+                };
+                var sortLookup = "size" + objRow.sizeForLookUp;
+                var sortValue = sortingArray.indexOf(objRow.sortLookup);
+                //var allowanceAddition = 1 + (gBOMallowance / 100);  This is already incorporated into the query itself
+                //from which we are pulling, commenting this out so that it is not done twice
+
+                objRow.usageLBDZ = Math.round(objRow.usageLBDZ * 100) / 100;
+                //useYdDz *= allowanceAddition; see above comment
+                objRow.useYdDz = Math.round(objRow.useYdDz * 100) / 100;
+                objRow.totLength = Math.round(objRow.totLength * 10000) / 10000;
+
+                objRow.patternDimId = $(this).find('patDimId').text();
+                objRow.garDimId = $(this).find('garDimID').text();
+                objRow.combinedDimId = patternDimId + garDimId;
+                //edits for formatting
+                objRow.ply = "   " + objRow.ply + "   ";
+                objRow.trimCutWidth = "   " + objRow.trimCutWidth + "   ";
+                arrRowsArray.push(objRow);
+            });
+            var strTrimTableString = '<table id="trimReport" class="display responsive col-md-12 compact cell-border"><thead id="trimHeader"><tr><th>PartCode</th><th>CutMethodCode</th><th>MfgFabric</th><th>Shade</th><th>SizeSort</th><th>Size</th><th>Pattern#/Version/<th><th>#Gmts</th><th>Trim Cut Width</th><th>Total Length</th><th>UsageYd/Dz</th><th>UsageLb/Dz</th></tr></thead><tbody>';
+            for(var i = 0; i < arrRowsArray.length;i++){
+                var objGetObject = {};
+                objGetObject = arrRowsArray[i];
+                strTrimTableString += '<tr>'
+                for(var propertyName in objGetObject) {
+                    // propertyName is what you want
+                    // you can get the value like this: myObject[propertyName]
+                    strTrimTableString += '<td>' + objGetObject[propertyName] + '</td>';
+                }
+                strTrimTableString += '</tr>'
+
+            };
+            strTrimTableString += '</tbody></table>';
+            objSelfReference.blockWeightsTrimTableString = strTrimTableString;
+            objSelfReference.blockWeightTrim = arrRowsArray;
+
+        }).done(function () {
+            
+            $('#blockWeightTrimDiv').append(objSelfReference.blockWeightsTrimTableString);
+            $('#trimReport').DataTable({
+                'scrollY': 500,
+                'paging': false,
+                'length': 1000,
+                'order': [[0, 'asc'], [1, 'asc'], [2, 'asc'], [3, 'asc']],
+                'responsive': false
+            });
+        });
+    }
+    else
+    {
+        $('#blockWeightTrimDiv').append(objSelfReference.blockWeightsTrimTableString);
+        $('#trimReport').DataTable({
+            'scrollY': 500,
+            'paging': false,
+            'length': 1000,
+            'order': [[0, 'asc'], [1, 'asc'], [2, 'asc'], [3, 'asc']],
+            'responsive': false
+        });
+    };
 };
 
 garmentProduct.prototype.saveMe = function (objSelfReference) {
@@ -1040,3 +1138,28 @@ fs.readFile(image_origial, function (err, original_data) {
     var decodedImage = new Buffer(base64Image, 'base64');
     fs.writeFile('image_decoded.jpg', decodedImage, function (err) { });
 });*/
+
+
+function pdfPage(objForFile) {
+    var header = $('head').html();
+    var pageHtml = $('body').html();
+    var allHtml = header + pageHtml;
+    var fileName = 'testFile.html';
+    //add in error catching for if file exists
+    fs.writeFileSync('testFile.html', allHtml);
+
+    var filePath = '/wkhtmltopdf/bin/wkhtmltopdf';
+    child = execFile(filePath, ['file:///nodeTechPackProject/TechPackProject/testFile.html?dontRunPrompt', objForFile.name + '.pdf'], function (error, stdout, stderr) {
+        if (error) {
+            console.log(error.stack);
+            console.log('Error code: ' + error.code);
+            console.log('Signal received: ' +
+                   error.signal);
+        }
+        console.log('Child Process stdout: ' + stdout);
+        console.log('Child Process stderr: ' + stderr);
+    });
+
+
+
+};

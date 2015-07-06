@@ -1,13 +1,17 @@
 {
-  "name": "nw.hello.world",
-  "description": "Simple file explorer.",
+  "name": "Tech Pack Project",
   "version": "0.1",
   "main": "index.html",
   "window": {
     "title": "Tech Pack Generator",
 	"toolbar": true,
-    "fullscreen": true,
-	"position": "center",
+    "min_width": 400,
+    "min_height": 200,
+    "max_width": 1600,
+    "max_height": 1200,
+	"width": 1200,
+    "height": 800,
+	"position": "mouse",
 	"kiosk": false
 	
   }

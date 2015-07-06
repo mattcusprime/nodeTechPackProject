@@ -113,6 +113,8 @@
             if (urlChecker.search('dontRunPrompt') == -1) {
                 getLogin(arrOfAttributeValueListIds, currentGarmentProduct);
             };
+
+            
             /*applyTypeAheadToElement(gProdQueryURL, '#gProd', 'Garment_Product_Name');
             currentGarmentProduct.getMyValueLists(arrOfAttributeValueListIds, currentGarmentProduct);*/
             $('#garmentProd').submit(function (e) {
@@ -167,7 +169,9 @@
                 $('#pwd').val(localStorage.getItem('mattAppPass'));
             };
             //$('<div class="page"><div class="container"></div><p class=".col-md-4"></p><p class=".col-md-4">Nice isn\'t it!</p><p class=".col-md-4"></p></div>').confirm();
-
+            $('#exportToCsv').click(function () {
+                saveFile('#export_blocks', '#spreadReport');
+            });
         });
 
 
@@ -296,6 +300,13 @@
     <hr>
     <div class="page">
         <div id="blockWeightSpreadDiv" class="container-fluid clearThisComponentOnNewGarmentLoad">
+            
+        </div>
+        <!-- container -->
+    </div>
+    <hr>
+    <div class="page">
+        <div id="blockWeightTrimDiv" class="container-fluid clearThisComponentOnNewGarmentLoad">
 
         </div>
         <!-- container -->
