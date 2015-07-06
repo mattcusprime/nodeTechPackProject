@@ -826,10 +826,10 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
         createComponentTable('constructionDiv', 'construction', objSelfReference.constructionTableString);
         makeMeScrollToDefinedTarget('#constructionDiv', 50,-100);
     });
-    var strTempUrlStrUrlPrefix = 'http://wsflexwebprd1v.res.hbi.net/';
+    var StrUrlPrefix = 'http://wsflexwebprd1v.res.hbi.net/';
     $('.blockWeights').click(function () {
-        objSelfReference.getMyBlockWeightsSpread(strTempUrlStrUrlPrefix, objSelfReference);
-
+        objSelfReference.getMyBlockWeightsSpread(StrUrlPrefix, objSelfReference);
+        objSelfReference.getBlockWeightsTrim(StrUrlPrefix, objSelfReference);
     });
 };
 
@@ -995,9 +995,9 @@ garmentProduct.prototype.getBlockWeightsTrim = function updateTrim(strUrlPrefix,
     var param = objSelfReference.name;
     var paramSeasonTrim = objSelfReference.activeSeason;
     var paramSpecTrim = objSelfReference.activeSpecName;
-    strPnameForParam = strPnameForParam.replace(' ', '%20');
-    strSeasonNameForParam = strSeasonNameForParam.replace(' ', '%20');
-    strSpecNameForParam = strSpecNameForParam.replace(' ', '%20');
+    param = param.replace(' ', '%20');
+    paramSeasonTrim = paramSeasonTrim.replace(' ', '%20');
+    paramSpecTrim = paramSpecTrim.replace(' ', '%20');
     //var oTable = $('#trimReport').DataTable();
     var reportStringTrim1 = "http://wsflexwebprd1v.res.hbi.net/Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?Garment+Product+Season="
     var reportStringTrim2 = "&Product+Name=";
@@ -1019,7 +1019,7 @@ garmentProduct.prototype.getBlockWeightsTrim = function updateTrim(strUrlPrefix,
                 objRow.season = $(this).find("Season").text();
                 objRow.specName = $(this).find("Spec_Name").text();
                 objRow.sizeForLookUp = $(this).find("Size").text();
-                size objRow.= "  " + sizeForLookUp + "  ";
+                objRow.size = "  " + objRow.sizeForLookUp + "  ";
                 objRow.pCode = $(this).find("Part_Code").text();
                 objRow.allowance = $(this).find("Allowance__").text();
                 objRow.trimCutWidth = $(this).find("Trim_Cut_Width").text();
