@@ -1008,7 +1008,7 @@ garmentProduct.prototype.getBlockWeightsTrim = function updateTrim(strUrlPrefix,
     //var fullReportString = "blockWeights.xml";
     if (typeof (objSelfReference.blockWeightTrim) == 'undefined') {
         $.get(fullReportString, function (result) {
-            populateHeader(result);
+            //populateHeader(result);
             var dimIdArrays = [];
             var arrRowsArray = [];
             $('row', result).each(function () {
@@ -1036,7 +1036,7 @@ garmentProduct.prototype.getBlockWeightsTrim = function updateTrim(strUrlPrefix,
                 objRow.cMethCode = $(this).find("Cut_Method_Code").text();
                 objRow.mu = $(this).find("MU_").text();
                 objRow.shade = $(this).find("Shade").text().toUpperCase().substring(0, 1);
-                objRow.shade = "  " + shade + "  ";
+                objRow.shade = "  " + objRow.shade + "  ";
                 objRow.gBOMallowance = $(this).find("Garment_BOM_Allowance").text();
                 objRow.cylinder = $(this).find("Cylinder").text();
                 objRow.manfFabricWeight = $(this).find("Manf__Option___Weight__oz_yd__").text();
@@ -1062,7 +1062,7 @@ garmentProduct.prototype.getBlockWeightsTrim = function updateTrim(strUrlPrefix,
 
                 objRow.patternDimId = $(this).find('patDimId').text();
                 objRow.garDimId = $(this).find('garDimID').text();
-                objRow.combinedDimId = patternDimId + garDimId;
+                objRow.combinedDimId = objRow.patternDimId + objRow.garDimId;
                 //edits for formatting
                 objRow.ply = "   " + objRow.ply + "   ";
                 objRow.trimCutWidth = "   " + objRow.trimCutWidth + "   ";
