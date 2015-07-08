@@ -465,7 +465,7 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
             objLinkedProduct.type = "Label Product";
             objLabelProduct = objLinkedProduct;
         }
-        else if (linkedProductType == "BASIC CUT & SEW - SELLING") {
+        else if (linkedProductType == "BASIC CUT & SEW - SELLING" || linkedProductType == "Selling") {
             objLinkedProduct.type = "Selling Product";
             objSellingProduct = objLinkedProduct;
         };
@@ -474,6 +474,9 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
     //removing since this is setting the garmentProduct name a second time.
     objSelfReference.objectId = numObjectId;
     objSelfReference.colorwayProduct = objColorwayProduct;
+    if (typeof (objSelfReference.colorwayProduct) != 'undefined') {
+        objSelfReference.getColorwayBoms(strHostUrlPrefix, objSelfReference);
+    };
     objSelfReference.patternProduct = objPatternProduct;
     objSelfReference.labelProduct = objLabelProduct;
     objSelfReference.sellingProduct = objSellingProduct;
@@ -670,6 +673,7 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
  * @param {Object} objSelfReference takes the same garmentProduct which is calling the method.  This is used to work around scope limitations and is generally performed
  */
 garmentProduct.prototype.getAllMyDataForMyActiveSpec = function (strHostUrlPrefix, strSpecId, objSelfReference) {
+    
     var strSpecGetUrl = strHostUrlPrefix + "Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?gSpecId=" + strSpecId + "&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A9999594&action=ExecuteReport"
     var strDocumentsUrl = strHostUrlPrefix + "Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?gSpecId=" + strSpecId + "&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A9996723&action=ExecuteReport";
     var strMeasurementsUrl = strHostUrlPrefix + "Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?gSpecId=" + strSpecId + "&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A9953962&action=ExecuteReport";
@@ -1199,6 +1203,99 @@ garmentProduct.prototype.saveMe = function (objSelfReference) {
         alert('saved ' + objSelfReference.name);
     });
 };
+
+
+garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix,objSelfReference) {
+    //branch url /Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?objectId=<param>&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A10734353&action=ExecuteReport
+    //sku url /WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?objectId=<param>&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A10732525&action=ExecuteReport
+    var strBeginUrl = strUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction'//objectId=<param>&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A10734353&action=ExecuteReport';
+    //var strSkuUrl = strUrlPrefix + 'WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction'//objectId=<param>&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A10732525&action=ExecuteReport';
+    var objDefferedBranch = $.ajax({
+        url: strBeginUrl,
+        type: 'get',
+        data: {
+            objectId: objSelfReference.colorwayProduct.objectId,
+            oid: 'OR:wt.query.template.ReportTemplate:10734353',
+            xsl2: '',
+            xsl2:'',
+            format: 'formatDelegate',
+            delegateName: 'XML',
+            action:'ExecuteReport'
+            //jrb: 'wt.query.template.reportTemplateRB'
+        }
+
+    });
+
+    var objDefferedSkuData = $.ajax({
+        url: strBeginUrl,
+        type: 'get',
+        data: {
+            objectId: objSelfReference.colorwayProduct.objectId,
+            oid: 'OR:wt.query.template.ReportTemplate:10732525',
+            format: 'formatDelegate',
+            xsl2: '',
+            xsl2: '',
+            delegateName: 'XML',
+            action: 'ExecuteReport'
+            //jrb: 'wt.query.template.reportTemplateRB'
+        }
+
+    });
+    var arrBranch = [];
+    var arrSku = [];
+
+    $.when(objDefferedBranch, objDefferedSkuData).done(function (objDefferedBranch, objDefferedSkuData) {
+        arrBranch = objDefferedBranch[0];
+        arrSku = objDefferedSkuData[0];
+        /*console.log(arrBranch);
+        console.log(arrSku);*/
+
+        var arrTopLevelRows = [];
+        var arrSkuLevelRows = [];
+        $('row', arrBranch).each(function () {
+            var objRow = {};
+            objRow.specName = $(this).find('com_lcs_wc_specification_FlexSpecification_Name').text();
+            objRow.Material = $(this).find('Material').text();
+            objRow.Branch_Id = $(this).find('Branch_Id').text();
+            objRow.garmentUseBranchId = $(this).find('garmentUseBranchId').text();
+            objRow.masterMaterialDesc = $(this).find('masterMaterialDesc').text();
+            objRow.partName = $(this).find('partName').text();
+            objRow.matrlObjectId = $(this).find('matrlObjectId').text();
+            objRow.Dimension_Id = $(this).find('Dimension_Id').text();
+            
+            arrTopLevelRows.push(objRow);
+
+        });
+
+
+        $('row', arrSku).each(function () {
+            var objRow = {};
+            objRow.cWayName = $(this).find('cWayName').text();
+            objRow.Color_Code = $(this).find('Color_Code').text();
+            objRow.specName = $(this).find('Spec_Name').text();
+            objRow.Material = $(this).find('Material').text();
+            objRow.Branch_Id = $(this).find('Branch_Id').text();
+            objRow.Dimension_Id = $(this).find('Dimension_Id').text();
+            objRow.Dimension_Name = $(this).find('Dimension_Name').text();
+            objRow.colorName = $(this).find('Att_').text();
+            objRow.hex = $(this).find('hex').text();
+            objRow.Thumbnail = $(this).find('Thumbnail').text();
+            objRow.bPartMaster_bLinkBranchId = $(this).find('bPartMaster_bLinkBranchId').text();
+            arrSkuLevelRows.push(objRow);
+
+        });
+        console.log(arrTopLevelRows);
+        console.log(arrSkuLevelRows);
+
+
+    });
+
+
+};
+
+
+
+
 
 
 //utility functions to work with garmentProduct class below
