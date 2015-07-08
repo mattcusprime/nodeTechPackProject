@@ -1256,17 +1256,19 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix,objSelfReferen
             var objRow = {};
             objRow.specName = $(this).find('com_lcs_wc_specification_FlexSpecification_Name').text();
             objRow.Material = $(this).find('Material').text();
+            objRow.bomPartId = $(this).find('com_lcs_wc_flexbom_FlexBOMPart').attr('objectId');
             objRow.Branch_Id = $(this).find('Branch_Id').text();
             objRow.garmentUseBranchId = $(this).find('garmentUseBranchId').text();
             objRow.masterMaterialDesc = $(this).find('masterMaterialDesc').text();
             objRow.partName = $(this).find('partName').text();
             objRow.matrlObjectId = $(this).find('matrlObjectId').text();
             objRow.Dimension_Id = $(this).find('Dimension_Id').text();
-            
             arrTopLevelRows.push(objRow);
 
         });
-
+        //I think I'll have to use a substring of Dimension_Id in order to determine the children
+        //I think by iterating through the top level branch rows and sub iterating through the lower level ones?
+        //not sure yet...
 
         $('row', arrSku).each(function () {
             var objRow = {};
@@ -1274,13 +1276,15 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix,objSelfReferen
             objRow.Color_Code = $(this).find('Color_Code').text();
             objRow.specName = $(this).find('Spec_Name').text();
             objRow.Material = $(this).find('Material').text();
-            objRow.Branch_Id = $(this).find('Branch_Id').text();
+            objRow.Branch_Id = $(this).find('bomLinkBranch_Id').text();
             objRow.Dimension_Id = $(this).find('Dimension_Id').text();
             objRow.Dimension_Name = $(this).find('Dimension_Name').text();
             objRow.colorName = $(this).find('Att_').text();
             objRow.hex = $(this).find('hex').text();
             objRow.Thumbnail = $(this).find('Thumbnail').text();
             objRow.bPartMaster_bLinkBranchId = $(this).find('bPartMaster_bLinkBranchId').text();
+            objRow.bPartBranch = $(this).find('bPartBranch').text();
+            objRow.bPartObjectId = $(this).find('bPartObjectId').text();
             arrSkuLevelRows.push(objRow);
 
         });
