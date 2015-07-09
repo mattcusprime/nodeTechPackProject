@@ -1,0 +1,318 @@
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="Garment Spec Report">
+    <meta name="author" content="Matthew English">
+    <title>Garment Spec Report Page</title>
+    <!-- Bootstrap core CSS -->
+    <link href="bootstrap-3.3.4-dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="css/starter-template.css" rel="stylesheet">
+    <link href="css/carousel.css" rel="stylesheet">
+    <link href="DataTables-1.10.7/media/css/jquery.dataTables_themeroller.css" rel="stylesheet">
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="js/jquery-1.11.2.min.js"></script>
+    <script src="bootstrap-3.3.4-dist/js/bootstrap.min.js"></script>
+    <script src="js/d3.v3.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="js/ie10-viewport-bug-workaround.js"></script>
+    <script src="typeAhead/typeAheadBundle.js"></script>
+    <!--DataTables-->
+    <script src="DataTables-1.10.7/media/js/jquery.dataTables.js"></script>
+    <script src="DataTables-1.10.7/extensions/ColVis/js/dataTables.colVis.js"></script>
+    <script src="DataTables-1.10.7/extensions/TableTools/js/dataTables.tableTools.js"></script>
+    <script src="DataTables-1.10.7/extensions/FixedHeader/js/dataTables.fixedHeader.js"></script>
+    <script src="DataTables-1.10.7/extensions/Responsive/js/dataTables.responsive.js"></script>
+    <link href="DataTables-1.10.7/extensions/FixedHeader/css/dataTables.fixedHeader.css" rel="stylesheet">
+    <link href="DataTables-1.10.7/extensions/Responsive/css/dataTables.responsive.css" rel="stylesheet">
+    <link href="DataTables-1.10.7/media/css/jquery.dataTables.css" rel="stylesheet">
+    <link href="DataTables-1.10.7/extensions/TableTools/css/dataTables.tableTools.css" rel="stylesheet">
+    <link href="DataTables-1.10.7/extensions/ColVis/css/dataTables.colVis.css" rel="stylesheet">
+    <link href="DataTables-1.10.7/Plugins/integration/bootstrap/3/dataTables.bootstrap.css" rel="stylesheet">
+    <script src="DataTables-1.10.7/Plugins/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+    <!--DataTables-->
+    <link href="css/jquery.prompt.css" rel="stylesheet">
+
+
+
+    <!--PrettyLoader-->
+    <link href="prettyLoader.css" rel="stylesheet">
+    <!--PrettyLoader-->
+    <!--PrettyLoader-->
+
+
+    <script src="js/jquery.browser.js"></script>
+    <script src="js/jquery.prettyLoader.js"></script>
+    <!--PrettyLoader-->
+    <!--jsPdf-->
+    <script src="jsPdf/jspdf.js"></script>
+    <script src="jsPdf/jspdf.plugin.addhtml.js"></script>
+    <script src="jsPdf/jspdf.plugin.autoprint.js"></script>
+    <script src="jsPdf/libs/Deflate/adler32cs.js"></script>
+    <script src="jsPdf/libs/Blob.js/BlobBuilder.js"></script>
+    <script src="jsPdf/jspdf.plugin.addimage.js"></script>
+    <script src="jsPdf/libs/png_support/zlib.js"></script>
+    <script src="jsPdf/libs/png_support/png.js"></script>
+    <script src="jsPdf/jspdf.plugin.png_support.js"></script>
+    <script src="jsPdf/libs/FileSaver.js/FileSaver.js"></script>
+    <script src="jsPdf/jspdf.plugin.standard_fonts_metrics.js"></script>
+    <script src="jsPdf/jspdf.plugin.split_text_to_size.js"></script>
+    <script src="jsPdf/jspdf.plugin.from_html.js"></script>
+    <script src="jsPdf/examples/js/basic.js"></script>
+    <script src="jsPdf/jspdf.plugin.javascript.js"></script>
+    <script src="jsPdf/jspdf.plugin.png_support.js"></script>
+    <script src="jsPdf/jspdf.plugin.sillysvgrenderer.js"></script>
+    <script src="jsPdf/jspdf.PLUGINTEMPLATE.js"></script>
+
+
+    <script src="js/jquery.prompt.js"></script>
+    <script src="js/imagesloaded.pkgd.min.js"></script>
+    <!--My Scripts begin here-->
+    <script src="js/myReportGeneratorFunctions.js"></script>
+    <script src="js/myProjectFunctionsV2Deferred.js"></script>
+    <script src="js/nwJsFunctions.js"></script>
+    <!--end construction of prototype of Garment Product Class-->
+
+    <style>
+        .page {
+            page-break-after: always;
+        }
+    </style>
+    <script>
+        //begin code for type ahead in g prod form
+        //use below for prd
+        var url = location.href;
+        var strUrlPrefix = 'http://wsflexwebprd1v.res.hbi.net/';
+        //use below for dev
+        //var strUrlPrefix = 'http://wsflexwebdev1v.res.hbi.net/';
+        var strDevPefix = 'http://wsflexwebdev1v.res.hbi.net/';
+        //var arrGarmentProductsArrayForTypeAhead = [];
+        var arrSeasonNamesArray = [];
+        var currentGarmentProduct = new garmentProduct();
+        var strTypeBaseLink = strUrlPrefix + 'Windchill/servlet/TypeBasedIncludeServlet?oid=VR%3A';
+        var strEncodeColonString = '%3A';
+        var strU8 = '&u8=1';
+        var strLinkBeginTag = '<a href="';
+        var strLinkMidTag = '">';
+        var strLinkCloseTag = '</a>';
+        var gProdQueryURL = strUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/invokeAction?oid=OR%3Awt.query.template.ReportTemplate%3A4711650&action=ProduceReport&u8=1'
+        var returnArrays;
+        var arrOfAttributeValueListIds = ['2381876', '102771', '2381693', '368058', '100575'];
+        $('document').ready(function () {
+            //document.getElementById('fileinput').addEventListener('change', readSingleFile, false);
+            $.prettyLoader();
+            var urlChecker = location.href;
+            console.log(urlChecker);
+            if (urlChecker.search('dontRunPrompt') == -1) {
+                getLogin(arrOfAttributeValueListIds, currentGarmentProduct);
+            };
+
+            
+            /*applyTypeAheadToElement(gProdQueryURL, '#gProd', 'Garment_Product_Name');
+            currentGarmentProduct.getMyValueLists(arrOfAttributeValueListIds, currentGarmentProduct);*/
+            $('#garmentProd').submit(function (e) {
+                e.preventDefault();
+                var nameToUse = $('#gProd').val();
+                if(arrGarmentProductsArrayForTypeAhead.indexOf(nameToUse) != -1){
+
+                $('#garmentFormContainer').fadeOut();
+                $('.clearThisComponentOnNewGarmentLoad *').remove();
+                $('#runNew,.clearThisComponentOnNewGarmentLoad').fadeIn();
+                localStorage.setItem('lastGarmentRan', nameToUse);
+                currentGarmentProduct.getSpecByName(strUrlPrefix, nameToUse, currentGarmentProduct.thenCallSpecs, returnArrays, currentGarmentProduct);
+                }
+                else
+                {
+                    $('#gProd').val('');
+                    $('#gProd').focus();
+                    $('#garmentHeader').append('<p class="clearThisComponentOnNewGarmentLoad" id="noGarment">' + nameToUse + ' is not in the list of valid choices for a garment product.  Please use the typeahead to select a valid option.</p>')
+                    $('#noGarment').delay(2500).fadeOut();
+                }
+
+            });
+            $('#fileinput').on("change", function (e) {
+                readSingleFile(e, currentGarmentProduct);
+                $('#garmentFormContainer').fadeOut();
+                $('#runNew,.clearThisComponentOnNewGarmentLoad').fadeIn();
+
+            });
+            //invoke prettyloader
+
+            //invoke prettyloader
+            makeMeSCrollSlow();
+            checkStorageFor('lastGarmentRan', '#gProd');
+
+            $('#loadLastGarmentProduct').click(function () {
+                var strGarmentProdString = localStorage.getItem('garmentProductString');
+                if (typeof (strGarmentProdString) != 'undefined') {
+                    currentGarmentProduct = JSON.parse(strGarmentProdString);
+                    //currentGarmentProduct.thenCallSpecs(returnArrays, currentGarmentProduct);
+                    console.log(currentGarmentProduct);
+                };
+
+            });
+            $('#fromSaved').click(function () {
+                currentGarmentProduct.saveMe();
+
+            });
+            $('#garmentFormContainer,#runNew').hide();
+            $('#usr').focus();
+            if (typeof (localStorage.getItem('mattAppUser')) != 'undefined' && typeof (localStorage.getItem('mattAppPass')) != 'undefined') {
+                $('#usr').val(localStorage.getItem('mattAppUser'));
+                $('#pwd').val(localStorage.getItem('mattAppPass'));
+            };
+            //$('<div class="page"><div class="container"></div><p class=".col-md-4"></p><p class=".col-md-4">Nice isn\'t it!</p><p class=".col-md-4"></p></div>').confirm();
+            $('#exportToCsv').click(function () {
+                saveFile('#export_blocks', '#spreadReport');
+            });
+        });
+
+
+        function readSingleFile(evt, objGarmentProduct) {
+            //Retrieve the first (and only!) File from the FileList object
+            var f = evt.target.files[0];
+
+            if (f) {
+                var r = new FileReader();
+                r.onloadend = function (e) {
+                    var contents = e.target.result;
+                    var objFunctionObject;
+                    objFunctionObject = JSON.parse(contents);
+                    var keyNames = Object.keys(objFunctionObject);
+                    for (var i = 0; i < keyNames.length; i++) {
+                        var strPropName = keyNames[i];
+                        var objPropValue = $(objFunctionObject).prop(strPropName);
+                        $(objGarmentProduct).prop(strPropName, objPropValue);
+                    };
+                    console.log(objFunctionObject, objGarmentProduct);
+                    objGarmentProduct.generateAvailableReportsList(objGarmentProduct);
+                    //$('body').append(contents);
+                    //console.log(currentGarmentProduct);
+                    /*alert("Got the file.n"
+                          + "name: " + f.name + "n"
+                          + "type: " + f.type + "n"
+                          + "size: " + f.size + " bytesn"
+                          + "starts with: " + contents.substr(1, contents.indexOf("n"))
+                    );*/
+                }
+                r.readAsText(f);
+            } else {
+                alert("Failed to load file");
+            }
+        };
+
+
+
+    </script>
+
+
+    <!----<button id="btnTestStuff">Use me to test things!</button>
+    <input type="text" size="50" id="offline">
+    <button id="loadLastGarmentProduct">Use me to load last Garment Prod!</button>-->
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container" id="navTopDiv">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a id="topLeftNav" class="navbar-brand" href="#navTopDiv">GP 10188 Boys Knit Brief ExpWB B252</a>
+
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="#tblRelationships">Relationships</a></li>
+                    <li><a href="javascript:makeMeScrollToDefinedTarget('#search',50,-100);">Reports</a></li>
+                    <li><a href="javascript:makeMeScrollToDefinedTarget('#imagesDiv',50,-100);">Images</a></li>
+                    <li><a href="javascript:createComponentTable('constructionDiv', 'construction', currentGarmentProduct.constructionTableString);makeMeScrollToDefinedTarget('#constructionDiv',50, -100);">Construction</a></li>
+                    <li><a href="javascript:createComponentTable('measurementDiv', 'measurements', currentGarmentProduct.measurementTableString);makeMeScrollToDefinedTarget('#measurementDiv',50,-100);">Measurements</a></li>
+                    <li><a href="javascript:makeMeScrollToDefinedTarget('#blockWeightSpreadDiv',50,-100);">Block Weights</a></li>
+                    <li id="runNew" style="display: block;"><a href="javascript:runNewProduct();">Run a New Product</a></li>
+                    <li><a href="javascript:currentGarmentProduct.saveMe(currentGarmentProduct);">Save Garment</a></li>
+                    <li><a href="javascript:pdfPage(currentGarmentProduct);">PDF</a></li>
+                    <!-- <li><a href='javascript:pdfFromHtml("specs");'>PDF</a></li>
+                        <li class="active"><a href="#">Top</a></li>
+                    <li><a href="#about">Help</a></li>
+                    <li><a href="#contact">Contact</a></li>-->
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <hr>
+    <div class="container-fluid" id="garmentFormContainer" style="display: none;">
+        <div class="col-md-10 starter-template row">
+            <form id="garmentProd">
+
+
+                <span class="twitter-typeahead" style="position: relative; display: inline-block; direction: ltr;"><input class=".col-md-4 tt-hint" type="text" size="50" disabled="" autocomplete="off" spellcheck="false" style="position: absolute; top: 0px; left: 0px; border-color: transparent; box-shadow: none; background: none 0% 0% / auto repeat scroll padding-box border-box rgb(255, 255, 255);"><input class=".col-md-4 tt-input" type="text" name="Product Name" size="50" id="gProd" placeholder="Enter Garment Product" autocomplete="off" spellcheck="false" dir="auto" style="position: relative; background-color: transparent;"><pre aria-hidden="true" style="position: absolute; visibility: hidden; white-space: pre; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 400; word-spacing: 0px; letter-spacing: 0px; text-indent: 0px; text-rendering: auto; text-transform: none;"></pre><span class="tt-dropdown-menu" style="position: absolute; top: 100%; left: 0px; z-index: 100; display: none; right: auto;"><div class="tt-dataset-gProd"></div></span></span>
+                <input class=".col-md-4" type="submit">
+                <!--<input id="fileinput" type="file" class=".col-md-offset-4 .col-md-4 .col-md-offset-4 filestyle" data-classbutton="btn btn-primary" data-input="false" data-classicon="icon-plus" data-buttontext="Load Garment From File">-->
+
+            </form>
+
+        </div>
+
+        <div class="col-md-2 starter-template row" style="padding:10px;font-weight:bolder; background-color:#446655;color: white;margin-top:10px;width:112px;overflow: hidden;">
+            Load File From Garment<input id="fileinput" style="width:100px;color:#446655;display: inline;" type="file">
+        </div>
+
+    </div>
+
+    <hr>
+    <div class="page">
+        <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="garmentHeader">
+            
+        <table class="table" id="tblRelationships"><tbody><tr><th>Relationship</th><th>Product</th></tr></tbody><tbody><tr><td>Colorway Product</td><td>B252  Boys RL White/Dyed &amp; Dunk Stripe Exp WB OE Brief (Colorways BIW)</td></tr><tr><td>Pattern Product</td><td>T0409 Boys--Size:XS-2X Rib - Body 1x1 Brief (Innerwear   Boys   Patterns)</td></tr><tr><td>Label Product</td><td>LP 10056 Boys' Underwear Hanes Comfort Flex Tagless Btm (Mkt-Boys' UW Garment Labels)</td></tr></tbody></table></div>
+    </div>
+    <hr>
+    <!-- /.container -->
+    <div class="page" id="search">
+        <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="reportsHeader">
+
+        <div id="reports_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer"><div class="dataTables_paginate paging_simple_numbers" id="reports_paginate"><ul class="pagination"><li class="paginate_button previous disabled" id="reports_previous"><a href="#" aria-controls="reports" data-dt-idx="0" tabindex="0">Previous</a></li><li class="paginate_button active"><a href="#" aria-controls="reports" data-dt-idx="1" tabindex="0">1</a></li><li class="paginate_button next disabled" id="reports_next"><a href="#" aria-controls="reports" data-dt-idx="2" tabindex="0">Next</a></li></ul></div><div class="dataTables_length" id="reports_length"><label>Show <select name="reports_length" aria-controls="reports" class="form-control input-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div><table cellpadding="0" cellspacing="0" border="0" class="display compact cell-border dataTable no-footer" id="reports" role="grid" aria-describedby="reports_info" style="width: 1250px;"><thead><tr role="row"><th class="sorting" tabindex="0" aria-controls="reports" rowspan="1" colspan="1" aria-label="Report: activate to sort column ascending" style="width: 643px;">Report</th><th class="sorting" tabindex="0" aria-controls="reports" rowspan="1" colspan="1" aria-label="Name: activate to sort column ascending" style="width: 565px;">Name</th></tr></thead><tbody><tr role="row" class="odd"><td><a href="#" id="getConstructionReport">Construction</a></td><td>001 : KB001A-Exposed WB brief w/ front panel, bound fly/legs</td></tr><tr role="row" class="even"><td><a href="#" id="getMeasurementReport">Measurements</a></td><td>001 : T0409A FGM</td></tr><tr role="row" class="odd"><td><a href="#" class="blockWeights" id="generateBlockWeights">Block Weights Report</a></td><td>Spread, Trim Straight and Trim Bias</td></tr></tbody></table><div class="dataTables_info" id="reports_info" role="status" aria-live="polite">Showing 1 to 3 of 3 entries</div></div></div>
+        <!-- container -->
+    </div>
+    <hr>
+    <div class="page">
+        <div id="measurementDiv" class="container-fluid clearThisComponentOnNewGarmentLoad">
+
+        <h2>Measurements</h2><div id="measurements_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer"><div class="dataTables_length" id="measurements_length"><label>Show <select name="measurements_length" aria-controls="measurements" class="form-control input-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div><div id="measurements_filter" class="dataTables_filter"><label>Search:<input type="search" class="form-control input-sm" placeholder="" aria-controls="measurements"></label></div><table id="measurements" class="display responsive col-md-12 compact cell-border dataTable no-footer" role="grid" aria-describedby="measurements_info" style="width: 1203px;"><thead><tr role="row"><th class="sorting" tabindex="0" aria-controls="measurements" rowspan="1" colspan="1" aria-label="POM Number: activate to sort column ascending" style="width: 60px;">POM Number</th><th class="sorting" tabindex="0" aria-controls="measurements" rowspan="1" colspan="1" aria-label="Measurement Name: activate to sort column ascending" style="width: 145px;">Measurement Name</th><th class="sorting" tabindex="0" aria-controls="measurements" rowspan="1" colspan="1" aria-label="Placement Amount: activate to sort column ascending" style="width: 87px;">Placement Amount</th><th class="sorting" tabindex="0" aria-controls="measurements" rowspan="1" colspan="1" aria-label="Placement Reference: activate to sort column ascending" style="width: 94px;">Placement Reference</th><th class="sorting" tabindex="0" aria-controls="measurements" rowspan="1" colspan="1" aria-label="Plus Tolerance: activate to sort column ascending" style="width: 72px;">Plus Tolerance</th><th class="sorting" tabindex="0" aria-controls="measurements" rowspan="1" colspan="1" aria-label="Minus Tolerance: activate to sort column ascending" style="width: 78px;">Minus Tolerance</th><th class="sorting" tabindex="0" aria-controls="measurements" rowspan="1" colspan="1" aria-label="HTM Instructions: activate to sort column ascending" style="width: 86px;">HTM Instructions</th><th class="sorting" tabindex="0" aria-controls="measurements" rowspan="1" colspan="1" aria-label="Comments: activate to sort column ascending" style="width: 95px;">Comments</th><th class="sorting" tabindex="0" aria-controls="measurements" rowspan="1" colspan="1" aria-label="XS: activate to sort column ascending" style="width: 32px;">XS</th><th class="sorting" tabindex="0" aria-controls="measurements" rowspan="1" colspan="1" aria-label="S: activate to sort column ascending" style="width: 32px;">S</th><th class="sorting" tabindex="0" aria-controls="measurements" rowspan="1" colspan="1" aria-label="M: activate to sort column ascending" style="width: 32px;">M</th><th class="sorting" tabindex="0" aria-controls="measurements" rowspan="1" colspan="1" aria-label="L: activate to sort column ascending" style="width: 32px;">L</th><th class="sorting" tabindex="0" aria-controls="measurements" rowspan="1" colspan="1" aria-label="XL: activate to sort column ascending" style="width: 32px;">XL</th><th class="sorting" tabindex="0" aria-controls="measurements" rowspan="1" colspan="1" aria-label="2X: activate to sort column ascending" style="width: 32px;">2X</th></tr></thead><tbody><tr role="row" class="odd"><td>200a</td><td>Waist - at top (half)</td><td></td><td></td><td>0.75</td><td>0.75</td><td></td><td>kids (c1) tolerance</td><td>9.25</td><td>10.25</td><td class="baseSize">11.0</td><td>12.0</td><td>13.0</td><td>13.5</td></tr><tr role="row" class="even"><td>200x</td><td>Min. Waist - Extended (half)</td><td></td><td></td><td>99.0</td><td>0.0</td><td></td><td></td><td>13.5</td><td>14.75</td><td class="baseSize">16.0</td><td>17.5</td><td>19.0</td><td>19.75</td></tr><tr role="row" class="odd"><td>300</td><td>Waistband Width / Height</td><td></td><td></td><td>0.25</td><td>0.25</td><td></td><td>(c1) tolerance</td><td>1.25</td><td>1.25</td><td class="baseSize">1.25</td><td>1.25</td><td>1.25</td><td>1.25</td></tr><tr role="row" class="even"><td>210</td><td>Rise/Trunk Length - Flat</td><td></td><td></td><td>0.75</td><td>0.75</td><td></td><td>kids (c1) tolerance</td><td>9.0</td><td>9.5</td><td class="baseSize">10.5</td><td>11.375</td><td>12.125</td><td>12.75</td></tr><tr role="row" class="odd"><td>210a</td><td>Front Rise - Top of Waistband</td><td></td><td></td><td>0.75</td><td>0.75</td><td></td><td>kids (c1) tolerance</td><td>10.625</td><td>11.125</td><td class="baseSize">12.125</td><td>13.0</td><td>13.75</td><td>14.375</td></tr><tr role="row" class="even"><td>211a</td><td>Back Rise - Top of Waistband</td><td></td><td></td><td>0.75</td><td>0.75</td><td></td><td>kids (c1) tolerance</td><td>7.375</td><td>7.875</td><td class="baseSize">8.875</td><td>9.75</td><td>10.5</td><td>11.125</td></tr><tr role="row" class="odd"><td>215</td><td>Fly Length</td><td></td><td></td><td>0.25</td><td>0.25</td><td>.</td><td></td><td>2.75</td><td>3.0</td><td class="baseSize">3.25</td><td>4.0</td><td>4.75</td><td>5.25</td></tr><tr role="row" class="even"><td>215b</td><td>Fly Position</td><td></td><td></td><td>0.25</td><td>0.25</td><td></td><td></td><td>1.75</td><td>1.875</td><td class="baseSize">2.0</td><td>2.125</td><td>2.125</td><td>2.125</td></tr><tr role="row" class="odd"><td>243</td><td>Panel Width - 4” Down (front or back)</td><td>4</td><td></td><td>0.5</td><td>0.5</td><td></td><td>(c1) tolerance</td><td>3.5</td><td>3.625</td><td class="baseSize">3.75</td><td>4.0</td><td>4.25</td><td>4.375</td></tr><tr role="row" class="even"><td>245b</td><td>Crotch Width - At Seam (front or back)</td><td></td><td></td><td>0.25</td><td>0.25</td><td></td><td></td><td>3.875</td><td>4.0</td><td class="baseSize">4.125</td><td>4.375</td><td>4.625</td><td>4.75</td></tr><tr role="row" class="odd"><td>202e</td><td>Seat - At Top of Leg (half)</td><td></td><td></td><td>0.75</td><td>0.75</td><td></td><td>kids (c1) tolerance</td><td>8.625</td><td>9.625</td><td class="baseSize">10.625</td><td>11.75</td><td>12.875</td><td>13.375</td></tr><tr role="row" class="even"><td>206a</td><td>Leg Opening - At Edge (half)</td><td></td><td>Inseam 0-2</td><td>0.5</td><td>0.5</td><td></td><td>short-kids (c1) tolerance</td><td>6.125</td><td>6.75</td><td class="baseSize">7.375</td><td>8.375</td><td>9.25</td><td>9.875</td></tr><tr role="row" class="odd"><td>206x</td><td>Min. Leg Opening - Extended (half)</td><td></td><td>Inseam 0-2</td><td>99.0</td><td>0.0</td><td></td><td></td><td>7.875</td><td>8.75</td><td class="baseSize">9.5</td><td>10.25</td><td>11.0</td><td>11.375</td></tr><tr role="row" class="even"><td>209a</td><td>Outseam - Top of Waistband</td><td></td><td>Inseam 0-2</td><td>0.5</td><td>0.5</td><td></td><td>short-kids (c1) tolerance</td><td>4.375</td><td>4.625</td><td class="baseSize">5.125</td><td>5.375</td><td>5.5</td><td>5.625</td></tr><tr role="row" class="odd"><td>302</td><td>Leg Trim / Binding Width / Height</td><td></td><td></td><td>0.125</td><td>0.125</td><td></td><td></td><td>0.5625</td><td>0.5625</td><td class="baseSize">0.5625</td><td>0.5625</td><td>0.5625</td><td>0.5625</td></tr><tr role="row" class="even"><td>302</td><td>Fly Trim / Binding Width / Height</td><td></td><td></td><td>0.125</td><td>0.125</td><td></td><td></td><td>0.3125</td><td>0.3125</td><td class="baseSize">0.3125</td><td>0.3125</td><td>0.3125</td><td>0.3125</td></tr></tbody></table><div class="dataTables_info" id="measurements_info" role="status" aria-live="polite">Showing 1 to 16 of 16 entries</div><div class="dataTables_paginate paging_simple_numbers" id="measurements_paginate"><ul class="pagination"><li class="paginate_button previous disabled" id="measurements_previous"><a href="#" aria-controls="measurements" data-dt-idx="0" tabindex="0">Previous</a></li><li class="paginate_button active"><a href="#" aria-controls="measurements" data-dt-idx="1" tabindex="0">1</a></li><li class="paginate_button next disabled" id="measurements_next"><a href="#" aria-controls="measurements" data-dt-idx="2" tabindex="0">Next</a></li></ul></div></div></div>
+        <!-- container -->
+    </div>
+    <hr>
+    <div class="page">
+        <div id="constructionDiv" class="container-fluid clearThisComponentOnNewGarmentLoad">
+
+        <h2>Constructions</h2><div id="construction_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer"><div class="dataTables_length" id="construction_length"><label>Show <select name="construction_length" aria-controls="construction" class="form-control input-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div><div id="construction_filter" class="dataTables_filter"><label>Search:<input type="search" class="form-control input-sm" placeholder="" aria-controls="construction"></label></div><table id="construction" class="display responsive col-md-12 compact cell-border dataTable no-footer" role="grid" aria-describedby="construction_info" style="width: 1203px;"><thead><tr role="row"><th class="sorting" tabindex="0" aria-controls="construction" rowspan="1" colspan="1" aria-label="Sewing Operation: activate to sort column ascending" style="width: 375px;">Sewing Operation</th><th class="sorting" tabindex="0" aria-controls="construction" rowspan="1" colspan="1" aria-label="Stitch Type / Description: activate to sort column ascending" style="width: 94px;">Stitch Type / Description</th><th class="sorting" tabindex="0" aria-controls="construction" rowspan="1" colspan="1" aria-label="Gauge Width: activate to sort column ascending" style="width: 46px;">Gauge Width</th><th class="sorting" tabindex="0" aria-controls="construction" rowspan="1" colspan="1" aria-label="SPI: activate to sort column ascending" style="width: 22px;">SPI</th><th class="sorting" tabindex="0" aria-controls="construction" rowspan="1" colspan="1" aria-label="Seam/Trimoff Allowance: activate to sort column ascending" style="width: 93px;">Seam/Trimoff Allowance</th><th class="sorting" tabindex="0" aria-controls="construction" rowspan="1" colspan="1" aria-label="Garment Use: activate to sort column ascending" style="width: 58px;">Garment Use</th><th class="sorting" tabindex="0" aria-controls="construction" rowspan="1" colspan="1" aria-label="Needle Thread: activate to sort column ascending" style="width: 48px;">Needle Thread</th><th class="sorting" tabindex="0" aria-controls="construction" rowspan="1" colspan="1" aria-label="Needle Visibility: activate to sort column ascending" style="width: 59px;">Needle Visibility</th><th class="sorting" tabindex="0" aria-controls="construction" rowspan="1" colspan="1" aria-label="Looper Thread: activate to sort column ascending" style="width: 49px;">Looper Thread</th><th class="sorting" tabindex="0" aria-controls="construction" rowspan="1" colspan="1" aria-label="Looper Visbility: activate to sort column ascending" style="width: 55px;">Looper Visbility</th><th class="sorting" tabindex="0" aria-controls="construction" rowspan="1" colspan="1" aria-label="Comments: activate to sort column ascending" style="width: 73px;">Comments</th></tr></thead><tbody><tr role="row" class="odd"><td>Seam waist elastic with latch-tack.</td><td>503 2 thread overedge</td><td>12gg / 4.8mm</td><td>25 min</td><td>1/8" trimoff</td><td>Waist</td><td>T18 Txt Poly</td><td>Side B</td><td>T18 Txt Poly</td><td>Side A/B</td><td></td></tr><tr role="row" class="even"><td>Bind fly.</td><td>406 2N bottom coverstitch</td><td>8gg / 3.2mm</td><td>10</td><td>folder 1T-5/16" finish binding</td><td>Fly</td><td>T18 Txt Poly</td><td>Side A</td><td>T18 Txt Poly</td><td>Side B</td><td></td></tr><tr role="row" class="odd"><td>Seam panel with tape.</td><td>607 4N flatseam-no topcover</td><td>16gg / 6.4mm</td><td>10</td><td>1/4" trimoff</td><td>Tape</td><td>T18 Txt Poly</td><td>Side A</td><td>T18 Txt Poly</td><td>Side B</td><td></td></tr><tr role="row" class="even"><td>Bind legs with elastic/rubber.</td><td>406 2N bottom coverstitch</td><td>8gg / 3.2mm</td><td>12</td><td>folder 1T-9/16" finish binding</td><td>Leg</td><td>T24 Txt Poly</td><td>Side A</td><td>T18 Txt Poly</td><td>Side B</td><td></td></tr><tr role="row" class="odd"><td>Attach exposed elastic to waist.</td><td>407 3N bottom coverstitch</td><td>16gg / 6.4mm</td><td>12</td><td>5/16" overlap; 1/4" trimoff</td><td>Waist</td><td>T24 Txt Poly</td><td>Side A</td><td>T18 Txt Poly</td><td>Side B</td><td></td></tr><tr role="row" class="even"><td>Flatseam crotch.</td><td>607 4N flatseam</td><td>16gg / 6.4mm</td><td>14</td><td>1/4" overlap; 1/4" trimoff</td><td>Body</td><td>T18 Txt Poly</td><td>Side A</td><td>T18 Txt Poly</td><td>Side B</td><td></td></tr><tr role="row" class="odd"><td>Set garment label (heat transfer) centered over band seam.</td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td><td></td><td>N/A</td><td></td><td>N/A</td><td></td><td></td></tr><tr role="row" class="even"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr role="row" class="odd"><td>APPROVED ALTERNATES:</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr role="row" class="even"><td>Alternate seaming to be used only where 607 flatseam is not available due to capacity (Requires prior approval).</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr role="row" class="odd"><td>Attach pieces.</td><td>504 3 thread overedge</td><td>8gg / 3.2mm</td><td>12</td><td>3/8"; 1/4" trimoff</td><td></td><td>T18 Txt Poly</td><td>Side B</td><td>T18 Txt Poly</td><td>Side B</td><td></td></tr><tr role="row" class="even"><td>Topcover seams.</td><td>605 3N topcover</td><td>16gg / 6.4mm</td><td>12</td><td>no trimoff</td><td></td><td>T18 Txt Poly</td><td>Side A</td><td>T18 Txt Poly</td><td>Side B</td><td></td></tr></tbody></table><div class="dataTables_info" id="construction_info" role="status" aria-live="polite">Showing 1 to 12 of 12 entries</div><div class="dataTables_paginate paging_simple_numbers" id="construction_paginate"><ul class="pagination"><li class="paginate_button previous disabled" id="construction_previous"><a href="#" aria-controls="construction" data-dt-idx="0" tabindex="0">Previous</a></li><li class="paginate_button active"><a href="#" aria-controls="construction" data-dt-idx="1" tabindex="0">1</a></li><li class="paginate_button next disabled" id="construction_next"><a href="#" aria-controls="construction" data-dt-idx="2" tabindex="0">Next</a></li></ul></div></div></div>
+        <!-- container -->
+    </div>
+    <hr>
+    <div class="page">
+        <div id="blockWeightSpreadDiv" class="container-fluid clearThisComponentOnNewGarmentLoad">
+            
+        </div>
+        <!-- container -->
+    </div>
+    <hr>
+    <div class="page">
+        <div id="blockWeightTrimDiv" class="container-fluid clearThisComponentOnNewGarmentLoad">
+
+        </div>
+        <!-- container -->
+    </div>
+    <hr>
+    <div class="page">
+        <div id="imagesDiv" class="container-fluid clearThisComponentOnNewGarmentLoad">
+
+        <div class="page"><h1>002 : Measurements - T0409A PMEAS</h1><img width="795" height="597" class="img-responsive" src="file://res.hbi.net/dfs/BrandedApparel/Activewear/FlexApp/Prod/000000000009f4"></div><div class="page"><h1>004 : Marker Layout - T0409A-60 FT,BK-70.5</h1><img width="1051" height="403" class="img-responsive" src="file://res.hbi.net/dfs/BrandedApparel/Activewear/FlexApp/Prod/00000000000a24"></div><div class="page"><h1>004 : Marker Layout - T0409A-60 FT,BK-70.5</h1><img width="1076" height="400" class="img-responsive" src="file://res.hbi.net/dfs/BrandedApparel/Activewear/FlexApp/Prod/00000000000a23"></div><div class="page"><h1>006 : Marker Layout - T0409A-60 FT,BK-35</h1><img width="733" height="1310" class="img-responsive" src="file://res.hbi.net/dfs/BrandedApparel/Activewear/FlexApp/Prod/00000000000e37"></div><div class="page"><h1>001 : Front/Back Image - Boys Ctn Knit Rib ExpWB</h1><img width="185" height="166" class="img-responsive" src="file://res.hbi.net/dfs/BrandedApparel/Activewear/FlexApp/Prod/00000000000c6c"></div><div class="page"><h1>005 : Marker Layout - T0409A-60 FT,BK-31</h1><img width="1005" height="180" class="img-responsive" src="file://res.hbi.net/dfs/BrandedApparel/Activewear/FlexApp/Prod/00000000000a25"></div><div class="page"><h1>005 : Marker Layout - T0409A-60 FT,BK-31</h1><img width="1116" height="177" class="img-responsive" src="file://res.hbi.net/dfs/BrandedApparel/Activewear/FlexApp/Prod/00000000000a26"></div><div class="page"><h1>004 : Marker Layout - T0409A-60 FT,BK-70.5</h1><img width="1076" height="400" class="img-responsive" src="file://res.hbi.net/dfs/BrandedApparel/Activewear/FlexApp/Prod/00000000000a23"></div><div class="page"><h1>001 : Front/Back Image - Boys Ctn Knit Rib ExpWB</h1><img width="185" height="166" class="img-responsive" src="file://res.hbi.net/dfs/BrandedApparel/Activewear/FlexApp/Prod/00000000000c6c"></div><div class="page"><h1>003 : Front/Back Image - Flow in Elastic GP10188 Exposed Elastic Brief</h1><img width="2400" height="2221" class="img-responsive" src="file://res.hbi.net/dfs/BrandedApparel/Activewear/FlexApp/Prod/0000000000b19d"></div><div class="page"><h1>003 : Marker Layout - T0409A-60 FT,BK-36.5</h1><img width="1139" height="1507" class="img-responsive" src="file://res.hbi.net/dfs/BrandedApparel/Activewear/FlexApp/Prod/00000000000e25"></div><div class="page"><h1>003 : Marker Layout - T0409A-60 FT,BK-36.5</h1><img width="1139" height="1507" class="img-responsive" src="file://res.hbi.net/dfs/BrandedApparel/Activewear/FlexApp/Prod/00000000000e25"></div><div class="page"><h1>005 : Marker Layout - T0409A-60 FT,BK-31</h1><img width="1116" height="177" class="img-responsive" src="file://res.hbi.net/dfs/BrandedApparel/Activewear/FlexApp/Prod/00000000000a26"></div><div class="page"><h1>006 : Marker Layout - T0409A-60 FT,BK-35</h1><img width="733" height="1310" class="img-responsive" src="file://res.hbi.net/dfs/BrandedApparel/Activewear/FlexApp/Prod/00000000000e37"></div><div class="page"><h1>003 : Front/Back Image - Flow in Elastic GP10188 Exposed Elastic Brief</h1><img width="2400" height="2126" class="img-responsive" src="file://res.hbi.net/dfs/BrandedApparel/Activewear/FlexApp/Prod/0000000000b19e"></div><div class="page"><h1>001 : Front/Back Image - Boys Ctn Knit Rib ExpWB</h1><img width="185" height="167" class="img-responsive" src="file://res.hbi.net/dfs/BrandedApparel/Activewear/FlexApp/Prod/00000000000c6b"></div><div class="page"><h1>001 : Front/Back Image - Boys Ctn Knit Rib ExpWB</h1><img width="185" height="167" class="img-responsive" src="file://res.hbi.net/dfs/BrandedApparel/Activewear/FlexApp/Prod/00000000000c6b"></div><div class="page"><h1>005 : Marker Layout - T0409A-60 FT,BK-31</h1><img width="1005" height="180" class="img-responsive" src="file://res.hbi.net/dfs/BrandedApparel/Activewear/FlexApp/Prod/00000000000a25"></div><div class="page"><h1>003 : Front/Back Image - Flow in Elastic GP10188 Exposed Elastic Brief</h1><img width="2400" height="2221" class="img-responsive" src="file://res.hbi.net/dfs/BrandedApparel/Activewear/FlexApp/Prod/0000000000b19d"></div><div class="page"><h1>002 : Measurements - T0409A PMEAS</h1><img width="795" height="597" class="img-responsive" src="file://res.hbi.net/dfs/BrandedApparel/Activewear/FlexApp/Prod/000000000009f4"></div><div class="page"><h1>004 : Marker Layout - T0409A-60 FT,BK-70.5</h1><img width="1051" height="403" class="img-responsive" src="file://res.hbi.net/dfs/BrandedApparel/Activewear/FlexApp/Prod/00000000000a24"></div><div class="page"><h1>007 : Pattern Information - T0409A</h1><img width="780" height="590" class="img-responsive" src="file://res.hbi.net/dfs/BrandedApparel/Activewear/FlexApp/Prod/00000000001682"></div><div class="page"><h1>003 : Front/Back Image - Flow in Elastic GP10188 Exposed Elastic Brief</h1><img width="2400" height="2126" class="img-responsive" src="file://res.hbi.net/dfs/BrandedApparel/Activewear/FlexApp/Prod/0000000000b19e"></div><div class="page"><h1>005 : Placement Details - LP016: Fitted UW Inside Waist (no CB seam)</h1><img width="639" height="485" class="img-responsive" src="file://res.hbi.net/dfs/BrandedApparel/Activewear/FlexApp/Prod/000000000008a2"></div><div class="page"><h1>005 : Placement Details - LP016: Fitted UW Inside Waist (no CB seam)</h1><img width="639" height="485" class="img-responsive" src="file://res.hbi.net/dfs/BrandedApparel/Activewear/FlexApp/Prod/000000000008a2"></div><div class="page"><h1>007 : Pattern Information - T0409A</h1><img width="780" height="590" class="img-responsive" src="file://res.hbi.net/dfs/BrandedApparel/Activewear/FlexApp/Prod/00000000001682"></div></div>
+    </div>
+
+
