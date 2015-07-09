@@ -213,7 +213,7 @@ garmentProduct.prototype.getMyConstruction = function (strHostUrlPrefix, numCons
 
     strTableBodyString += '</tr>';
     strTableBodyString += '</tbody>';
-    objSelfReference.constructionTableString = '<h2>Constructions</h2><table id="construction" class="display responsive col-md-12 compact cell-border">' + strTableHeaderString + strTableBodyString + '</table>';
+    objSelfReference.constructionTableString = '<h1>Constructions</h1><table id="construction" class="display responsive col-md-12 compact cell-border">' + strTableHeaderString + strTableBodyString + '</table>';
 
     console.log(objSelfReference);
     console.dir(objSelfReference);
@@ -328,7 +328,7 @@ garmentProduct.prototype.getMyMeasurement = function (strHostUrlPrefix, numMeasu
         strTableBodyString += '</tr>';
     };
     strTableBodyString += '</tbody>';
-    objSelfReference.measurementTableString = '<h2>Measurements</h2><table id="measurements" class="display responsive col-md-12 compact cell-border">' + strTableHeaderString + strTableBodyString + '</table>';
+    objSelfReference.measurementTableString = '<h1>Measurements</h1><table id="measurements" class="display responsive col-md-12 compact cell-border">' + strTableHeaderString + strTableBodyString + '</table>';
     //console.log(strTableBodyString);
 
     //});
@@ -1215,8 +1215,8 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix,objSelfReferen
     //sku url /WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?objectId=<param>&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A10732525&action=ExecuteReport
     var strBeginUrl = strUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction'//objectId=<param>&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A10734353&action=ExecuteReport';
     //var strSkuUrl = strUrlPrefix + 'WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction'//objectId=<param>&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A10732525&action=ExecuteReport';
-    var strTrimCwayBomString = '<table id="colorwayReport" class="display responsive col-md-12 compact cell-border"><thead><tr><th>Part Name</th><th>Desc</th><th>Garment Use</th></tr></thead><tbody>';
-    var strTrimCwaysTableString = '<table id="colorwaysListTable" class="display responsive col-md-12 compact cell-border"><thead><tr><th>Colorway Group</th><th>Colorway Name</th></tr></thead><tbody>';
+    var strTrimCwayBomString = '<h2>Colorway BOM</h2><table id="colorwayReport" class="display responsive col-md-12 compact cell-border"><thead><tr><th>Part Name</th><th>Desc</th><th>Garment Use</th></tr></thead><tbody>';
+    var strTrimCwaysTableString = '<h1>Colorways</h1><h2>Colorways by Group</h2><table id="colorwaysListTable" class="display responsive col-md-12 compact cell-border"><thead><tr><th>Colorway Group</th><th>Colorway Name</th></tr></thead><tbody>';
     var objDefferedBranch = $.ajax({
         url: strBeginUrl,
         type: 'get',
