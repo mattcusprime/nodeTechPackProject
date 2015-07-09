@@ -1263,6 +1263,7 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix,objSelfReferen
             objRow.partName = $(this).find('partName').text();
             objRow.matrlObjectId = $(this).find('matrlObjectId').text();
             objRow.Dimension_Id = $(this).find('Dimension_Id').text();
+            objRow.variationRows = [];
             arrTopLevelRows.push(objRow);
 
         });
@@ -1288,12 +1289,31 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix,objSelfReferen
             arrSkuLevelRows.push(objRow);
 
         });
-        console.log(arrTopLevelRows);
-        console.log(arrSkuLevelRows);
+
+        for (var i = 0; i < arrTopLevelRows.length; i++) {
+            var strCurrentDimsionId = arrTopLevelRows[i].Dimension_Id;
+            var arrThisLoop = [];
+            //arrTopLevelRows[i].variationRows = $.grep(arrSkuLevelRows, function (e) {
+            arrThisLoop = $.grep(arrSkuLevelRows, function (e) {
+                //var result = e.Dimension_Id.indexOf(arrTopLevelRows[i].variationRows.Dimension_Id) != -1;
+                return e.Dimension_Id.search(strCurrentDimsionId) != -1;
+            }, false);
+             
+            if (typeof (arrThisLoop) != 'undefined') {
+                for (var j = 0; j < arrThisLoop.length;j++){
+                    arrTopLevelRows[i].variationRows.push(arrThisLoop[j]);
+                };
+                
+            };
+        };
+
+        objSelfReference.colorwayProduct.colorwayBomDetail = arrTopLevelRows;
+        //console.log(arrTopLevelRows);
+        console.log(objSelfReference);
 
 
     });
-
+    
 
 };
 
