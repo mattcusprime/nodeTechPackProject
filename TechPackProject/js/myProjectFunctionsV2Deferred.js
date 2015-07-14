@@ -1217,7 +1217,8 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix,objSelfReferen
     //sku url /WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?objectId=<param>&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A10732525&action=ExecuteReport
     var strBeginUrl = strUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction'//objectId=<param>&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A10734353&action=ExecuteReport';
     //var strSkuUrl = strUrlPrefix + 'WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction'//objectId=<param>&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A10732525&action=ExecuteReport';
-    var strTrimCwayBomString = '<h2>Colorway BOM</h2><table id="colorwayReport" class="display responsive col-md-12 compact cell-border"><thead><tr><th>Part Name</th><th>Desc</th><th>Garment Use</th>';//</tr></thead><tbody>';
+    var strTrimCwayBomString = '<h2>Colorway BOM</h2><table id="colorwayReport" class="display responsive col-md-12 compact cell-border"><thead><tr>';//<th>Part Name</th><th>Desc</th><th>Garment Use</th><th>Material</th>';</tr></thead><tbody>';
+    var arrColumns = ['Grouping','Part Name', 'Garment Use', 'Material'];
     var strTrimCwaysTableString = '<h1>Colorways</h1><h2>Colorways by Group</h2><table id="colorwaysListTable" class="display responsive col-md-12 compact cell-border"><thead><tr><th>Colorway Group</th><th>Colorway Name</th></tr></thead><tbody>';
     
     var objDefferedBranch = $.ajax({
@@ -1296,11 +1297,12 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix,objSelfReferen
             objRow.parentProductName = $(this).find('Colorway_Product_Name_Link').text();
             objRow.parentProductBranchId = $(this).find('Colorway_Product_Name_Link').attr('branchId');
             strTrimCwaysTableString += '<tr>' + '<td>' + objRow.cwayGrouping + '</td>' + '<td>' + objRow.colorwayName + '</td>' + '</tr>'
-            strTrimCwayBomString += '<th class="' + objRow.cwayGrouping + '">' + objRow.colorwayName + '</th>';
+            //strTrimCwayBomString += '<th class="' + objRow.cwayGrouping + '">' + objRow.colorwayName + '</th>';
             arrColorwayPositions.push(objRow.colorwayName)
+            arrColumns.push(objRow.colorwayName);
         });
         strTrimCwaysTableString += '</tbody></table>';
-        strTrimCwayBomString += '</tr></thead><tbody>';
+        //strTrimCwayBomString += '</tr></thead><tbody>';
         $('#colorwaysListDiv').append(strTrimCwaysTableString);
         $('#colorwaysListTable').DataTable({
             'paging': false,
@@ -1369,36 +1371,60 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix,objSelfReferen
         objSelfReference.colorwayProduct.colorwayBomDetail = arrTopLevelRows;
         //console.log(arrTopLevelRows);
         console.log(objSelfReference);
+        for (var o = 0; o < arrColumns.length; o++) {
+            strTrimCwayBomString += '<th>' + arrColumns[o] + '</th>';
+
+        };
+        strTrimCwayBomString += '</tr></thead>';
+
+
         for (var k = 0; k < objSelfReference.colorwayProduct.colorwayBomDetail.length; k++) {
             //add the bom adding here
             var objRow = objSelfReference.colorwayProduct.colorwayBomDetail[k];
             strTrimCwayBomString += '<tr>';
-            strTrimCwayBomString += '<td>' + objRow.Branch_Id + '</td>';
             strTrimCwayBomString += '<td>' + objRow.specName + '</td>';
             strTrimCwayBomString += '<td>' + objRow.partName + '</td>';
+            //strTrimCwayBomString += '<td>' + objRow.Branch_Id + '</td>';
+            //strTrimCwayBomString += '<td>' + objRow.specName + '</td>';
+            strTrimCwayBomString += '<td>' + objRow.garmentUseBranchId + '</td>';
             strTrimCwayBomString += '<td>' + objRow.Material + '</td>';
             //strTrimCwayBomString += '<td>' + objRow. + '</td>';
             //strTrimCwayBomString += '<td>' + objRow. + '</td>';
-            strTrimCwayBomString += '</tr>';
+            var numColumnIndexNumber = 4;
+            for (var p = numColumnIndexNumber; p < arrColumns.length; p++) {
+                if (typeof (objRow.variationRows[p - numColumnIndexNumber]) == 'undefined') {
+                    strTrimCwayBomString += '<td> </td>';
+                }
+                else {
+                    var objVarRow = objRow.variationRows[p - numColumnIndexNumber];
+                    strTrimCwayBomString += '<td>' + objVarRow.colorName + '</td>';
+                };
+
+            };
             
-            for (var l = 0; l < arrColorwayPositions.length; l++) {
+            /*for (var l = 0; l < arrColorwayPositions.length; l++) {
                 var strColorwayName = arrColorwayPositions[l];
                 for (var m = 0; m < objRow.variationRows.length; m++) {
                     var objVariationObject = objRow.variationRows[m];
                     if (objVariationObject.cWayName == strColorwayName) {
-                        strTrimCwayBomString += '<td style="color:' + objVariationObject.hex + '" ' + objVariationObject.colorName + '</td>';
+                        strTrimCwayBomString += '<td>' + objVariationObject.colorName + '</td>';
 
                     };
 
                 };
                 
 
-            }
+            }*/
 
+            strTrimCwayBomString += '</tr>';
 
         };
         strTrimCwayBomString += '</tbody></table>';
         $('#colorwaysDiv').append(strTrimCwayBomString);
+        $('#colorwayReport').DataTable({
+            'responsive': false,
+            'length': 5
+        });
 
 
     });
