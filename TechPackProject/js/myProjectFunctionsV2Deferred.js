@@ -1310,11 +1310,12 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix,objSelfReferen
             arrColorwayObjects.push(objRow);
             if (arrGroupings.indexOf(objRow.cwayGrouping) == -1) {
                 arrGroupings.push(objRow.cwayGrouping);
-                arrGroupingsTableStrings.push(initCwayString0 + objRow.cwayGrouping + initCwayString1 + objRow.cwayGrouping + initCwayString2);
+                arrGroupingsTableStrings.push(initCwayString0 + objRow.cwayGrouping + initCwayString1 + objRow.cwayGrouping + initCwayString2 + '<th>' + objRow.colorwayName + '</th>');
             }
             else {
                 var numActualIndex = arrGroupings.indexOf(objRow.cwayGrouping);
                 arrGroupingsTableStrings[numActualIndex] = arrGroupingsTableStrings[numActualIndex] + '<th>' + objRow.colorwayName + '</th>';
+
             };
 
         });
@@ -1353,6 +1354,7 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix,objSelfReferen
         $('row', arrBranch).each(function () {
             var objRow = {};
             objRow.specName = $(this).find('com_lcs_wc_specification_FlexSpecification_Name').text();
+            objRow.bomName = $(this).find('bomName').text();
             objRow.Material = $(this).find('Material').text();
             objRow.bomPartId = $(this).find('com_lcs_wc_flexbom_FlexBOMPart').attr('objectId');
             objRow.Branch_Id = $(this).find('Branch_Id').text();
@@ -1372,6 +1374,7 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix,objSelfReferen
         $('row', arrSku).each(function () {
             var objRow = {};
             objRow.cWayName = $(this).find('cWayName').text();
+            objRow.bomName = $(this).find('bomName').text();
             objRow.Color_Code = $(this).find('Color_Code').text();
             objRow.specName = $(this).find('Spec_Name').text();
             objRow.Material = $(this).find('Material').text();
@@ -1456,10 +1459,12 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix,objSelfReferen
         for (var i = 0; i < objSelfReference.colorwayProduct.colorwayBomDetail.length; i++) {
             var objTopLevelRow = objSelfReference.colorwayProduct.colorwayBomDetail[i];
             var objRowTodd = '';
+            // add ID check for grouping here var strIdToGrab = objTopLevelRow.
             objRowTodd += '<tr>';
             objRowTodd += '<td>' + objTopLevelRow.partName + '</td>';
             objRowTodd += '<td>' + objTopLevelRow.Material + '</td>';
             objRowTodd += '<td>' + objTopLevelRow.garmentUseBranchId + '</td>';
+            
             //objRowTodd += '<td>' + objTopLevelRow. + '</td>';
             // copy from row above one
         }
