@@ -1450,6 +1450,8 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix, objSelfRefere
 
 
         objSelfReference.colorwayProduct.colorwayBomDetail = arrTopLevelRows;
+
+        /*  TRY OVER AGAIN A DIFFERENT WAY
         for (var i = 0; i < objSelfReference.colorwayProduct.colorwayBomDetail.length; i++) {
             var objTopLevelRow = objSelfReference.colorwayProduct.colorwayBomDetail[i];
             var strId = '#' + objTopLevelRow.bomName.replace(/\s/g, "_");
@@ -1459,24 +1461,22 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix, objSelfRefere
             var objRowTodd = '';
             var arrRowArray = ['<tr><td>' + objTopLevelRow.partName + '</td>', '<td>' + objTopLevelRow.garmentUseBranchId + '</td>', '<td>' + objTopLevelRow.Material + '</td>'];
             for (var j = 0; j <= numColumnsForJustColorways; j++) {
-                //numColumnsBeforeColorways
                 var objVariationObject = objTopLevelRow.variationRows[j];
                 if (typeof (objVariationObject) != 'undefined') {
 
                     arrRowArray.push('<td>' + objVariationObject.colorName + '</td>');
                     var strColorwayName = objVariationObject.cWayName;
                     var numColumnIndex = $(strId + ' thead th:contains("' + strColorwayName + '")').index();
-                    //console.log(numColumnIndex)
                     arrRowArray[numColumnIndex] = '<td>' + objVariationObject.colorName + '</td>';
                 }
                 else {
 
                     //arrRowArray.push('<td></td>');
-                    arrRowArray[j + numColumnsBeforeColorways] = '<td></td>'
+                    arrRowArray[j] = '<td></td>'
                 }
                 if (j == numColumnsForJustColorways) {
                     arrRowArray.push('</tr>');
-                    /*if (j == numColumnsForJustColorways) {
+                    if (j == numColumnsForJustColorways) {
                         $(strId + ' tbody').append('<tr>')
                         for (var k = 0; k < arrRowArray.length; k++) {
                             $(strId + ' tbody').append(arrRowArray[k]);
@@ -1484,7 +1484,7 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix, objSelfRefere
                         };
                         $(strId + ' tbody').append('</tr>')
                     };
-                    */
+                   
 
 
                     console.log(arrRowArray);
@@ -1500,8 +1500,8 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix, objSelfRefere
 
                 };
             };
-        };
-        //$('#colorwaysDiv table').DataTable();
+        };*/
+        $('#colorwaysDiv table').DataTable();
         $('#colorwayReport').DataTable({
             'responsive': false,
             'length': 50
