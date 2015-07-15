@@ -1451,56 +1451,6 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix, objSelfRefere
 
         objSelfReference.colorwayProduct.colorwayBomDetail = arrTopLevelRows;
 
-        /*  TRY OVER AGAIN A DIFFERENT WAY
-        for (var i = 0; i < objSelfReference.colorwayProduct.colorwayBomDetail.length; i++) {
-            var objTopLevelRow = objSelfReference.colorwayProduct.colorwayBomDetail[i];
-            var strId = '#' + objTopLevelRow.bomName.replace(/\s/g, "_");
-            var numColumns = $(strId + ' thead tr th').length;
-            var numColumnsBeforeColorways = 3;//0 based array numbering
-            var numColumnsForJustColorways = numColumns - numColumnsBeforeColorways;
-            var objRowTodd = '';
-            var arrRowArray = ['<tr><td>' + objTopLevelRow.partName + '</td>', '<td>' + objTopLevelRow.garmentUseBranchId + '</td>', '<td>' + objTopLevelRow.Material + '</td>'];
-            for (var j = 0; j <= numColumnsForJustColorways; j++) {
-                var objVariationObject = objTopLevelRow.variationRows[j];
-                if (typeof (objVariationObject) != 'undefined') {
-
-                    arrRowArray.push('<td>' + objVariationObject.colorName + '</td>');
-                    var strColorwayName = objVariationObject.cWayName;
-                    var numColumnIndex = $(strId + ' thead th:contains("' + strColorwayName + '")').index();
-                    arrRowArray[numColumnIndex] = '<td>' + objVariationObject.colorName + '</td>';
-                }
-                else {
-
-                    //arrRowArray.push('<td></td>');
-                    arrRowArray[j] = '<td></td>'
-                }
-                if (j == numColumnsForJustColorways) {
-                    arrRowArray.push('</tr>');
-                    if (j == numColumnsForJustColorways) {
-                        $(strId + ' tbody').append('<tr>')
-                        for (var k = 0; k < arrRowArray.length; k++) {
-                            $(strId + ' tbody').append(arrRowArray[k]);
-                            //table.row.add(arrRowArray);
-                        };
-                        $(strId + ' tbody').append('</tr>')
-                    };
-                   
-
-
-                    console.log(arrRowArray);
-                }
-                for (var z = numColumnsBeforeColorways; z <= numColumns; z++) {
-                    if (typeof (arrRowArray[z]) == 'undefined') {
-                        arrRowArray[z] = '<td></td>';
-                    };
-
-                };
-                for (var k = 0; k < arrRowArray.length; k++) {
-                    $(strId + ' tbody').append(arrRowArray[k]);
-
-                };
-            };
-        };*/
         $('#colorwaysDiv table').DataTable();
         $('#colorwayReport').DataTable({
             'responsive': false,
