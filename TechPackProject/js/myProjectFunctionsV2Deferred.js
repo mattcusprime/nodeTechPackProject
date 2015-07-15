@@ -1293,8 +1293,8 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix, objSelfRefere
                 arrGroupingsTableStrings[numActualIndex] = arrGroupingsTableStrings[numActualIndex] + '<th>' + objRow.colorwayName + '</th>';
             };
         });
-        for (var j = 0; j < arrGroupingsTableStrings.length; j++) {
-            arrGroupingsTableStrings[j] = arrGroupingsTableStrings[j] + '</tr></thead><tbody></tbody></table>';
+        for (var i = 0; i < arrGroupingsTableStrings.length; i++) {
+            arrGroupingsTableStrings[i] = arrGroupingsTableStrings[i] + '</tr></thead><tbody></tbody></table>';
         };
         strTrimCwaysTableString += '</tbody></table>';
         $('#colorwaysListDiv').append(strTrimCwaysTableString);
@@ -1345,14 +1345,14 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix, objSelfRefere
             arrThisLoop = $.grep(arrSkuLevelRows, function (e) {
                 return e.Dimension_Id.search(strCurrentDimsionId) != -1;
             }, false);
-            if (typeof (arrThisLoop) != 'undefined') {
+            if (typeof (arrThisLoop) != 'undefined') {  
                 for (var j = 0; j < arrThisLoop.length; j++) {
                     arrTopLevelRows[i].variationRows.push(arrThisLoop[j]);
                 };
             };
         };
-        for (var o = 0; o < arrColumns.length; o++) {
-            strTrimCwayBomString += '<th>' + arrColumns[o] + '</th>';
+        for (var i = 0; i < arrColumns.length; i++) {
+            strTrimCwayBomString += '<th>' + arrColumns[i] + '</th>';
         };
         strTrimCwayBomString += '</tr></thead>';
         for (var i = 0; i < arrGroupingsTableStrings.length; i++) {
