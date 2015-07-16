@@ -302,7 +302,7 @@ garmentProduct.prototype.getMyMeasurement = function (strHostUrlPrefix, numMeasu
     };
     strTableBodyString += '</tbody>';
     objSelfReference.measurementTableString = '<h1>Measurements</h1><table id="measurements" class="display responsive col-md-12 compact cell-border">' + strTableHeaderString + strTableBodyString + '</table>';
-   
+
 };
 /**
  * @comment this is currently ran within @method getSpecComponentsForActiveSpec
@@ -526,7 +526,7 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
     var objConstructionComp = {};
     $('row', objConstructionData).each(function () {
         var name = $(this).find('Construction_Info_Name').text();
-        objConstructionComp = {};   
+        objConstructionComp = {};
         objConstructionComp.name = name;
         objConstructionComp.componentType = 'Construction';
         objConstructionComp.ownerType = 'Pattern';
@@ -679,7 +679,6 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
     // later will need to add here a few documents that we want to exclude intentionally
     // like front back images that come from pattern products
     var sortOrder = 0;
-
     if (typeof (objSelfReference.construction) != 'undefined') { reportTable.row.add([sortOrder, '<a href="#" id="getConstructionReport">Construction</a>', objSelfReference.construction.name]); sortOrder++; };
     if (typeof (objSelfReference.measurement) != 'undefined') { reportTable.row.add([sortOrder, '<a href="#" id="getMeasurementReport">Measurements</a>', objSelfReference.measurement.name]); sortOrder++; };
     if (typeof (objSelfReference.boms != 'undefined')) {
@@ -712,9 +711,7 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
         else if (boolHaveGarmentCut && boolHavePatternSpread) {
             strBlockWeightBomScenario = 'Spread, Trim Straight and Trim Bias';
         };
-
         reportTable.row.add([sortOrder, '<a href="#" class="blockWeights" id="generateBlockWeights">Block Weights Report</a>', strBlockWeightBomScenario]);
-        //removed block weights line temporarily
         sortOrder++;
     };
 
@@ -722,10 +719,8 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
         var arrdocs = objSelfReference.documents;
         if (typeof (arrdocs) != 'undefined') {
             for (i = 0; i < arrdocs.length; i++) {
-                //reportTable.row.add([sortOrder, arrdocs[i].name, arrdocs[i].imageUrl]);
                 if (i == 0) { $('#imagesDiv').append('<h1>Documents</h1>') };
                 $('#imagesDiv').append('<div class="page"><h2>' + arrdocs[i].name + '</h2>' + arrdocs[i].imageUrl + '</div>');
-                //sortOrder++;
             };
         };
 
@@ -733,14 +728,10 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
     createRelatedProductsDiv(objSelfReference);
     reportTable.draw();
     $('#getMeasurementReport').click(function () {
-        //createComponentTable(currentGarmentProduct);
-        //shortHandCreateMeasurementsAndScroll();
         createComponentTable('measurementDiv', 'measurements', objSelfReference.measurementTableString);
         makeMeScrollToDefinedTarget('#measurementDiv', 50, -100);
-
     });
     $('#getConstructionReport').click(function () {
-        //shortHandCreateConstructionAndScroll();
         createComponentTable('constructionDiv', 'construction', objSelfReference.constructionTableString);
         makeMeScrollToDefinedTarget('#constructionDiv', 50, -100);
     });
@@ -750,7 +741,9 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
         objSelfReference.getBlockWeightsTrim(StrUrlPrefix, objSelfReference);
     });
 };
-
+/*
+needs comments
+*/
 
 garmentProduct.prototype.getMyValueLists = function (strUrlPrefix, arrListIds, objSelfReference) {
     //http://wsflexwebprd1v.res.hbi.net/Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?attValueListId=2381876%2C102771%2C2381693&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A10596321&action=ExecuteReport
@@ -804,7 +797,6 @@ garmentProduct.prototype.getMyBlockWeightsSpread = function (strUrlPrefix, objSe
     if (typeof (objSelfReference.blockWeightSpread) == 'undefined') {
         $.get(fullSpreadUrl, function (data) { }).done(function (data) {
             $('row', data).each(function () {
-
                 var objRow = {};
                 strSpreadTableString += '<tr>';
                 objRow.pProdSpread = $(this).find("Pattern_Product").text();
@@ -833,21 +825,17 @@ garmentProduct.prototype.getMyBlockWeightsSpread = function (strUrlPrefix, objSe
                 objRow.pMastTypeSpread = $(this).find("Pattern_Master_Material_Type").text();
                 objRow.cylinderValueSpread = $(this).find("Cylinder").text();
                 objRow.usageLBDZSpread = Math.round((objRow.conWidthSpread * objRow.totLengthSpread / objRow.numGarmentsSpread * 12 * objRow.plySpread / 36 / 36) * (objRow.manfFabricWeightSpread / 16) * 100) / 100;
-
                 var sortLookup = "size" + objRow.sizeSpreadForLookUp;
                 objRow.sortValue = sortingArray.indexOf(sortLookup);
                 objRow.patternDimId = $(this).find('patDimId').text();
                 objRow.garDimId = $(this).find('garDimID').text();
                 objRow.combinedDimId = objRow.patternDimId + objRow.garDimId;
                 var numDupChecker = objRow.combinedDimId;
-
-                //formatting changes *from old, re-evaluate
                 objRow.plySpread = "   " + objRow.plySpread + "   ";
                 objRow.conWidthSpread = "   " + objRow.conWidthSpread + "   ";
                 for (var name in objRow) {
                     if (typeof (name) == 'undefined') {
                         objRow.name = '';
-                        //this is catching the data errors but need to find out what they are.
                     }
                 };
                 strSpreadTableString += '<td>' + objRow.pCodeSpread + '</td>';
@@ -866,18 +854,12 @@ garmentProduct.prototype.getMyBlockWeightsSpread = function (strUrlPrefix, objSe
                 strSpreadTableString += '<td>' + objRow.usageLBDZSpread + '</td>';
                 strSpreadTableString += '</tr>';
                 arrOfRowsForFunctionScope.push(objRow);
-                //potential later use for duplicate removal
                 arrDupChecker.push(numDupChecker);
-
-
             });
             strSpreadTableString += '</tbody></table>';
             objSelfReference.blockWeightsSpreadTableString = strSpreadTableString;
             objSelfReference.blockWeightSpread = arrOfRowsForFunctionScope;
             console.log(objSelfReference);
-
-            //createComponentTable('blockWeightSpreadDiv', 'tblBlockWeightSpread', objSelfReference.blockWeightsSpreadTableString);
-            //$('#blockWeightSpreadDiv').append('<div class="row"><h1 class="col-md-4></h1><h1 class="col-md-4>Block Weights</h1><h1 class="col-md-4></h1></div>');
             $('#blockWeightSpreadDiv').append(strSpreadLocalHeaderStringEmptyBody);
             $('#spreadReport').DataTable({
                 'scrollY': 600,
@@ -929,25 +911,15 @@ garmentProduct.prototype.getMyBlockWeightsSpread = function (strUrlPrefix, objSe
                  { 'data': 'plySpread' },
                  { 'data': 'useYdDzSpread' },
                  { 'data': 'usageLBDZSpread' }
-
-
             ],
             'order': [[0, 'asc'], [1, 'asc'], [2, 'asc'], [3, 'asc']],
             'responsive': false
         });
-
     };
-
-
 };
 
 
 garmentProduct.prototype.getBlockWeightsTrim = function updateTrim(strUrlPrefix, objSelfReference) {
-
-    //param = $("#gProd").val();
-    //paramSpecTrim = $("#spec").val();
-    //paramSeasonTrim = $("#season").val();
-    //paramSeasonTrim = "Garment  " + paramSeasonTrim;
     var sortingArray = ['sizeXXS', '1', 'sizeXS', '2', 'sizeS', '3', 'sizeM', '4', 'sizeL', '5', 'sizeXL', '6', 'size2X', '7', 'size3X', '8', 'size4X', '9', 'size5X', '10', 'size6X', '11', 'size3M', '1', 'size6M', '2', 'size9M', '3', 'size12M', '4', 'size18M', '5', 'size24M', '6', 'size2T', '7', 'size3T', '8', 'size4T', '9', 'size5T', '10', 'size2', '1', 'size4', '2', 'size5', '3', 'size6', '4', 'size7', '5', 'size8', '6', 'size9', '7', 'size10', '8', 'size11', '9', 'size12', '10', 'size13', '11', 'size14', '12', 'size16', '13', 'size18', '14', 'size20', '15', 'size22', '16', 'size24', '17', 'size26', '18', 'size28', '19', 'size30', '20', 'size32', '21', 'size34', '22', 'size36', '23', 'size38', '24', 'size40', '25', 'size42', '26', 'size44', '27', 'size46', '28', 'size48', '29', 'size50', '30', 'size52', '31', 'size54', '32', 'size56', '33', 'size58', '34', 'size60', '35', 'size62', '36', 'sizeS/M', '1', 'sizeL/XL', '2', 'size16W', '1', 'size20W', '2', 'size24W', '3', 'size28W', '4', 'size32W', '5', 'size36W', '6'];
     var param = objSelfReference.name;
     var paramSeasonTrim = objSelfReference.activeSeason;
@@ -955,7 +927,6 @@ garmentProduct.prototype.getBlockWeightsTrim = function updateTrim(strUrlPrefix,
     param = param.replace('/\s/g', '%20');
     paramSeasonTrim = paramSeasonTrim.replace('/\s/g', '%20');
     paramSpecTrim = paramSpecTrim.replace('/\s/g', '%20');
-    //var oTable = $('#trimReport').DataTable();
     var reportStringTrim1 = "http://wsflexwebprd1v.res.hbi.net/Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?Garment+Product+Season="
     var reportStringTrim2 = "&Product+Name=";
     var reportStringTrim3 = "&Spec+Name=";
@@ -963,10 +934,8 @@ garmentProduct.prototype.getBlockWeightsTrim = function updateTrim(strUrlPrefix,
     var fullReportString = reportStringTrim1 + paramSeasonTrim + reportStringTrim2 + param + reportStringTrim3 + paramSpecTrim + reportStringTrim4;
     var strTrimTableString = '<table id="trimReport" class="display responsive col-md-12 compact cell-border"><thead id="trimHeader"><tr><th>Part Code</th><th>Cut Method Code</th><th>Mfg Fabric</th><th>Shade</th><th>SizeSort</th><th>Size</th><th>Pattern# Version</th><th>#Gmts</th><th>Trim Cut Width</th><th>Total Length</th><th>UsageYd/Dz</th><th>UsageLb/Dz</th></tr></thead><tbody>';
     var strLocalHeaderStringEmptyBody = '<h2>Block Weights - Trim</h1><table id="trimReport" class="display responsive col-md-12 compact cell-border"><thead id="trimHeader"><tr><th>Part Code</th><th>Cut Method Code</th><th>Mfg Fabric</th><th>Shade</th><th>SizeSort</th><th>Size</th><th>Pattern# Version</th><th>#Gmts</th><th>Trim Cut Width</th><th>Total Length</th><th>UsageYd/Dz</th><th>UsageLb/Dz</th></tr></thead><tbody></tbody>';
-    //headerstring is used for Datatable but big string is appended to garment product
     var arrRowsArray = [];
     var dimIdArrays = [];
-    //var fullReportString = "blockWeights.xml";
     if (typeof (objSelfReference.blockWeightTrim) == 'undefined') {
         $.get(fullReportString, function (result) { }).done(function (result) {
             $('row', result).each(function () {
@@ -984,10 +953,7 @@ garmentProduct.prototype.getBlockWeightsTrim = function updateTrim(strUrlPrefix,
                 objRow.numGarments = $(this).find("__Garments").text();
                 objRow.edgeLoss = $(this).find("Edge_Loss__IN_").text();
                 objRow.runoff = $(this).find("Runoff").text();
-                //using Pattern num and version in place of this
-                //trimMaterial = $(this).find("Pattern_Master_Material").text();
                 objRow.manfOption = $(this).find("Manufacturing_option").text();
-                //conWidth = $(this).find("Conditioned_Width").text();
                 objRow.ply = $(this).find("Ply").text();
                 objRow.totLength = $(this).find("Total_Length").text();
                 objRow.useYdDz = $(this).find("Usage_Yd_Dz").text().substring(0, 6);
@@ -1001,7 +967,6 @@ garmentProduct.prototype.getBlockWeightsTrim = function updateTrim(strUrlPrefix,
                 objRow.pMastType = $(this).find("Pattern_Master_Material_Type").text();
                 objRow.trimPatternNumAndVersion = $(this).find("patternNumVersion").text();
                 objRow.usageLBDZ = 0;
-
                 if (objRow.pMastType == "Bias") {
                     objRow.usageLBDZ = (objRow.trimCutWidth * objRow.totLength * 12 / objRow.numGarments / 1296 * objRow.manfFabricWeight / 16)
                 };
@@ -1010,18 +975,12 @@ garmentProduct.prototype.getBlockWeightsTrim = function updateTrim(strUrlPrefix,
                 };
                 var sortLookup = "size" + objRow.sizeForLookUp;
                 objRow.sortValue = sortingArray.indexOf(objRow.sortLookup);
-                //var allowanceAddition = 1 + (gBOMallowance / 100);  This is already incorporated into the query itself
-                //from which we are pulling, commenting this out so that it is not done twice
-
                 objRow.usageLBDZ = Math.round(objRow.usageLBDZ * 100) / 100;
-                //useYdDz *= allowanceAddition; see above comment
                 objRow.useYdDz = Math.round(objRow.useYdDz * 100) / 100;
                 objRow.totLength = Math.round(objRow.totLength * 10000) / 10000;
-
                 objRow.patternDimId = $(this).find('patDimId').text();
                 objRow.garDimId = $(this).find('garDimID').text();
                 objRow.combinedDimId = objRow.patternDimId + objRow.garDimId;
-                //edits for formatting
                 objRow.ply = "   " + objRow.ply + "   ";
                 objRow.trimCutWidth = "   " + objRow.trimCutWidth + "   ";
                 arrRowsArray.push(objRow);
@@ -1030,30 +989,11 @@ garmentProduct.prototype.getBlockWeightsTrim = function updateTrim(strUrlPrefix,
             for (var i = 0; i < arrRowsArray.length; i++) {
                 var objGetObject = {};
                 objGetObject = arrRowsArray[i];
-
-
-                /*
-                var propCount = 0;
-                for (var propertyName in objGetObject) {
-
-                    // propertyName is what you want
-                    // you can get the value like this: myObject[propertyName]
-                    var propertyValueOfName = objGetObject[propertyName];
-                    if (arrOfProperties.indexOf(propertyName) != -1) {
-                        if (propCount == 0) { strTrimTableString += '<tr>' };
-                        strTrimTableString += '<td>' + objGetObject[propertyValueOfName] + '</td>';
-                        if (propCount == 0) { strTrimTableString += '</tr>' };
-                        propCount++;
-                    };
-                }*/
                 strTrimTableString += '</tr>'
-
             };
             strTrimTableString += '</tbody></table>';
             objSelfReference.blockWeightsTrimTableString = strTrimTableString;
             objSelfReference.blockWeightTrim = arrRowsArray;
-
-            //$('#blockWeightTrimDiv').append(objSelfReference.blockWeightsTrimTableString);
             $('#blockWeightTrimDiv').append(strLocalHeaderStringEmptyBody);
             $('#trimReport').DataTable({
                 'scrollY': 700,
@@ -1073,15 +1013,11 @@ garmentProduct.prototype.getBlockWeightsTrim = function updateTrim(strUrlPrefix,
                         { 'data': 'totLength' },
                         { 'data': 'useYdDz' },
                         { 'data': 'usageLBDZ' }
-
                 ],
-
                 'order': [[0, 'asc'], [1, 'asc'], [2, 'asc'], [3, 'asc']],
                 'responsive': false
             });
-
         });
-
     }
     else {
         $('#blockWeightTrimDiv').append(strLocalHeaderStringEmptyBody);
@@ -1103,9 +1039,7 @@ garmentProduct.prototype.getBlockWeightsTrim = function updateTrim(strUrlPrefix,
                     { 'data': 'totLength' },
                     { 'data': 'useYdDz' },
                     { 'data': 'usageLBDZ' }
-
             ],
-
             'order': [[0, 'asc'], [1, 'asc'], [2, 'asc'], [3, 'asc']],
             'responsive': false
         });
@@ -1119,7 +1053,6 @@ garmentProduct.prototype.saveMe = function (objSelfReference) {
         alert('saved ' + objSelfReference.name);
     });
 };
-
 
 garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix, objSelfReference) {
     var strBeginUrl = strUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction'//objectId=<param>&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A10734353&action=ExecuteReport';
@@ -1254,7 +1187,7 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix, objSelfRefere
             arrThisLoop = $.grep(arrSkuLevelRows, function (e) {
                 return e.Dimension_Id.search(strCurrentDimsionId) != -1;
             }, false);
-            if (typeof (arrThisLoop) != 'undefined') {  
+            if (typeof (arrThisLoop) != 'undefined') {
                 for (var j = 0; j < arrThisLoop.length; j++) {
                     arrTopLevelRows[i].variationRows.push(arrThisLoop[j]);
                 };
@@ -1275,12 +1208,6 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix, objSelfRefere
         });
     });
 };
-
-
-
-
-
-
 //utility functions to work with garmentProduct class below
 /*
  * @param {String} strkey key value of item in list to be passed to key array to get back display
