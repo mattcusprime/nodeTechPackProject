@@ -79,21 +79,10 @@ function garmentProduct(strName, arrAttributes, arrSpecs, arrSources, objColorwa
     this.blockWeightsSpreadTableString = strBlockWeightsSpreadTableString;
     this.blockWeightsTrimTableString = strTrimSpreadTableString;
 };
-
 var fs = require('fs.extra');
 var execFile = require('child_process').execFile, child;
 var wkhtmltopdf = require('wkhtmltopdf');
 var gui = require('nw.gui');
-
-/**
- * @method of @class GarmentProduct, should take existing elements of the garment product and produce a pdf using the
- * jsPdf Library
- *
- */
-garmentProduct.prototype.savePDF = function () {
-
-
-};
 /**
  * @method of @class GarmentProduct
  * @param {String} strHostUrlPrefix string denoting the initial characters of the url for the domain in which the construction sits.  All string prior to Windchill.
@@ -104,7 +93,7 @@ garmentProduct.prototype.getMyConstruction = function (strHostUrlPrefix, numCons
     var objCurrentRow = {};
     var arrCurrentConstruction = [];
     //namespace is harder to grab so just grabbing the parant element of the first element and then iterating through those
-    // need to change this later to correctly use the namespace but, working for now.
+    //need to change this later to correctly use the namespace but, working for now.
     //this probably needs to be changed to a switch case but not a high priority...
     $('id', constructionData).parent().find('*').each(function () {
         var objCurrentElement = $(this);
@@ -183,14 +172,11 @@ garmentProduct.prototype.getMyConstruction = function (strHostUrlPrefix, numCons
         }
         else if (objCurrentElement.is("seamTypeDisplay")) {
             objCurrentRow.seamTypeDisplay = objCurrentElement.text();
-            //arrCurrentConstruction[objCurrentRow.sortingNumber - 1] = objCurrentRow;
             arrCurrentConstruction.push(objCurrentRow)
             objCurrentRow = {};
         }
 
     });
-    // and so on for each element that we want to capture
-    //});
     // and so on for each element that we want to capture
     objSelfReference.constructionDetail = arrCurrentConstruction;
     var strTableHeaderString = '<thead><tr><th>Sorting Number</th><th>Sewing Operation</th><th>Stitch Type / Description</th><th>Gauge Width</th><th>SPI</th><th>Seam/Trimoff Allowance</th><th>Garment Use</th><th>Needle Thread</th><th>Needle Visibility</th><th>Looper Thread</th><th>Looper Visbility</th><th>Comments</th></tr></thead>';
@@ -210,14 +196,9 @@ garmentProduct.prototype.getMyConstruction = function (strHostUrlPrefix, numCons
         strTableBodyString += '<td>' + objThisRow.hbiLooperColor + '</td>';
         strTableBodyString += '<td>' + objThisRow.comments + '</td>';
     };
-
     strTableBodyString += '</tr>';
     strTableBodyString += '</tbody>';
     objSelfReference.constructionTableString = '<h1>Constructions</h1><table id="construction" class="display responsive col-md-12 compact cell-border">' + strTableHeaderString + strTableBodyString + '</table>';
-
-    console.log(objSelfReference);
-    console.dir(objSelfReference);
-    //alert(objGarmentProductToModify.construction.constructionData);
 };
 /**
  * @comment Still need to add logic here to deal with size variation and variable columns as a result; this is currently ran within @method getSpecComponentsForActiveSpec
@@ -239,9 +220,7 @@ garmentProduct.prototype.getMyMeasurement = function (strHostUrlPrefix, numMeasu
         objRow.point1 = $(this).find('point1 ').text();
         objRow.point2 = $(this).find('point2 ').text();
         objRow.plusTolerance = $(this).find('plusTolerance').first().text();
-        //objRow.plusTolerance = $(this).find('plusTolerance').text();
         objRow.minusTolerance = $(this).find('minusTolerance').first().text();
-        //objRow.minusTolerance = $(this).find('minusTolerance').text();
         objRow.IDA2A2 = $(this).find('IDA2A2').text();
         objRow.pointsOfMeasureType = $(this).find('pointsOfMeasureType').text();
         objRow.effectSequence = $(this).find('effectSequence ').text();
@@ -282,13 +261,10 @@ garmentProduct.prototype.getMyMeasurement = function (strHostUrlPrefix, numMeasu
             objRow.arrSizeArray.push(objSizeValueObject);
 
         });
-        //var numToUse = objRow.sortingNumber - 1;
-        //arrCurrentMeasurement[numToUse] = objRow;
         arrCurrentMeasurement.push(objRow);
     });
     arrCurrentMeasurement.sort(compare);
     objSelfReference.measurementDetail = arrCurrentMeasurement;
-    //var arrMeasurementDetailArray = this.measurementDetail;
     var objRowOne = objSelfReference.measurementDetail[0];
     var strTableHeaderString = '<thead><tr><th>Sorting Number</th><th>POM Number</th><th>Measurement Name</th><th>Placement Amount</th><th>Placement Reference</th><th>Plus Tolerance</th><th>Minus Tolerance</th><th>HTM Instructions</th><th>Comments</th>';
     var arrSizes = objRowOne.arrSizeArray;
@@ -301,7 +277,6 @@ garmentProduct.prototype.getMyMeasurement = function (strHostUrlPrefix, numMeasu
     for (var j = 0; j < objSelfReference.measurementDetail.length; j++) {
         var objThisRow = objSelfReference.measurementDetail[j];
         var arrSizes2 = objThisRow.arrSizeArray;
-        //console.log(objThisRow);
         strTableBodyString += '<tr><td>' + objThisRow.sortingNumber + '</td>';
         strTableBodyString += '<td>' + objThisRow.number + '</td>';
         strTableBodyString += '<td>' + objThisRow.measurementName + '</td>';
@@ -309,10 +284,8 @@ garmentProduct.prototype.getMyMeasurement = function (strHostUrlPrefix, numMeasu
         strTableBodyString += '<td>' + objThisRow.placementReference + '</td>';
         strTableBodyString += '<td>' + objThisRow.plusTolerance + '</td>';
         strTableBodyString += '<td>' + objThisRow.minusTolerance + '</td>';
-        //strTableBodyString += '<td>' + objThisRow.minusTolerance + '</td>';
         strTableBodyString += '<td>' + objThisRow.htmInstruction + '</td>';
         strTableBodyString += '<td>' + objThisRow.sampleMeasurementComments + '</td>';
-        //htmInstruction
         for (var k = 0; k < arrSizes2.length; k++) {
             var strCurrentSizeName = arrSizes2[k].sizeName;
             var strBaseSize = objSelfReference.baseSize;
@@ -329,10 +302,7 @@ garmentProduct.prototype.getMyMeasurement = function (strHostUrlPrefix, numMeasu
     };
     strTableBodyString += '</tbody>';
     objSelfReference.measurementTableString = '<h1>Measurements</h1><table id="measurements" class="display responsive col-md-12 compact cell-border">' + strTableHeaderString + strTableBodyString + '</table>';
-    //console.log(strTableBodyString);
-
-    //});
-
+   
 };
 /**
  * @comment this is currently ran within @method getSpecComponentsForActiveSpec
@@ -359,13 +329,7 @@ garmentProduct.prototype.getSpecByName = function (strHostUrlPrefix, strGarmentN
             var techDesignerKey = $(this).find('valueListTechDesigner').text();
             var productManagerKey = $(this).find('valueListProductManager').text();
             var techDesignerDisplay = getValueDisplayFromKey(techDesignerKey, objSelfReference);
-            //objSelfReference.attributes.push('Tech Designer', techDesignerDisplay);
-            console.log(techDesignerDisplay);
             var productManagerDisplay = getValueDisplayFromKey(productManagerKey, objSelfReference);
-            console.log(productManagerDisplay);
-            //objSelfReference.attributes.push('Product Manager', productManagerDisplay);
-            //getValueDisplayFromKey()
-
             var objSpec = {};
             objSpec.name = $(this).find('Spec_Name').text();
             objSpec.idNumber = $(this).find('specLink').attr('objectId');
@@ -373,7 +337,6 @@ garmentProduct.prototype.getSpecByName = function (strHostUrlPrefix, strGarmentN
             var strSpecName = $(this).find('Spec_Name').text();
             var strType = $(this).find('specLink').attr('type');
             var strHbiActiveSpec = $(this).find('hbiActiveSpec').text().substring(3, 6);
-
             if (strSpecName.indexOf(strHbiActiveSpec) == -1) {
                 objSpec.active = false;
             }
@@ -406,8 +369,6 @@ garmentProduct.prototype.getSpecByName = function (strHostUrlPrefix, strGarmentN
             objCombinationObject.seasonId = $(this).find('Garment_Season').attr('objectId');
             objCombinationObject.seasonName = $(this).find('Garment_Season_Season_Name').text();
             objSelfReference.activeSeason = $(this).find('Garment_Season_Season_Name').text();
-            //objCombinationObject.seasonSpecCombo = "Season:" + objCombinationObject.seasonName + "_Spec:" + objCombinationObject.specName
-            //trying this without season and spec literals to reduce button size
             objCombinationObject.seasonSpecCombo = "" + objCombinationObject.seasonName + " _src_" + objCombinationObject.sourceName + " _spec_" + objCombinationObject.specName
             arrCombinationArray.push(objCombinationObject);
         });
@@ -439,7 +400,6 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
     var objGarmentProduct = {};
     var objLabelProduct = {};
     var objSellingProduct = {};
-    //var strProdName = '';
     var numObjectId;
     //first pass here gets all product relationships
     //changes in relationship names or type names would need to be later reflected here in the naming structure
@@ -448,7 +408,6 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
     $('row', objProdLinkData).each(function (index) {
         var linkedProductType = $(this).find('linkedProductType').text();
         var objLinkedProduct = {};
-        //strProdName = $(this).find('garmentProductName').first().text();
         numObjectId = $(this).find('garmentProductName').first().attr('objectId');
         objLinkedProduct.name = $(this).find('linkedProductName').text();
         objLinkedProduct.objectId = $(this).find('linkedProductName').attr('objectId');
@@ -471,8 +430,6 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
             objSellingProduct = objLinkedProduct;
         };
     });
-    //objSelfReference.name = strProdName;
-    //removing since this is setting the garmentProduct name a second time.
     objSelfReference.objectId = numObjectId;
     objSelfReference.colorwayProduct = objColorwayProduct;
     if (typeof (objSelfReference.colorwayProduct) != 'undefined') {
@@ -492,9 +449,6 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
             }
             else {
             };
-
-            ////res.hbi.net/dfs/BrandedApparel/Activewear/FlexApp/Prod/000000000009f4
-
             var name = $(this).find('Document_Master_Name').text();
             var strpSpecId = $(this).find('patternSpecId').text();
             var strgSpecId = $(this).find('garmentSpecId').text();
@@ -506,13 +460,7 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
                 objPSpec.currentGarmentSpecId = $(this).find('patternSpecId').text();
                 objGSpec.name = $(this).find('gSpecName').text();
                 objPSpec.name = $(this).find('pSpecName').text();
-                //objSelfReference.currentGarmentSpec = objGSpec;
-                //objSelfReference.currentGarmentSpec = objPSpec;
-                //this.currentGarmentSpec = objGSpec;
-                //this.currentPatternSpec = objPSpec;
-
             };
-            //console.log(name);
             objComponent = {};
             objComponent.name = name;
             objComponent.componentType = 'Document';
@@ -534,25 +482,8 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
             objComponent.height = numLength;
             var roleA = $(this).find('roleAObjectRef_key_id').text();
             var roleB = $(this).find('roleBObjectRef_key_id').text();
-            //objComponent.iframe = '<div class="item"><img width="' + objComponent.width + '" height="' + objComponent.height + '" class="hideIframe" src="' + strImgViewerPrefix1 + roleB + strImgViewerPrefix2 + roleA + '" border="1"></img></div>';
-            /*convertImgToBase64(strImgViewerPrefix3 + objComponent.vaultFileName, function (base64Img) {
-                
-                objComponent.dataUri = 'IMAGE:', base64Img;
-
-            });
-            objComponent.dataUri = fs.readFileSync(strImgViewerPrefix3 + objComponent.vaultFileName, function (err, data) {
-                if (err) throw err;
-                console.log(data);
-            })*/
-
             objComponent.image = '<div class="item" <h2>' + objComponent.name + '-' + objComponent.fileName + '</h2></br><img width="' + objComponent.width + '" height="' + objComponent.length + '" class="img-responsive hideImg" src="' + strImgViewerPrefix3 + objComponent.vaultFileName + '" /></div>';
             objComponent.imageUrl = '<img width="' + objComponent.width + '" height="' + objComponent.height + '" class="img-responsive" src="' + objComponent.fullVaultUrl + '" />';
-
-            //objComponent.image = '<div class="item" <h2>' + objComponent.name + '-' + objComponent.fileName + '</h2></br><img width="800" height="800" src="' + strImgViewerPrefix3 + objComponent.vaultFileName + '" /></div>';
-            //later will change this to img in order to test it.
-
-
-
             if (strpSpecId == strCompSpecId) {
                 objComponent.ownerType = 'Pattern';
             }
@@ -572,7 +503,6 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
             objSelfReference.sizeRun = $(this).find('sizeRun').text();
         };
         var name = $(this).find('Measurements_Name').text();
-        //console.log(name);
         objMeasurementComp = {};
         objMeasurementComp.name = name;
         objMeasurementComp.componentType = 'Measurement';
@@ -580,8 +510,6 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
         objMeasurementComp.fileName = "";
         objMeasurementComp.imageUrl = "<img src='' />";
         objMeasurementComp.branchId = $(this).find('branchIdForTaskCall').text();
-        //this.measurement = objComponent;
-        //arrTableDataArray.push(objComponent);
     });
     objSelfReference.measurement = objMeasurementComp;
     var strMeasTaskUrl = strHostUrlPrefix + 'Windchill/servlet/IE/tasks/com/lcs/wc/measurements/FindMeasurements.xml'; //?oid=VR:com.lcs.wc.construction.LCSConstructionInfo:' + numConstructionBranchId + '&instance=net.hbi.res.wsflexappprd1v.windchillAdapter';
@@ -595,22 +523,16 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
         async: true
 
     });
-    //this.getMyMeasurement(strHostUrlPrefix, this.measurement.branchId);
     var objConstructionComp = {};
     $('row', objConstructionData).each(function () {
         var name = $(this).find('Construction_Info_Name').text();
-        //console.log(name);
-        objConstructionComp = {};
+        objConstructionComp = {};   
         objConstructionComp.name = name;
         objConstructionComp.componentType = 'Construction';
         objConstructionComp.ownerType = 'Pattern';
         objConstructionComp.fileName = "";
         objConstructionComp.imageUrl = "<img src='' />";
         objConstructionComp.branchId = $(this).find('branchIdForTask').text();
-
-        //this.construction = objComponent;
-
-
     });
     objSelfReference.construction = objConstructionComp;
     var conStrTaskUrl = strHostUrlPrefix + 'Windchill/servlet/IE/tasks/com/lcs/wc/construction/FindConstructionInfo.xml'; //?oid=VR:com.lcs.wc.construction.LCSConstructionInfo:' + numConstructionBranchId + '&instance=net.hbi.res.wsflexappprd1v.windchillAdapter';
@@ -624,21 +546,18 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
         async: true
 
     });
-    //this.getMyConstruction(strHostUrlPrefix, this.construction.branchId);
     $('row', objBomData).each(function () {
         var name = $(this).find('com_lcs_wc_flexbom_FlexBOMPart_Name').text();
         var strpBomSpecId = $(this).find('pSpecId').text();
         var strgBomSpecId = $(this).find('gSpecId').text();
         var strBomCompSpecId = $(this).find('comRefSpecId').text();
         var strFlexBomType = $(this).find('Flex_Type_Type_Name').text();
-        //console.log(name);
         objBomComponent = {};
         objBomComponent.name = name;
         objBomComponent.fileName = "";
         objBomComponent.componentType = 'BOM';
         objBomComponent.imageUrl = "<img src='' />";
         objBomComponent.flexType = strFlexBomType;
-
         var regPprod = new RegExp("Pattern");
         var regGprod = new RegExp("Garment");
         if (regPprod.test(strFlexBomType)) {
@@ -647,24 +566,18 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
         else if (regGprod.test(strFlexBomType)) {
             objBomComponent.ownerType = 'Garment';
         };
-
-
         arrTableDataArray.push(objBomComponent);
         arrBoms.push(objBomComponent);
 
     });
     objSelfReference.boms = arrBoms;
-    //this.boms = arrBoms;
-    //createRelatedProductsDiv(objSelfReference);
     var arrConstructionDetailDataContainer;
     var arrMeasurementDetailDataContainer;
-
     $.when(objDefferedConstruction, objDefferedMeasurement).done(function (objDefferedConstruction, objDefferedMeasurement) {
         arrConstructionDetailDataContainer = objDefferedConstruction[0];
         arrMeasurementDetailDataContainer = objDefferedMeasurement[0];
         objSelfReference.getMyConstruction(strHostUrlPrefix, objSelfReference.construction.branchId, arrConstructionDetailDataContainer, objSelfReference);
         objSelfReference.getMyMeasurement(strHostUrlPrefix, objSelfReference.measurement.branchId, arrMeasurementDetailDataContainer, objSelfReference);
-        //       saveGarmentProd(objSelfReference);
     });
 
 };
@@ -737,10 +650,6 @@ garmentProduct.prototype.thenCallSpecs = function (objectForCallback, objSelfRef
     objSelfReference.activeSpecName = objectForCallback.activeSpecName;
     objSelfReference.name = objectForCallback.gProdName;
     objSelfReference.getAllMyDataForMyActiveSpec(strUrlPrefix, objSelfReference.activeSpecId, objSelfReference);
-    //createComponentTable(objSelfReference);
-
-    //localStorage.setItem('garmentProductString', garmentProductString);
-    //makeMeScrollToDefinedTarget('#reportsHeader', 1000,100);
 };
 /**
  * @method of @class GarmentProduct, this method runs to determine, based on available spec components in the objSelfReference, what are the available report sets that 
