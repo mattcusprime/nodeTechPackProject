@@ -1100,19 +1100,20 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix, objSelfRefere
     });
     var arrBranch = [];
     var arrSku = [];
-    var arrColorways = [];
+    var arrLocalColorways = [];
+    //just fixed query to get all colorways without the 'no blank description allowed' condition
     var arrColumns = ['Grouping', 'Part Name', 'Garment Use', 'Material'];
     var arrGroupings = [];
     var arrGroupingsTableStrings = [];
     $.when(objDefferedBranch, objDefferedSkuData, objDefferedColorways).done(function (objDefferedBranch, objDefferedSkuData, objDefferedColorways) {
         arrBranch = objDefferedBranch[0];
         arrSku = objDefferedSkuData[0];
-        arrColorways = objDefferedColorways[0];
+        arrLocalColorways = objDefferedColorways[0];
         var arrColorwayObjects = [];
         var initCwayString0 = '<h2 class="page">';
         var initCwayString1 = '</h2><table id="';
         var initCwayString2 = '" class="display responsive col-md-12 compact cell-border"><thead><tr><th>Part Name</th><th>Garment Use</th><th>Material</th>';
-        $('row', arrColorways).each(function (index) {
+        $('row', arrLocalColorways).each(function (index) {
             var objRow = {};
             objRow.cwayGrouping = $(this).find('cwayGroupDescription').text();
             objRow.colorwayName = $(this).find('Colorway_Name').text();
@@ -1135,6 +1136,8 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix, objSelfRefere
                 arrGroupingsTableStrings[numActualIndex] = arrGroupingsTableStrings[numActualIndex] + '<th>' + objRow.colorwayName + '</th>';
             };
         });
+        objSelfReference.colorwayProduct.colorways = arrColorwayObjects;
+        console.log(objSelfReference.colorwayProduct.colorways);
         for (var i = 0; i < arrGroupingsTableStrings.length; i++) {
             arrGroupingsTableStrings[i] = arrGroupingsTableStrings[i] + '</tr></thead><tbody></tbody></table>';
         };
@@ -1162,6 +1165,7 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix, objSelfRefere
             objRow.variationRows = [];
             arrTopLevelRows.push(objRow);
         });
+
         $('row', arrSku).each(function () {
             var objRow = {};
             objRow.cWayName = $(this).find('cWayName').text();
@@ -1219,7 +1223,7 @@ function getValueDisplayFromKey(strkey, objGarmentProduct) {
     var strvalue = objGarmentProduct.displayValues[numIndexPositionOfKeyInKeyArray];
     return strvalue;
 };
-
+    
 
 
 function pdfPage(objForFile) {
