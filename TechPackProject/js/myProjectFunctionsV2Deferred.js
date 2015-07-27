@@ -1130,11 +1130,11 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix, objSelfRefere
             arrColorwayObjects.push(objRow);
             if (arrGroupings.indexOf(objRow.cwayGrouping) == -1) {
                 arrGroupings.push(objRow.cwayGrouping);
-                arrGroupingsTableStrings.push(initCwayString0 + objRow.cwayGrouping + initCwayString1 + objRow.specName.replace(/\s/g, "_").replace(/:/g, "colonEscape")  + initCwayString2 + '<th id="SKU_' + objRow.Sku_ARev_Id + '_Spec_' + objRow.specName.replace(/\s/g, "_").replace(/:/g, "colonEscape")  + '">' + objRow.colorwayName + '</th>');
+                arrGroupingsTableStrings.push(initCwayString0 + objRow.cwayGrouping + initCwayString1 + objRow.specName.replace(/\s/g, "_").replace(/:/g, "")  + initCwayString2 + '<th id="SKU_' + objRow.Sku_ARev_Id + '_Spec_' + objRow.specName.replace(/\s/g, "_").replace(/:/g, "")  + '">' + objRow.colorwayName + '</th>');
             }
             else {
                 var numActualIndex = arrGroupings.indexOf(objRow.cwayGrouping);
-                arrGroupingsTableStrings[numActualIndex] = arrGroupingsTableStrings[numActualIndex] + '<th id="SKU_' + objRow.Sku_ARev_Id + '_Spec_' + objRow.specName.replace(/\s/g, "_").replace(/:/g, "colonEscape")  + '">' + objRow.colorwayName + '</th>';
+                arrGroupingsTableStrings[numActualIndex] = arrGroupingsTableStrings[numActualIndex] + '<th id="SKU_' + objRow.Sku_ARev_Id + '_Spec_' + objRow.specName.replace(/\s/g, "_").replace(/:/g, "")  + '">' + objRow.colorwayName + '</th>';
             };
         });
         objSelfReference.colorwayProduct.colorways = arrColorwayObjects;
@@ -1215,9 +1215,12 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix, objSelfRefere
         for (var i = 0; i < objSelfReference.colorwayProduct.colorwayBomDetail.length; i++) {
             try {
                 var objRow = objSelfReference.colorwayProduct.colorwayBomDetail[i];
-                var strThisRow = '<tr id="' + objRow.Dimension_Id.replace(/:/g, "colonEscape") + '">' + '<td>' + objRow.Branch_Id + '</td>' + '<td>' + objRow.partName + '</td>' + '<td>' + objRow.garmentUseBranchId + '</td>' + '<td>' + objRow.Material + '</td>';
+                var regxPeriod = /[.\s]+/g;
+                var regxHyphen = /[-\s]+/g;
+                var strIdToUse = objRow.Dimension_Id.replace(/:/g, "").replace(regxPeriod, "").replace(regxHyphen, "");
+                var strThisRow = '<tr id="' + strIdToUse + '">' + '<td>' + objRow.Branch_Id + '</td>' + '<td>' + objRow.partName + '</td>' + '<td>' + objRow.garmentUseBranchId + '</td>' + '<td>' + objRow.Material + '</td>';
                 var strSprecNameToGet = '#' + objRow.specName.replace(/\s/g, "_");
-                strSprecNameToGet = strSprecNameToGet.replace(/:/g, "colonEscape");
+                strSprecNameToGet = strSprecNameToGet.replace(/:/g, "");
                 var numOfColumns = $(strSprecNameToGet + ' thead tr th').length;
                 var numOfColumnsToSkip = $(strSprecNameToGet + ' thead tr th.lastBeforeSkip').index() + 1;
                 for (var j = numOfColumnsToSkip; j < numOfColumns; j++) {
@@ -1225,6 +1228,7 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix, objSelfRefere
                 };
                 strThisRow += '</tr>';
                 $(strSprecNameToGet).append(strThisRow);
+                console.log(strIdToUse);
             }
             catch(e){
                 continue;
@@ -1236,27 +1240,23 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix, objSelfRefere
                 for (var j = 0; j < objSelfReference.colorwayProduct.colorwayBomDetail[i].variationRows.length; j++) {
                     var objRow = objSelfReference.colorwayProduct.colorwayBomDetail[i].variationRows[j];
                     var strSprecNameToGet = '#' + objRow.specName.replace(/\s/g, "_");
-                    strSprecNameToGet = strSprecNameToGet.replace(/:/g, "colonEscape");
-                    var numSearchPositionOfSku = objRow.Dimension_Id.search(':SKU');
-                    var strToGetForRow = objRow.Dimension_Id.substring(0, numSearchPositionOfSku).replace(/:/g, "colonEscape");
+                    strSprecNameToGet = strSprecNameToGet.replace(/:/g, "");
+                    var numSearchPositionOfSku = objRow.Dimension_Id.search('-SKU:');
+                    var regxPeriod = /[.\s]+/g;
+                    var regxHyphen = /[-\s]+/g;
+                    var strToGetForRow = '#' + objRow.Dimension_Id.substring(0, numSearchPositionOfSku).replace(/:/g, "").replace(regxPeriod, "").replace(regxHyphen, "");
+                    console.log(strToGetForRow);
                     var cWayName = objRow.cWayName;
                     var numOfColumns = $(strSprecNameToGet + ' thead tr th').length;
                     var numOfColumnsToSkip = $(strSprecNameToGet + ' thead tr th:contains("' + cWayName + '")').index();
-                    $(strToGetForRow + ' td:eq(' + numOfColumnsToSkip + ')').text(objRow.colorName);
-                };
-                /*for (var j = numOfColumnsToSkip; j < numOfColumns; j++) {
-                    strThisRow += '<td> </td>';
-                    for (var k = 0; k < objRow.length; k++) {
-                        var objThisVariation = objRow[k];
-                        var strToGet = objThisVariation.Dimension_Id.substring(0, objThisVariation.search(':SKU'));
-                    };
 
+                    //var objTheRowInQuestion = $(strToGetForRow);
+                    //objTheRowInQuestion.find('td').eq(numOfColumnsToSkip).html('<p>' + objRow.colorName + '</p>');
+                    $(strToGetForRow).find('td').eq(numOfColumnsToSkip).html(objRow.colorName);
                 };
-                strThisRow += '</tr>';*/
-                //$(strSprecNameToGet).append(strThisRow);
             }
             catch (e) {
-                console.log(e);
+                //console.log(e);
                 continue;
             }
         };
