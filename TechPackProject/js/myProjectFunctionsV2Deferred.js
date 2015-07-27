@@ -1105,12 +1105,14 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix, objSelfRefere
     var arrColumns = ['Grouping', 'Part Name', 'Garment Use', 'Material'];
     var arrGroupings = [];
     var arrGroupingsTableStrings = [];
+    var arrGarmentUses = [];
+    //var arrGarmentUseDisplay = [];
     $.when(objDefferedBranch, objDefferedSkuData, objDefferedColorways).done(function (objDefferedBranch, objDefferedSkuData, objDefferedColorways) {
         arrBranch = objDefferedBranch[0];
         arrSku = objDefferedSkuData[0];
         arrLocalColorways = objDefferedColorways[0];
         var arrColorwayObjects = [];
-        var initCwayString0 = '<h2 class="page">';
+        var initCwayString0 = '<h2>';
         var initCwayString1 = '</h2><table id="';
         var initCwayString2 = '" class="tblCbomTable display responsive col-md-12 compact cell-border"><thead><tr><th>Branch Id</th><th>Part Name</th><th>Garment Use</th><th class="lastBeforeSkip">Material</th>';
         $('row', arrLocalColorways).each(function (index) {
@@ -1140,7 +1142,7 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix, objSelfRefere
         objSelfReference.colorwayProduct.colorways = arrColorwayObjects;
         console.log(objSelfReference.colorwayProduct.colorways);
         for (var i = 0; i < arrGroupingsTableStrings.length; i++) {
-            arrGroupingsTableStrings[i] = arrGroupingsTableStrings[i] + '</tr></thead><tbody></tbody></table>';
+            arrGroupingsTableStrings[i] = arrGroupingsTableStrings[i] + '</tr></thead><tbody></tbody></table><hr  class="page"/>';
         };
         strTrimCwaysTableString += '</tbody></table>';
         $('#colorwaysListDiv').append(strTrimCwaysTableString);
@@ -1163,6 +1165,9 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix, objSelfRefere
             objRow.bomPartId = $(this).find('com_lcs_wc_flexbom_FlexBOMPart').attr('objectId');
             objRow.Branch_Id = $(this).find('Branch_Id').text();
             objRow.garmentUseBranchId = $(this).find('garmentUseBranchId').text();
+            if (objRow.garmentUseBranchId != '0' && objRow.garmentUseBranchId != 0 && objRow.garmentUseBranchId != '') {
+                arrGarmentUses.push(objRow.garmentUseBranchId);
+            };
             objRow.masterMaterialDesc = $(this).find('masterMaterialDesc').text();
             objRow.partName = $(this).find('partName').text();
             objRow.matrlObjectId = $(this).find('matrlObjectId').text();
@@ -1172,6 +1177,29 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix, objSelfRefere
             arrTopLevelRows.push(objRow);
             
         });
+        //http://wsflexwebprd1v.res.hbi.net/Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?objectId=1157716%2C9446287&format=formatDelegate&delegateName=HTMLWithSorting&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A11033513&action=ExecuteReport
+        var strUseJoin = arrGarmentUses.join([separator = ',']);
+        var strGarmentUseUrl = strBeginUrl + '?objectId=' + strUseJoin + '&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR:wt.query.template.ReportTemplate:11033513&action=ExecuteReport';
+        strGarmentUseUrl = encodeURI(strGarmentUseUrl);
+        $.get(strGarmentUseUrl, function (data) { }).done(function (data) {
+            $('row', data).each(function () {
+                var strId = $(this).find('objectId').text();
+                var strDisplay = $(this).find('Name').text();
+                for (var i = 0; i < arrTopLevelRows.length; i++) {
+                    var strArrId = arrTopLevelRows[i].garmentUseBranchId;
+                    if (strArrId == strId) {
+                        var obj = arrTopLevelRows[i];
+                        obj.garmentUseBranchId = strDisplay;
+                        arrTopLevelRows[i] = obj;
+
+                    };
+
+                };
+            });
+
+        
+
+
         $('row', arrSku).each(function () {
             var objRow = {};
             objRow.cWayName = $(this).find('cWayName').text();
@@ -1277,12 +1305,14 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix, objSelfRefere
         });
         $('.tblCbomTable').each(function () {
             var table = $(this).DataTable({
-                'length': 50
-            });;
+                'pageLength': 100
+            });
+            table.column(0).visible(false).draw();
         });
         $('#colorwayReport').DataTable({
             'responsive': false,
-            'length': 50
+            'pageLength': 100
+        });
         });
     });
 };
@@ -1302,9 +1332,11 @@ function getValueDisplayFromKey(strkey, objGarmentProduct) {
 
 function pdfPage(objForFile) {
     var header = $('head').html();
-    var pageHtml = $('body').html();
+
+    var pageHtml = $('body').not('button').html();
     var allHtml = header + pageHtml;
     var fileName = 'testFile.html';
+
     //add in error catching for if file exists
     fs.writeFileSync('testFile.html', allHtml);
 
