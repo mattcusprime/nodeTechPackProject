@@ -1112,10 +1112,11 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix, objSelfRefere
         var arrColorwayObjects = [];
         var initCwayString0 = '<h2 class="page">';
         var initCwayString1 = '</h2><table id="';
-        var initCwayString2 = '" class="display responsive col-md-12 compact cell-border"><thead><tr><th>Part Name</th><th>Garment Use</th><th>Material</th>';
+        var initCwayString2 = '" class="display responsive col-md-12 compact cell-border"><thead><tr><th>Branch Id</th><th>Part Name</th><th>Garment Use</th><th class="lastBeforeSkip">Material</th>';
         $('row', arrLocalColorways).each(function (index) {
             var objRow = {};
             objRow.cwayGrouping = $(this).find('cwayGroupDescription').text();
+            objRow.specName = $(this).find('specName').text();
             objRow.colorwayName = $(this).find('Colorway_Name').text();
             objRow.Sku_ARev_Id = $(this).find('Sku_ARev_Id').text();
             objRow.skuBranchId = $(this).find('skuBranchId').text();
@@ -1129,11 +1130,11 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix, objSelfRefere
             arrColorwayObjects.push(objRow);
             if (arrGroupings.indexOf(objRow.cwayGrouping) == -1) {
                 arrGroupings.push(objRow.cwayGrouping);
-                arrGroupingsTableStrings.push(initCwayString0 + objRow.cwayGrouping + initCwayString1 + objRow.cwayGrouping.replace(/\s/g, "_") + initCwayString2 + '<th id="SKU_' + objRow.Sku_ARev_Id + '_Group_' + objRow.cwayGrouping.replace(/\s/g, "_") + '">' + objRow.colorwayName + '</th>');
+                arrGroupingsTableStrings.push(initCwayString0 + objRow.cwayGrouping + initCwayString1 + objRow.specName.replace(/\s/g, "_").replace(/:/g, "colonEscape")  + initCwayString2 + '<th id="SKU_' + objRow.Sku_ARev_Id + '_Spec_' + objRow.specName.replace(/\s/g, "_").replace(/:/g, "colonEscape")  + '">' + objRow.colorwayName + '</th>');
             }
             else {
                 var numActualIndex = arrGroupings.indexOf(objRow.cwayGrouping);
-                arrGroupingsTableStrings[numActualIndex] = arrGroupingsTableStrings[numActualIndex] + '<th id="SKU_' + objRow.Sku_ARev_Id + '_Group_' + objRow.cwayGrouping.replace(/\s/g, "_") + '">' + objRow.colorwayName + '</th>';
+                arrGroupingsTableStrings[numActualIndex] = arrGroupingsTableStrings[numActualIndex] + '<th id="SKU_' + objRow.Sku_ARev_Id + '_Spec_' + objRow.specName.replace(/\s/g, "_").replace(/:/g, "colonEscape")  + '">' + objRow.colorwayName + '</th>';
             };
         });
         objSelfReference.colorwayProduct.colorways = arrColorwayObjects;
@@ -1143,6 +1144,9 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix, objSelfRefere
         };
         strTrimCwaysTableString += '</tbody></table>';
         $('#colorwaysListDiv').append(strTrimCwaysTableString);
+        for (var i = 0; i < arrGroupingsTableStrings.length; i++) {
+            $('#colorwaysDiv').append(arrGroupingsTableStrings[i]);
+        };
         $('#colorwaysListTable').DataTable({
             'paging': false,
             'length': 1000,
@@ -1150,9 +1154,10 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix, objSelfRefere
         });
         var arrTopLevelRows = [];
         var arrSkuLevelRows = [];
+        var arrComboArray = [];
         $('row', arrBranch).each(function () {
             var objRow = {};
-            objRow.specName = $(this).find('com_lcs_wc_specification_FlexSpecification_Name').text();
+            objRow.specName = $(this).find('specName').text();
             objRow.bomName = $(this).find('bomName').text();
             objRow.Material = $(this).find('Material').text();
             objRow.bomPartId = $(this).find('com_lcs_wc_flexbom_FlexBOMPart').attr('objectId');
@@ -1162,10 +1167,11 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix, objSelfRefere
             objRow.partName = $(this).find('partName').text();
             objRow.matrlObjectId = $(this).find('matrlObjectId').text();
             objRow.Dimension_Id = $(this).find('Dimension_Id').text();
+            objRow.Dimension_Name = $(this).find('Dimension_Name').text();
             objRow.variationRows = [];
             arrTopLevelRows.push(objRow);
+            
         });
-
         $('row', arrSku).each(function () {
             var objRow = {};
             objRow.cWayName = $(this).find('cWayName').text();
@@ -1183,6 +1189,7 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix, objSelfRefere
             objRow.bPartBranch = $(this).find('bPartBranch').text();
             objRow.bPartObjectId = $(this).find('bPartObjectId').text();
             arrSkuLevelRows.push(objRow);
+            
 
         });
         for (var i = 0; i < arrTopLevelRows.length; i++) {
@@ -1201,10 +1208,62 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix, objSelfRefere
             strTrimCwayBomString += '<th>' + arrColumns[i] + '</th>';
         };
         strTrimCwayBomString += '</tr></thead>';
-        for (var i = 0; i < arrGroupingsTableStrings.length; i++) {
-            $('#colorwaysDiv').append(arrGroupingsTableStrings[i]);
-        };
+       
         objSelfReference.colorwayProduct.colorwayBomDetail = arrTopLevelRows;
+        
+        //this one goes through and adds all branches
+        for (var i = 0; i < objSelfReference.colorwayProduct.colorwayBomDetail.length; i++) {
+            try {
+                var objRow = objSelfReference.colorwayProduct.colorwayBomDetail[i];
+                var strThisRow = '<tr id="' + objRow.Dimension_Id.replace(/:/g, "colonEscape") + '">' + '<td>' + objRow.Branch_Id + '</td>' + '<td>' + objRow.partName + '</td>' + '<td>' + objRow.garmentUseBranchId + '</td>' + '<td>' + objRow.Material + '</td>';
+                var strSprecNameToGet = '#' + objRow.specName.replace(/\s/g, "_");
+                strSprecNameToGet = strSprecNameToGet.replace(/:/g, "colonEscape");
+                var numOfColumns = $(strSprecNameToGet + ' thead tr th').length;
+                var numOfColumnsToSkip = $(strSprecNameToGet + ' thead tr th.lastBeforeSkip').index() + 1;
+                for (var j = numOfColumnsToSkip; j < numOfColumns; j++) {
+                    strThisRow += '<td> </td>';
+                };
+                strThisRow += '</tr>';
+                $(strSprecNameToGet).append(strThisRow);
+            }
+            catch(e){
+                continue;
+            }
+        };
+        //this one will go through and add only SKU data
+        for (var i = 0; i < objSelfReference.colorwayProduct.colorwayBomDetail.length; i++) {
+            try {
+                for (var j = 0; j < objSelfReference.colorwayProduct.colorwayBomDetail[i].variationRows.length; j++) {
+                    var objRow = objSelfReference.colorwayProduct.colorwayBomDetail[i].variationRows[j];
+                    var strSprecNameToGet = '#' + objRow.specName.replace(/\s/g, "_");
+                    strSprecNameToGet = strSprecNameToGet.replace(/:/g, "colonEscape");
+                    var numSearchPositionOfSku = objRow.Dimension_Id.search(':SKU');
+                    var strToGetForRow = objRow.Dimension_Id.substring(0, numSearchPositionOfSku).replace(/:/g, "colonEscape");
+                    var cWayName = objRow.cWayName;
+                    var numOfColumns = $(strSprecNameToGet + ' thead tr th').length;
+                    var numOfColumnsToSkip = $(strSprecNameToGet + ' thead tr th:contains("' + cWayName + '")').index();
+                    $(strToGetForRow + ' td:eq(' + numOfColumnsToSkip + ')').text(objRow.colorName);
+                };
+                /*for (var j = numOfColumnsToSkip; j < numOfColumns; j++) {
+                    strThisRow += '<td> </td>';
+                    for (var k = 0; k < objRow.length; k++) {
+                        var objThisVariation = objRow[k];
+                        var strToGet = objThisVariation.Dimension_Id.substring(0, objThisVariation.search(':SKU'));
+                    };
+
+                };
+                strThisRow += '</tr>';*/
+                //$(strSprecNameToGet).append(strThisRow);
+            }
+            catch (e) {
+                console.log(e);
+                continue;
+            }
+        };
+
+
+
+
         $('#colorwaysDiv table').DataTable();
         $('#colorwayReport').DataTable({
             'responsive': false,
