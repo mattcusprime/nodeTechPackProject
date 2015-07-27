@@ -1129,11 +1129,11 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix, objSelfRefere
             arrColorwayObjects.push(objRow);
             if (arrGroupings.indexOf(objRow.cwayGrouping) == -1) {
                 arrGroupings.push(objRow.cwayGrouping);
-                arrGroupingsTableStrings.push(initCwayString0 + objRow.cwayGrouping + initCwayString1 + objRow.cwayGrouping.replace(/\s/g, "_") + initCwayString2 + '<th>' + objRow.colorwayName + '</th>');
+                arrGroupingsTableStrings.push(initCwayString0 + objRow.cwayGrouping + initCwayString1 + objRow.cwayGrouping.replace(/\s/g, "_") + initCwayString2 + '<th id="' + objRow.Sku_ARev_Id + objRow.cwayGrouping.replace(/\s/g, "_") + '" id="' + objRow.Sku_ARev_Id + objRow.cwayGrouping.replace(/\s/g, "_") + '">' + objRow.colorwayName + '</th>');
             }
             else {
                 var numActualIndex = arrGroupings.indexOf(objRow.cwayGrouping);
-                arrGroupingsTableStrings[numActualIndex] = arrGroupingsTableStrings[numActualIndex] + '<th>' + objRow.colorwayName + '</th>';
+                arrGroupingsTableStrings[numActualIndex] = arrGroupingsTableStrings[numActualIndex] + '<th id="' + objRow.Sku_ARev_Id + objRow.cwayGrouping.replace(/\s/g, "_") + '">' + objRow.colorwayName + '</th>';
             };
         });
         objSelfReference.colorwayProduct.colorways = arrColorwayObjects;
