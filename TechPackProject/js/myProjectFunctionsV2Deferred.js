@@ -1057,7 +1057,7 @@ garmentProduct.prototype.saveMe = function (objSelfReference) {
 garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix, objSelfReference) {
     var strBeginUrl = strUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction'//objectId=<param>&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A10734353&action=ExecuteReport';
     var strTrimCwayBomString = '<h2>Colorway BOM</h2><table id="colorwayReport" class="display responsive col-md-12 compact cell-border"><thead><tr>';//<th>Part Name</th><th>Desc</th><th>Garment Use</th><th>Material</th>';</tr></thead><tbody>';
-    var strTrimCwaysTableString = '<h1>Colorways</h1><h2>Colorways by Group</h2><table id="colorwaysListTable" class="display responsive col-md-12 compact cell-border"><thead><tr><th>Colorway Group</th><th>Colorway Name</th></tr></thead><tbody>';
+    var strTrimCwaysTableString = '<h1>Colorways</h1><h2>Colorways by Group</h2> <button id="swapSwatch">Show Swatches</button><table id="colorwaysListTable" class="display responsive col-md-12 compact cell-border"><thead><tr><th>Colorway Group</th><th>Colorway Name</th></tr></thead><tbody>';
     var objDefferedBranch = $.ajax({
         url: strBeginUrl,
         type: 'get',
@@ -1112,7 +1112,7 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix, objSelfRefere
         var arrColorwayObjects = [];
         var initCwayString0 = '<h2 class="page">';
         var initCwayString1 = '</h2><table id="';
-        var initCwayString2 = '" class="display responsive col-md-12 compact cell-border"><thead><tr><th>Branch Id</th><th>Part Name</th><th>Garment Use</th><th class="lastBeforeSkip">Material</th>';
+        var initCwayString2 = '" class="tblCbomTable display responsive col-md-12 compact cell-border"><thead><tr><th>Branch Id</th><th>Part Name</th><th>Garment Use</th><th class="lastBeforeSkip">Material</th>';
         $('row', arrLocalColorways).each(function (index) {
             var objRow = {};
             objRow.cwayGrouping = $(this).find('cwayGroupDescription').text();
@@ -1252,7 +1252,7 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix, objSelfRefere
 
                     //var objTheRowInQuestion = $(strToGetForRow);
                     //objTheRowInQuestion.find('td').eq(numOfColumnsToSkip).html('<p>' + objRow.colorName + '</p>');
-                    $(strToGetForRow).find('td').eq(numOfColumnsToSkip).html(objRow.colorName);
+                    $(strToGetForRow).find('td').eq(numOfColumnsToSkip).html(objRow.colorName).attr("backupBgColor",'#' + objRow.hex)//.css('opacity',0.5);
                 };
             }
             catch (e) {
@@ -1264,7 +1264,22 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix, objSelfRefere
 
 
 
-        $('#colorwaysDiv table').DataTable();
+        //$('#colorwaysDiv table').DataTable();
+        $('td').each(function () {
+            var strItsVal = $(this).text();
+            if (strItsVal == 0) {
+                $(this).text('');
+            };
+        });
+        $('#colorwaysDiv').append('<button id="swapSwatch">Show Swatches</button>');
+        $('#swapSwatch').click(function () {
+            switchToSwatches();
+        });
+        $('.tblCbomTable').each(function () {
+            var table = $(this).DataTable({
+                'length': 50
+            });;
+        });
         $('#colorwayReport').DataTable({
             'responsive': false,
             'length': 50

@@ -337,3 +337,13 @@ saveFile('#export_file',_exportCSV);
 
 
 */
+
+function switchToSwatches() {
+    $('td').each(function () {
+        var strBackupColor = $(this).attr('backupBgColor');
+        if (typeof (strBackupColor) != 'undefined') {
+            $(this).css('background-color', strBackupColor);
+        };
+    });
+
+};
