@@ -252,7 +252,7 @@ function createComponentTable(strParentJquerySelectorJustStringNoPound, strChild
             { visible: false, targets: 0 }
         ],
         responsive: false,
-        dom: '',
+        dom: 'ft',
         tableTools: {
             "sSwfPath": "C:/nodeTechPackProject/TechPackProject/js/copy_csv_xls_pdf.swf"
         },
