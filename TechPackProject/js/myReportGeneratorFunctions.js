@@ -305,7 +305,8 @@ function getLogin(arrAttributeValueListArray, objCurrentGarmentProduct) {
 
 
 function runNewProduct() {
-    $('#runNew,.clearThisComponentOnNewGarmentLoad').fadeOut();
+
+    $('#runNew,.clearThisComponentOnNewGarmentLoad,nav').fadeOut();
     $('#garmentFormContainer').fadeIn();
     $('#gProd').val('').focus();
     

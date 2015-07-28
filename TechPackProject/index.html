@@ -124,7 +124,7 @@
 
                 $('#garmentFormContainer').fadeOut();
                 $('.clearThisComponentOnNewGarmentLoad *').remove();
-                $('#runNew,.clearThisComponentOnNewGarmentLoad').fadeIn();
+                $('#runNew,.clearThisComponentOnNewGarmentLoad,nav').fadeIn();
                 localStorage.setItem('lastGarmentRan', nameToUse);
                 currentGarmentProduct.getSpecByName(strUrlPrefix, nameToUse, currentGarmentProduct.thenCallSpecs, returnArrays, currentGarmentProduct);
                 }
@@ -272,8 +272,8 @@
 
     
     <div class="page">
-        <div class="container-fluid clearThisCom    ponentOnNewGarmentLoad" id="garmentHeader">
-            
+        <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="garmentHeader">
+
         </div>
     </div>
     
