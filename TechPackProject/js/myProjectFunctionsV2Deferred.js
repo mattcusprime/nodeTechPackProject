@@ -1371,7 +1371,7 @@ garmentProduct.prototype.getLabelBoms = function (labelProductObjectId,strUrlPre
 
         });
 
-        $('#labelsDiv').html('<table id="labelBom" class="display responsive col-md-12 compact cell-border"><thead><tr><th>Country</th><th>Garment Use</th><th>Material</th><th>Application</th><th>Label Size</th><th>Fiber Code-Content</th><th>Ink Colors</th><th>Usage Per Dozen</th><th>Usage UOM</th><th>Std Waste Factor</th><th>Usage Price</th></tr></thead><tbody></tbody></table>');
+        $('#labelsDiv').append('<h1>Label BOM</h1><table id="labelBom" class="display responsive col-md-12 compact cell-border"><thead><tr><th>Country</th><th>Garment Use</th><th>Material</th><th>Application</th><th>Label Size</th><th>Fiber Code-Content</th><th>Ink Colors</th><th>Usage Per Dozen</th><th>Usage UOM</th><th>Std Waste Factor</th><th>Usage Price</th></tr></thead><tbody></tbody></table>');
         $('#labelBom').DataTable({
             "data": arrLabelData,
             "pageLength": 1000,
@@ -1402,6 +1402,9 @@ function getValueDisplayFromKey(strkey, objGarmentProduct) {
 function pdfPage(objForFile) {
     $('button').remove();
     $('label').remove();
+    $('th').each(function () {
+        $(this).removeClass("sorting sorting_asc sorting_desc");
+    });
     $('.clearThisComponentOnNewGarmentLoad').each(function () {
         if ($(this).find('h1').length) {
 
