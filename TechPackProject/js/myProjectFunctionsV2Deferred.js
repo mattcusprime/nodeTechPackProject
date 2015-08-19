@@ -79,10 +79,12 @@ function garmentProduct(strName, arrAttributes, arrSpecs, arrSources, objColorwa
     this.blockWeightsSpreadTableString = strBlockWeightsSpreadTableString;
     this.blockWeightsTrimTableString = strTrimSpreadTableString;
 };
+/*
 var fs = require('fs.extra');
 var execFile = require('child_process').execFile, child;
 var wkhtmltopdf = require('wkhtmltopdf');
 var gui = require('nw.gui');
+ Node webkit functionalities*/
 /**
  * @method of @class GarmentProduct
  * @param {String} strHostUrlPrefix string denoting the initial characters of the url for the domain in which the construction sits.  All string prior to Windchill.
@@ -1359,7 +1361,7 @@ garmentProduct.prototype.getLabelBoms = function (labelProductObjectId,strUrlPre
     $.get(strGetUrl, function (data) { }).done(function (data) {
         $('row', data).each(function () {
             /* var objRow = {};
-            
+                
             objRow.madeInCountryDisplay = $(this).find('madeInCountryDisplay').text();
             objRow.garmentUse = $(this).find('garmentUse').text();
             objRow.Material_Name = $(this).find('Material_Name').text();
