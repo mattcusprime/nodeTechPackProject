@@ -1416,6 +1416,7 @@ garmentProduct.prototype.getLabelBoms = function (labelProductObjectId,strUrlPre
 
 //utility functions to work with garmentProduct class below
 /*
+
  * @param {String} strkey key value of item in list to be passed to key array to get back display
  * @param {Object} objGarmentProduct takes the same garmentProduct which is calling the method.  This is used to work around scope limitations and is generally performed
  * @return {String} strvalue return the display value from the key

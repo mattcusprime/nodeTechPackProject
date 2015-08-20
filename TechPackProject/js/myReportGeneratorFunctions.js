@@ -3,6 +3,7 @@ var arrGarmentProductsArrayForTypeAhead = [];
 
 //
 /**
+
  * @param {Object} objCurrentGarmentProduct is the garment product passed to the function for which to create the releated products div
  * @example var garment = new garmentProduct();
  * //invoke then the methods to get it's relationships
