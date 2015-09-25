@@ -114,22 +114,21 @@
                 getLogin(arrOfAttributeValueListIds, currentGarmentProduct);
             };
 
-            
+
             /*applyTypeAheadToElement(gProdQueryURL, '#gProd', 'Garment_Product_Name');
             currentGarmentProduct.getMyValueLists(arrOfAttributeValueListIds, currentGarmentProduct);*/
             $('#garmentProd').submit(function (e) {
                 e.preventDefault();
                 var nameToUse = $('#gProd').val();
-                if(arrGarmentProductsArrayForTypeAhead.indexOf(nameToUse) != -1){
+                if (arrGarmentProductsArrayForTypeAhead.indexOf(nameToUse) != -1) {
 
-                $('#garmentFormContainer').fadeOut();
-                $('.clearThisComponentOnNewGarmentLoad *').remove();
-                $('#runNew,.clearThisComponentOnNewGarmentLoad,nav').fadeIn();
-                localStorage.setItem('lastGarmentRan', nameToUse);
-                currentGarmentProduct.getSpecByName(strUrlPrefix, nameToUse, currentGarmentProduct.thenCallSpecs, returnArrays, currentGarmentProduct);
+                    $('#garmentFormContainer').fadeOut();
+                    $('.clearThisComponentOnNewGarmentLoad *').remove();
+                    $('#runNew,.clearThisComponentOnNewGarmentLoad,nav').fadeIn();
+                    localStorage.setItem('lastGarmentRan', nameToUse);
+                    currentGarmentProduct.getSpecByName(strUrlPrefix, nameToUse, currentGarmentProduct.thenCallSpecs, returnArrays, currentGarmentProduct);
                 }
-                else
-                {
+                else {
                     $('#gProd').val('');
                     $('#gProd').focus();
                     $('#garmentHeader').append('<p class="clearThisComponentOnNewGarmentLoad" id="noGarment">' + nameToUse + ' is not in the list of valid choices for a garment product.  Please use the typeahead to select a valid option.</p>')
@@ -162,7 +161,7 @@
                 currentGarmentProduct.saveMe();
 
             });
-           
+
             $('#garmentFormContainer,#runNew').hide();
             $('#usr').focus();
             if (typeof (localStorage.getItem('mattAppUser')) != 'undefined' && typeof (localStorage.getItem('mattAppPass')) != 'undefined') {
@@ -250,7 +249,7 @@
             </div>
         </div>
     </nav>
-    
+
     <div class="container-fluid" id="garmentFormContainer">
         <div class="col-md-10 starter-template row">
             <form id="garmentProd">
@@ -270,13 +269,13 @@
 
     </div>
 
-    
+
     <div class="page">
         <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="garmentHeader">
 
         </div>
     </div>
-    
+
     <!-- /.container -->
     <div class="page" id="search">
         <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="reportsHeader">
@@ -295,44 +294,44 @@
         </div>
         <!-- container -->
     </div>
-    
+
     <div class="page">
         <div id="colorwaysDiv" class="container-fluid clearThisComponentOnNewGarmentLoad">
-      
+
         </div>
         <!-- container -->
     </div>
-    
-   
-    
+
+
+
     <div class="page">
         <div id="measurementDiv" class="container-fluid clearThisComponentOnNewGarmentLoad">
 
         </div>
         <!-- container -->
     </div>
-    
+
     <div class="page">
         <div id="constructionDiv" class="container-fluid clearThisComponentOnNewGarmentLoad">
 
         </div>
         <!-- container -->
     </div>
-    
+
     <div class="page">
         <div id="blockWeightSpreadDiv" class="container-fluid clearThisComponentOnNewGarmentLoad">
-            
+
         </div>
         <!-- container -->
     </div>
-    
+
     <div class="page">
         <div id="blockWeightTrimDiv" class="container-fluid clearThisComponentOnNewGarmentLoad">
 
         </div>
         <!-- container -->
     </div>
-    
+
     <div class="page">
         <div id="imagesDiv" class="container-fluid clearThisComponentOnNewGarmentLoad">
 
