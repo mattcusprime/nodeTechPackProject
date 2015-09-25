@@ -403,6 +403,7 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
     var objLabelProduct = {};
     var objSellingProduct = {};
     var numObjectId;
+    
     //first pass here gets all product relationships
     //changes in relationship names or type names would need to be later reflected here in the naming structure
     //using actual text names in place of flex path type ids allows us to easier alternate between instances of PLM
@@ -578,6 +579,37 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
 
     });
     objSelfReference.boms = arrBoms;
+    //console.log("Garment Data " + objGarmentSewBomData + " Pattern Data " + objPatternSewBomDataWithUsage);
+
+
+
+    //objSelfReference.garmentSewBoms = objGarmentSewBomData;
+    //objSelfReference.patternSewBoms = objPatternSewBomDataWithUsage;
+    //put this back later when the objects are actually constructed through parsing
+    var arrPatternSewRows = [];
+    var arrGarmentSewRows = [];
+    $('row', objGarmentSewBomData).each(function () {
+        var objGarmentSewBomRow = {};
+        $(this).find('*').each(function () {
+            var strMyTag = $(this).prop('tagName');
+            objGarmentSewBomData[strMyTag] = $(this).text();
+            //garmennt use, material, description, UOM, Minor Category, [ALL] and then sizes
+        });
+        arrGarmentSewRows.push(objGarmentSewBomData);
+    });
+    $('row', objPatternSewBomDataWithUsage).each(function () {
+        var objPatternSewBomRow = {};
+        $(this).find('*').each(function () {
+            var strMyTag = $(this).prop('tagName');
+            objPatternSewBomRow[strMyTag] = $(this).text();
+            //garmennt use, material, description, UOM, Minor Category, [ALL] and then sizes
+        });
+        arrPatternSewRows.push(objPatternSewBomRow);
+    });
+    objSelfReference.garmentSewBoms = arrGarmentSewRows;
+    objSelfReference.patternSewBoms = arrPatternSewRows;
+
+
     var arrConstructionDetailDataContainer;
     var arrMeasurementDetailDataContainer;
     $.when(objDefferedConstruction, objDefferedMeasurement).done(function (objDefferedConstruction, objDefferedMeasurement) {
@@ -1575,3 +1607,17 @@ function materialSwapper(arrWithbranchIds) {
     });
 };
 //Testing out the recommit, getting back into business
+function rowParser(parentElement,objDocumentObject) {
+    var arrOfElements = [];
+    
+    $(parentElement, objDocumentObject).each(function () {
+        var objElement = {};
+        $(this).find('*').each(function () {
+            var strMyTag = $(this).prop('tagName');
+            objElement[strMyTag] = $(this).text();
+            //garmennt use, material, description, UOM, Minor Category, [ALL] and then sizes
+        });
+        arrOfElements.push(objElement);
+    });
+    return arrOfElements;
+};
