@@ -586,26 +586,9 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
     //objSelfReference.garmentSewBoms = objGarmentSewBomData;
     //objSelfReference.patternSewBoms = objPatternSewBomDataWithUsage;
     //put this back later when the objects are actually constructed through parsing
-    var arrPatternSewRows = [];
-    var arrGarmentSewRows = [];
-    $('row', objGarmentSewBomData).each(function () {
-        var objGarmentSewBomRow = {};
-        $(this).find('*').each(function () {
-            var strMyTag = $(this).prop('tagName');
-            objGarmentSewBomData[strMyTag] = $(this).text();
-            //garmennt use, material, description, UOM, Minor Category, [ALL] and then sizes
-        });
-        arrGarmentSewRows.push(objGarmentSewBomData);
-    });
-    $('row', objPatternSewBomDataWithUsage).each(function () {
-        var objPatternSewBomRow = {};
-        $(this).find('*').each(function () {
-            var strMyTag = $(this).prop('tagName');
-            objPatternSewBomRow[strMyTag] = $(this).text();
-            //garmennt use, material, description, UOM, Minor Category, [ALL] and then sizes
-        });
-        arrPatternSewRows.push(objPatternSewBomRow);
-    });
+    var arrGarmentSewRows = rowParser('row', objGarmentSewBomData);
+    var arrPatternSewRows = rowParser('row', objPatternSewBomDataWithUsage);
+
     objSelfReference.garmentSewBoms = arrGarmentSewRows;
     objSelfReference.patternSewBoms = arrPatternSewRows;
 
@@ -1612,10 +1595,20 @@ function rowParser(parentElement,objDocumentObject) {
     
     $(parentElement, objDocumentObject).each(function () {
         var objElement = {};
+        var arrObjElementAttributes = [];
         $(this).find('*').each(function () {
             var strMyTag = $(this).prop('tagName');
-            objElement[strMyTag] = $(this).text();
-            //garmennt use, material, description, UOM, Minor Category, [ALL] and then sizes
+            objElement[strMyTag] = $(this);
+            objElement[strMyTag].value = $(this).text();
+            var objAttrObject = {};
+            var arrAttributes = [];
+           /* $(this).attr('*').each(function () {
+                
+                var strAttrName = $(this).text();
+                objAttrObject[strAttrName];
+            });*/
+
+            //garment use, material, description, UOM, Minor Category, [ALL] and then sizes
         });
         arrOfElements.push(objElement);
     });
