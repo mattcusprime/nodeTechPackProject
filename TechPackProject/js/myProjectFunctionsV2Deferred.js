@@ -1414,6 +1414,15 @@ garmentProduct.prototype.getLabelBoms = function (labelProductObjectId,strUrlPre
 };
 
 
+garmentProduct.prototype.getSewSourceBoms = function (strUrlPrefix,strActiveSpecId, objSelfReference) {
+    var strGarmentSewAndSourceBomUrls = strUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?specId=' + strActiveSpecId + '+&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A12079049&action=ExecuteReport';
+    var strPatternSewAndBomUsageUrl = strUrlPrefix +'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?specId=' + strActiveSpecId + '+&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A12076562&action=ExecuteReport';//add rest here.
+    /*Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?specId=5535179+&format=formatDelegate&delegateName=HTMLWithSorting&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A12079049&action=ExecuteReport*/
+    /*Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?specId=5535179+&format=formatDelegate&delegateName=HTMLWithSortingAndMerging&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A12076562&action=ExecuteReport*/
+
+
+};
+
 //utility functions to work with garmentProduct class below
 /*
 
