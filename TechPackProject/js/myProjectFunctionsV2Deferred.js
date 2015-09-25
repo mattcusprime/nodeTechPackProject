@@ -393,7 +393,7 @@ garmentProduct.prototype.getSpecByName = function (strHostUrlPrefix, strGarmentN
  * @param {Object} objProdLinkData defferred object that is passed to this function to work around the asynchronous nature of the ajax calls.  It contains all data pertaining to the object between 'obj' and 'Data' in its name
  * @param {Object} objSelfReference takes the same garmentProduct which is calling the method.  This is used to work around scope limitations and is generally performed
  */
-garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPrefix, objDocumentData, objConstructionData, objMeasurementData, objBomData, objProdLinkData,objGarmentSewBomData,objPatternSewBomDataWithUsage, objSelfReference) {
+garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPrefix, objDocumentData, objConstructionData, objMeasurementData, objBomData, objProdLinkData, objGarmentSewBomData, objPatternSewBomDataWithUsage, objSelfReference) {
     var arrDocuments = [];
     var arrBoms = [];
     var arrTableDataArray = [];
@@ -403,7 +403,7 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
     var objLabelProduct = {};
     var objSellingProduct = {};
     var numObjectId;
-    
+
     //first pass here gets all product relationships
     //changes in relationship names or type names would need to be later reflected here in the naming structure
     //using actual text names in place of flex path type ids allows us to easier alternate between instances of PLM
@@ -587,7 +587,11 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
     //objSelfReference.patternSewBoms = objPatternSewBomDataWithUsage;
     //put this back later when the objects are actually constructed through parsing
     var arrGarmentSewRows = rowParser('row', objGarmentSewBomData);
+    var strGarmentSewBomString = convertRowArrayIntoHtmlTable(arrGarmentSewRows);
     var arrPatternSewRows = rowParser('row', objPatternSewBomDataWithUsage);
+    var strPatternSewBomString = convertRowArrayIntoHtmlTable(arrGarmentSewRows);
+
+    console.log('Garment Sew Bom String ' + strGarmentSewBomString, 'Pattern Sew Bom String ' + strPatternSewBomString);
 
     objSelfReference.garmentSewBoms = arrGarmentSewRows;
     objSelfReference.patternSewBoms = arrPatternSewRows;
@@ -669,7 +673,7 @@ garmentProduct.prototype.getAllMyDataForMyActiveSpec = function (strHostUrlPrefi
         obGarSewBomData = arrGarSewBomData[0];
         objPatSewBomData = arrPatSewBomData[0];
         //console.log(objDocData, objConData, objMeasData, objBomData, arrProdLinkData);
-        objSelfReference.getSpecComponentsForActiveSpec(strHostUrlPrefix, objDocData, objConData, objMeasData, objBomData, objProdLinkData,obGarSewBomData,objPatSewBomData, objSelfReference);
+        objSelfReference.getSpecComponentsForActiveSpec(strHostUrlPrefix, objDocData, objConData, objMeasData, objBomData, objProdLinkData, obGarSewBomData, objPatSewBomData, objSelfReference);
         console.log(objSelfReference);
         objSelfReference.generateAvailableReportsList(objSelfReference);
         //saveGarmentProd(objSelfReference);
@@ -1590,9 +1594,9 @@ function materialSwapper(arrWithbranchIds) {
     });
 };
 //Testing out the recommit, getting back into business
-function rowParser(parentElement,objDocumentObject) {
+function rowParser(parentElement, objDocumentObject) {
     var arrOfElements = [];
-    
+
     $(parentElement, objDocumentObject).each(function () {
         var objElement = {};
         var arrObjElementAttributes = [];
@@ -1602,15 +1606,45 @@ function rowParser(parentElement,objDocumentObject) {
             objElement[strMyTag].value = $(this).text();
             var objAttrObject = {};
             var arrAttributes = [];
-           /* $(this).attr('*').each(function () {
-                
-                var strAttrName = $(this).text();
-                objAttrObject[strAttrName];
-            });*/
 
-            //garment use, material, description, UOM, Minor Category, [ALL] and then sizes
         });
         arrOfElements.push(objElement);
     });
     return arrOfElements;
 };
+
+function convertRowArrayIntoHtmlTable(arrRowArray, optionalId) {
+    var strResultingHtmlTable = '';
+    if (typeof (optionalId == 'undefined')) {
+        strResultingHtmlTable = '<table><thead>';
+    }
+    else {
+        strResultingHtmlTable = '<table id="' + optionalId + '" ><thead>';
+    };
+    var objFirstObject = arrRowArray[0];
+    for (var name in objFirstObject) {
+        if (objFirstObject.hasOwnProperty(name)) {
+            strResultingHtmlTable += '<th>' + name + '</th>';
+        }
+    }
+    strResultingHtmlTable += '</thead><tbody>';
+    for (var i = 0; i < arrRowArray.length; i++) {
+        var objRow = arrRowArray[i];
+        strResultingHtmlTable += '<tr>';
+        for (var name in objRow) {
+
+            if (objRow.hasOwnProperty(name)) {
+                strResultingHtmlTable += '<td>' + objRow[name].value + '</td>';
+
+            };
+
+        };
+        strResultingHtmlTable += '</tr>';
+
+    };
+    strResultingHtmlTable += '</tbody></table>';
+    return strResultingHtmlTable;
+
+};
+
+//need to append a second function here which turns the objects grabbed and created from the parsing of the xml into automatic tables
