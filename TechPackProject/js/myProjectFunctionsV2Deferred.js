@@ -78,7 +78,8 @@ function garmentProduct(strName, arrAttributes, arrSpecs, arrSources, objColorwa
     //moved to be a property of colorwayobj
     this.blockWeightsSpreadTableString = strBlockWeightsSpreadTableString;
     this.blockWeightsTrimTableString = strTrimSpreadTableString;
-    this.sortingArray =['sizeXXS','1','sizeXS','2','sizeS','3','sizeM','4','sizeL','5','sizeXL','6','size2X','7','size3X','8','size4X','9','size5X','10','size6X','11','size3M','1','size6M','2','size9M','3','size12M','4','size18M','5','size24M','6','size2T','7','size3T','8','size4T','9','size5T','10','size2','1','size4','2','size5','3','size6','4','size7','5','size8','6','size9','7','size10','8','size11','9','size12','10','size13','11','size14','12','size16','13','size18','14','size20','15','size22','16','size24','17','size26','18','size28','19','size30','20','size32','21','size34','22','size36','23','size38','24','size40','25','size42','26','size44','27','size46','28','size48','29','size50','30','size52','31','size54','32','size56','33','size58','34','size60','35','size62','36','sizeS/M','1','sizeL/XL','2','size16W','1','size20W','2','size24W','3','size28W','4','size32W','5','size36W','6'];
+    this.sortingArray = ['sizeXXS', '1', 'sizeXS', '2', 'sizeS', '3', 'sizeM', '4', 'sizeL', '5', 'sizeXL', '6', 'size2X', '7', 'size3X', '8', 'size4X', '9', 'size5X', '10', 'size6X', '11', 'size3M', '1', 'size6M', '2', 'size9M', '3', 'size12M', '4', 'size18M', '5', 'size24M', '6', 'size2T', '7', 'size3T', '8', 'size4T', '9', 'size5T', '10', 'size2', '1', 'size4', '2', 'size5', '3', 'size6', '4', 'size7', '5', 'size8', '6', 'size9', '7', 'size10', '8', 'size11', '9', 'size12', '10', 'size13', '11', 'size14', '12', 'size16', '13', 'size18', '14', 'size20', '15', 'size22', '16', 'size24', '17', 'size26', '18', 'size28', '19', 'size30', '20', 'size32', '21', 'size34', '22', 'size36', '23', 'size38', '24', 'size40', '25', 'size42', '26', 'size44', '27', 'size46', '28', 'size48', '29', 'size50', '30', 'size52', '31', 'size54', '32', 'size56', '33', 'size58', '34', 'size60', '35', 'size62', '36', 'sizeS/M', '1', 'sizeL/XL', '2', 'size16W', '1', 'size20W', '2', 'size24W', '3', 'size28W', '4', 'size32W', '5', 'size36W', '6'];
+
 };
 /*
 var fs = require('fs.extra');
@@ -591,10 +592,9 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
     //var strGarmentSewBomString = convertRowArrayIntoHtmlTable(arrGarmentSewRows);
     var arrPatternSewRows = rowParser('row', objPatternSewBomDataWithUsage);
     //var strPatternSewBomString = convertRowArrayIntoHtmlTable(arrPatternSewRows);
-    var arrSewUsageCombined = [];
     for (var i = 0; i < arrGarmentSewRows.length; i++) {
         var objGarmentSewRow = {};
-       
+
         objGarmentSewRow = arrGarmentSewRows[i];
         for (var j = 0; j < arrPatternSewRows.length; j++) {
             var objPatternSewRow = {};
@@ -649,6 +649,7 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
     objSelfReference.garmentSewBoms = arrGarmentSewRows;
     objSelfReference.patternSewBoms = arrPatternSewRows;
 
+    convertRowArrayIntoHtmlTable(objSelfReference.garmentSewBoms, 'size', 'usagePerDozen', 'sewBomTable');
 
     var arrConstructionDetailDataContainer;
     var arrMeasurementDetailDataContainer;
@@ -1340,7 +1341,7 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix, objSelfRefere
             */
 
         });
-        console.log(arrMaterialsToGet);
+        //console.log(arrMaterialsToGet);
         for (var i = 0; i < arrTopLevelRows.length; i++) {
             var strCurrentDimsionId = arrTopLevelRows[i].Dimension_Id;
             var arrThisLoop = [];
@@ -1668,7 +1669,7 @@ function rowParser(parentElement, objDocumentObject) {
     return arrOfElements;
 };
 
-function convertRowArrayIntoHtmlTable(arrRowArray, optionalId) {
+function convertRowArrayIntoHtmlTable(arrRowArray, strHeaderArrayPropertyToSearchFor,strBodyArrayPropertyToSearchFor, optionalId) {
     var strResultingHtmlTable = '';
     if (typeof (optionalId == 'undefined')) {
         strResultingHtmlTable = '<table><thead>';
@@ -1676,12 +1677,25 @@ function convertRowArrayIntoHtmlTable(arrRowArray, optionalId) {
     else {
         strResultingHtmlTable = '<table id="' + optionalId + '" ><thead>';
     };
+
     var objFirstObject = arrRowArray[0];
     for (var name in objFirstObject) {
         if (objFirstObject.hasOwnProperty(name)) {
-            strResultingHtmlTable += '<th>' + name + '</th>';
+            var arrTester = objFirstObject[name];
+            if ($.isArray(arrTester)) {
+                //var arrObj = objFirstObject[name];
+                for (var l = 0; l < arrTester.length; l++) {
+                    var objSimpleObj = arrTester[l];
+                    strResultingHtmlTable += '<th>' + objSimpleObj[strHeaderArrayPropertyToSearchFor] + '</th>';
+
+                };
+            }
+            else {
+                strResultingHtmlTable += '<th>' + name + '</th>';
+            };
         }
     }
+
     strResultingHtmlTable += '</thead><tbody>';
     for (var i = 0; i < arrRowArray.length; i++) {
         var objRow = arrRowArray[i];
@@ -1689,8 +1703,23 @@ function convertRowArrayIntoHtmlTable(arrRowArray, optionalId) {
         for (var name in objRow) {
 
             if (objRow.hasOwnProperty(name)) {
-                strResultingHtmlTable += '<td>' + objRow[name].value + '</td>';
-
+                var arrTester = objFirstObject[name];
+                if ($.isArray(arrTester)) {
+                    for (var l = 0; l < arrTester.length; l++) {
+                        var objSimpleObj = arrTester[l];
+                        //var objSuperSimpleObj = objSimpleObj[l];
+                        if (typeof (strBodyArrayPropertyToSearchFor) != 'undefined') {
+                            strResultingHtmlTable += '<td>' + objSimpleObj[strBodyArrayPropertyToSearchFor] + '</td>';
+                        }
+                        else
+                        {
+                            strResultingHtmlTable += '<td>' + 'body to search for was undefined' + '</td>';
+                        };
+                    };
+                }
+                else {
+                    strResultingHtmlTable += '<td>' + objRow[name] + '</td>';
+                };
             };
 
         };
@@ -1698,6 +1727,7 @@ function convertRowArrayIntoHtmlTable(arrRowArray, optionalId) {
 
     };
     strResultingHtmlTable += '</tbody></table>';
+    console.log(strResultingHtmlTable);
     return strResultingHtmlTable;
 
 };
