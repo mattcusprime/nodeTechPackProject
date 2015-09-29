@@ -305,8 +305,14 @@ function getLogin(arrAttributeValueListArray, objCurrentGarmentProduct) {
 };
 
 
-function runNewProduct() {
-
+function runNewProduct(wipeThisGarmentProductOut) {
+    for (var property in wipeThisGarmentProductOut) {
+        if (wipeThisGarmentProductOut.hasOwnProperty(property)) {
+            if (wipeThisGarmentProductOut[property] != wipeThisGarmentProductOut.displayKeys && wipeThisGarmentProductOut[property] != wipeThisGarmentProductOut.displayValues) {
+                wipeThisGarmentProductOut[property] = undefined;
+            };
+        };
+    };
     $('#runNew,.clearThisComponentOnNewGarmentLoad,nav').fadeOut();
     $('#garmentFormContainer').fadeIn();
     $('#gProd').val('').focus();

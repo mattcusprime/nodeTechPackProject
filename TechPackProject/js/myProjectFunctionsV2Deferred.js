@@ -320,7 +320,7 @@ garmentProduct.prototype.getMyMeasurement = function (strHostUrlPrefix, numMeasu
  *
  */
 garmentProduct.prototype.getSpecByName = function (strHostUrlPrefix, strGarmentName, funCallback, objForCallback, objSelfReference) {
-    if (typeof(strGarmentName) == 'undefined')  // How can I stop working of function here?
+    if (typeof (strGarmentName) == 'undefined')  // How can I stop working of function here?
     {
         alert('No Garment Name was given')
         return;
@@ -415,7 +415,7 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
     var objLabelProduct = {};
     var objSellingProduct = {};
     var numObjectId;
-
+    
     //first pass here gets all product relationships
     //changes in relationship names or type names would need to be later reflected here in the naming structure
     //using actual text names in place of flex path type ids allows us to easier alternate between instances of PLM
@@ -450,18 +450,18 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
         };
     });
     objSelfReference.objectId = numObjectId;
-    
+
     if (typeof (objSelfReference.colorwayProduct) != 'undefined') {
         objSelfReference.getColorwayBoms(strHostUrlPrefix, objSelfReference);
     };
-    
-   
+
+
     if (typeof (objSelfReference.labelProduct) != 'undefined') {
         var strObjectIdForParam = objSelfReference.labelProduct.objectId;
         objSelfReference.getLabelBoms(strObjectIdForParam, strHostUrlPrefix, objSelfReference);
         //get label bom
     };
-   
+
     var offLineTurnOff = $('#offline').val();
     if (offLineTurnOff != 1) {
         $('row', objDocumentData).each(function (index) {
@@ -603,6 +603,7 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
     //objSelfReference.patternSewBoms = objPatternSewBomDataWithUsage;
     //put this back later when the objects are actually constructed through parsing
     var arrGarmentSewRows = rowParser('row', objGarmentSewBomData);
+    var arrGarmentSourceRows = [];
     //var strGarmentSewBomString = convertRowArrayIntoHtmlTable(arrGarmentSewRows);
     var arrPatternSewRows = rowParser('row', objPatternSewBomDataWithUsage);
     //var strPatternSewBomString = convertRowArrayIntoHtmlTable(arrPatternSewRows);
@@ -622,22 +623,57 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
 
         };
         objGarmentSewRow.sizeData = [];
-        for (var k = 0; k < arrPatternSewRows.length; k++) {
-            var objPatternSewRow = {};
-            objPatternSewRow = arrPatternSewRows[k];
-            if (objGarmentSewRow.patternBranch == objPatternSewRow.branchId && objPatternSewRow.garmentUseId == '0' && objGarmentSewRow.accessorySize == objPatternSewRow.accessorySize) {
-                //give the garment sew object the pattern usages based on the branch
-                objSizeData = {};
-                objSizeData.size = objPatternSewRow.size;
-                objSizeData.usagePerDozen = objPatternSewRow.usagePerDozen
-                var strSize = 'size' + objSizeData.size;
-                var numLookUpPosition = objSelfReference.sortingArray.indexOf(strSize);
-                var numIndexToGrabSortPosition = numLookUpPosition + 1;
-                var numActualIndexPosition = objSelfReference.sortingArray[numIndexToGrabSortPosition];
-                objSizeData.sortPosition = numActualIndexPosition;
-                objGarmentSewRow.sizeData.push(objSizeData);
+        if (objGarmentSewRow.sewOrSource == 'sew') {
+            for (var k = 0; k < arrPatternSewRows.length; k++) {
+                var objPatternSewRow = {};
+                objPatternSewRow = arrPatternSewRows[k];
+                if (objGarmentSewRow.patternBranch == objPatternSewRow.branchId && objGarmentSewRow.accessorySize == objPatternSewRow.accessorySize) {
+                    //give the garment sew object the pattern usages based on the branch
+                    objSizeData = {};
+                    if (objPatternSewRow.garmentUseId == '0' && objPatternSewRow.usagePerDozen != '0') {
+
+                        objSizeData.size = objPatternSewRow.size;
+                        objSizeData.usagePerDozen = objPatternSewRow.usagePerDozen
+                        var strSize = 'size' + objSizeData.size;
+                        var numLookUpPosition = objSelfReference.sortingArray.indexOf(strSize);
+                        var numIndexToGrabSortPosition = numLookUpPosition + 1;
+                        var numActualIndexPosition = objSelfReference.sortingArray[numIndexToGrabSortPosition];
+                        objSizeData.sortPosition = numActualIndexPosition;
+                        objGarmentSewRow.sizeData.push(objSizeData);
+                    }
+                    else if (objPatternSewRow.garmentUseId != '0' && objPatternSewRow.usagePerDozen != '0') {
+                        objSizeData.size = "ALL";
+                        objSizeData.usagePerDozen = objPatternSewRow.usagePerDozen
+                        var strSize = 'size' + objSizeData.size;
+                        var numLookUpPosition = objSelfReference.sortingArray.indexOf(strSize);
+                        var numIndexToGrabSortPosition = numLookUpPosition + 1;
+                        var numActualIndexPosition = objSelfReference.sortingArray[numIndexToGrabSortPosition];
+                        objSizeData.sortPosition = 0;
+                        objGarmentSewRow.sizeData.push(objSizeData);
+                    };
+
+
+                }
 
             };
+
+        }
+        else if (objGarmentSewRow.sewOrSource == 'source') {
+            var objSourceRow = {};
+            objSourceRow.Garment_Use = objGarmentSewRow.Garment_Use
+            objSourceRow.Material = objGarmentSewRow.Material
+            objSourceRow.Description = objGarmentSewRow.Description
+            objSourceRow.Minor_Category = objGarmentSewRow.Minor_Category
+            for (var property in objSourceRow) {
+                if(objSourceRow.hasOwnProperty(property)){
+                    if(typeof(objSourceRow[property]) == 'undefined'){
+                        objSourceRow[property] = ' ';
+                    }
+                };
+            }
+
+
+            arrGarmentSourceRows.push(objSourceRow);
 
 
         };
@@ -661,14 +697,21 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
     //console.log('Garment Sew Bom String ' + strGarmentSewBomString, 'Pattern Sew Bom String ' + strPatternSewBomString);
 
     objSelfReference.garmentSewBoms = arrGarmentSewRows;
+    objSelfReference.garmentSourceBoms = arrGarmentSourceRows;
     objSelfReference.patternSewBoms = arrPatternSewRows;
-
-    objSelfReference.sewBomTableString = convertRowArrayIntoHtmlTable(objSelfReference.garmentSewBoms, 'size', 'usagePerDozen', 'sewBomTable','<h1>Sew BOM with Usage</h1>');
+    if (objSelfReference.garmentSewBoms.length > 0) {
+        objSelfReference.sewBomTableString = convertRowArrayIntoHtmlTable(objSelfReference.garmentSewBoms, 'size', 'usagePerDozen', 'sewBomTable', '<h1>Sew and Sourced BOMs</h1>');
+    };
+    if (objSelfReference.garmentSourceBoms.length > 0) {
+        objSelfReference.sourceBomTableString = convertRowArrayIntoHtmlTable(objSelfReference.garmentSourceBoms, '', '', 'sourceBomTable', '<h1>Source BOM</h1>');
+    };
     $('#sewBomDiv').append(objSelfReference.sewBomTableString);
+    $('#sourceBomDiv').append(objSelfReference.sourceBomTableString);
+    //sourceBomDiv
     $('#sewBomTable').DataTable({
         "columnDefs": [
             {
-                "targets": [ 0,1,2,3,4,5,7,8,11,13,15,14,16,17,18,19,20],
+                "targets": [0, 1, 2, 3, 4, 5, 7, 8, 11, 13, 15, 14, 16, 17, 18, 19, 20],
                 "visible": false,
                 "searchable": false
             }
@@ -827,18 +870,28 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
         var strBlockWeightBomScenario;
         if (boolHaveGarmentCut && boolHavePatternSpread && boolHavePatternTrimStraight && boolHavePatternTrimBias) {
             strBlockWeightBomScenario = 'Spread, Trim Straight and Trim Bias';
+            reportTable.row.add([sortOrder, '<a href="#" class="blockWeights" id="generateBlockWeights">Block Weights Report</a>', strBlockWeightBomScenario]);
+            sortOrder++;
         }
         else if (boolHaveGarmentCut && boolHavePatternSpread && boolHavePatternTrimStraight) {
             strBlockWeightBomScenario = 'Spread and Trim Straight';
+            reportTable.row.add([sortOrder, '<a href="#" class="blockWeights" id="generateBlockWeights">Block Weights Report</a>', strBlockWeightBomScenario]);
+            sortOrder++;
         }
         else if (boolHaveGarmentCut && boolHavePatternSpread && boolHavePatternTrimBias) {
             strBlockWeightBomScenario = 'Spread and Trim Bias';
+            reportTable.row.add([sortOrder, '<a href="#" class="blockWeights" id="generateBlockWeights">Block Weights Report</a>', strBlockWeightBomScenario]);
+            sortOrder++;
         }
         else if (boolHaveGarmentCut && boolHavePatternSpread) {
             strBlockWeightBomScenario = 'Spread, Trim Straight and Trim Bias';
+            reportTable.row.add([sortOrder, '<a href="#" class="blockWeights" id="generateBlockWeights">Block Weights Report</a>', strBlockWeightBomScenario]);
+            sortOrder++;
+        }
+        else {
+            //strBlockWeightBomScenario = 'Spread, Trim Straight and Trim Bias';
         };
-        reportTable.row.add([sortOrder, '<a href="#" class="blockWeights" id="generateBlockWeights">Block Weights Report</a>', strBlockWeightBomScenario]);
-        sortOrder++;
+        
     };
 
     if (typeof (objSelfReference.documents != 'undefined')) {
@@ -1696,7 +1749,7 @@ function rowParser(parentElement, objDocumentObject) {
     return arrOfElements;
 };
 
-function convertRowArrayIntoHtmlTable(arrRowArray, strHeaderArrayPropertyToSearchFor,strBodyArrayPropertyToSearchFor, optionalId,optionalHeaderString) {
+function convertRowArrayIntoHtmlTable(arrRowArray, strHeaderArrayPropertyToSearchFor, strBodyArrayPropertyToSearchFor, optionalId, optionalHeaderString) {
     var strResultingHtmlTable = '';
     if (typeof (optionalHeaderString) != 'undefined') {
         strResultingHtmlTable = optionalHeaderString;
@@ -1726,7 +1779,7 @@ function convertRowArrayIntoHtmlTable(arrRowArray, strHeaderArrayPropertyToSearc
                 };
             }
             else {
-                name = name.replace(/_/g,' ');
+                name = name.replace(/_/g, ' ');
                 strResultingHtmlTable += '<th>' + name + '</th>';
             };
         }
@@ -1748,22 +1801,26 @@ function convertRowArrayIntoHtmlTable(arrRowArray, strHeaderArrayPropertyToSearc
                         if (typeof (strBodyArrayPropertyToSearchFor) != 'undefined') {
                             strResultingHtmlTable += '<td>' + objSimpleObj[strBodyArrayPropertyToSearchFor] + '</td>';
                         }
-                        else
-                        {
+                        else {
                             strResultingHtmlTable += '<td>' + 'body to search for was undefined' + '</td>';
                         };
                     };
                 }
                 else {
-                    if(typeof(objRow[name] != 'undefined')){
-                        
-                            strResultingHtmlTable += '<td>' + objRow[name] + '</td>';
-                        
+                    if (typeof (objRow[name] != 'undefined')) {
+
+                        strResultingHtmlTable += '<td>' + objRow[name] + '</td>';
+
+                    }
+                    else {
+                        strResultingHtmlTable += '<td></td>';
                     }
                 };
             };
 
         };
+        strResultingHtmlTable = strResultingHtmlTable.replace(/<td>undefined/g, "<td> ");
+        strResultingHtmlTable = strResultingHtmlTable.replace(/<th>undefined/g, "<th> ");
         strResultingHtmlTable += '</tr>';
 
     };

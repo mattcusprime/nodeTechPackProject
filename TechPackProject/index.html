@@ -239,8 +239,8 @@
                     <li><a href="javascript:createComponentTable('measurementDiv', 'measurements', currentGarmentProduct.measurementTableString);makeMeScrollToDefinedTarget('#measurementDiv',50,-100);">Measurements</a></li>
                     <li><a href="javascript:makeMeScrollToDefinedTarget('#blockWeightSpreadDiv',50,-100);">Block Weights For Reference</a></li>
                     <li><a href="javascript:makeMeScrollToDefinedTarget('#labelsDiv',50,-100);">Label BOM</a></li>
-                    <li><a href="javascript:makeMeScrollToDefinedTarget('#sewBomDiv',50,-100);">Sew Usage</a></li>
-                    <li id="runNew"><a href='javascript:runNewProduct();'>Run a New Product</a></li>
+                    <li><a href="javascript:makeMeScrollToDefinedTarget('#sewBomDiv',50,-100);">Sew & Sourced BOMs</a></li>
+                    <li id="runNew"><a href='javascript:runNewProduct(currentGarmentProduct);'>Run a New Product</a></li>
                     <li><a href='javascript:currentGarmentProduct.saveMe(currentGarmentProduct);'>Save Garment</a></li>
                     <li><a href="javascript:pdfPage(currentGarmentProduct);">PDF</a></li>
                     <!-- <li><a href='javascript:pdfFromHtml("specs");'>PDF</a></li>
@@ -322,6 +322,13 @@
 
     <div class="page">
         <div id="sewBomDiv" class="container-fluid clearThisComponentOnNewGarmentLoad">
+
+        </div>
+        <!-- container -->
+    </div>
+
+    <div class="page">
+        <div id="sourceBomDiv" class="container-fluid clearThisComponentOnNewGarmentLoad">
 
         </div>
         <!-- container -->
