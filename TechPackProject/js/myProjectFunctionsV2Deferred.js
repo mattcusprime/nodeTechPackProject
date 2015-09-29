@@ -320,6 +320,11 @@ garmentProduct.prototype.getMyMeasurement = function (strHostUrlPrefix, numMeasu
  *
  */
 garmentProduct.prototype.getSpecByName = function (strHostUrlPrefix, strGarmentName, funCallback, objForCallback, objSelfReference) {
+    if (typeof(strGarmentName) == 'undefined')  // How can I stop working of function here?
+    {
+        alert('No Garment Name was given')
+        return;
+    }
     var strSpecUrl = strHostUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?Product+Name=' + strGarmentName + '&oid=OR%3Awt.query.template.ReportTemplate%3A9663785&action=ExecuteReport';
     var numActiveSpecId = 0;
     var strActiveSpecName;
@@ -328,6 +333,11 @@ garmentProduct.prototype.getSpecByName = function (strHostUrlPrefix, strGarmentN
     var arrCombinationArray = [];
     var gProdName = '';
     $.get(strSpecUrl, function (specData) { }).done(function (specData) {
+        if (typeof (strSpecUrl) == 'undefined')  // How can I stop working of function here?
+        {
+            console.log('no spec.')
+            return;
+        }
         $('row', specData).each(function () {
             gProdName = $(this).find('Garment_product_Name').first().text();
             var techDesignerKey = $(this).find('valueListTechDesigner').text();
@@ -421,33 +431,37 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
         if (linkedProductType == "BASIC CUT & SEW - COLORWAY") {
             objLinkedProduct.type = "Colorway Product";
             objColorwayProduct = objLinkedProduct;
+            objSelfReference.colorwayProduct = objColorwayProduct;
         }
         else if (linkedProductType == "BASIC CUT & SEW - PATTERN") {
             objLinkedProduct.type = "Pattern Product";
             objPatternProduct = objLinkedProduct;
+            objSelfReference.patternProduct = objPatternProduct;
         }
         else if (linkedProductType == "LABEL") {
             objLinkedProduct.type = "Label Product";
             objLabelProduct = objLinkedProduct;
+            objSelfReference.labelProduct = objLabelProduct;
         }
         else if (linkedProductType == "BASIC CUT & SEW - SELLING" || linkedProductType == "Selling") {
             objLinkedProduct.type = "Selling Product";
             objSellingProduct = objLinkedProduct;
+            objSelfReference.sellingProduct = objSellingProduct;
         };
     });
     objSelfReference.objectId = numObjectId;
-    objSelfReference.colorwayProduct = objColorwayProduct;
+    
     if (typeof (objSelfReference.colorwayProduct) != 'undefined') {
         objSelfReference.getColorwayBoms(strHostUrlPrefix, objSelfReference);
     };
-    objSelfReference.patternProduct = objPatternProduct;
-    objSelfReference.labelProduct = objLabelProduct;
+    
+   
     if (typeof (objSelfReference.labelProduct) != 'undefined') {
         var strObjectIdForParam = objSelfReference.labelProduct.objectId;
         objSelfReference.getLabelBoms(strObjectIdForParam, strHostUrlPrefix, objSelfReference);
         //get label bom
     };
-    objSelfReference.sellingProduct = objSellingProduct;
+   
     var offLineTurnOff = $('#offline').val();
     if (offLineTurnOff != 1) {
         $('row', objDocumentData).each(function (index) {
@@ -677,7 +691,11 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
  * @param {Object} objSelfReference takes the same garmentProduct which is calling the method.  This is used to work around scope limitations and is generally performed
  */
 garmentProduct.prototype.getAllMyDataForMyActiveSpec = function (strHostUrlPrefix, strSpecId, objSelfReference) {
-
+    if (typeof (strSpecId) == 'undefined')  // How can I stop working of function here?
+    {
+        console.log('no spec id, cannot obtain components.')
+        return;
+    }
     var strSpecGetUrl = strHostUrlPrefix + "Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?gSpecId=" + strSpecId + "&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A9999594&action=ExecuteReport"
     var strDocumentsUrl = strHostUrlPrefix + "Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?gSpecId=" + strSpecId + "&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A9996723&action=ExecuteReport";
     var strMeasurementsUrl = strHostUrlPrefix + "Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?gSpecId=" + strSpecId + "&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A9953962&action=ExecuteReport";

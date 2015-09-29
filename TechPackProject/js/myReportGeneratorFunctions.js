@@ -14,16 +14,16 @@ function createRelatedProductsDiv(objCurrentGarmentProduct) {
     $('#garmentHeader *').remove();
     var strSpecsDivString = appendBootStrapDivPage('relationships', 1);
     var strTableString = '<h2>Relationships</h2><table class="table" id="tblRelationships"><tr><th>Relationship</th><th>Product</th></tr><tbody>';
-    if (typeof (objCurrentGarmentProduct.colorwayProduct.name) != 'undefined') {
+    if (typeof (objCurrentGarmentProduct.colorwayProduct) != 'undefined') {
         strTableString = strTableString + "<tr><td>Colorway Product</td><td>" + objCurrentGarmentProduct.colorwayProduct.name + "</td></td>";
     };
-    if (typeof (objCurrentGarmentProduct.colorwayProduct.name) != 'undefined') {
+    if (typeof (objCurrentGarmentProduct.patternProduct) != 'undefined') {
         strTableString = strTableString + "<tr><td>Pattern Product</td><td>" + objCurrentGarmentProduct.patternProduct.name + "</td></td>";
     };
-    if (typeof (objCurrentGarmentProduct.labelProduct.name) != 'undefined') {
+    if (typeof (objCurrentGarmentProduct.labelProduct) != 'undefined') {
         strTableString = strTableString + "<tr><td>Label Product</td><td>" + objCurrentGarmentProduct.labelProduct.name + "</td></td>";
     };
-    if (typeof (objCurrentGarmentProduct.sellingProduct.name) != 'undefined') {
+    if (typeof (objCurrentGarmentProduct.sellingProduct) != 'undefined') {
         strTableString = strTableString + "<tr><td>Selling Product</td><td>" + objCurrentGarmentProduct.sellingProduct.name + "</td></td>";
         //SELLING PRODUCT NEEDS TO BE CHANGED TO PROCESS AN ARRAY OF SELLING PRODUCTS
     };
