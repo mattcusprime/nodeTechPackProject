@@ -78,6 +78,7 @@ function garmentProduct(strName, arrAttributes, arrSpecs, arrSources, objColorwa
     //moved to be a property of colorwayobj
     this.blockWeightsSpreadTableString = strBlockWeightsSpreadTableString;
     this.blockWeightsTrimTableString = strTrimSpreadTableString;
+    this.sortingArray =['sizeXXS','1','sizeXS','2','sizeS','3','sizeM','4','sizeL','5','sizeXL','6','size2X','7','size3X','8','size4X','9','size5X','10','size6X','11','size3M','1','size6M','2','size9M','3','size12M','4','size18M','5','size24M','6','size2T','7','size3T','8','size4T','9','size5T','10','size2','1','size4','2','size5','3','size6','4','size7','5','size8','6','size9','7','size10','8','size11','9','size12','10','size13','11','size14','12','size16','13','size18','14','size20','15','size22','16','size24','17','size26','18','size28','19','size30','20','size32','21','size34','22','size36','23','size38','24','size40','25','size42','26','size44','27','size46','28','size48','29','size50','30','size52','31','size54','32','size56','33','size58','34','size60','35','size62','36','sizeS/M','1','sizeL/XL','2','size16W','1','size20W','2','size24W','3','size28W','4','size32W','5','size36W','6'];
 };
 /*
 var fs = require('fs.extra');
@@ -587,11 +588,63 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
     //objSelfReference.patternSewBoms = objPatternSewBomDataWithUsage;
     //put this back later when the objects are actually constructed through parsing
     var arrGarmentSewRows = rowParser('row', objGarmentSewBomData);
-    var strGarmentSewBomString = convertRowArrayIntoHtmlTable(arrGarmentSewRows);
+    //var strGarmentSewBomString = convertRowArrayIntoHtmlTable(arrGarmentSewRows);
     var arrPatternSewRows = rowParser('row', objPatternSewBomDataWithUsage);
-    var strPatternSewBomString = convertRowArrayIntoHtmlTable(arrGarmentSewRows);
+    //var strPatternSewBomString = convertRowArrayIntoHtmlTable(arrPatternSewRows);
+    var arrSewUsageCombined = [];
+    for (var i = 0; i < arrGarmentSewRows.length; i++) {
+        var objGarmentSewRow = {};
+       
+        objGarmentSewRow = arrGarmentSewRows[i];
+        for (var j = 0; j < arrPatternSewRows.length; j++) {
+            var objPatternSewRow = {};
+            objPatternSewRow = arrPatternSewRows[j];
+            if (objGarmentSewRow.garmentUseId == objPatternSewRow.garmentUseId) {
+                //give the garment sew object the pattern branch here to use in the next loop
+                //console.log("MATCH");
+                objGarmentSewRow.patternBranch = objPatternSewRow.branchId;
+            };
 
-    console.log('Garment Sew Bom String ' + strGarmentSewBomString, 'Pattern Sew Bom String ' + strPatternSewBomString);
+
+        };
+        objGarmentSewRow.sizeData = [];
+        for (var k = 0; k < arrPatternSewRows.length; k++) {
+            var objPatternSewRow = {};
+            objPatternSewRow = arrPatternSewRows[k];
+            if (objGarmentSewRow.patternBranch == objPatternSewRow.branchId && objPatternSewRow.garmentUseId == '0' && objGarmentSewRow.accessorySize == objPatternSewRow.accessorySize) {
+                //give the garment sew object the pattern usages based on the branch
+                objSizeData = {};
+                objSizeData.size = objPatternSewRow.size;
+                objSizeData.usagePerDozen = objPatternSewRow.usagePerDozen
+                var strSize = 'size' + objSizeData.size;
+                var numLookUpPosition = objSelfReference.sortingArray.indexOf(strSize);
+                var numIndexToGrabSortPosition = numLookUpPosition + 1;
+                var numActualIndexPosition = objSelfReference.sortingArray[numIndexToGrabSortPosition];
+                objSizeData.sortPosition = numActualIndexPosition;
+                objGarmentSewRow.sizeData.push(objSizeData);
+
+            };
+
+
+        };
+
+
+        function objCompareBySortPosition(a, b) {
+            if (a.sortPosition < b.sortPosition)
+                return -1;
+            if (a.sortPosition > b.sortPosition)
+                return 1;
+            return 0;
+        };
+
+        objGarmentSewRow.sizeData.sort(objCompareBySortPosition);
+        arrGarmentSewRows[i] = objGarmentSewRow;
+
+    };
+
+
+
+    //console.log('Garment Sew Bom String ' + strGarmentSewBomString, 'Pattern Sew Bom String ' + strPatternSewBomString);
 
     objSelfReference.garmentSewBoms = arrGarmentSewRows;
     objSelfReference.patternSewBoms = arrPatternSewRows;
@@ -1602,8 +1655,10 @@ function rowParser(parentElement, objDocumentObject) {
         var arrObjElementAttributes = [];
         $(this).find('*').each(function () {
             var strMyTag = $(this).prop('tagName');
-            objElement[strMyTag] = $(this);
-            objElement[strMyTag].value = $(this).text();
+            //objElement[strMyTag] = $(this);
+            //objElement[strMyTag].value = $(this).text();
+            objElement[strMyTag] = $(this).text();
+
             var objAttrObject = {};
             var arrAttributes = [];
 
