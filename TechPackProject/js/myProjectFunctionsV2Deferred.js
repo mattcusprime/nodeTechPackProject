@@ -649,8 +649,17 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
     objSelfReference.garmentSewBoms = arrGarmentSewRows;
     objSelfReference.patternSewBoms = arrPatternSewRows;
 
-    convertRowArrayIntoHtmlTable(objSelfReference.garmentSewBoms, 'size', 'usagePerDozen', 'sewBomTable');
-
+    objSelfReference.sewBomTableString = convertRowArrayIntoHtmlTable(objSelfReference.garmentSewBoms, 'size', 'usagePerDozen', 'sewBomTable');
+    $('#sewBomDiv').append(objSelfReference.sewBomTableString);
+    $('#sewBomTable').DataTable({
+        "columnDefs": [
+            {
+                "targets": [ 0,1,2,3,4,5,7,8,11,13,15,14,16,17,18,19,20],
+                "visible": false,
+                "searchable": false
+            }
+        ]
+    });
     var arrConstructionDetailDataContainer;
     var arrMeasurementDetailDataContainer;
     $.when(objDefferedConstruction, objDefferedMeasurement).done(function (objDefferedConstruction, objDefferedMeasurement) {
@@ -1671,11 +1680,11 @@ function rowParser(parentElement, objDocumentObject) {
 
 function convertRowArrayIntoHtmlTable(arrRowArray, strHeaderArrayPropertyToSearchFor,strBodyArrayPropertyToSearchFor, optionalId) {
     var strResultingHtmlTable = '';
-    if (typeof (optionalId == 'undefined')) {
-        strResultingHtmlTable = '<table><thead>';
+    if (typeof(optionalId) == 'undefined') {
+        strResultingHtmlTable = '<table class="display" ><thead>';
     }
     else {
-        strResultingHtmlTable = '<table id="' + optionalId + '" ><thead>';
+        strResultingHtmlTable = '<table class="display"  id="' + optionalId + '" ><thead>';
     };
 
     var objFirstObject = arrRowArray[0];
@@ -1691,6 +1700,7 @@ function convertRowArrayIntoHtmlTable(arrRowArray, strHeaderArrayPropertyToSearc
                 };
             }
             else {
+                name = name.replace(/_/g,' ');
                 strResultingHtmlTable += '<th>' + name + '</th>';
             };
         }
@@ -1718,7 +1728,11 @@ function convertRowArrayIntoHtmlTable(arrRowArray, strHeaderArrayPropertyToSearc
                     };
                 }
                 else {
-                    strResultingHtmlTable += '<td>' + objRow[name] + '</td>';
+                    if(typeof(objRow[name] != 'undefined')){
+                        
+                            strResultingHtmlTable += '<td>' + objRow[name] + '</td>';
+                        
+                    }
                 };
             };
 
@@ -1727,7 +1741,7 @@ function convertRowArrayIntoHtmlTable(arrRowArray, strHeaderArrayPropertyToSearc
 
     };
     strResultingHtmlTable += '</tbody></table>';
-    console.log(strResultingHtmlTable);
+    //console.log(strResultingHtmlTable);
     return strResultingHtmlTable;
 
 };
