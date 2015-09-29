@@ -649,7 +649,7 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
     objSelfReference.garmentSewBoms = arrGarmentSewRows;
     objSelfReference.patternSewBoms = arrPatternSewRows;
 
-    objSelfReference.sewBomTableString = convertRowArrayIntoHtmlTable(objSelfReference.garmentSewBoms, 'size', 'usagePerDozen', 'sewBomTable');
+    objSelfReference.sewBomTableString = convertRowArrayIntoHtmlTable(objSelfReference.garmentSewBoms, 'size', 'usagePerDozen', 'sewBomTable','<h1>Sew BOM with Usage</h1>');
     $('#sewBomDiv').append(objSelfReference.sewBomTableString);
     $('#sewBomTable').DataTable({
         "columnDefs": [
@@ -1678,14 +1678,22 @@ function rowParser(parentElement, objDocumentObject) {
     return arrOfElements;
 };
 
-function convertRowArrayIntoHtmlTable(arrRowArray, strHeaderArrayPropertyToSearchFor,strBodyArrayPropertyToSearchFor, optionalId) {
+function convertRowArrayIntoHtmlTable(arrRowArray, strHeaderArrayPropertyToSearchFor,strBodyArrayPropertyToSearchFor, optionalId,optionalHeaderString) {
     var strResultingHtmlTable = '';
-    if (typeof(optionalId) == 'undefined') {
-        strResultingHtmlTable = '<table class="display" ><thead>';
+    if (typeof (optionalHeaderString) != 'undefined') {
+        strResultingHtmlTable = optionalHeaderString;
     }
     else {
-        strResultingHtmlTable = '<table class="display"  id="' + optionalId + '" ><thead>';
+        strResultingHtmlTable = '';
     };
+
+    if (typeof (optionalId) == 'undefined') {
+        strResultingHtmlTable += '<table class="display" ><thead>';
+    }
+    else {
+        strResultingHtmlTable += '<table class="display"  id="' + optionalId + '" ><thead>';
+    };
+
 
     var objFirstObject = arrRowArray[0];
     for (var name in objFirstObject) {
@@ -1713,10 +1721,11 @@ function convertRowArrayIntoHtmlTable(arrRowArray, strHeaderArrayPropertyToSearc
         for (var name in objRow) {
 
             if (objRow.hasOwnProperty(name)) {
-                var arrTester = objFirstObject[name];
-                if ($.isArray(arrTester)) {
-                    for (var l = 0; l < arrTester.length; l++) {
-                        var objSimpleObj = arrTester[l];
+                //var arrTester = objFirstObject[name];
+                if ($.isArray(objRow[name])) {
+
+                    for (var l = 0; l < objRow[name].length; l++) {
+                        var objSimpleObj = objRow[name][l];
                         //var objSuperSimpleObj = objSimpleObj[l];
                         if (typeof (strBodyArrayPropertyToSearchFor) != 'undefined') {
                             strResultingHtmlTable += '<td>' + objSimpleObj[strBodyArrayPropertyToSearchFor] + '</td>';
