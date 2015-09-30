@@ -462,6 +462,13 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
         //get label bom
     };
 
+    if (typeof (objSelfReference.patternProduct) != 'undefined') {
+        objSelfReference.getMoas(strHostUrlPrefix, objSelfReference, objSelfReference.objectId + "%2C" + objSelfReference.patternProduct.objectId);
+    }
+    else {
+        objSelfReference.getMoas(strHostUrlPrefix, objSelfReference, objSelfReference.objectId);
+    }
+
     var offLineTurnOff = $('#offline').val();
     if (offLineTurnOff != 1) {
         $('row', objDocumentData).each(function (index) {
@@ -1584,6 +1591,112 @@ garmentProduct.prototype.getLabelBoms = function (labelProductObjectId, strUrlPr
     });
 
 };
+
+garmentProduct.prototype.getMoas = function (strUrlPrefix, objSelfReference, objectIdsToPass) {
+    var strUrlToCall = strUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?prodIds=' + objectIdsToPass + '&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A11138313&action=ExecuteReport'
+    var strRevisionIdsToget = '';
+    var strUserIdsToGet = '';
+    //var strEncodedUrl = encodeURI(strUrlToCall);
+    //Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?objectId=2384183&format=formatDelegate&delegateName=HTMLWithSorting&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A11138313&action=ExecuteReport
+    $.get(strUrlToCall, function (data) { }).done(function (data) {
+        var arrMoaData = rowParser('row', data);
+        objSelfReference.moaArray = arrMoaData;
+        
+
+        for (var i = 0; i < objSelfReference.moaArray.length; i++) {
+            var objThisLoopObject = objSelfReference.moaArray[i];
+            if (objThisLoopObject.Rev_one != '0') {
+                    strRevisionIdsToget += ',' + objThisLoopObject.Rev_one;
+            };
+            if (objThisLoopObject.Rev_two != '0') {
+                strRevisionIdsToget += ',' + objThisLoopObject.Rev_two;
+            };
+            if (objThisLoopObject.Rev_three != '0') {
+                strRevisionIdsToget += ',' + objThisLoopObject.Rev_three;
+            };
+            if (objThisLoopObject.Last_Edited_By != '0' && typeof(objThisLoopObject.Last_Edited_By) != 'undefined') {
+                strUserIdsToGet += ',' + objThisLoopObject.Last_Edited_By;
+            };
+
+            objThisLoopObject.Spec = objThisLoopObject.Spec.replace(/hbi/g, "");
+            if (objThisLoopObject.Last_Modified.length > 9) {
+                objThisLoopObject.Last_Modified = objThisLoopObject.Last_Modified.substring(0, 9);
+            };
+
+        };
+        strRevisionIdsToget = strRevisionIdsToget.substring(1, strRevisionIdsToget.length);
+        strRevisionIdsToget = strRevisionIdsToget.replace(/[,]/g, "%2C");
+        strUserIdsToGet = strUserIdsToGet.substring(1, strUserIdsToGet.length);
+        strUserIdsToGet = strUserIdsToGet.replace(/[,]/g, "%2C");
+        strUserIdsToGet = strUserIdsToGet.replace(/Nan/g, "");
+
+        var strUrlToCallForRevisionDisplays = strUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?revisionIds=' + strRevisionIdsToget + '&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A12131345&action=ExecuteReport';
+            //http://wsflexwebprd1v.res.hbi.net/Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?revisionIds=1966368%2C4704613&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A12131345&action=ExecuteReport
+        $.get(strUrlToCallForRevisionDisplays, function (data2) { }).done(function (data2) {
+            var arrMoaDataWithDisplays = rowParser('row', data2);
+            for (var i = 0; i < objSelfReference.moaArray.length; i++) {
+                for (var j = 0; j < arrMoaDataWithDisplays.length; j++) {
+                    var objThisLoopObjectFromGarment = objSelfReference.moaArray[i];
+                    var objThisLoopObjectFromDisplayQuery = arrMoaDataWithDisplays[j];
+
+                    if (objThisLoopObjectFromGarment.Rev_one == objThisLoopObjectFromDisplayQuery.objectId) {
+                        objThisLoopObjectFromGarment.Rev_one = objThisLoopObjectFromDisplayQuery.Revision;
+                    };
+                    if (objThisLoopObjectFromGarment.Rev_two == objThisLoopObjectFromDisplayQuery.objectId) {
+                        objThisLoopObjectFromGarment.Rev_two = objThisLoopObjectFromDisplayQuery.Revision;
+                    };
+                    if (objThisLoopObjectFromGarment.Rev_three == objThisLoopObjectFromDisplayQuery.objectId) {
+                        objThisLoopObjectFromGarment.Rev_three = objThisLoopObjectFromDisplayQuery.Revision;
+                    };
+
+                    objSelfReference.moaArray[i] = objThisLoopObjectFromGarment;
+
+
+                }
+            }
+
+
+
+        }).done(function () {
+            var strUrlForUsers = 'http://wsflexwebprd1v.res.hbi.net/Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?userIds=' + strUserIdsToGet + '&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A12134557&action=ExecuteReport';
+            var arrUserArray = [];
+            $.get(strUrlForUsers, function (data3) { }).done(function (data3) {
+                arrUserArray = rowParser('row', data3);
+                for (var i = 0; i < objSelfReference.moaArray.length; i++) {
+                    for (var j = 0; j < arrUserArray.length; j++) {
+                        var objThisLoopObjectFromGarment = objSelfReference.moaArray[i];
+                        var objThisLoopObjectFromDisplayQuery = arrUserArray[j];
+
+                        if (objThisLoopObjectFromGarment.Last_Edited_By == objThisLoopObjectFromDisplayQuery.userObjectId) {
+                            objThisLoopObjectFromDisplayQuery.Name = objThisLoopObjectFromDisplayQuery.Name.replace(/[.]/g, ' ');
+                            objThisLoopObjectFromGarment.Last_Edited_By = '<a href="mailto:' + objThisLoopObjectFromDisplayQuery.E_Mail + '">' + objThisLoopObjectFromDisplayQuery.Name + '</a>';
+                            objThisLoopObjectFromGarment.Last_Edited_By = objThisLoopObjectFromGarment.Last_Edited_By.replace(/[ ]/, "%20");
+                        };
+                        
+
+                        objSelfReference.moaArray[i] = objThisLoopObjectFromGarment;
+
+
+                    };
+                };
+
+
+            })
+
+
+
+
+
+
+        });
+
+
+
+
+    });
+
+};
+
 
 /* Temporarily turned off and moved up above into the $(when) deferred function to make sure things time properly
 and to maintain a uniform approach.
