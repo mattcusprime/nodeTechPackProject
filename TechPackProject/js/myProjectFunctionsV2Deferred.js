@@ -81,12 +81,13 @@ function garmentProduct(strName, arrAttributes, arrSpecs, arrSources, objColorwa
     this.sortingArray = ['sizeXXS', '1', 'sizeXS', '2', 'sizeS', '3', 'sizeM', '4', 'sizeL', '5', 'sizeXL', '6', 'size2X', '7', 'size3X', '8', 'size4X', '9', 'size5X', '10', 'size6X', '11', 'size3M', '1', 'size6M', '2', 'size9M', '3', 'size12M', '4', 'size18M', '5', 'size24M', '6', 'size2T', '7', 'size3T', '8', 'size4T', '9', 'size5T', '10', 'size2', '1', 'size4', '2', 'size5', '3', 'size6', '4', 'size7', '5', 'size8', '6', 'size9', '7', 'size10', '8', 'size11', '9', 'size12', '10', 'size13', '11', 'size14', '12', 'size16', '13', 'size18', '14', 'size20', '15', 'size22', '16', 'size24', '17', 'size26', '18', 'size28', '19', 'size30', '20', 'size32', '21', 'size34', '22', 'size36', '23', 'size38', '24', 'size40', '25', 'size42', '26', 'size44', '27', 'size46', '28', 'size48', '29', 'size50', '30', 'size52', '31', 'size54', '32', 'size56', '33', 'size58', '34', 'size60', '35', 'size62', '36', 'sizeS/M', '1', 'sizeL/XL', '2', 'size16W', '1', 'size20W', '2', 'size24W', '3', 'size28W', '4', 'size32W', '5', 'size36W', '6'];
 
 };
-/*
+
 var fs = require('fs.extra');
 var execFile = require('child_process').execFile, child;
 var wkhtmltopdf = require('wkhtmltopdf');
 var gui = require('nw.gui');
- Node webkit functionalities*/
+//Node webkit functionalities
+
 /**
  * @method of @class GarmentProduct
  * @param {String} strHostUrlPrefix string denoting the initial characters of the url for the domain in which the construction sits.  All string prior to Windchill.
@@ -415,7 +416,7 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
     var objLabelProduct = {};
     var objSellingProduct = {};
     var numObjectId;
-    
+
     //first pass here gets all product relationships
     //changes in relationship names or type names would need to be later reflected here in the naming structure
     //using actual text names in place of flex path type ids allows us to easier alternate between instances of PLM
@@ -521,11 +522,39 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
             else {
                 objComponent.ownerType = 'Garment';
             };
+            if (objComponent.ownerType == 'Pattern' && objComponent.name.indexOf('Front/Back Image') != -1) {
 
-            arrDocuments.push(objComponent);
-            arrTableDataArray.push(objComponent);
+            }
+            else {
+                var arrOfName = [];
+                for (var z = 0; z < arrDocuments.length; z++) {
+                    objLoopObject = arrDocuments[z];
+                    arrOfName.push(objLoopObject.name);
+                };
+                if (arrOfName.indexOf(objComponent.name) == -1) {
+                    arrDocuments.push(objComponent);
+                    arrTableDataArray.push(objComponent);
+                }
+                else {
+                    var numOfPossibleDuplicate = arrOfName.indexOf(objComponent.name);
+                    var objPossibleDuplicate = arrDocuments[numOfPossibleDuplicate];
+                    if (objComponent.width > objPossibleDuplicate.width && objComponent.height > objPossibleDuplicate.height) {
+                        arrDocuments[numOfPossibleDuplicate] = objComponent;
+                        arrTableDataArray[numOfPossibleDuplicate] = objComponent;
+                    };
+
+                };
+            };
         });
     };
+    function objCompareByName(a, b) {
+        if (a.name < b.name)
+            return -1;
+        if (a.name > b.name)
+            return 1;
+        return 0;
+    };
+    arrDocuments.sort(objCompareByName);
     objSelfReference.documents = arrDocuments;
     var objMeasurementComp = {};
     $('row', objMeasurementData).each(function (index) {
@@ -672,8 +701,8 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
             objSourceRow.Description = objGarmentSewRow.Description
             objSourceRow.Minor_Category = objGarmentSewRow.Minor_Category
             for (var property in objSourceRow) {
-                if(objSourceRow.hasOwnProperty(property)){
-                    if(typeof(objSourceRow[property]) == 'undefined'){
+                if (objSourceRow.hasOwnProperty(property)) {
+                    if (typeof (objSourceRow[property]) == 'undefined') {
                         objSourceRow[property] = ' ';
                     }
                 };
@@ -898,7 +927,7 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
         else {
             //strBlockWeightBomScenario = 'Spread, Trim Straight and Trim Bias';
         };
-        
+
     };
 
     if (typeof (objSelfReference.documents != 'undefined')) {
@@ -1328,7 +1357,9 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix, objSelfRefere
                 arrGroupingsTableStrings[numActualIndex] = arrGroupingsTableStrings[numActualIndex] + '<th id="SKU_' + objRow.Sku_ARev_Id + '_Spec_' + objRow.specName.replace(/\s/g, "_").replace(/:/g, "") + '">' + objRow.colorwayName + '</th>';
             };
         });
-        objSelfReference.colorwayProduct.colorways = arrColorwayObjects;
+        if (typeof (objSelfReference.colorwayProduct) != 'undefined') {
+            objSelfReference.colorwayProduct.colorways = arrColorwayObjects;
+        };
         //console.log(objSelfReference.colorwayProduct.colorways);
         for (var i = 0; i < arrGroupingsTableStrings.length; i++) {
             arrGroupingsTableStrings[i] = arrGroupingsTableStrings[i] + '</tr></thead><tbody></tbody></table><hr  class="page"/>';
@@ -1601,12 +1632,12 @@ garmentProduct.prototype.getMoas = function (strUrlPrefix, objSelfReference, obj
     $.get(strUrlToCall, function (data) { }).done(function (data) {
         var arrMoaData = rowParser('row', data);
         objSelfReference.moaArray = arrMoaData;
-        
+
 
         for (var i = 0; i < objSelfReference.moaArray.length; i++) {
             var objThisLoopObject = objSelfReference.moaArray[i];
             if (objThisLoopObject.Rev_one != '0') {
-                    strRevisionIdsToget += ',' + objThisLoopObject.Rev_one;
+                strRevisionIdsToget += ',' + objThisLoopObject.Rev_one;
             };
             if (objThisLoopObject.Rev_two != '0') {
                 strRevisionIdsToget += ',' + objThisLoopObject.Rev_two;
@@ -1614,13 +1645,13 @@ garmentProduct.prototype.getMoas = function (strUrlPrefix, objSelfReference, obj
             if (objThisLoopObject.Rev_three != '0') {
                 strRevisionIdsToget += ',' + objThisLoopObject.Rev_three;
             };
-            if (objThisLoopObject.Last_Edited_By != '0' && typeof(objThisLoopObject.Last_Edited_By) != 'undefined') {
+            if (objThisLoopObject.Last_Edited_By != '0' && typeof (objThisLoopObject.Last_Edited_By) != 'undefined') {
                 strUserIdsToGet += ',' + objThisLoopObject.Last_Edited_By;
             };
 
             objThisLoopObject.Spec = objThisLoopObject.Spec.replace(/hbi/g, "");
-            if (objThisLoopObject.Last_Modified.length > 9) {
-                objThisLoopObject.Last_Modified = objThisLoopObject.Last_Modified.substring(0, 9);
+            if (objThisLoopObject.Last_Modified.length > 10) {
+                objThisLoopObject.Last_Modified = objThisLoopObject.Last_Modified.substring(0, 10);
             };
 
         };
@@ -1631,7 +1662,7 @@ garmentProduct.prototype.getMoas = function (strUrlPrefix, objSelfReference, obj
         strUserIdsToGet = strUserIdsToGet.replace(/Nan/g, "");
 
         var strUrlToCallForRevisionDisplays = strUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?revisionIds=' + strRevisionIdsToget + '&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A12131345&action=ExecuteReport';
-            //http://wsflexwebprd1v.res.hbi.net/Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?revisionIds=1966368%2C4704613&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A12131345&action=ExecuteReport
+        //http://wsflexwebprd1v.res.hbi.net/Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?revisionIds=1966368%2C4704613&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A12131345&action=ExecuteReport
         $.get(strUrlToCallForRevisionDisplays, function (data2) { }).done(function (data2) {
             var arrMoaDataWithDisplays = rowParser('row', data2);
             for (var i = 0; i < objSelfReference.moaArray.length; i++) {
@@ -1672,7 +1703,7 @@ garmentProduct.prototype.getMoas = function (strUrlPrefix, objSelfReference, obj
                             objThisLoopObjectFromGarment.Last_Edited_By = '<a href="mailto:' + objThisLoopObjectFromDisplayQuery.E_Mail + '">' + objThisLoopObjectFromDisplayQuery.Name + '</a>';
                             objThisLoopObjectFromGarment.Last_Edited_By = objThisLoopObjectFromGarment.Last_Edited_By.replace(/[ ]/, "%20");
                         };
-                        
+
 
                         objSelfReference.moaArray[i] = objThisLoopObjectFromGarment;
 
@@ -1681,7 +1712,56 @@ garmentProduct.prototype.getMoas = function (strUrlPrefix, objSelfReference, obj
                 };
 
 
-            })
+            }).done(function () {
+                var arrRevisionAttributeArray = [];
+                var arrSizeTableArray = [];
+                for (var i = 0; i < objSelfReference.moaArray.length; i++) {
+                    var objThisLoopObject = objSelfReference.moaArray[i];
+
+                    if (objThisLoopObject.Table_Name == "Revision Attribute") {
+                        arrRevisionAttributeArray.push(objThisLoopObject);
+                    }
+                    else if (objThisLoopObject.Table_Name == "Sizing Table") {
+                        arrSizeTableArray.push(objThisLoopObject);
+                    };
+
+
+                };
+                var strRevisionAttributeTableString = convertRowArrayIntoHtmlTable(arrRevisionAttributeArray, '', '', 'revisionAttributeTbl', '<h1>Revision Attributes</h1>');
+                var strSizeTableString = convertRowArrayIntoHtmlTable(arrSizeTableArray, '', '', 'sizeTbl', '<h1>Size Table</h1>');
+
+                objSelfReference.revisionAttributes = arrRevisionAttributeArray;
+                objSelfReference.sizeTable = arrSizeTableArray;
+                objSelfReference.RevisionAttributeTableString = strRevisionAttributeTableString;
+                objSelfReference.SizeTableString = strSizeTableString;
+                $('#sizeTableDiv').append(objSelfReference.SizeTableString);
+                $('#prodRevisionDiv').append(objSelfReference.RevisionAttributeTableString);
+                //sizeTbl
+                $('#sizeTbl').DataTable({
+                    "order": [[11, "asc"]],
+                    "columnDefs": [
+                        {
+                            "targets": [0, 1, 2, 5, 6, 7, 8, 9, 10, 11],
+                            "visible": false,
+                            "searchable": false
+                        }
+                    ]
+                });
+                $('#revisionAttributeTbl').DataTable({
+                    "order": [[0, "asc"], [1, "desc"]],
+                    "columnDefs": [
+                        {
+                            "targets": [2, 3, 4, 11],
+                            "visible": false,
+                            "searchable": false
+                        }
+                    ],
+                    "pageLength": 50
+                });
+
+
+
+            });
 
 
 

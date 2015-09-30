@@ -308,7 +308,7 @@ function getLogin(arrAttributeValueListArray, objCurrentGarmentProduct) {
 function runNewProduct(wipeThisGarmentProductOut) {
     for (var property in wipeThisGarmentProductOut) {
         if (wipeThisGarmentProductOut.hasOwnProperty(property)) {
-            if (wipeThisGarmentProductOut[property] != wipeThisGarmentProductOut.displayKeys && wipeThisGarmentProductOut[property] != wipeThisGarmentProductOut.displayValues) {
+            if (wipeThisGarmentProductOut[property] != wipeThisGarmentProductOut.sortingArray && wipeThisGarmentProductOut[property] != wipeThisGarmentProductOut.displayKeys && wipeThisGarmentProductOut[property] != wipeThisGarmentProductOut.displayValues) {
                 wipeThisGarmentProductOut[property] = undefined;
             };
         };
@@ -354,4 +354,11 @@ function switchToSwatches() {
         };
     });
 
+};
+
+function getMyReportIdFromReportName(reportName) {
+    var numIndexOfReportName = arrMasterReportIndexer.indexOf(reportName);
+    var numIndexOfId = numIndexOfReportName - 1;
+    var strObjectIdOfReport = arrMasterReportIndexer[numIndexOfId];
+    return strObjectIdOfReport;
 };

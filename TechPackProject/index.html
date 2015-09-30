@@ -7,7 +7,7 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="Garment Spec Report">
     <meta name="author" content="Matthew English">
-    <title>Garment Spec Report Page</title>
+    <title>Techpack generator designed and developed by Matthew English</title>
     <!-- Bootstrap core CSS -->
     <link href="bootstrap-3.3.4-dist/css/bootstrap.min.css" rel="stylesheet" />
     <!-- Custom styles for this template -->
@@ -85,11 +85,20 @@
             page-break-after: always;
         }
     </style>
-    <script>
+   <script>
+        //report id creator, only hard coded required url, import the rest and
+        //this should read them 'ReportsXml' report.
+        //later to get the report id we will get the indexOf the Name and then the id value should be at
+        //one position less in the array.
+        var arrMasterReportIndexer = [];
+        var strReportsXmlUrl = 'http://wsflexwebprd1v.res.hbi.net/Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/invokeAction?oid=OR%3Awt.query.template.ReportTemplate%3A12143436&action=ProduceReport&u8=1'
+        //only required URL above
+        var strReportUrlPrefixStealer = strReportsXmlUrl.substring(0, strReportsXmlUrl.indexOf('Windchill/'));
         //begin code for type ahead in g prod form
         //use below for prd
         var url = location.href;
-        var strUrlPrefix = 'http://wsflexwebprd1v.res.hbi.net/';
+        //var strUrlPrefix = 'http://wsflexwebprd1v.res.hbi.net/';
+        var strUrlPrefix = strReportUrlPrefixStealer;
         //use below for dev
         //var strUrlPrefix = 'http://wsflexwebdev1v.res.hbi.net/';
         var strDevPefix = 'http://wsflexwebdev1v.res.hbi.net/';
@@ -102,10 +111,29 @@
         var strLinkBeginTag = '<a href="';
         var strLinkMidTag = '">';
         var strLinkCloseTag = '</a>';
-        var gProdQueryURL = strUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/invokeAction?oid=OR%3Awt.query.template.ReportTemplate%3A4711650&action=ProduceReport&u8=1'
+        var gProdQueryURL;// = strUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/invokeAction?oid=OR%3Awt.query.template.ReportTemplate%3A4711650&action=ProduceReport&u8=1'
         var returnArrays;
         var arrOfAttributeValueListIds = ['2381876', '102771', '2381693', '368058', '100575'];
+
         $('document').ready(function () {
+            $.get(strReportsXmlUrl, function (data) { }).done(function (data) {
+
+                $('row', data).each(function () {
+                    var strObjectId = $(this).find('report').attr('objectId');
+                    var strReportName = $(this).find('report').text();
+                    arrMasterReportIndexer.push(strObjectId, strReportName);
+
+                });
+
+            });
+
+            var gProdQueryUrlObjectId = getMyReportIdFromReportName('Garment Products For Typeahead');
+            gProdQueryURL = strUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/invokeAction?oid=OR%3Awt.query.template.ReportTemplate%3A' + gProdQueryUrlObjectId + '&action=ProduceReport&u8=1';
+
+
+
+
+
             //document.getElementById('fileinput').addEventListener('change', readSingleFile, false);
             $.prettyLoader();
             var urlChecker = location.href;
@@ -240,6 +268,8 @@
                     <li><a href="javascript:makeMeScrollToDefinedTarget('#blockWeightSpreadDiv',50,-100);">Block Weights For Reference</a></li>
                     <li><a href="javascript:makeMeScrollToDefinedTarget('#labelsDiv',50,-100);">Label BOM</a></li>
                     <li><a href="javascript:makeMeScrollToDefinedTarget('#sewBomDiv',50,-100);">Sew & Sourced BOMs</a></li>
+                    <li><a href="javascript:makeMeScrollToDefinedTarget('#sizeTableDiv',50,-100);">Sizing Table</a></li>
+                    <li><a href="javascript:makeMeScrollToDefinedTarget('#prodRevisionDiv',50,-100);">Revisions</a></li>
                     <li id="runNew"><a href='javascript:runNewProduct(currentGarmentProduct);'>Run a New Product</a></li>
                     <li><a href='javascript:currentGarmentProduct.saveMe(currentGarmentProduct);'>Save Garment</a></li>
                     <li><a href="javascript:pdfPage(currentGarmentProduct);">PDF</a></li>
@@ -277,8 +307,14 @@
 
         </div>
     </div>
-    <div class="page" >
-        <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="moaDiv">
+    <div class="page">
+        <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="sizeTableDiv">
+
+        </div>
+        <!-- container -->
+    </div>
+    <div class="page">
+        <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="prodRevisionDiv">
 
         </div>
         <!-- container -->
