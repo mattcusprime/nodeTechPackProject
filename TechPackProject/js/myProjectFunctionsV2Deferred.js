@@ -1092,11 +1092,13 @@ garmentProduct.prototype.getMyBlockWeightsSpread = function (strUrlPrefix, objSe
             objSelfReference.blockWeightsSpreadTableString = strSpreadTableString;
             objSelfReference.blockWeightSpread = arrOfRowsForFunctionScope;
             //console.log(objSelfReference);
+            spreadBomTableOptions.data = objSelfReference.blockWeightSpread;
             $('#blockWeightSpreadDiv').append(strSpreadLocalHeaderStringEmptyBody);
             $('#spreadReport').DataTable(spreadBomTableOptions);
         });
     }
     else {
+        spreadBomTableOptions.data = objSelfReference.blockWeightSpread;
         $('#blockWeightSpreadDiv').append(strSpreadLocalHeaderStringEmptyBody);
         $('#spreadReport').DataTable(spreadBomTableOptions);
     };
@@ -1179,11 +1181,13 @@ garmentProduct.prototype.getBlockWeightsTrim = function updateTrim(strUrlPrefix,
             objSelfReference.blockWeightsTrimTableString = strTrimTableString;
             objSelfReference.blockWeightTrim = arrRowsArray;
             $('#blockWeightTrimDiv').append(strLocalHeaderStringEmptyBody);
+            trimBomTableOptions.data = objSelfReference.blockWeightTrim
             $('#trimReport').DataTable(trimBomTableOptions);
         });
     }
     else {
         $('#blockWeightTrimDiv').append(strLocalHeaderStringEmptyBody);
+        trimBomTableOptions.data = objSelfReference.blockWeightTrim
         $('#trimReport').DataTable(trimBomTableOptions);
     };
 };
@@ -1528,6 +1532,7 @@ garmentProduct.prototype.getLabelBoms = function (labelProductObjectId, strUrlPr
         });
 
         $('#labelsDiv').append('<h1>Label BOM</h1><table id="labelBom" class="display responsive col-md-12 compact cell-border"><thead><tr><th>Country</th><th>Garment Use</th><th>Material</th><th>Application</th><th>Label Size</th><th>Fiber Code-Content</th><th>Ink Colors</th><th>Usage Per Dozen</th><th>Usage UOM</th><th>Std Waste Factor</th><th>Usage Price</th></tr></thead><tbody></tbody></table>');
+        labelBomTableOptions.data = arrLabelData;
         $('#labelBom').DataTable(labelBomTableOptions);
 
 

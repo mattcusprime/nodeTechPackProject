@@ -2,24 +2,28 @@
 var arrGarmentProductsArrayForTypeAhead = [];
 // table options
 var constructionTableOptions = {
-    pageLength: 50,
-    order: [[0, 'asc']],
-    columnDefs: [
-        { visible: false, targets: 0 }
+    'pageLength': 50,
+    'order': [[0, 'asc']],
+    'columnDefs': [
+        { 'visible': false, 'targets': 0 }
     ],
-    responsive: true,
-    dom: 'C</br>ft',
-    paging: true
+    'responsive': false,
+    'dom': 'C</br>ft',
+    'paging': true
 };
 var measurementTableOptions = {
-    pageLength: 50,
-    order: [[0, 'asc']],
-    columnDefs: [
-        { visible: false, targets: [0,3,4,7] }
+    'pageLength': 50,
+    'order': [[0, 'asc']],
+    'dom': 'C</br>ft',
+    "columnDefs": [
+        {
+            "targets": [0, 3, 4, 7],
+            "visible": false,
+            "searchable": false
+        }
     ],
-    responsive: true,
-    dom: 'C</br>ft',
-    paging: true
+    'responsive': false,
+    'paging': true
 };
 var sewBomTableOptions = {
 
@@ -48,8 +52,9 @@ var colorwayBomTableOptions = {
     'pageLength': 100,
     'dom': 'C</br>ft',
     'columnDefs': [
-        {visible:false,targets:0}
-    ]
+        {'visible':false,'targets':0}
+    ],
+    'responsive': false
 
 };
 var spreadBomTableOptions = {
@@ -57,7 +62,7 @@ var spreadBomTableOptions = {
     'scrollY': 600,
     'paging': false,
     'length': 1000,
-    'data': objSelfReference.blockWeightSpread,
+    //'data': '',
     'columns': [
         { 'data': 'pCodeSpread' },
      { 'data': 'cMethCodeSpread' },
@@ -84,7 +89,7 @@ var trimBomTableOptions = {
     'scrollY': 700,
     'paging': false,
     'length': 1000,
-    'data': objSelfReference.blockWeightTrim,
+    //'data': '',
     'columns': [
             { 'data': 'pCode' },
             { 'data': 'cMethCode' },
@@ -103,7 +108,7 @@ var trimBomTableOptions = {
     'responsive': false
 };
 var labelBomTableOptions = {
-    "data": arrLabelData,
+    //"data": arrLabelData,
     "pageLength": 1000,
     "dom": 'ft'
 
@@ -575,4 +580,12 @@ function readSingleFile(evt, objGarmentProduct) {
 };
 function createGprodQuery() {
 
+};
+
+function makeMyRowsClickableToRemove(idSelector) {
+    $(idSelector + " tbody tr").dblclick(function () {
+        $(this).remove();
+        alert('row removed');
+        $(idSelector).draw();
+    });
 };
