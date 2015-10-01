@@ -85,22 +85,21 @@
         .page {
             page-break-after: always;
         }
-       
     </style>
-   <script>
+    <script>
         //report id creator, only hard coded required url, import the rest and
         //this should read them 'ReportsXml' report.
         //later to get the report id we will get the indexOf the Name and then the id value should be at
         //one position less in the array.
         var arrMasterReportIndexer = [];
-        var strReportsXmlUrl = 'http://wsflexwebprd1v.res.hbi.net/Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/invokeAction?oid=OR%3Awt.query.template.ReportTemplate%3A12143436&action=ProduceReport&u8=1'
+
         //only required URL above
-        var strReportUrlPrefixStealer = strReportsXmlUrl.substring(0, strReportsXmlUrl.indexOf('Windchill/'));
+        //var strReportUrlPrefixStealer = strReportsXmlUrl.substring(0, strReportsXmlUrl.indexOf('Windchill/'));
         //begin code for type ahead in g prod form
         //use below for prd
         var url = location.href;
-        //var strUrlPrefix = 'http://wsflexwebprd1v.res.hbi.net/';
-        var strUrlPrefix = strReportUrlPrefixStealer;
+        var strUrlPrefix = 'http://wsflexwebprd1v.res.hbi.net/';
+
         //use below for dev
         //var strUrlPrefix = 'http://wsflexwebdev1v.res.hbi.net/';
         var strDevPefix = 'http://wsflexwebdev1v.res.hbi.net/';
@@ -118,35 +117,21 @@
         var arrOfAttributeValueListIds = ['2381876', '102771', '2381693', '368058', '100575'];
 
         $('document').ready(function () {
-            $.get(strReportsXmlUrl, function (data) { }).done(function (data) {
-
-                $('row', data).each(function () {
-                    var strObjectId = $(this).find('report').attr('objectId');
-                    var strReportName = $(this).find('report').text();
-                    arrMasterReportIndexer.push(strObjectId, strReportName);
-
-                });
-
-            });
-
-            var gProdQueryUrlObjectId = getMyReportIdFromReportName('Garment Products For Typeahead');
-            gProdQueryURL = strUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/invokeAction?oid=OR%3Awt.query.template.ReportTemplate%3A' + gProdQueryUrlObjectId + '&action=ProduceReport&u8=1';
-
-
-
-
-
+            $('#loadingInfo').parent().hide();
+            //getReportsFromXmlFunction(strReportsXmlUrl);
             //document.getElementById('fileinput').addEventListener('change', readSingleFile, false);
             $.prettyLoader();
             var urlChecker = location.href;
             console.log(urlChecker);
-            if (urlChecker.search('dontRunPrompt') == -1) {
-                getLogin(arrOfAttributeValueListIds, currentGarmentProduct);
-            };
+            
+            
 
-
+            getLogin(arrOfAttributeValueListIds, currentGarmentProduct, arrMasterReportIndexer);
             /*applyTypeAheadToElement(gProdQueryURL, '#gProd', 'Garment_Product_Name');
             currentGarmentProduct.getMyValueLists(arrOfAttributeValueListIds, currentGarmentProduct);*/
+
+
+
             $('#garmentProd').submit(function (e) {
                 e.preventDefault();
                 var nameToUse = $('#gProd').val();
@@ -205,38 +190,7 @@
         });
 
 
-        function readSingleFile(evt, objGarmentProduct) {
-            //Retrieve the first (and only!) File from the FileList object
-            var f = evt.target.files[0];
 
-            if (f) {
-                var r = new FileReader();
-                r.onloadend = function (e) {
-                    var contents = e.target.result;
-                    var objFunctionObject;
-                    objFunctionObject = JSON.parse(contents);
-                    var keyNames = Object.keys(objFunctionObject);
-                    for (var i = 0; i < keyNames.length; i++) {
-                        var strPropName = keyNames[i];
-                        var objPropValue = $(objFunctionObject).prop(strPropName);
-                        $(objGarmentProduct).prop(strPropName, objPropValue);
-                    };
-                    console.log(objFunctionObject, objGarmentProduct);
-                    objGarmentProduct.generateAvailableReportsList(objGarmentProduct);
-                    //$('body').append(contents);
-                    //console.log(currentGarmentProduct);
-                    /*alert("Got the file.n"
-                          + "name: " + f.name + "n"
-                          + "type: " + f.type + "n"
-                          + "size: " + f.size + " bytesn"
-                          + "starts with: " + contents.substr(1, contents.indexOf("n"))
-                    );*/
-                }
-                r.readAsText(f);
-            } else {
-                alert("Failed to load file");
-            }
-        };
 
 
 
@@ -262,11 +216,11 @@
             </div>
             <div id="navbar" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
-                    <li><a href='#tblRelationships'>Relationships</a></li>
+                    <li><a href='#tblRelationships'>Header</a></li>
                     <li><a href="javascript:makeMeScrollToDefinedTarget('#search',50,-100);">Reports</a></li>
                     <li><a href="javascript:makeMeScrollToDefinedTarget('#imagesDiv',50,-100);">Images</a></li>
-                    <li><a href="javascript:createComponentTable('constructionDiv', 'construction', currentGarmentProduct.constructionTableString);makeMeScrollToDefinedTarget('#constructionDiv',50, -100);">Construction</a></li>
-                    <li><a href="javascript:createComponentTable('measurementDiv', 'measurements', currentGarmentProduct.measurementTableString);makeMeScrollToDefinedTarget('#measurementDiv',50,-100);">Measurements</a></li>
+                    <li><a href="javascript:createComponentTable('constructionDiv', 'construction', currentGarmentProduct.constructionTableString,constructionTableOptions);makeMeScrollToDefinedTarget('#constructionDiv',50, -100);">Construction</a></li>
+                    <li><a href="javascript:createComponentTable('measurementDiv', 'measurements', currentGarmentProduct.measurementTableString,measurementTableOptions);makeMeScrollToDefinedTarget('#measurementDiv',50,-100);">Measurements</a></li>
                     <li><a href="javascript:makeMeScrollToDefinedTarget('#blockWeightSpreadDiv',50,-100);">Block Weights For Reference</a></li>
                     <li><a href="javascript:makeMeScrollToDefinedTarget('#labelsDiv',50,-100);">Label BOM</a></li>
                     <li><a href="javascript:makeMeScrollToDefinedTarget('#sewBomDiv',50,-100);">Sew & Sourced BOMs</a></li>
@@ -302,8 +256,17 @@
         </div>
 
     </div>
+    <div class="page">
+        <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="loadingInfo">
+            <h3 class="col-md-offset-4 col-md-4">Acquiring Product List.</h3>
+        </div>
+    </div>
 
+    <div class="page">
+        <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="generalAttributes">
 
+        </div>
+    </div>
     <div class="page">
         <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="garmentHeader">
 

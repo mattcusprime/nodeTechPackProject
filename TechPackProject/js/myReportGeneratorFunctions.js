@@ -1,6 +1,159 @@
 ﻿//Global Variables
 var arrGarmentProductsArrayForTypeAhead = [];
+// table options
+var constructionTableOptions = {
+    pageLength: 50,
+    order: [[0, 'asc']],
+    columnDefs: [
+        { visible: false, targets: 0 }
+    ],
+    responsive: true,
+    dom: 'C</br>ft',
+    paging: true
+};
+var measurementTableOptions = {
+    pageLength: 50,
+    order: [[0, 'asc']],
+    columnDefs: [
+        { visible: false, targets: [0,3,4,7] }
+    ],
+    responsive: true,
+    dom: 'C</br>ft',
+    paging: true
+};
+var sewBomTableOptions = {
 
+    "columnDefs": [
+        {
+            "targets": [0, 1, 2, 3, 4, 5, 7, 8, 11, 13, 15, 14, 16, 17, 18, 19, 20],
+            "visible": false,
+            "searchable": false
+        }
+    ]
+
+};
+var colorwayListTableOptions = {
+
+    'paging': false,
+    'length': 1000,
+    'dom': ''
+
+};
+var cwayReportTableOptions = {
+    'responsive': false,
+    'pageLength': 100
+};
+var colorwayBomTableOptions = {
+
+    'pageLength': 100,
+    'dom': 'C</br>ft',
+    'columnDefs': [
+        {visible:false,targets:0}
+    ]
+
+};
+var spreadBomTableOptions = {
+
+    'scrollY': 600,
+    'paging': false,
+    'length': 1000,
+    'data': objSelfReference.blockWeightSpread,
+    'columns': [
+        { 'data': 'pCodeSpread' },
+     { 'data': 'cMethCodeSpread' },
+     { 'data': 'manfOptionSpread' },
+     { 'data': 'sortValue' },
+     { 'data': 'shadeSpread' },
+     { 'data': 'sizeSpread' },
+     { 'data': 'pMastSpread' },
+     { 'data': 'conWidthSpread' },
+     { 'data': 'numGarmentsSpread' },
+     { 'data': 'muSpread' },
+     { 'data': 'totLengthSpread' },
+     { 'data': 'plySpread' },
+     { 'data': 'useYdDzSpread' },
+     { 'data': 'usageLBDZSpread' }
+
+
+    ],
+    'order': [[0, 'asc'], [1, 'asc'], [2, 'asc'], [3, 'asc']],
+    'responsive': false
+};
+var trimBomTableOptions = {
+
+    'scrollY': 700,
+    'paging': false,
+    'length': 1000,
+    'data': objSelfReference.blockWeightTrim,
+    'columns': [
+            { 'data': 'pCode' },
+            { 'data': 'cMethCode' },
+            { 'data': 'manfOption' },
+            { 'data': 'shade' },
+            { 'data': 'sortValue' },
+            { 'data': 'size' },
+            { 'data': 'trimPatternNumAndVersion' },
+            { 'data': 'numGarments' },
+            { 'data': 'trimCutWidth' },
+            { 'data': 'totLength' },
+            { 'data': 'useYdDz' },
+            { 'data': 'usageLBDZ' }
+    ],
+    'order': [[0, 'asc'], [1, 'asc'], [2, 'asc'], [3, 'asc']],
+    'responsive': false
+};
+var labelBomTableOptions = {
+    "data": arrLabelData,
+    "pageLength": 1000,
+    "dom": 'ft'
+
+};
+var sizeTableOptions = {
+
+    "order": [[11, "asc"]],
+    "columnDefs": [
+        {
+            "targets": [0, 1, 2, 5, 6, 7, 8, 9, 10, 11],
+            "visible": false,
+            "searchable": false
+        }
+    ]
+};
+var revisionTableTableOptions = {
+
+    "order": [[10, "desc"], [0, "asc"], [1, "desc"]],
+    "columnDefs": [
+        {
+            "targets": [2, 3, 4, 11],
+            "visible": false,
+            "searchable": false
+        }
+    ],
+    "pageLength": 10
+};
+var reportsTableOptions = {
+
+    'pageLength': 5,
+    'dom': '',
+    "tableTools": {
+        "sSwfPath": "C:/nodeTechPackProject/TechPackProject/js/copy_csv_xls_pdf.swf"
+    },
+    "responsive": false,
+    "columnDefs": [
+        {
+            "targets": [0],
+            "visible": false,
+            "searchable": false
+        }
+
+    ]
+};
+var approvedSupplierTableOptions = {
+
+};
+
+
+// table options
 //
 /**
 
@@ -19,6 +172,11 @@ function createRelatedProductsDiv(objCurrentGarmentProduct) {
     };
     if (typeof (objCurrentGarmentProduct.patternProduct) != 'undefined') {
         strTableString = strTableString + "<tr><td>Pattern Product</td><td>" + objCurrentGarmentProduct.patternProduct.name + "</td></td>";
+        $('#topLeftNav').html(objCurrentGarmentProduct.name + '<br> Pattern: ' + objCurrentGarmentProduct.patternProduct.name);
+    }
+    else
+    {
+        $('#topLeftNav').text(objCurrentGarmentProduct.name);
     };
     if (typeof (objCurrentGarmentProduct.labelProduct) != 'undefined') {
         strTableString = strTableString + "<tr><td>Label Product</td><td>" + objCurrentGarmentProduct.labelProduct.name + "</td></td>";
@@ -30,7 +188,7 @@ function createRelatedProductsDiv(objCurrentGarmentProduct) {
     strTableString = strTableString + "</tbody></table>";
     //$('head').append(strSpecsDivString);
     $('#garmentHeader').append(strTableString);
-    $('#topLeftNav').text(objCurrentGarmentProduct.name);
+    
     //$('#navbar ul').first().append("<li><a href='#garmentHeader'>Relationships</a></li>");
 
 };
@@ -241,12 +399,12 @@ function checkStorageFor(strCheckFor, strJqSelectorToPopulateIfStorageExists) {
  * @param {Object} garmentProduct, it must have measurementDetail
  * @param {String} strTableString is the table string to pass that will be appended and made into a DataTable
  */
-function createComponentTable(strParentJquerySelectorJustStringNoPound, strChildJquerySelectorForTableJustStringNoPound, strTableString) {
+function createComponentTable(strParentJquerySelectorJustStringNoPound, strChildJquerySelectorForTableJustStringNoPound, strTableString,options) {
     //var tableString = objGarmentProductWithMeasurementDetailString.measurementTableString;
     //http://localhost:59193/DataTables-1.10.7/extensions/TableTools/swf/copy_csv_xls_pdf.swf
     $('#' + strParentJquerySelectorJustStringNoPound + ' *').remove();
     $('#' + strParentJquerySelectorJustStringNoPound).append(strTableString);
-    var table = $('#' + strChildJquerySelectorForTableJustStringNoPound).DataTable({
+    var table = $('#' + strChildJquerySelectorForTableJustStringNoPound).DataTable(options);/*{
         pageLength: 50,
         order: [[0, 'asc']],
         columnDefs: [
@@ -261,7 +419,7 @@ function createComponentTable(strParentJquerySelectorJustStringNoPound, strChild
         
         
         
-    });
+    });*/
     
 
 
@@ -280,26 +438,44 @@ function compare(a, b) {
     return 0;
 };
 
-function getLogin(arrAttributeValueListArray, objCurrentGarmentProduct) {
+function getLogin(arrAttributeValueListArray, objCurrentGarmentProduct,arrReportsArray) {
     var strInput1 = '<input id="usr" placeholder="User Name" type="text" name="username"></input>';
     var strInput2 = '<input id="pwd" placeholder="Password" type="password" name="password"></input>';
     var strInput3 = '<button class="closer">Close Application</button>';
     var strInput4 = strInput1 + strInput2;// + strInput3;
-   
+    var strReportsXmlSuffix = 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/invokeAction?oid=OR%3Awt.query.template.ReportTemplate%3A12143436&action=ProduceReport&u8=1'
+
         
     var strUrlPrefixWithPass;
     
     $(strInput4).confirm(function (e) {
+        $('#loadingInfo').parent().fadeIn();
         //e.preventDefault();
         var strUser = $('#usr').val();
         var strPwd = $('#pwd').val();
         localStorage.setItem('mattAppUser', strUser);
         localStorage.setItem('mattAppPass', strPwd);
         strUrlPrefixWithPass = 'http://' + strUser + ':' + strPwd + '@wsflexwebprd1v.res.hbi.net/'
-        var gProdQueryURL = strUrlPrefixWithPass + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/invokeAction?oid=OR%3Awt.query.template.ReportTemplate%3A4711650&action=ProduceReport&u8=1'
-        applyTypeAheadToElement(gProdQueryURL, '#gProd', 'Garment_Product_Name');
-        currentGarmentProduct.getMyValueLists(strUrlPrefixWithPass, arrAttributeValueListArray, objCurrentGarmentProduct);
-        $('#garmentFormContainer').fadeIn();
+        strReportsXmlUrl = strUrlPrefixWithPass + strReportsXmlSuffix;
+        $.get(strReportsXmlUrl, function (data) { }).done(function (data) {
+
+            $('row', data).each(function () {
+                var strObjectId = $(this).find('report').attr('objectId');
+                var strReportName = $(this).find('report').text();
+                arrReportsArray.push(strObjectId, strReportName);
+
+            });
+
+        }).done(function () {
+            var gProdQueryUrlObjectId = getMyReportIdFromReportName('Garment Products For Typeahead');
+            gProdQueryURL = strUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/invokeAction?oid=OR%3Awt.query.template.ReportTemplate%3A' + gProdQueryUrlObjectId + '&action=ProduceReport&u8=1';
+            applyTypeAheadToElement(gProdQueryURL, '#gProd', 'Garment_Product_Name');
+            currentGarmentProduct.getMyValueLists(strUrlPrefixWithPass, arrAttributeValueListArray, objCurrentGarmentProduct);
+            $('#loadingInfo').parent().fadeOut().delay(500);
+            $('#garmentFormContainer').fadeIn();
+        });
+
+
 
     });
 };
@@ -361,4 +537,42 @@ function getMyReportIdFromReportName(reportName) {
     var numIndexOfId = numIndexOfReportName - 1;
     var strObjectIdOfReport = arrMasterReportIndexer[numIndexOfId];
     return strObjectIdOfReport;
+};
+
+
+
+function readSingleFile(evt, objGarmentProduct) {
+    //Retrieve the first (and only!) File from the FileList object
+    var f = evt.target.files[0];
+
+    if (f) {
+        var r = new FileReader();
+        r.onloadend = function (e) {
+            var contents = e.target.result;
+            var objFunctionObject;
+            objFunctionObject = JSON.parse(contents);
+            var keyNames = Object.keys(objFunctionObject);
+            for (var i = 0; i < keyNames.length; i++) {
+                var strPropName = keyNames[i];
+                var objPropValue = $(objFunctionObject).prop(strPropName);
+                $(objGarmentProduct).prop(strPropName, objPropValue);
+            };
+            console.log(objFunctionObject, objGarmentProduct);
+            objGarmentProduct.generateAvailableReportsList(objGarmentProduct);
+            //$('body').append(contents);
+            //console.log(currentGarmentProduct);
+            /*alert("Got the file.n"
+                  + "name: " + f.name + "n"
+                  + "type: " + f.type + "n"
+                  + "size: " + f.size + " bytesn"
+                  + "starts with: " + contents.substr(1, contents.indexOf("n"))
+            );*/
+        }
+        r.readAsText(f);
+    } else {
+        alert("Failed to load file");
+    }
+};
+function createGprodQuery() {
+
 };
