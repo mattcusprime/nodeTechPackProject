@@ -404,12 +404,14 @@ function checkStorageFor(strCheckFor, strJqSelectorToPopulateIfStorageExists) {
  * @param {Object} garmentProduct, it must have measurementDetail
  * @param {String} strTableString is the table string to pass that will be appended and made into a DataTable
  */
-function createComponentTable(strParentJquerySelectorJustStringNoPound, strChildJquerySelectorForTableJustStringNoPound, strTableString,options) {
+function createComponentTable(strParentJquerySelectorJustStringNoPound, strChildJquerySelectorForTableJustStringNoPound, strTableString,options,removableRows) {
     //var tableString = objGarmentProductWithMeasurementDetailString.measurementTableString;
     //http://localhost:59193/DataTables-1.10.7/extensions/TableTools/swf/copy_csv_xls_pdf.swf
     $('#' + strParentJquerySelectorJustStringNoPound + ' *').remove();
     $('#' + strParentJquerySelectorJustStringNoPound).append(strTableString);
-    var table = $('#' + strChildJquerySelectorForTableJustStringNoPound).DataTable(options);/*{
+    var table = $('#' + strChildJquerySelectorForTableJustStringNoPound).DataTable(options);
+
+    /*{
         pageLength: 50,
         order: [[0, 'asc']],
         columnDefs: [
@@ -583,9 +585,44 @@ function createGprodQuery() {
 };
 
 function makeMyRowsClickableToRemove(idSelector) {
+    //var table = $(idSelector).DataTable(tableOptions);
+
     $(idSelector + " tbody tr").dblclick(function () {
         $(this).remove();
+        var lastClassOfRow = '';
+        var thisClassOfRow = '';
+        $(idSelector + " tbody tr").each(function () {
+            if ($(this).hasClass('even')){
+                thisClassOfRow = 'even';
+            }
+            else if ($(this).hasClass('odd')){
+                thisClassOfRow = 'odd';
+            };
+
+            if (thisClassOfRow == 'even' && lastClassOfRow == 'even') {
+                //lastClassOfRow = 'even';
+                $(this).removeClass('even').addClass('odd');
+            }
+            else if (thisClassOfRow == 'odd' && lastClassOfRow == 'odd') {
+                //lastClassOfRow = 'odd';
+                $(this).removeClass('odd').addClass('even');
+            };
+
+            if ($(this).hasClass('even')) {
+                lastClassOfRow = 'even';
+            }
+            else if ($(this).hasClass('odd')) {
+                lastClassOfRow = 'odd';
+            };
+            //this effectively fixed redrawing based on row removal.
+
+        });
         alert('row removed');
-        $(idSelector).draw();
+        //var table = $(idSelector);
+        //table.draw();
+        //table.row( $(this).parents('tr') ).remove().draw();
+
+
     });
+
 };
