@@ -1,0 +1,4 @@
+﻿ .pagination,.dataTables_paginate,.dataTables_info, input, label, .dataTables_filter, .no-print, .no-print * {
+                display: none !important;
+
+            }

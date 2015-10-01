@@ -726,6 +726,10 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
         objGarmentSewRow.sizeData.sort(objCompareBySortPosition);
         arrGarmentSewRows[i] = objGarmentSewRow;
 
+
+
+
+
     };
 
 
@@ -761,6 +765,24 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
         objSelfReference.getMyConstruction(strHostUrlPrefix, objSelfReference.construction.branchId, arrConstructionDetailDataContainer, objSelfReference);
         objSelfReference.getMyMeasurement(strHostUrlPrefix, objSelfReference.measurement.branchId, arrMeasurementDetailDataContainer, objSelfReference);
     });
+    var strApprovedSupplierUrlObjectId = getMyReportIdFromReportName('garmentProdSpecsGarmentAndPatternComponentsApprovedSuppliers');
+    var strApprovedSupplierUrl = strUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?u8&action=ExecuteReport&specId=' + objSelfReference.activeSpecId + '&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A' + strApprovedSupplierUrlObjectId + '&xsl1=&format=formatDelegate&delegateName=XML&jrb=wt.query.template.reportTemplateRB&sortByIndex=6&sortOrder=asc';
+
+    var arrApprovedSupplierArray = [];
+    var strApprovedSupplierTableString = '';
+    $.get(strApprovedSupplierUrl, function (data) { }).done(function (data) {
+        arrApprovedSupplierArray = rowParser('row', data);
+        strApprovedSupplierTableString = convertRowArrayIntoHtmlTable(arrApprovedSupplierArray, '', '', 'approvedSupplierTbl', '<h1>Approved Suppliers</h1>');
+        objSelfReference.approvedSuppliers = arrApprovedSupplierArray;
+        objSelfReference.approvedSupplierTableString = strApprovedSupplierTableString;
+        $('#approvedSupplierDiv').append(objSelfReference.approvedSupplierTableString);
+        $('#approvedSupplierTbl').DataTable();
+    });
+    
+
+
+
+
 
 };
 /**
@@ -1700,8 +1722,9 @@ garmentProduct.prototype.getMoas = function (strUrlPrefix, objSelfReference, obj
 
                         if (objThisLoopObjectFromGarment.Last_Edited_By == objThisLoopObjectFromDisplayQuery.userObjectId) {
                             objThisLoopObjectFromDisplayQuery.Name = objThisLoopObjectFromDisplayQuery.Name.replace(/[.]/g, ' ');
-                            objThisLoopObjectFromGarment.Last_Edited_By = '<a href="mailto:' + objThisLoopObjectFromDisplayQuery.E_Mail + '">' + objThisLoopObjectFromDisplayQuery.Name + '</a>';
-                            objThisLoopObjectFromGarment.Last_Edited_By = objThisLoopObjectFromGarment.Last_Edited_By.replace(/[ ]/, "%20");
+                            var encodedProdName = objThisLoopObjectFromGarment.Product_Name.replace(/[ ]/, "%20");
+                            objThisLoopObjectFromGarment.Last_Edited_By = '<a href="mailto:' + objThisLoopObjectFromDisplayQuery.E_Mail + '?subject=' + encodedProdName + '">' + objThisLoopObjectFromDisplayQuery.Name + '</a>';
+                            //objThisLoopObjectFromGarment.Last_Edited_By = objThisLoopObjectFromGarment.Last_Edited_By.replace(/[ ]/, "%20");
                         };
 
 
@@ -1727,8 +1750,8 @@ garmentProduct.prototype.getMoas = function (strUrlPrefix, objSelfReference, obj
 
 
                 };
-                var strRevisionAttributeTableString = convertRowArrayIntoHtmlTable(arrRevisionAttributeArray, '', '', 'revisionAttributeTbl', '<h1>Revision Attributes</h1>');
-                var strSizeTableString = convertRowArrayIntoHtmlTable(arrSizeTableArray, '', '', 'sizeTbl', '<h1>Size Table</h1>');
+                var strRevisionAttributeTableString = convertRowArrayIntoHtmlTable(arrRevisionAttributeArray, '', '', 'revisionAttributeTbl', '<h1>Product Revisions</h1>');
+                var strSizeTableString = convertRowArrayIntoHtmlTable(arrSizeTableArray, '', '', 'sizeTbl', '<h1>Sizing Table</h1>');
 
                 objSelfReference.revisionAttributes = arrRevisionAttributeArray;
                 objSelfReference.sizeTable = arrSizeTableArray;
