@@ -5,7 +5,7 @@ var constructionTableOptions = {
     'pageLength': 50,
     'order': [[0, 'asc']],
     'columnDefs': [
-        { 'visible': false, 'targets': 0 }
+        { 'visible': false, 'targets': [0, 11] }
     ],
     'responsive': false,
     'dom': 'C</br>ft',
@@ -17,7 +17,7 @@ var measurementTableOptions = {
     'dom': 'C</br>ft',
     "columnDefs": [
         {
-            "targets": [0, 3, 4, 7],
+            "targets": [0, 3, 4, 7,8],
             "visible": false,
             "searchable": false
         }
