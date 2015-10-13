@@ -82,7 +82,14 @@ var spreadBomTableOptions = {
 
     ],
     'order': [[0, 'asc'], [1, 'asc'], [2, 'asc'], [3, 'asc']],
-    'responsive': false
+    'responsive': false,
+    "columnDefs": [
+        {
+            "targets": [3],
+            "visible": false,
+            "searchable": false
+        }
+    ]
 };
 var trimBomTableOptions = {
 
@@ -104,8 +111,15 @@ var trimBomTableOptions = {
             { 'data': 'useYdDz' },
             { 'data': 'usageLBDZ' }
     ],
-    'order': [[0, 'asc'], [1, 'asc'], [2, 'asc'], [3, 'asc']],
-    'responsive': false
+    'order': [[0, 'asc'], [1, 'asc'], [2, 'asc'], [3, 'asc'], [4, 'asc']],
+    'responsive': false,
+    "columnDefs": [
+        {
+            "targets": [4],
+            "visible": false,
+            "searchable": false
+        }
+        ]
 };
 var labelBomTableOptions = {
     //"data": arrLabelData,

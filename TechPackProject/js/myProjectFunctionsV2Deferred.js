@@ -1018,6 +1018,7 @@ garmentProduct.prototype.getMyBlockWeightsSpread = function (strUrlPrefix, objSe
     //var fullSpreadUrl = strUrlPrefix + "Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?Garment+Product+Season=" & objSelfReference.activeSeason & "&Product+Name=" & objSelfReference.name & "&Spec+Name=" & objSelfReference.activeSpecName & "&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A3009695&action=ExecuteReport";
     //var currentGarmentProductFromThis = this;
     var sortingArray = ['sizeXXS', '1', 'sizeXS', '2', 'sizeS', '3', 'sizeM', '4', 'sizeL', '5', 'sizeXL', '6', 'size2X', '7', 'size3X', '8', 'size4X', '9', 'size5X', '10', 'size6X', '11', 'size3M', '1', 'size6M', '2', 'size9M', '3', 'size12M', '4', 'size18M', '5', 'size24M', '6', 'size2T', '7', 'size3T', '8', 'size4T', '9', 'size5T', '10', 'size2', '1', 'size4', '2', 'size5', '3', 'size6', '4', 'size7', '5', 'size8', '6', 'size9', '7', 'size10', '8', 'size11', '9', 'size12', '10', 'size13', '11', 'size14', '12', 'size16', '13', 'size18', '14', 'size20', '15', 'size22', '16', 'size24', '17', 'size26', '18', 'size28', '19', 'size30', '20', 'size32', '21', 'size34', '22', 'size36', '23', 'size38', '24', 'size40', '25', 'size42', '26', 'size44', '27', 'size46', '28', 'size48', '29', 'size50', '30', 'size52', '31', 'size54', '32', 'size56', '33', 'size58', '34', 'size60', '35', 'size62', '36', 'sizeS/M', '1', 'sizeL/XL', '2', 'size16W', '1', 'size20W', '2', 'size24W', '3', 'size28W', '4', 'size32W', '5', 'size36W', '6'];
+    sortingArray = objSelfReference.sortingArray;
     var strPnameForParam = objSelfReference.name;
     var strSeasonNameForParam = objSelfReference.activeSeason;
     var strSpecNameForParam = objSelfReference.activeSpecName;
@@ -1098,15 +1099,18 @@ garmentProduct.prototype.getMyBlockWeightsSpread = function (strUrlPrefix, objSe
         });
     }
     else {
-        spreadBomTableOptions.data = objSelfReference.blockWeightSpread;
-        $('#blockWeightSpreadDiv').append(strSpreadLocalHeaderStringEmptyBody);
-        $('#spreadReport').DataTable(spreadBomTableOptions);
+        if ($('#spreadReport').length) {
+            spreadBomTableOptions.data = objSelfReference.blockWeightSpread;
+            $('#blockWeightSpreadDiv').append(strSpreadLocalHeaderStringEmptyBody);
+            $('#spreadReport').DataTable(spreadBomTableOptions);
+        };
     };
 };
 
 
 garmentProduct.prototype.getBlockWeightsTrim = function updateTrim(strUrlPrefix, objSelfReference) {
     var sortingArray = ['sizeXXS', '1', 'sizeXS', '2', 'sizeS', '3', 'sizeM', '4', 'sizeL', '5', 'sizeXL', '6', 'size2X', '7', 'size3X', '8', 'size4X', '9', 'size5X', '10', 'size6X', '11', 'size3M', '1', 'size6M', '2', 'size9M', '3', 'size12M', '4', 'size18M', '5', 'size24M', '6', 'size2T', '7', 'size3T', '8', 'size4T', '9', 'size5T', '10', 'size2', '1', 'size4', '2', 'size5', '3', 'size6', '4', 'size7', '5', 'size8', '6', 'size9', '7', 'size10', '8', 'size11', '9', 'size12', '10', 'size13', '11', 'size14', '12', 'size16', '13', 'size18', '14', 'size20', '15', 'size22', '16', 'size24', '17', 'size26', '18', 'size28', '19', 'size30', '20', 'size32', '21', 'size34', '22', 'size36', '23', 'size38', '24', 'size40', '25', 'size42', '26', 'size44', '27', 'size46', '28', 'size48', '29', 'size50', '30', 'size52', '31', 'size54', '32', 'size56', '33', 'size58', '34', 'size60', '35', 'size62', '36', 'sizeS/M', '1', 'sizeL/XL', '2', 'size16W', '1', 'size20W', '2', 'size24W', '3', 'size28W', '4', 'size32W', '5', 'size36W', '6'];
+    sortingArray = objSelfReference.sortingArray;
     var param = objSelfReference.name;
     var paramSeasonTrim = objSelfReference.activeSeason;
     var paramSpecTrim = objSelfReference.activeSpecName;
@@ -1160,7 +1164,7 @@ garmentProduct.prototype.getBlockWeightsTrim = function updateTrim(strUrlPrefix,
                     objRow.usageLBDZ = (objRow.trimCutWidth * objRow.totLength * 12 / objRow.numGarments / 1296 * objRow.manfFabricWeight / 16)
                 };
                 var sortLookup = "size" + objRow.sizeForLookUp;
-                objRow.sortValue = sortingArray.indexOf(objRow.sortLookup);
+                objRow.sortValue = sortingArray.indexOf(sortLookup);
                 objRow.usageLBDZ = Math.round(objRow.usageLBDZ * 100) / 100;
                 objRow.useYdDz = Math.round(objRow.useYdDz * 100) / 100;
                 objRow.totLength = Math.round(objRow.totLength * 10000) / 10000;
@@ -1186,9 +1190,11 @@ garmentProduct.prototype.getBlockWeightsTrim = function updateTrim(strUrlPrefix,
         });
     }
     else {
-        $('#blockWeightTrimDiv').append(strLocalHeaderStringEmptyBody);
-        trimBomTableOptions.data = objSelfReference.blockWeightTrim
-        $('#trimReport').DataTable(trimBomTableOptions);
+        if ($('#trimReport').length) {
+            $('#blockWeightTrimDiv').append(strLocalHeaderStringEmptyBody);
+            trimBomTableOptions.data = objSelfReference.blockWeightTrim
+            $('#trimReport').DataTable(trimBomTableOptions);
+        };
     };
 };
 
