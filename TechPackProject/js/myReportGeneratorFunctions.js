@@ -185,7 +185,7 @@ function createRelatedProductsDiv(objCurrentGarmentProduct) {
     //$('#relationships').fadeOut().remove();
     $('#garmentHeader *').remove();
     var strSpecsDivString = appendBootStrapDivPage('relationships', 1);
-    var strTableString = '<h2>Relationships</h2><table class="table" id="tblRelationships"><tr><th>Relationship</th><th>Product</th></tr><tbody>';
+    var strTableString = '<h1>Relationships</h1><table class="table" id="tblRelationships"><tr><th>Relationship</th><th>Product</th></tr><tbody>';
     if (typeof (objCurrentGarmentProduct.colorwayProduct) != 'undefined') {
         strTableString = strTableString + "<tr><td>Colorway Product</td><td>" + objCurrentGarmentProduct.colorwayProduct.name + "</td></td>";
     };
@@ -460,6 +460,10 @@ function compare(a, b) {
 };
 
 function getLogin(arrAttributeValueListArray, objCurrentGarmentProduct,arrReportsArray) {
+    var strParsedStringOfUrl = window.location.href;
+    if (strParsedStringOfUrl.indexOf('dontRunPrompt') != -1) {
+        return false;
+    };
     var strInput1 = '<input id="usr" placeholder="User Name" type="text" name="username"></input>';
     var strInput2 = '<input id="pwd" placeholder="Password" type="password" name="password"></input>';
     var strInput3 = '<button class="closer">Close Application</button>';
@@ -470,10 +474,10 @@ function getLogin(arrAttributeValueListArray, objCurrentGarmentProduct,arrReport
     var strUrlPrefixWithPass;
     
     $(strInput4).confirm(function (e) {
-        var strParsedStringOfUrl = window.location.href;
-        if (strParsedStringOfUrl.indexOf('dontRunPrompt') == -1) {
+    
+        
             $('#loadingInfo').parent().fadeIn();
-        };
+        
 
         //e.preventDefault();
         var strUser = $('#usr').val();
