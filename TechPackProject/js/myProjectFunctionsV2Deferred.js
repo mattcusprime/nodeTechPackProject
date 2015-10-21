@@ -1724,7 +1724,7 @@ function getValueDisplayFromKey(strkey, objGarmentProduct) {
 };
 
 
-/*
+/* version 1, didn't work 
 function pdfPage(objForFile) {
     $('button').remove();
     $('label').remove();
@@ -1762,7 +1762,7 @@ function pdfPage(objForFile) {
         alert('Saved - ' + objForFile.name + '.pdf');
     });
 };
-
+// version 2, works but requires a large amount of semi-suspect functionality, less lightweight
 function pdfPage(objForFile) {
     var header = $('head').html();
     var pageHtml = $('body').html();
