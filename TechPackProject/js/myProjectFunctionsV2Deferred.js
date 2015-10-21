@@ -528,7 +528,7 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
             var numLength = strStartPointSubString.substring(numLengthStartPoint, strStartPointSubString.length);
             objComponent.width = numWidth;
             objComponent.height = numLength;
-            var roleA = $(this).find('roleAObjectRef_key_id').text();
+            objComponent.roleDocumentLink = $(this).find('roleDocumentLink').text();
             var roleB = $(this).find('roleBObjectRef_key_id').text();
             objComponent.image = '<div class="item" <h2>' + objComponent.name + '-' + objComponent.fileName + '</h2></br><img width="' + objComponent.width + '" height="' + objComponent.length + '" class="img-responsive hideImg" src="' + strImgViewerPrefix3 + objComponent.vaultFileName + '" /></div>';
             //objComponent.imageUrl = '<img width="' + objComponent.width + '" height="' + objComponent.height + '" class="img-responsive" src="' + objComponent.fullVaultUrl + '" />';
@@ -539,6 +539,10 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
             /*$.get(objComponent.fullVaultUrl, function (data) { }).done(function (data) {
                 console.log(data);
             });*/
+            arrDocuments.push(objComponent);
+
+            //revisit this duplicate checker
+            /*
             var intDocIndex = index;
             var intPrefixLength = strImgViewerPrefix3.length;
             var objHolder = {
@@ -553,7 +557,7 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
             else {
                 objComponent.ownerType = 'Garment';
             };
-            if (objComponent.ownerType == 'Pattern' && objComponent.name.indexOf('Front/Back Image') != -1) {
+            if (objComponent.ownerType == 'Pattern' && objComponent.name.indexOf('Front/Back Image') == -1) {
 
             }
             else {
@@ -577,6 +581,9 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
                 };
 
             };
+
+            */
+            //revisit this duplicate checker
             if (index == numOfDocumentRows - 1) {
                 /*var objComponent
                 for (var z = 0; z < arrDocuments.length; z++) {
@@ -2072,9 +2079,15 @@ function callNextDocument(arrayOfDocuments, currentIndex) {
                 //var numIndexToUse = arrNamesOfDocumentsForSvgHold.indexOf(strVaultFileName) - 1;
                 var strMyName = arrayOfDocuments[currentIndex].name;
                 var strFileName = arrayOfDocuments[currentIndex].fileName;
-                $('#imagesDiv').append('<h2>' + strMyName + '-' + strFileName + '</h2></br><div class="page">' + strOnlySvgText + '</div>');
+                var strRoleAObjectId = arrayOfDocuments[currentIndex].roleDocumentLink;
+                if ($('#' + strRoleAObjectId).length) {
+                    $('#' + strRoleAObjectId).append(strOnlySvgText);
+                }
+                else {
+                    $('#imagesDiv').append('<h2>' + strMyName + '</h2></br><div class="page" id="' + strRoleAObjectId + '">' + strOnlySvgText + '</div>');
+                };
                 if (nextIndex < arrayOfDocuments.length) {
-                    //var nextIndex = currentIndex + 1;
+                    
                     callNextDocument(arrayOfDocuments, nextIndex);
 
                 };
