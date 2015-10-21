@@ -1,6 +1,5 @@
 {
-  "name": "Tech Pack Project",
-  "version": "0.1",
+  "name": "TechPackProject",
   "main": "index.html",
   "window": {
     "title": "Tech Pack Generator",

@@ -483,7 +483,11 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
     }
 
     var offLineTurnOff = $('#offline').val();
+    var arrNamesOfDocumentsForSvgHold = [];
+    var arrSvgData = [];
+    var intTimesAjaxCalled = 0;
     if (offLineTurnOff != 1) {
+        var numOfDocumentRows = $('row', objDocumentData).length;
         $('row', objDocumentData).each(function (index) {
             var strImgViewerPrefix1 = strHostUrlPrefix + 'Windchill/rfa/jsp/image/ImageViewer.jsp?imageUrl=&appDataOid=OR:wt.content.ApplicationData:';
             var strImgViewerPrefix2 = '&contentHolderOid=OR:com.lcs.wc.document.LCSDocument:';
@@ -527,7 +531,22 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
             var roleA = $(this).find('roleAObjectRef_key_id').text();
             var roleB = $(this).find('roleBObjectRef_key_id').text();
             objComponent.image = '<div class="item" <h2>' + objComponent.name + '-' + objComponent.fileName + '</h2></br><img width="' + objComponent.width + '" height="' + objComponent.length + '" class="img-responsive hideImg" src="' + strImgViewerPrefix3 + objComponent.vaultFileName + '" /></div>';
-            objComponent.imageUrl = '<img width="' + objComponent.width + '" height="' + objComponent.height + '" class="img-responsive" src="' + objComponent.fullVaultUrl + '" />';
+            //objComponent.imageUrl = '<img width="' + objComponent.width + '" height="' + objComponent.height + '" class="img-responsive" src="' + objComponent.fullVaultUrl + '" />';
+            //svg version below
+            //objComponent.imageUrl = '<img src="' + objComponent.fullVaultUrl + '" />';
+            //$('#imagesDiv').append('<div class="page" id="' + objComponent.vaultFileName + '"></div>');
+            //var svg = $('#' + objComponent.vaultFileName).svg();
+            /*$.get(objComponent.fullVaultUrl, function (data) { }).done(function (data) {
+                console.log(data);
+            });*/
+            var intDocIndex = index;
+            var intPrefixLength = strImgViewerPrefix3.length;
+            var objHolder = {
+                name:objComponent.name,
+                fileName: objComponent.fileName,
+                myIndex: intDocIndex
+            };
+           
             if (strpSpecId == strCompSpecId) {
                 objComponent.ownerType = 'Pattern';
             }
@@ -556,6 +575,17 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
                     };
 
                 };
+
+            };
+            if (index == numOfDocumentRows - 1) {
+                /*var objComponent
+                for (var z = 0; z < arrDocuments.length; z++) {
+                    var objComponentForAjaxes = arrDocuments[z];
+
+               
+                };
+                var initialIndexer = 0;
+                callNextDocument(arrDocuments, initialIndexer);*/
             };
         });
     };
@@ -568,6 +598,9 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
     };
     arrDocuments.sort(objCompareByName);
     objSelfReference.documents = arrDocuments;
+    //var initialIndexer = 0;
+    callNextDocument(objSelfReference.documents, 0);
+
     var objMeasurementComp = {};
     $('row', objMeasurementData).each(function (index) {
         if (index == 0) {
@@ -955,7 +988,7 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
         if (typeof (arrdocs) != 'undefined') {
             for (i = 0; i < arrdocs.length; i++) {
                 if (i == 0) { $('#imagesDiv').append('<h1>Documents</h1>') };
-                $('#imagesDiv').append('<div class="page"><h2>' + arrdocs[i].name + '</h2>' + arrdocs[i].imageUrl + '</div>');
+                //$('#imagesDiv').append('<div class="page" id="'+ arrdocs[i].vaultFileName +'"><h2>' + arrdocs[i].name + '</h2>' + arrdocs[i].imageUrl + '</div>');
             };
         };
 
@@ -1787,12 +1820,56 @@ function pdfPage(objForFile) {
 
 };
 */
-function pdfPage(objForFile) {
-	var pdf = new jsPDF('p', 'pt', 'letter')
+function pdfPageClassItemForPdf(indexToStopAt,incrementingVariable) {
+    if (indexToStopAt == incrementingVariable) {
 
+    }
+    else {
+
+    };
+
+};
+function pdfPage(objForFile) {
+    /*var pdf = new jsPDF('l', 'pt', 'a3')
+    var pageString = '';
+    var intLengthOfPage = $('.page').length;
+    $('.page').each(function (index) {
+        var intPageNum = index + 1;
+        var strHtmlToAdd = $(this).html();
+        //just dynamically construct the html then pass that strong to the current function
+        pageString += strHtmlToAdd;
+        //pdf.setPage(intPageNum);
+        /*pdf.addHTML(strHtmlToAdd, function () {
+            //var string = pdf.output('datauristring');
+            //$('.preview-pane').attr('src', string);
+            if (index == intLengthOfPage - 1) {
+                pdf.save('addhtmlversion.pdf');
+            };
+        });
+        //pdf.addPage();
+    });
+    var intPageNum = 0;
+    pdf.addHTML(pageString, function () {
+
+            pdf.save('addhtmlversion.pdf');
+
+    });
+
+    */
+    var strHtmlStringForPdf = '';
+    var intLengthOfPage = $('.page').length;
+
+    $('.page').each(function (index) {
+        var strPageHtml = $(this).html();
+        strHtmlStringForPdf += strPageHtml;
+
+    });
+
+
+var pdf = new jsPDF('l', 'pt', 'a3')
 // source can be HTML-formatted string, or a reference
 // to an actual DOM element from which the text will be scraped.
-, source = $('body')[0]
+, source = strHtmlStringForPdf
 
 // we support special element handlers. Register them with jQuery-style
 // ID selector for either ID or node name. ("#iAmID", "div", "span" etc.)
@@ -1800,17 +1877,18 @@ function pdfPage(objForFile) {
 // (class, of compound) at this time.
 , specialElementHandlers = {
     // element with id of "bypass" - jQuery style selector
-    '#bypassme': function(element, renderer){
+    '.page': function(element, renderer){
         // true = "handled elsewhere, bypass text extraction"
+        pdf.addPage()
         return true
     }
 }
 
 margins = {
-    top: 80,
-    bottom: 60,
-    left: 40,
-    width: 522
+    top: 0,
+    bottom: 0,
+    left: 0,
+    width: 1190
   };
   // all coords and widths are in jsPDF instance's declared units
   // 'inches' in this case
@@ -1821,6 +1899,7 @@ pdf.fromHTML(
     , {
         'width': margins.width // max width of content on PDF
         , 'elementHandlers': specialElementHandlers
+        //settings go here
     },
     function (dispose) {
       // dispose: object with X, Y of the last line add to the PDF
@@ -1829,7 +1908,6 @@ pdf.fromHTML(
       },
     margins
   )
-	
 	
 };
 
@@ -1976,3 +2054,31 @@ function convertRowArrayIntoHtmlTable(arrRowArray, strHeaderArrayPropertyToSearc
 };
 
 //need to append a second function here which turns the objects grabbed and created from the parsing of the xml into automatic tables
+
+function callNextDocument(arrayOfDocuments, currentIndex) {
+    var nextIndex = currentIndex + 1;
+    $.ajax(
+        {
+            url: arrayOfDocuments[currentIndex].fullVaultUrl,
+            start: function () {
+                //arrNamesOfDocumentsForSvgHold.push(objHolder, objComponent.fullVaultUrl);
+            },
+            complete: function (text) {
+                //var strVaultFileName = myCall.urlIcalled.substring(intPrefixLength, myCall.urlIcalled.length);
+                var strOnlySvgText = text.responseText.substring(text.responseText.indexOf('<svg'), text.responseText.length);
+                //arrSvgData.push(strOnlySvgText);
+                //var strHeaders = text.getAllResponseHeaders();
+                //console.log(strHeaders);
+                //var numIndexToUse = arrNamesOfDocumentsForSvgHold.indexOf(strVaultFileName) - 1;
+                var strMyName = arrayOfDocuments[currentIndex].name;
+                var strFileName = arrayOfDocuments[currentIndex].fileName;
+                $('#imagesDiv').append('<h2>' + strMyName + '-' + strFileName + '</h2></br><div class="page">' + strOnlySvgText + '</div>');
+                if (nextIndex < arrayOfDocuments.length) {
+                    //var nextIndex = currentIndex + 1;
+                    callNextDocument(arrayOfDocuments, nextIndex);
+
+                };
+            }
+        });
+
+};
