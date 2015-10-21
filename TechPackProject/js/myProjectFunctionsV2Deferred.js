@@ -2094,13 +2094,46 @@ function callNextDocument(arrayOfDocuments, currentIndex) {
                     $('#' + strRoleAObjectId).append(strOnlySvgText);
                 }
                 else {
-                    $('#imagesDiv').append('<h2>' + strMyName + '</h2></br><div class="page" id="' + strRoleAObjectId + '">' + strOnlySvgText + '</div>');
+                    $('#imagesDiv').append('<h2>' + strMyName + '</h2></br><div class="row page" id="' + strRoleAObjectId + '">' + strOnlySvgText + '</div></br></br><hr>');
                 };
                 if (nextIndex < arrayOfDocuments.length) {
-                    
+
                     callNextDocument(arrayOfDocuments, nextIndex);
 
+                }
+                else {
+                    $('#imagesDiv .page').each(function () {
+                        var numOfSvgs = $(this).find('svg').length;
+                        var width = 0;
+                        var height = 0;
+                        var strClassToAdd = '';
+                        var strClassToAdd2 = '';
+                        if (numOfSvgs == 2) {
+                            height = 396;
+                            width = 306;
+                            strClassToAdd = 'col-md-offset-1 col-md-5';
+                            strClassToAdd2 = 'col-md-5 col-md-offset-1';
+                        }
+                        else if (numOfSvgs == 1) {
+                            height = 792;
+                            width = 612;
+                            strClassToAdd = 'col-md-offset-3 col-md-6';
+                        };
+                        $(this).find('svg').each(function (index) {
+                            $(this).attr('height', height);
+                            $(this).attr('width', width);
+                            if (index == 0) {
+                                $(this).addClass(strClassToAdd);
+                            }
+                            else if (index == 1) {
+                                $(this).addClass(strClassToAdd2);
+                            };
+                        });
+
+                    });
+
                 };
+
             }
         });
 
