@@ -128,17 +128,18 @@
 
         $('document').ready(function () {
             $('#loadingInfo').parent().hide();
+            
             //getReportsFromXmlFunction(strReportsXmlUrl);
             //document.getElementById('fileinput').addEventListener('change', readSingleFile, false);
             $.prettyLoader();
             var urlChecker = location.href;
             console.log(urlChecker);
-            
-            
-
             getLogin(arrOfAttributeValueListIds, currentGarmentProduct, arrMasterReportIndexer);
+            
+            
             /*applyTypeAheadToElement(gProdQueryURL, '#gProd', 'Garment_Product_Name');
             currentGarmentProduct.getMyValueLists(arrOfAttributeValueListIds, currentGarmentProduct);*/
+
 
 
 

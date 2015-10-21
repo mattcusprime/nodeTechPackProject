@@ -470,7 +470,11 @@ function getLogin(arrAttributeValueListArray, objCurrentGarmentProduct,arrReport
     var strUrlPrefixWithPass;
     
     $(strInput4).confirm(function (e) {
-        $('#loadingInfo').parent().fadeIn();
+        var strParsedStringOfUrl = window.location.href;
+        if (strParsedStringOfUrl.indexOf('dontRunPrompt') == -1) {
+            $('#loadingInfo').parent().fadeIn();
+        };
+
         //e.preventDefault();
         var strUser = $('#usr').val();
         var strPwd = $('#pwd').val();

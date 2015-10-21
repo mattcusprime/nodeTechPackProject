@@ -1764,7 +1764,7 @@ function getValueDisplayFromKey(strkey, objGarmentProduct) {
 };
 
 
-/* version 1, didn't work 
+// version 1, didn't work 
 function pdfPage(objForFile) {
     $('button').remove();
     $('label').remove();
@@ -1789,8 +1789,16 @@ function pdfPage(objForFile) {
     fs.writeFileSync('testFile.html', allHtml);
 
     var filePath = '/wkhtmltopdf/bin/wkhtmltopdf';
-    //child = execFile(filePath, ['file:///nodeTechPackProject/TechPackProject/testFile.html?dontRunPrompt', "\\\\izone.hbi.net@SSL\\sites\\PLM\\gSpecs\\" + objForFile.name + '.pdf'], function (error, stdout, stderr) {
-    child = execFile(filePath, ['file:///nodeTechPackProject/TechPackProject/testFile.html?dontRunPrompt', objForFile.name + '.pdf'], function (error, stdout, stderr) {
+    var currentdate = new Date();
+    var datetime = currentdate.getDate() + "_"
+                    + (currentdate.getMonth() + 1) + "_"
+                    + currentdate.getFullYear() + ""
+                    + currentdate.getHours() + "_"
+                    + currentdate.getMinutes() + "_"
+                    + currentdate.getSeconds();
+    //child = execFile(filePath, ['file:///GitProjects/nodeTechPackProject/TechPackProject/testFile.html?dontRunPrompt', "\\\\izone.hbi.net@SSL\\sites\\PLM\\gSpecs\\" + objForFile.name + '.pdf'], function (error, stdout, stderr) {
+    //"C:\GitProjects\nodeTechPackProject\TechPackProject"
+    child = execFile(filePath, ['file:///GitProjects/nodeTechPackProject/TechPackProject/testFile.html?dontRunPrompt', objForFile.name + datetime + '.pdf'], function (error, stdout, stderr) {
         if (error) {
             console.log(error.stack);
             console.log('Error code: ' + error.code);
@@ -1799,11 +1807,13 @@ function pdfPage(objForFile) {
         }
         console.log('Child Process stdout: ' + stdout);
         console.log('Child Process stderr: ' + stderr);
-        alert('Saved - ' + objForFile.name + '.pdf');
+        alert('Saved - ' + objForFile.name + datetime + '.pdf');
     });
 };
 // version 2, works but requires a large amount of semi-suspect functionality, less lightweight
-function pdfPage(objForFile) {
+
+
+function pdfPageOlder(objForFile) {
     var header = $('head').html();
     var pageHtml = $('body').html();
     var allHtml = header + pageHtml;
@@ -1826,7 +1836,7 @@ function pdfPage(objForFile) {
 
 
 };
-*/
+
 function pdfPageClassItemForPdf(indexToStopAt,incrementingVariable) {
     if (indexToStopAt == incrementingVariable) {
 
@@ -1836,7 +1846,7 @@ function pdfPageClassItemForPdf(indexToStopAt,incrementingVariable) {
     };
 
 };
-function pdfPage(objForFile) {
+function pdfPageJSPDFVERSION(objForFile) {
     /*var pdf = new jsPDF('l', 'pt', 'a3')
     var pageString = '';
     var intLengthOfPage = $('.page').length;
