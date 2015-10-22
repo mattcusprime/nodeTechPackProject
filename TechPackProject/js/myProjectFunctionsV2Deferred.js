@@ -539,7 +539,12 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
             /*$.get(objComponent.fullVaultUrl, function (data) { }).done(function (data) {
                 console.log(data);
             });*/
-            arrDocuments.push(objComponent);
+            if (objComponent.ownerType == 'Pattern' && objComponent.name.indexOf('Front/Back Image') == -1) {
+
+            }
+            else {
+                arrDocuments.push(objComponent);
+            };
 
             //revisit this duplicate checker
             /*
@@ -1781,12 +1786,12 @@ function pdfPage(objForFile) {
     });
     var header = $('head').html();
 
-    var pageHtml = $('body').not('button').html();
+    var pageHtml = $('body').not('button,.dataTables_info,.dataTables_paginate').html();
     var allHtml = header + pageHtml;
-    var fileName = 'testFile.html';
+    var fileName = objForFile.name + '.html';
 
     //add in error catching for if file exists
-    fs.writeFileSync('testFile.html', allHtml);
+    fs.writeFileSync(fileName, allHtml);
 
     var filePath = '/wkhtmltopdf/bin/wkhtmltopdf';
     var currentdate = new Date();

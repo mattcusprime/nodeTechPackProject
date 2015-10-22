@@ -10,7 +10,6 @@
     "max_height": 1200,
 	"width": 1200,
     "height": 800,
-	"position": "mouse",
 	"kiosk": false
 	
   }
