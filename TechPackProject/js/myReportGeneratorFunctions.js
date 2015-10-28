@@ -1,5 +1,8 @@
 ﻿//Global Variables
 var arrGarmentProductsArrayForTypeAhead = [];
+var strDomString = 'f</br>t<div class="col-md-10 row"></br>B</div>';
+var arrButtons = ['copy','excel','pdf','colvis'];
+// maybe put a second DOM string???
 // table options
 var constructionTableOptions = {
     'pageLength': 50,
@@ -7,14 +10,16 @@ var constructionTableOptions = {
     'columnDefs': [
         { 'visible': false, 'targets': [0, 11] }
     ],
+    'buttons': arrButtons,
     'responsive': false,
-    'dom': 'C</br>ft',
+    'dom': strDomString,
     'paging': true
 };
 var measurementTableOptions = {
     'pageLength': 50,
     'order': [[0, 'asc']],
-    'dom': 'C</br>ft',
+    'dom': strDomString,
+    'buttons': arrButtons,
     "columnDefs": [
         {
             "targets": [0, 3, 4, 7,8],
@@ -33,28 +38,33 @@ var sewBomTableOptions = {
             "visible": false,
             "searchable": false
         }
-    ]
+    ],
+    'buttons': arrButtons,
 
 };
 var colorwayListTableOptions = {
 
     'paging': false,
     'length': 1000,
-    'dom': ''
+    'dom': strDomString,
+    'buttons': arrButtons,
 
 };
 var cwayReportTableOptions = {
     'responsive': false,
-    'pageLength': 100
+    'pageLength': 100,
+    'dom': strDomString,
+    'buttons': arrButtons
 };
 var colorwayBomTableOptions = {
 
     'pageLength': 100,
-    'dom': 'C</br>ft',
+    'dom': strDomString,
     'columnDefs': [
         {'visible':false,'targets':0}
     ],
-    'responsive': false
+    'responsive': false,
+    'buttons': arrButtons
 
 };
 var spreadBomTableOptions = {
@@ -62,6 +72,7 @@ var spreadBomTableOptions = {
     'scrollY': 600,
     'paging': false,
     'length': 1000,
+    'dom' : strDomString,
     //'data': '',
     'columns': [
         { 'data': 'pCodeSpread' },
@@ -89,7 +100,8 @@ var spreadBomTableOptions = {
             "visible": false,
             "searchable": false
         }
-    ]
+    ],
+    'buttons': arrButtons
 };
 var trimBomTableOptions = {
 
@@ -97,6 +109,7 @@ var trimBomTableOptions = {
     'paging': false,
     'length': 1000,
     //'data': '',
+    "dom": strDomString,
     'columns': [
             { 'data': 'pCode' },
             { 'data': 'cMethCode' },
@@ -119,12 +132,14 @@ var trimBomTableOptions = {
             "visible": false,
             "searchable": false
         }
-        ]
+    ],
+    'buttons': arrButtons
 };
 var labelBomTableOptions = {
     //"data": arrLabelData,
     "pageLength": 1000,
-    "dom": 'ft'
+    "dom": strDomString,
+    'buttons': arrButtons
 
 };
 var sizeTableOptions = {
@@ -136,11 +151,13 @@ var sizeTableOptions = {
             "visible": false,
             "searchable": false
         }
-    ]
+    ],
+    'buttons': arrButtons
 };
 var revisionTableTableOptions = {
 
     "order": [[10, "desc"], [0, "asc"], [1, "desc"]],
+    "dom": strDomString,
     "columnDefs": [
         {
             "targets": [2, 3, 4, 11],
@@ -148,12 +165,13 @@ var revisionTableTableOptions = {
             "searchable": false
         }
     ],
-    "pageLength": 10
+    "pageLength": 10,
+    'buttons': arrButtons
 };
 var reportsTableOptions = {
 
     'pageLength': 5,
-    'dom': '',
+    "dom": strDomString,
     "tableTools": {
         "sSwfPath": "C:/nodeTechPackProject/TechPackProject/js/copy_csv_xls_pdf.swf"
     },
@@ -165,7 +183,8 @@ var reportsTableOptions = {
             "searchable": false
         }
 
-    ]
+    ],
+    'buttons': arrButtons
 };
 var approvedSupplierTableOptions = {
 
