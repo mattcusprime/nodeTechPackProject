@@ -112,137 +112,162 @@
     <script src="js/jquery.prompt.js"></script>
     <script src="js/imagesloaded.pkgd.min.js"></script>
     <!--My Scripts begin here-->
-    <script src="js/myReportGeneratorFunctions.js"></script>
-    <script src="js/myProjectFunctionsV2Deferred.js"></script>
-    <script src="js/nwJsFunctions.js"></script>
+    
     <!--end construction of prototype of Garment Product Class-->
-    <!--Svg items-->
+    <!--Svg items
     <link href="jquery.svg.package-1.5.0/jquery.svg.css" rel="stylesheet" />
     <script src="jquery.svg.package-1.5.0/jquery.svg.js"></script>
-    <script src="jquery.svg.package-1.5.0/jquery.svgdom.js"></script>
+    <script src="jquery.svg.package-1.5.0/jquery.svgdom.js"></script>-->
     <!--Svg items-->
     <style>
         .page {
             page-break-after: always;
         }
     </style>
-    <script>
-        //report id creator, only hard coded required url, import the rest and
-        //this should read them 'ReportsXml' report.
-        //later to get the report id we will get the indexOf the Name and then the id value should be at
-        //one position less in the array.
-        var arrMasterReportIndexer = [];
-
-        //only required URL above
-        //var strReportUrlPrefixStealer = strReportsXmlUrl.substring(0, strReportsXmlUrl.indexOf('Windchill/'));
-        //begin code for type ahead in g prod form
-        //use below for prd
-        var url = location.href;
-        var strUrlPrefix = 'http://wsflexwebprd1v.res.hbi.net/';
-
-        //use below for dev
-        //var strUrlPrefix = 'http://wsflexwebdev1v.res.hbi.net/';
-        var strDevPefix = 'http://wsflexwebdev1v.res.hbi.net/';
-        //var arrGarmentProductsArrayForTypeAhead = [];
-        var arrSeasonNamesArray = [];
-        var currentGarmentProduct = new garmentProduct();
-        var strTypeBaseLink = strUrlPrefix + 'Windchill/servlet/TypeBasedIncludeServlet?oid=VR%3A';
-        var strEncodeColonString = '%3A';
-        var strU8 = '&u8=1';
-        var strLinkBeginTag = '<a href="';
-        var strLinkMidTag = '">';
-        var strLinkCloseTag = '</a>';
-        var gProdQueryURL;// = strUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/invokeAction?oid=OR%3Awt.query.template.ReportTemplate%3A4711650&action=ProduceReport&u8=1'
-        var returnArrays;
-        var arrOfAttributeValueListIds = ['2381876', '102771', '2381693', '368058', '100575'];
-
-        $('document').ready(function () {
-            $('#loadingInfo').parent().hide();
-            
-            //getReportsFromXmlFunction(strReportsXmlUrl);
-            //document.getElementById('fileinput').addEventListener('change', readSingleFile, false);
-            $.prettyLoader();
-            var urlChecker = location.href;
-            console.log(urlChecker);
-            getLogin(arrOfAttributeValueListIds, currentGarmentProduct, arrMasterReportIndexer);
-            
-            
-            /*applyTypeAheadToElement(gProdQueryURL, '#gProd', 'Garment_Product_Name');
-            currentGarmentProduct.getMyValueLists(arrOfAttributeValueListIds, currentGarmentProduct);*/
-
-
-
-
-            $('#garmentProd').submit(function (e) {
-                e.preventDefault();
-                var nameToUse = $('#gProd').val();
-                if (arrGarmentProductsArrayForTypeAhead.indexOf(nameToUse) != -1) {
-
-                    $('#garmentFormContainer').fadeOut();
-                    $('.clearThisComponentOnNewGarmentLoad *').remove();
-                    $('#runNew,.clearThisComponentOnNewGarmentLoad,nav').fadeIn();
-                    localStorage.setItem('lastGarmentRan', nameToUse);
-                    currentGarmentProduct.getSpecByName(strUrlPrefix, nameToUse, currentGarmentProduct.thenCallSpecs, returnArrays, currentGarmentProduct);
-                }
-                else {
-                    $('#gProd').val('');
-                    $('#gProd').focus();
-                    $('#garmentHeader').append('<p class="clearThisComponentOnNewGarmentLoad" id="noGarment">' + nameToUse + ' is not in the list of valid choices for a garment product.  Please use the typeahead to select a valid option.</p>')
-                    $('#noGarment').delay(2500).fadeOut();
-                }
-
-            });
-            $('#fileinput').on("change", function (e) {
-                readSingleFile(e, currentGarmentProduct);
-                $('#garmentFormContainer').fadeOut();
-                $('#runNew,.clearThisComponentOnNewGarmentLoad').fadeIn();
-
-            });
-            //invoke prettyloader
-
-            //invoke prettyloader
-            makeMeSCrollSlow();
-            checkStorageFor('lastGarmentRan', '#gProd');
-
-            $('#loadLastGarmentProduct').click(function () {
-                var strGarmentProdString = localStorage.getItem('garmentProductString');
-                if (typeof (strGarmentProdString) != 'undefined') {
-                    currentGarmentProduct = JSON.parse(strGarmentProdString);
-                    //currentGarmentProduct.thenCallSpecs(returnArrays, currentGarmentProduct);
-                    console.log(currentGarmentProduct);
-                };
-
-            });
-            $('#fromSaved').click(function () {
-                currentGarmentProduct.saveMe();
-
-            });
-
-            $('#garmentFormContainer,#runNew').hide();
-            $('#usr').focus();
-            if (typeof (localStorage.getItem('mattAppUser')) != 'undefined' && typeof (localStorage.getItem('mattAppPass')) != 'undefined') {
-                $('#usr').val(localStorage.getItem('mattAppUser'));
-                $('#pwd').val(localStorage.getItem('mattAppPass'));
-            };
-            //$('<div class="page"><div class="container"></div><p class=".col-md-4"></p><p class=".col-md-4">Nice isn\'t it!</p><p class=".col-md-4"></p></div>').confirm();
-            $('#exportToCsv').click(function () {
-                saveFile('#export_blocks', '#spreadReport');
-            });
-        });
-
-
-
-
-
-
-    </script>
 
 </head>
 <body>
+    <div id="scriptsToIgnore">
+        <!--killBeginPoint--><script src="js/myReportGeneratorFunctions.js"></script>
+        <script class="dontPostScript" src="js/myProjectFunctionsV2Deferred.js"></script>
+        <script class="dontPostScript" src="js/nwJsFunctions.js"></script>
+        <script class="dontPostScript">
+            //report id creator, only hard coded required url, import the rest and
+            //this should read them 'ReportsXml' report.
+            //later to get the report id we will get the indexOf the Name and then the id value should be at
+            //one position less in the array.
+            var arrMasterReportIndexer = [];
+
+            //only required URL above
+            //var strReportUrlPrefixStealer = strReportsXmlUrl.substring(0, strReportsXmlUrl.indexOf('Windchill/'));
+            //begin code for type ahead in g prod form
+            //use below for prd
+            var url = location.href;
+            var strUrlPrefix = 'http://wsflexwebprd1v.res.hbi.net/';
+
+            //use below for dev
+            //var strUrlPrefix = 'http://wsflexwebdev1v.res.hbi.net/';
+            var strDevPefix = 'http://wsflexwebdev1v.res.hbi.net/';
+            //var arrGarmentProductsArrayForTypeAhead = [];
+            var arrSeasonNamesArray = [];
+            var currentGarmentProduct = new garmentProduct();
+            var strTypeBaseLink = strUrlPrefix + 'Windchill/servlet/TypeBasedIncludeServlet?oid=VR%3A';
+            var strEncodeColonString = '%3A';
+            var strU8 = '&u8=1';
+            var strLinkBeginTag = '<a href="';
+            var strLinkMidTag = '">';
+            var strLinkCloseTag = '</a>';
+            var gProdQueryURL;// = strUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/invokeAction?oid=OR%3Awt.query.template.ReportTemplate%3A4711650&action=ProduceReport&u8=1'
+            var returnArrays;
+            var arrOfAttributeValueListIds = ['2381876', '102771', '2381693', '368058', '100575'];
+
+            $('document').ready(function () {
+                $('#loadingInfo').parent().hide();
+
+                //getReportsFromXmlFunction(strReportsXmlUrl);
+                //document.getElementById('fileinput').addEventListener('change', readSingleFile, false);
+                $.prettyLoader();
+                var urlChecker = location.href;
+                console.log(urlChecker);
+                getLogin(arrOfAttributeValueListIds, currentGarmentProduct, arrMasterReportIndexer);
+
+
+                /*applyTypeAheadToElement(gProdQueryURL, '#gProd', 'Garment_Product_Name');
+                currentGarmentProduct.getMyValueLists(arrOfAttributeValueListIds, currentGarmentProduct);*/
+
+
+
+
+                $('#garmentProd').submit(function (e) {
+                    e.preventDefault();
+                    var nameToUse = $('#gProd').val();
+                    if (arrGarmentProductsArrayForTypeAhead.indexOf(nameToUse) != -1) {
+
+                        $('#garmentFormContainer').fadeOut();
+                        $('.clearThisComponentOnNewGarmentLoad *').remove();
+                        $('#runNew,.clearThisComponentOnNewGarmentLoad,nav').fadeIn();
+                        localStorage.setItem('lastGarmentRan', nameToUse);
+                        //currentGarmentProduct.getSpecByName(strUrlPrefix, nameToUse, currentGarmentProduct.thenCallSpecs, returnArrays, currentGarmentProduct);
+                        currentGarmentProduct.getSpecByNameButNotJustActiveSpec(strUrlPrefix, nameToUse, currentGarmentProduct.thenCallSpecs, returnArrays, currentGarmentProduct);
+                        //replacing old version that just grabbed active spec and switching to version that will serve up
+                        //all seasons and specs 
+                    }
+                    else {
+                        $('#gProd').val('');
+                        $('#gProd').focus();
+                        $('#garmentHeader').append('<p class="clearThisComponentOnNewGarmentLoad" id="noGarment">' + nameToUse + ' is not in the list of valid choices for a garment product.  Please use the typeahead to select a valid option.</p>')
+                        $('#noGarment').delay(2500).fadeOut();
+                    }
+
+                });
+                $('#fileinput').on("change", function (e) {
+                    readSingleFile(e, currentGarmentProduct);
+                    $('#garmentFormContainer').fadeOut();
+                    $('#runNew,.clearThisComponentOnNewGarmentLoad').fadeIn();
+
+                });
+                //invoke prettyloader
+
+                //invoke prettyloader
+                makeMeSCrollSlow();
+                checkStorageFor('lastGarmentRan', '#gProd');
+
+                $('#loadLastGarmentProduct').click(function () {
+                    var strGarmentProdString = localStorage.getItem('garmentProductString');
+                    if (typeof (strGarmentProdString) != 'undefined') {
+                        currentGarmentProduct = JSON.parse(strGarmentProdString);
+                        //currentGarmentProduct.thenCallSpecs(returnArrays, currentGarmentProduct);
+                        console.log(currentGarmentProduct);
+                    };
+
+                });
+                $('#fromSaved').click(function () {
+                    currentGarmentProduct.saveMe();
+
+                });
+
+                $('#garmentFormContainer,#runNew').hide();
+                $('#usr').focus();
+                if (typeof (localStorage.getItem('mattAppUser')) != 'undefined' && typeof (localStorage.getItem('mattAppPass')) != 'undefined') {
+                    $('#usr').val(localStorage.getItem('mattAppUser'));
+                    $('#pwd').val(localStorage.getItem('mattAppPass'));
+                };
+                //$('<div class="page"><div class="container"></div><p class=".col-md-4"></p><p class=".col-md-4">Nice isn\'t it!</p><p class=".col-md-4"></p></div>').confirm();
+                $('#exportToCsv').click(function () {
+                    saveFile('#export_blocks', '#spreadReport');
+                });
+            });
+
+
+
+
+
+
+        </script><!--killEndPoint-->
+
+    </div>
     <!----<button id="btnTestStuff">Use me to test things!</button>
     <input type="text" size="50" id="offline">
     <button id="loadLastGarmentProduct">Use me to load last Garment Prod!</button>-->
+    <script>
 
+        function makeMeScrollToDefinedTarget(strJquerySelectorTarget, numDelayTimer, offsetter) {
+            var $target = $(strJquerySelectorTarget);
+            if (typeof (offsetter) == 'undefined') {
+                offsetter = -100;
+            };
+            if (typeof (numDelayTimer) == 'undefined') {
+                numDelayTimer = 0;
+            };
+            $('html, body').stop().delay(numDelayTimer).animate({
+                'scrollTop': $target.offset().top + offsetter
+            }, 900, 'swing', function () {
+                //window.location.hash = target;
+
+            });
+        };
+
+    </script>
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container" id="navTopDiv">
             <div class="navbar-header">
@@ -260,8 +285,8 @@
                     <li><a href='#tblRelationships'>Header</a></li>
                     <li><a href="javascript:makeMeScrollToDefinedTarget('#search',50,-100);">Reports</a></li>
                     <li><a href="javascript:makeMeScrollToDefinedTarget('#imagesDiv',50,-100);">Images</a></li>
-                    <li><a href="javascript:createComponentTable('constructionDiv', 'construction', currentGarmentProduct.constructionTableString,constructionTableOptions);makeMeScrollToDefinedTarget('#constructionDiv',50, -100);">Construction</a></li>
-                    <li><a href="javascript:createComponentTable('measurementDiv', 'measurements', currentGarmentProduct.measurementTableString,measurementTableOptions,true);makeMeScrollToDefinedTarget('#measurementDiv',50,-100);makeMyRowsClickableToRemove('#measurements');">Measurements</a></li>
+                    <li><a href="javascript:makeMeScrollToDefinedTarget('#constructionDiv',50, -100);">Construction</a></li>
+                    <li><a href="javascript:makeMeScrollToDefinedTarget('#measurementDiv',50,-100);makeMyRowsClickableToRemove('#measurements');">Measurements</a></li>
                     <li><a class="blockWeights" href="javascript:makeMeScrollToDefinedTarget('#blockWeightSpreadDiv',50,-100);">Block Weights For Reference</a></li>
                     <li><a href="javascript:makeMeScrollToDefinedTarget('#labelsDiv',50,-100);">Label BOM</a></li>
                     <li><a href="javascript:makeMeScrollToDefinedTarget('#sewBomDiv',50,-100);">Sew & Sourced BOMs</a></li>
@@ -297,12 +322,17 @@
         </div>
 
     </div>
+    
     <div class="page">
         <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="loadingInfo">
             <h3 class="col-md-offset-4 col-md-4">Acquiring Product List.</h3>
         </div>
     </div>
+    <div class="page">
+        <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="seasonSpecSelection">
 
+        </div>
+    </div>
     <div class="page">
         <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="generalAttributes">
 

@@ -1,7 +1,7 @@
 ﻿//Global Variables
 var arrGarmentProductsArrayForTypeAhead = [];
-var strDomString = 'f</br>t<div class="col-md-10 row"></br>B</div>';
-var arrButtons = ['copy','excel','pdf','colvis'];
+var strDomString = 'Bft<div class="col-md-10 row"></div>';
+var arrButtons = ['copy','pdf','colvis'];
 // maybe put a second DOM string???
 // table options
 var constructionTableOptions = {
@@ -396,22 +396,6 @@ function makeMeSCrollSlow() {
         }, 900, 'swing', function () {
             window.location.hash = target;
         });
-    });
-};
-
-function makeMeScrollToDefinedTarget(strJquerySelectorTarget,numDelayTimer,offsetter) {
-    var $target = $(strJquerySelectorTarget);
-    if (typeof (offsetter) == 'undefined') {
-        offsetter = -100;
-    };
-    if (typeof (numDelayTimer) == 'undefined') {
-        numDelayTimer = 0;
-    };
-    $('html, body').stop().delay(numDelayTimer).animate({
-        'scrollTop': $target.offset().top + offsetter
-    }, 900, 'swing', function () {
-        //window.location.hash = target;
-
     });
 };
 

@@ -407,6 +407,131 @@ garmentProduct.prototype.getSpecByName = function (strHostUrlPrefix, strGarmentN
         };
     });
 };
+
+/**
+ * @comment this is currently ran within @method getSpecComponentsForActiveSpec
+ * @method of @class GarmentProduct, this method returns the active spec and identifies it on the objSelfReference garment and alters that property.
+ * @param {String} strHostUrlPrefix string denoting the initial characters of the url for the domain in which the measurement sits.  All string prior to Windchill.
+ * @param {String} strGarmentName uses the name of the garmentProduct that is calling this method
+ * @param {Function} funCallback passes a function to callback after the modification of the garmentProduct being passed to this function
+ * @param {Object} objForCallback provides a container for the callback function to operate on to pass into the objSelfReference object.  This is used to work around scope limitations.
+ * @param {Object} objSelfReference takes the same garmentProduct which is calling the method.  This is used to work around scope limitations and is generally performed
+ * without further developer input but rather in other methods within the class so that no further code is necessary.
+ *
+ */
+garmentProduct.prototype.getSpecByNameButNotJustActiveSpec = function (strHostUrlPrefix, strGarmentName, funCallback, objForCallback, objSelfReference) {
+    if (typeof (strGarmentName) == 'undefined')  // How can I stop working of function here?
+    {
+        alert('No Garment Name was given')
+        return;
+    }
+    var strSpecUrl = strHostUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?Product+Name=' + strGarmentName + '&oid=OR%3Awt.query.template.ReportTemplate%3A9663785&action=ExecuteReport';
+    var numActiveSpecId = 0;
+    var strActiveSpecName;
+    var arrSpecArray = [];
+    var arrSourceArray = [];
+    var arrCombinationArray = [];
+    var gProdName = '';
+    $.get(strSpecUrl, function (specData) { }).done(function (specData) {
+        if (typeof (strSpecUrl) == 'undefined')  // How can I stop working of function here?
+        {
+            console.log('no spec.')
+            return;
+        }
+        $('row', specData).each(function () {
+            gProdName = $(this).find('Garment_product_Name').first().text();
+            var techDesignerKey = $(this).find('valueListTechDesigner').text();
+            var productManagerKey = $(this).find('valueListProductManager').text();
+            var techDesignerDisplay = getValueDisplayFromKey(techDesignerKey, objSelfReference);
+            var productManagerDisplay = getValueDisplayFromKey(productManagerKey, objSelfReference);
+            var objSpec = {};
+            objSpec.name = $(this).find('Spec_Name').text();
+            objSpec.idNumber = $(this).find('specLink').attr('objectId');
+            //http://wsflexwebprd1v.res.hbi.net/Windchill/servlet/TypeBasedIncludeServlet?oid=VR%3Acom.lcs.wc.specification.FlexSpecification%3A5532945&u8=1
+            var strSpecName = $(this).find('Spec_Name').text();
+            var strType = $(this).find('specLink').attr('type');
+            var strHbiActiveSpec = $(this).find('hbiActiveSpec').text().substring(3, 6);
+            if (strSpecName.indexOf(strHbiActiveSpec) == -1) {
+                objSpec.active = false;
+            }
+            else {
+                objSpec.active = true;
+                numActiveSpecId = objSpec.idNumber;
+                strActiveSpecName = objSpec.name;
+            };
+            var strId = objSpec.idNumber;
+            var strReturnString = strLinkBeginTag + strTypeBaseLink + strType + strEncodeColonString + strId + strU8 + strLinkMidTag + strSpecName + strLinkCloseTag;
+            objSpec.link = strReturnString
+            arrSpecArray.push(objSpec);
+            //moving to building products sources from the specs
+            var objSource = {};
+            objSource.name = $(this).find('Sourcing_Config_Name').text();
+            objSource.idNumber = $(this).find('LCSSourcingConfig').attr('objectId');
+            strType = $(this).find('LCSSourcingConfig').attr('type');
+            strId = objSource.idNumber
+            strReturnString = strLinkBeginTag + strTypeBaseLink + strType + strEncodeColonString + strId + strU8 + strLinkMidTag + strSpecName + strLinkCloseTag;
+            objSource.link = strReturnString;
+            var strPrimary = $(this).find('Primary_Source').text();
+            objSource.primary = strPrimary == 1 ? true : false;
+            arrSourceArray.push(objSource);
+            //show viable combinations
+            var objCombinationObject = {};
+            objCombinationObject.sourceId = objSource.idNumber;
+            objCombinationObject.sourceName = objSource.name;
+            objCombinationObject.specId = objSpec.idNumber;
+            objCombinationObject.specName = objSpec.name;
+            objCombinationObject.seasonId = $(this).find('Garment_Season').attr('objectId');
+            objCombinationObject.seasonName = $(this).find('Garment_Season_Season_Name').text();
+            objSelfReference.activeSeason = $(this).find('Garment_Season_Season_Name').text();
+            objCombinationObject.seasonSpecCombo = "" + objCombinationObject.seasonName + " _src_" + objCombinationObject.sourceName + " _spec_" + objCombinationObject.specName
+            arrCombinationArray.push(objCombinationObject);
+        });
+        arrSpecArray.reverse();
+        arrSourceArray.reverse();
+        arrCombinationArray.reverse();
+        var numQuantityOfActiveSpecs = 0;
+        for (var i = 0; i < arrSpecArray.length; i++) {
+            var objLoopObj = arrSpecArray[i];
+            if (objLoopObj.active == true) {
+                numQuantityOfActiveSpecs++;
+            };
+        };
+        console.log(arrSpecArray);
+        console.log(arrSourceArray);
+        console.log(arrCombinationArray);
+        //$('#seasonSpecSelection').append();
+        $('#seasonSpecSelection').append('</br></br>');
+        for (var i = 0; i < arrCombinationArray.length; i++) {
+            var objLoopObject = arrCombinationArray[i];
+            $('#seasonSpecSelection').append('<button class="seasonSpecButton .btn col-md-4" specId= ' + objLoopObject.specId + '>Season:' + objLoopObject.seasonName + ' Source:' + objLoopObject.sourceName + 'Spec:' + objLoopObject.specName + '</button>')
+
+        };
+
+        $('.seasonSpecButton').click(function () {
+            $('#seasonSpecSelection *').remove();
+            objForCallback = { arrSpecArray: arrSpecArray, arrSourceArray: arrSourceArray, arrCombinationArray: arrCombinationArray, activeSpecId: numActiveSpecId, gProdName: gProdName, activeSpecName: strActiveSpecName };
+            funCallback(objForCallback, objSelfReference);
+        });
+
+        /*
+        if (numQuantityOfActiveSpecs > 1) {
+            $('#generalAttributes').append('<p>Multiple active specs were found, please reduce the number of active specs to 1 and run again.</p>');
+            return;
+        }
+        else {
+            objForCallback = { arrSpecArray: arrSpecArray, arrSourceArray: arrSourceArray, arrCombinationArray: arrCombinationArray, activeSpecId: numActiveSpecId, gProdName: gProdName, activeSpecName: strActiveSpecName };
+            funCallback(objForCallback, objSelfReference);
+        };*/
+
+
+
+
+    });
+};
+
+
+
+
 /**
  * @method of @class GarmentProduct, this method gets all spec components for the active spec of the garment for which is passed.  It is run as a deffered call nested within the @method getAllMyDataForMyActiveSpec within @class garmentProduct
  * @param {String} strHostUrlPrefix string denoting the initial characters of the url for the domain in which the measurement sits.  All string prior to Windchill.
@@ -818,7 +943,10 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
         arrConstructionDetailDataContainer = objDefferedConstruction[0];
         arrMeasurementDetailDataContainer = objDefferedMeasurement[0];
         objSelfReference.getMyConstruction(strHostUrlPrefix, objSelfReference.construction.branchId, arrConstructionDetailDataContainer, objSelfReference);
+        createComponentTable('constructionDiv', 'construction', objSelfReference.constructionTableString, constructionTableOptions);
         objSelfReference.getMyMeasurement(strHostUrlPrefix, objSelfReference.measurement.branchId, arrMeasurementDetailDataContainer, objSelfReference);
+        createComponentTable('measurementDiv', 'measurements', objSelfReference.measurementTableString, measurementTableOptions, true);
+
     });
     var strApprovedSupplierUrlObjectId = getMyReportIdFromReportName('garmentProdSpecsGarmentAndPatternComponentsApprovedSuppliers');
     var strApprovedSupplierUrl = strUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?u8&action=ExecuteReport&specId=' + objSelfReference.activeSpecId + '&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A' + strApprovedSupplierUrlObjectId + '&xsl1=&format=formatDelegate&delegateName=XML&jrb=wt.query.template.reportTemplateRB&sortByIndex=6&sortOrder=asc';
@@ -1785,8 +1913,20 @@ function pdfPage(objForFile) {
         };
     });
     var header = $('head').html();
-
-    var pageHtml = $('body').not('button,.dataTables_info,.dataTables_paginate').html();
+    // do a a string find in this pagehtml element and insert commented out comments into the string
+    //awesome
+    String.prototype.splice = function (idx, rem, s) {
+        return (this.slice(0, idx) + s + this.slice(idx + Math.abs(rem)));
+    };
+    
+    var pageHtml = $('body').not('button,.dataTables_info,.dataTables_paginate,#scriptsToIgnore').html();
+    var numKillBegin = pageHtml.indexOf('killBeginPoint');
+    var numKillEnd = pageHtml.indexOf('killEndPoint');
+    pageHtml = pageHtml.splice(numKillBegin, 0, "<!--");
+    pageHtml = pageHtml.splice(numKillEnd, 0, "-->");
+    pageHtml = pageHtml.replace("<!--killBeginPoint-->","");
+    pageHtml = pageHtml.replace("<!--killEndPoint-->","");
+    //need to turn this into a whole function as this is working perfectly! :), just need to tweak positioning!, just added replace, may work
     var allHtml = header + pageHtml;
     var fileName = objForFile.name + '.html';
 
