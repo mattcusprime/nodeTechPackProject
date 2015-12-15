@@ -217,6 +217,10 @@ garmentProduct.prototype.getMyMeasurement = function (strHostUrlPrefix, numMeasu
     //http://wsflexwebprd1v.res.hbi.net/Windchill/servlet/IE/tasks/com/lcs/wc/measurements/FindMeasurements.xml?oid=VR:com.lcs.wc.measurements.LCSMeasurements:2394285&instance=net.hbi.res.wsflexappprd1v.windchillAdapter
     var strTaskUrl = strHostUrlPrefix + 'Windchill/servlet/IE/tasks/com/lcs/wc/measurements/FindMeasurements.xml'; //?oid=VR:com.lcs.wc.construction.LCSConstructionInfo:' + numConstructionBranchId + '&instance=net.hbi.res.wsflexappprd1v.windchillAdapter';
     var arrCurrentMeasurement = [];
+    if (measurementData.childNodes.length == 1) {
+        return false;
+    };
+
     $('id', measurementData).parent().each(function () {
         var objRow = {};
         objRow.id = $(this).find('id ').text();
@@ -508,8 +512,9 @@ garmentProduct.prototype.getSpecByNameButNotJustActiveSpec = function (strHostUr
         };
 
         $('.seasonSpecButton').click(function () {
+            var strSelectedSpecId = $(this).attr('specId');
             $('#seasonSpecSelection *').remove();
-            objForCallback = { arrSpecArray: arrSpecArray, arrSourceArray: arrSourceArray, arrCombinationArray: arrCombinationArray, activeSpecId: numActiveSpecId, gProdName: gProdName, activeSpecName: strActiveSpecName };
+            objForCallback = { arrSpecArray: arrSpecArray, arrSourceArray: arrSourceArray, arrCombinationArray: arrCombinationArray, activeSpecId: strSelectedSpecId, gProdName: gProdName, activeSpecName: strActiveSpecName };
             funCallback(objForCallback, objSelfReference);
         });
 
@@ -656,14 +661,6 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
             objComponent.roleDocumentLink = $(this).find('roleDocumentLink').text();
             var roleB = $(this).find('roleBObjectRef_key_id').text();
             objComponent.image = '<div class="item" <h2>' + objComponent.name + '-' + objComponent.fileName + '</h2></br><img width="' + objComponent.width + '" height="' + objComponent.length + '" class="img-responsive hideImg" src="' + strImgViewerPrefix3 + objComponent.vaultFileName + '" /></div>';
-            //objComponent.imageUrl = '<img width="' + objComponent.width + '" height="' + objComponent.height + '" class="img-responsive" src="' + objComponent.fullVaultUrl + '" />';
-            //svg version below
-            //objComponent.imageUrl = '<img src="' + objComponent.fullVaultUrl + '" />';
-            //$('#imagesDiv').append('<div class="page" id="' + objComponent.vaultFileName + '"></div>');
-            //var svg = $('#' + objComponent.vaultFileName).svg();
-            /*$.get(objComponent.fullVaultUrl, function (data) { }).done(function (data) {
-                console.log(data);
-            });*/
             if (objComponent.ownerType == 'Pattern' && objComponent.name.indexOf('Front/Back Image') == -1) {
 
             }
@@ -671,58 +668,8 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
                 arrDocuments.push(objComponent);
             };
 
-            //revisit this duplicate checker
-            /*
-            var intDocIndex = index;
-            var intPrefixLength = strImgViewerPrefix3.length;
-            var objHolder = {
-                name:objComponent.name,
-                fileName: objComponent.fileName,
-                myIndex: intDocIndex
-            };
-           
-            if (strpSpecId == strCompSpecId) {
-                objComponent.ownerType = 'Pattern';
-            }
-            else {
-                objComponent.ownerType = 'Garment';
-            };
-            if (objComponent.ownerType == 'Pattern' && objComponent.name.indexOf('Front/Back Image') == -1) {
-
-            }
-            else {
-                var arrOfName = [];
-                for (var z = 0; z < arrDocuments.length; z++) {
-                    objLoopObject = arrDocuments[z];
-                    arrOfName.push(objLoopObject.name);
-                };
-                if (arrOfName.indexOf(objComponent.name) == -1) {
-                    arrDocuments.push(objComponent);
-                    arrTableDataArray.push(objComponent);
-                }
-                else {
-                    var numOfPossibleDuplicate = arrOfName.indexOf(objComponent.name);
-                    var objPossibleDuplicate = arrDocuments[numOfPossibleDuplicate];
-                    if (objComponent.width > objPossibleDuplicate.width && objComponent.height > objPossibleDuplicate.height) {
-                        arrDocuments[numOfPossibleDuplicate] = objComponent;
-                        arrTableDataArray[numOfPossibleDuplicate] = objComponent;
-                    };
-
-                };
-
-            };
-
-            */
-            //revisit this duplicate checker
             if (index == numOfDocumentRows - 1) {
-                /*var objComponent
-                for (var z = 0; z < arrDocuments.length; z++) {
-                    var objComponentForAjaxes = arrDocuments[z];
 
-               
-                };
-                var initialIndexer = 0;
-                callNextDocument(arrDocuments, initialIndexer);*/
             };
         });
     };
@@ -1077,9 +1024,13 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
     // later will need to add here a few documents that we want to exclude intentionally
     // like front back images that come from pattern products
     var sortOrder = 0;
-    if (typeof (objSelfReference.construction) != 'undefined') { reportTable.row.add([sortOrder, '<a href="#" id="getConstructionReport">Construction</a>', objSelfReference.construction.name]); sortOrder++; };
-    if (typeof (objSelfReference.measurement) != 'undefined') { reportTable.row.add([sortOrder, '<a href="#" id="getMeasurementReport">Measurements</a>', objSelfReference.measurement.name]); sortOrder++; };
-    if (typeof (objSelfReference.boms != 'undefined')) {
+    if (typeof (objSelfReference.construction.name) != 'undefined') {
+        reportTable.row.add([sortOrder, '<a href="#" id="getConstructionReport">Construction</a>', objSelfReference.construction.name]); sortOrder++;
+    };
+    if (typeof (objSelfReference.measurement.name) != 'undefined') {
+        reportTable.row.add([sortOrder, '<a href="#" id="getMeasurementReport">Measurements</a>', objSelfReference.measurement.name]); sortOrder++;
+    };
+    if (typeof (objSelfReference.boms != 'undefined' || objSelfReference.boms.length != 0)) {
         var arrBoms = objSelfReference.boms;
         var boolHaveGarmentCut = false;
         var boolHavePatternSpread = false;
@@ -1089,10 +1040,18 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
             for (var i = 0; i < arrBoms.length; i++) {
 
                 var strBomType = arrBoms[i].flexType;
-                if (strBomType == 'Pattern Product Trim Bias BOM') { boolHavePatternTrimBias = true; }
-                if (strBomType == 'Garment Cut') { boolHaveGarmentCut = true; }
-                if (strBomType == 'Pattern Product Trim Straight BOM') { boolHavePatternTrimStraight = true; }
-                if (strBomType == 'Pattern Product Spread BOM') { boolHavePatternSpread = true; }
+                if (strBomType == 'Pattern Product Trim Bias BOM') {
+                    boolHavePatternTrimBias = true;
+                }
+                if (strBomType == 'Garment Cut') {
+                    boolHaveGarmentCut = true;
+                }
+                if (strBomType == 'Pattern Product Trim Straight BOM') {
+                    boolHavePatternTrimStraight = true;
+                }
+                if (strBomType == 'Pattern Product Spread BOM') {
+                    boolHavePatternSpread = true;
+                }
 
             };
         };
@@ -1856,33 +1815,6 @@ garmentProduct.prototype.getMoas = function (strUrlPrefix, objSelfReference, obj
 };
 
 
-/* Temporarily turned off and moved up above into the $(when) deferred function to make sure things time properly
-and to maintain a uniform approach.
-garmentProduct.prototype.getSewSourceBoms = function (strUrlPrefix, strActiveSpecId, objSelfReference) {
-    var strGarmentSewAndSourceBomUrls = strUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?specId=' + strActiveSpecId + '+&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A12079049&action=ExecuteReport';
-    var strPatternSewAndBomUsageUrl = strUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?specId=' + strActiveSpecId + '+&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A12076562&action=ExecuteReport';//add rest here.
-    //Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?specId=5535179+&format=formatDelegate&delegateName=HTMLWithSorting&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A12079049&action=ExecuteReport
-    //Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?specId=5535179+&format=formatDelegate&delegateName=HTMLWithSortingAndMerging&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A12076562&action=ExecuteReport
-    var objGarmentProdData = {};
-    var objPatternProdData = {};
-    $.get(strGarmentSewAndSourceBomUrls, function (data) {
-        objGarmentProdData = data;
-    }).done(function () {
-        $.get(strPatternSewAndBomUsageUrl, function (data2) {
-            objGarmentProdData = data2;
-        }).done(function () {
-
-            console.log("Garment Data " + objGarmentProdData + " Pattern Data " + objPatternProdData);
-            objSelfReference.garmentSewBoms = objGarmentProdData;
-            objSelfReference.patternSewUsageBoms = objPatternProdData;
-        });
-
-
-    });
-
-
-};*/
-
 //utility functions to work with garmentProduct class below
 /*
 
@@ -2219,67 +2151,69 @@ function convertRowArrayIntoHtmlTable(arrRowArray, strHeaderArrayPropertyToSearc
 
 function callNextDocument(arrayOfDocuments, currentIndex) {
     var nextIndex = currentIndex + 1;
-    $.ajax(
-        {
-            url: arrayOfDocuments[currentIndex].fullVaultUrl,
-            start: function () {
-                //arrNamesOfDocumentsForSvgHold.push(objHolder, objComponent.fullVaultUrl);
-            },
-            complete: function (text) {
-                //var strVaultFileName = myCall.urlIcalled.substring(intPrefixLength, myCall.urlIcalled.length);
-                var strOnlySvgText = text.responseText.substring(text.responseText.indexOf('<svg'), text.responseText.length);
-                //arrSvgData.push(strOnlySvgText);
-                //var strHeaders = text.getAllResponseHeaders();
-                //console.log(strHeaders);
-                //var numIndexToUse = arrNamesOfDocumentsForSvgHold.indexOf(strVaultFileName) - 1;
-                var strMyName = arrayOfDocuments[currentIndex].name;
-                var strFileName = arrayOfDocuments[currentIndex].fileName;
-                var strRoleAObjectId = arrayOfDocuments[currentIndex].roleDocumentLink;
-                if ($('#' + strRoleAObjectId).length) {
-                    $('#' + strRoleAObjectId).append(strOnlySvgText);
-                }
-                else {
-                    $('#imagesDiv').append('<h2>' + strMyName + '</h2></br><div class="row page" id="' + strRoleAObjectId + '">' + strOnlySvgText + '</div></br></br><hr>');
-                };
-                if (nextIndex < arrayOfDocuments.length) {
+    var objCheckUndefined = arrayOfDocuments[0];
+    if (typeof (objCheckUndefined) != 'undefined') {
+        $.ajax(
+            {
+                url: arrayOfDocuments[currentIndex].fullVaultUrl,
+                start: function () {
+                    //arrNamesOfDocumentsForSvgHold.push(objHolder, objComponent.fullVaultUrl);
+                },
+                complete: function (text) {
+                    //var strVaultFileName = myCall.urlIcalled.substring(intPrefixLength, myCall.urlIcalled.length);
+                    var strOnlySvgText = text.responseText.substring(text.responseText.indexOf('<svg'), text.responseText.length);
+                    //arrSvgData.push(strOnlySvgText);
+                    //var strHeaders = text.getAllResponseHeaders();
+                    //console.log(strHeaders);
+                    //var numIndexToUse = arrNamesOfDocumentsForSvgHold.indexOf(strVaultFileName) - 1;
+                    var strMyName = arrayOfDocuments[currentIndex].name;
+                    var strFileName = arrayOfDocuments[currentIndex].fileName;
+                    var strRoleAObjectId = arrayOfDocuments[currentIndex].roleDocumentLink;
+                    if ($('#' + strRoleAObjectId).length) {
+                        $('#' + strRoleAObjectId).append(strOnlySvgText);
+                    }
+                    else {
+                        $('#imagesDiv').append('<h2>' + strMyName + '</h2></br><div class="row page" id="' + strRoleAObjectId + '">' + strOnlySvgText + '</div></br></br><hr>');
+                    };
+                    if (nextIndex < arrayOfDocuments.length) {
 
-                    callNextDocument(arrayOfDocuments, nextIndex);
+                        callNextDocument(arrayOfDocuments, nextIndex);
 
-                }
-                else {
-                    $('#imagesDiv .page').each(function () {
-                        var numOfSvgs = $(this).find('svg').length;
-                        var width = 0;
-                        var height = 0;
-                        var strClassToAdd = '';
-                        var strClassToAdd2 = '';
-                        if (numOfSvgs == 2) {
-                            height = 396;
-                            width = 306;
-                            strClassToAdd = 'col-md-offset-1 col-md-5';
-                            strClassToAdd2 = 'col-md-5 col-md-offset-1';
-                        }
-                        else if (numOfSvgs == 1) {
-                            height = 792;
-                            width = 612;
-                            strClassToAdd = 'col-md-offset-3 col-md-6';
-                        };
-                        $(this).find('svg').each(function (index) {
-                            $(this).attr('height', height);
-                            $(this).attr('width', width);
-                            if (index == 0) {
-                                $(this).addClass(strClassToAdd);
+                    }
+                    else {
+                        $('#imagesDiv .page').each(function () {
+                            var numOfSvgs = $(this).find('svg').length;
+                            var width = 0;
+                            var height = 0;
+                            var strClassToAdd = '';
+                            var strClassToAdd2 = '';
+                            if (numOfSvgs == 2) {
+                                height = 396;
+                                width = 306;
+                                strClassToAdd = 'col-md-offset-1 col-md-5';
+                                strClassToAdd2 = 'col-md-5 col-md-offset-1';
                             }
-                            else if (index == 1) {
-                                $(this).addClass(strClassToAdd2);
+                            else if (numOfSvgs == 1) {
+                                height = 792;
+                                width = 612;
+                                strClassToAdd = 'col-md-offset-3 col-md-6';
                             };
+                            $(this).find('svg').each(function (index) {
+                                $(this).attr('height', height);
+                                $(this).attr('width', width);
+                                if (index == 0) {
+                                    $(this).addClass(strClassToAdd);
+                                }
+                                else if (index == 1) {
+                                    $(this).addClass(strClassToAdd2);
+                                };
+                            });
+
                         });
 
-                    });
+                    };
 
-                };
-
-            }
-        });
-
+                }
+            });
+    };
 };
