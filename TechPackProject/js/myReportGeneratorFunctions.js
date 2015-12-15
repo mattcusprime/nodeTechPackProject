@@ -1,7 +1,7 @@
 ﻿//Global Variables
 var arrGarmentProductsArrayForTypeAhead = [];
-var strDomString = 'Bft<div class="col-md-10 row"></div>';
-var arrButtons = ['copy','pdf','colvis'];
+var strDomString = '<"top"B>rt<"bottom"flp><"clear">';
+var arrButtons = ['copy','pdf'];
 // maybe put a second DOM string???
 // table options
 var constructionTableOptions = {

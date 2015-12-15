@@ -217,9 +217,9 @@ garmentProduct.prototype.getMyMeasurement = function (strHostUrlPrefix, numMeasu
     //http://wsflexwebprd1v.res.hbi.net/Windchill/servlet/IE/tasks/com/lcs/wc/measurements/FindMeasurements.xml?oid=VR:com.lcs.wc.measurements.LCSMeasurements:2394285&instance=net.hbi.res.wsflexappprd1v.windchillAdapter
     var strTaskUrl = strHostUrlPrefix + 'Windchill/servlet/IE/tasks/com/lcs/wc/measurements/FindMeasurements.xml'; //?oid=VR:com.lcs.wc.construction.LCSConstructionInfo:' + numConstructionBranchId + '&instance=net.hbi.res.wsflexappprd1v.windchillAdapter';
     var arrCurrentMeasurement = [];
-    if (measurementData.childNodes.length == 1) {
+    /*if (measurementData.childNodes.length == 1) {
         return false;
-    };
+    };*/
 
     $('id', measurementData).parent().each(function () {
         var objRow = {};
@@ -1864,7 +1864,14 @@ function pdfPage(objForFile) {
 
     //add in error catching for if file exists
     fs.writeFileSync(fileName, allHtml);
+    //comment this out later if you are just posting the html file.  The  below function using wikihtmlToPdf in order to saved a 
+    //local pdf onto the user's system
+    pdfItUsingWikihtml(objForFile);
 
+    
+};
+// version 2, works but requires a large amount of semi-suspect functionality, less lightweight
+function pdfItUsingWikihtml(objContainingInitialFilePathInName) {
     var filePath = '/wkhtmltopdf/bin/wkhtmltopdf';
     var currentdate = new Date();
     var datetime = currentdate.getDate() + "_"
@@ -1875,7 +1882,7 @@ function pdfPage(objForFile) {
                     + currentdate.getSeconds();
     //child = execFile(filePath, ['file:///GitProjects/nodeTechPackProject/TechPackProject/testFile.html?dontRunPrompt', "\\\\izone.hbi.net@SSL\\sites\\PLM\\gSpecs\\" + objForFile.name + '.pdf'], function (error, stdout, stderr) {
     //"C:\GitProjects\nodeTechPackProject\TechPackProject"
-    child = execFile(filePath, ['file:///GitProjects/nodeTechPackProject/TechPackProject/testFile.html?dontRunPrompt', objForFile.name + datetime + '.pdf'], function (error, stdout, stderr) {
+    child = execFile(filePath, ['file:///GitProjects/nodeTechPackProject/TechPackProject/testFile.html?dontRunPrompt', objContainingInitialFilePathInName.name + datetime + '.pdf'], function (error, stdout, stderr) {
         if (error) {
             console.log(error.stack);
             console.log('Error code: ' + error.code);
@@ -1886,8 +1893,10 @@ function pdfPage(objForFile) {
         console.log('Child Process stderr: ' + stderr);
         alert('Saved - ' + objForFile.name + datetime + '.pdf');
     });
+
 };
-// version 2, works but requires a large amount of semi-suspect functionality, less lightweight
+
+
 
 
 function pdfPageOlder(objForFile) {
