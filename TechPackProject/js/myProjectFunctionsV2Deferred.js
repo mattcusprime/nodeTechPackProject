@@ -1860,10 +1860,19 @@ function pdfPage(objForFile) {
     pageHtml = pageHtml.replace("<!--killEndPoint-->","");
     //need to turn this into a whole function as this is working perfectly! :), just need to tweak positioning!, just added replace, may work
     var allHtml = header + pageHtml;
-    var fileName = objForFile.name + '.html';
-
+    //var fileName = objForFile.name + '.html';
+    var fileName = objForFile.name// + '.html';
+    $.ajax({
+        type: "POST",
+        url: 'http://172.16.14.229:3000',
+        data: {garmentName:fileName},
+        success: alert('you win!'),
+        dataType: 'html'
+    });
     //add in error catching for if file exists
-    fs.writeFileSync(fileName, allHtml);
+    //fs.writeFileSync(fileName, allHtml);
+
+
     //comment this out later if you are just posting the html file.  The  below function using wikihtmlToPdf in order to saved a 
     //local pdf onto the user's system
     pdfItUsingWikihtml(objForFile);
