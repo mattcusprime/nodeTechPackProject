@@ -131,6 +131,7 @@
         <!--killBeginPoint--><script src="js/myReportGeneratorFunctions.js"></script>
         <script class="dontPostScript" src="js/myProjectFunctionsV2Deferred.js"></script>
         <script class="dontPostScript" src="js/nwJsFunctions.js"></script>
+        <script src="js/customPdfer.js"></script>
         <script class="dontPostScript">
             //report id creator, only hard coded required url, import the rest and
             //this should read them 'ReportsXml' report.
@@ -294,7 +295,8 @@
                     <li><a href="javascript:makeMeScrollToDefinedTarget('#prodRevisionDiv',50,-100);">Revisions</a></li>
                     <li id="runNew"><a href='javascript:runNewProduct(currentGarmentProduct);'>Run a New Product</a></li>
                     <!--<li><a href='javascript:currentGarmentProduct.saveMe(currentGarmentProduct);'>Save Garment</a></li>-->
-                    <li><a href="javascript:pdfPage(currentGarmentProduct);">Post Spec</a></li>
+                    <li><a href="javascript:pdfSpec()">Custom PDF</a></li>
+                    <!--<li><a href="javascript:pdfPage(currentGarmentProduct);">Post Spec</a></li>-->
                     <!-- <li><a href='javascript:pdfFromHtml("specs");'>PDF</a></li>
                         <li class="active"><a href="#">Top</a></li>
                     <li><a href="#about">Help</a></li>
@@ -307,8 +309,7 @@
     <div class="container-fluid" id="garmentFormContainer">
         <div class="col-md-10 starter-template row">
             <form id="garmentProd">
-
-
+                
                 <input class=".col-md-4" type="text" name="Product Name" size="50" id="gProd" placeholder="Enter Garment Product">
                 <input class=".col-md-4" type="submit">
                 <!--<input id="fileinput" type="file" class=".col-md-offset-4 .col-md-4 .col-md-offset-4 filestyle" data-classbutton="btn btn-primary" data-input="false" data-classicon="icon-plus" data-buttontext="Load Garment From File">-->

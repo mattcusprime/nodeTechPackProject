@@ -1,7 +1,17 @@
 ﻿//Global Variables
 var arrGarmentProductsArrayForTypeAhead = [];
 var strDomString = '<"top"B>rt<"bottom"flp><"clear">';
-var arrButtons = ['copy','pdf'];
+var arrButtons = ['copy', {
+    extend: 'pdf',
+    text: 'Save section as PDF',
+    exportOptions: {
+        modifier: {
+            page: 'current'
+        },
+    filename: 'testing filename'
+    }
+}];
+var arrButtonsNoButtons = [];
 // maybe put a second DOM string???
 // table options
 var constructionTableOptions = {
@@ -184,7 +194,7 @@ var reportsTableOptions = {
         }
 
     ],
-    'buttons': arrButtons
+    'buttons': arrButtonsNoButtons
 };
 var approvedSupplierTableOptions = {
 

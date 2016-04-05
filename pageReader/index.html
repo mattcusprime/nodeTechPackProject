@@ -1,0 +1,89 @@
+<html>
+<head>
+    <script src="js/jquery-2.1.3.js"></script>
+    <script>
+        $.fn.scrollBottom = function () {
+            return $(document).height() - this.scrollTop() - this.height();
+        };
+        $('document').ready(function () {
+            
+            $('#btnGetUrl').click(function () {
+                var strUrlToRun = $('#inpGetMyUrl').val();
+                extractText(strUrlToRun);
+            });
+            
+            
+
+
+        });
+
+       
+
+
+
+        function extractText(strUrlToParse) {
+            $('div').remove();
+
+            $.get(strUrlToParse, function (data) { }).done(function (data) {
+                console.log(data);
+                $('*', data).each(function () {
+                    var objTargetObject = $(this);
+
+                    if (objTargetObject.is('p')) {
+                        var strElementText = $(this).html();
+                        $('body').append('<div>' + strElementText + '</div>');
+                    }
+                    else if (objTargetObject.is('a')) {
+                        if ($(this).text().length > 0) {
+
+                        }
+                        else {
+                            $(this).html('<a href="' + $(this).attr('href') + '">' + $(this).attr('href') + '</a>');
+                            //$(this).text($(this).attr('href'));
+                        };
+
+                        var strElementText = $(this).html();
+                        $('body').append('<div>' + strElementText + '</div>');
+                    }
+                    else if (objTargetObject.is('html')) {
+                        //var strElementText2 = $(this).html();
+                        $('body').append('<div>' + $(this).html() + '</div>');
+
+                    }
+                });
+            }).done(function () {
+                $('a').click(function (e) {
+                    e.preventDefault();
+                    var strUrlToRun = $(this).attr('href');
+                    extractText(strUrlToRun);
+                });
+                $('img').each(function () {
+                    var strOldSource = $(this).attr('src');
+                    $(this).attr('src', '');
+                    $(this).attr('oldSrc', strOldSource);
+                });
+
+                $('img').click(function () {
+                    if ($(this).attr('src') == '') {
+                        $(this).attr('src', $(this).attr('oldSrc'));
+                    }
+                    else {
+                        var strThisScopeOldSource = $(this).attr('src');
+                        $(this).attr('src', '');
+                        $(this).attr('oldSrc', strThisScopeOldSource);
+                    }
+                });
+
+
+            });
+        };
+
+    </script>
+</head>
+<body>
+    <input value="http://www.cracked.com/" type="url" id="inpGetMyUrl" />
+    <button id="btnGetUrl">Get Page</button>
+
+</body>
+
+</html>

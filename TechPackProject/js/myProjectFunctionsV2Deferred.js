@@ -1629,43 +1629,28 @@ garmentProduct.prototype.getLabelBoms = function (labelProductObjectId, strUrlPr
     var arrLabelData = [];
     $.get(strGetUrl, function (data) { }).done(function (data) {
         $('row', data).each(function () {
-            /* var objRow = {};
-                
-            objRow.madeInCountryDisplay = $(this).find('madeInCountryDisplay').text();
-            objRow.garmentUse = $(this).find('garmentUse').text();
-            objRow.Material_Name = $(this).find('Material_Name').text();
-            objRow.application = $(this).find('application').text();
-            //objRow.Garment_size_from_Label_Material = $(this).find('Garment_size_from_Label_Material').text();
-            //objRow.Link_to_Label_Material = $(this).find('Link_to_Label_Material').text();
-            objRow.garmentSize = $(this).find('garmentSize').text();
-            objRow.fiberCodeContent = $(this).find('fiberCodeContent').text();
-            objRow.padPrintInkColors = $(this).find('padPrintInkColors').text();
-            objRow.usagePerDozen = $(this).find('usagePerDozen').text();
-            objRow.usageUom = $(this).find('usageUom').text();
-            objRow.stdWasteFactor = $(this).find('stdWasteFactor').text();
-            objRow.usagePriceForBom = $(this).find('usagePriceForBom').text();
-            */
-            var objRow = [];
-            objRow.push($(this).find('madeInCountryDisplay').text());
-            objRow.push($(this).find('garmentUse').text());
-            objRow.push($(this).find('Material_Name').text());
-            objRow.push($(this).find('application').text());
+            
+            var arrRow = [];
+            arrRow.push($(this).find('madeInCountryDisplay').text());
+            arrRow.push($(this).find('garmentUse').text());
+            arrRow.push($(this).find('Material_Name').text());
+            arrRow.push($(this).find('application').text());
             //objRow.Garment_size_from_Label_Material($(this).find('Garment_size_from_Label_Material').text()());
             //objRow.Link_to_Label_Material($(this).find('Link_to_Label_Material').text()());
-            objRow.push($(this).find('garmentSize').text());
-            objRow.push($(this).find('fiberCodeContent').text());
-            objRow.push($(this).find('padPrintInkColors').text());
-            objRow.push($(this).find('usagePerDozen').text());
-            objRow.push($(this).find('usageUom').text());
-            objRow.push($(this).find('stdWasteFactor').text());
-            objRow.push($(this).find('usagePriceForBom').text());
-            for (var i = 0; i < objRow.length; i++) {
-                if (typeof (objRow[i]) == 'undefined') {
-                    objRow[i] = '';
+            arrRow.push($(this).find('garmentSize').text());
+            arrRow.push($(this).find('fiberCodeContent').text());
+            arrRow.push($(this).find('padPrintInkColors').text());
+            arrRow.push($(this).find('usagePerDozen').text());
+            arrRow.push($(this).find('usageUom').text());
+            arrRow.push($(this).find('stdWasteFactor').text());
+            arrRow.push($(this).find('usagePriceForBom').text());
+            for (var i = 0; i < arrRow.length; i++) {
+                if (typeof (arrRow[i]) == 'undefined') {
+                    arrRow[i] = '';
                 };
 
             };
-            arrLabelData.push(objRow);
+            arrLabelData.push(arrRow);
 
         });
 
@@ -1862,20 +1847,35 @@ function pdfPage(objForFile) {
     var allHtml = header + pageHtml;
     //var fileName = objForFile.name + '.html';
     var fileName = objForFile.name// + '.html';
+    var objPostObject = {
+        garmentName: fileName,
+        strMyHtml: pageHtml.serialize()
+    };
+    console.log(objPostObject);
+    /*$.post("http://localhost:3000", function (data) {
+        $(".result").html(data);
+    });
+    $.post('http://localhost:3000' + objPostObject, function () { }).done(function () {
+        alert('spec posted');
+    });*/
     $.ajax({
         type: "POST",
         url: 'http://172.16.14.229:3000',
-        data: {garmentName:fileName},
-        success: alert('you win!'),
-        dataType: 'html'
-    });
+        //url: 'http://localhost:3000', //?garmentName=' + fileName,
+        //http://localhost/
+        data: objPostObject,//{garmentName:fileName},
+        dataType: 'text'
+        
+    }).done(function () {
+        alert('done');
+    })
     //add in error catching for if file exists
     //fs.writeFileSync(fileName, allHtml);
 
 
     //comment this out later if you are just posting the html file.  The  below function using wikihtmlToPdf in order to saved a 
     //local pdf onto the user's system
-    pdfItUsingWikihtml(objForFile);
+    //pdfItUsingWikihtml(objForFile);
 
     
 };
