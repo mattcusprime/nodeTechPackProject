@@ -1,31 +1,87 @@
 ﻿function pdfSpec(productToSpec) {
-    var arrRevisionAttributeData = $('#revisionAttributeTbl').DataTable().rows().data();
-    var arrValuesArray = [];
-    //for (var i = 0; i < arrRevisionAttributeData.length; i++) {
-    $('#revisionAttributeTbl tr').each(function (index) {
-        //var arrRow = arrRevisionAttributeData[i];
-        var arrSingleRowOfValues = [];
-        //for (var j = 0; j < arrRow.length; j++) {
-        $(this).find('th,td').each(function () {
-            var strCellValue = $(this).text();
-            arrSingleRowOfValues.push(strCellValue);
-        });
+    var arrRevisionAttributeData = pdfThisTable('revisionAttributeTbl')//.DataTable().rows().data();
+    var arrGarmentHeader = pdfThisTable('garmentHeader');
+    //sizeTbl,approvedSupplierTbl,
+    var arrSizeTbl = pdfThisTable('sizeTbl');
+    var arrApprovedSupplierTbl = pdfThisTable('approvedSupplierTbl');
 
-        //};
-        arrValuesArray.push(arrSingleRowOfValues);
-    });
-    //};
-    console.log(arrValuesArray);
     var docDefinition = {
-        content: []
+        content: [
+            { text: productToSpec.name },
+            /*{
+                table: {
+                    headerRows: 1,
+                    body: arrGarmentHeader
+                }
+            },
+            	{ text: 'Sizing Table', fontSize: 14, bold: true, pageBreak: 'before', margin: [0, 0, 0, 8] },
+            {
+                table: {
+                    headerRows: 1,
+                    body: arrSizeTbl
+                }
+            },
+            	{ text: 'Product Revisions', fontSize: 14, bold: true, pageBreak: 'before', margin: [0, 0, 0, 8] },
+            {
+                table: {
+                    headerRows: 1,
+                    body: arrRevisionAttributeData
+                }
+            },
+            	{ text: 'Approved Suppliers', fontSize: 14, bold: true, pageBreak: 'before', margin: [0, 0, 0, 8] },
+            {
+                table: {
+                    headerRows: 1,
+                    body: arrApprovedSupplierTbl
+                }
+            }
+            */
+        ],
+        pageOrientation: 'landscape'
     };
-    docDefinition.content.push({ text: productToSpec.name });
+
+    //docDefinition.content.push({ text: productToSpec.name });
+    docDefinition.content.push({
+        text: 'Garment Header', fontSize: 14, bold: true, margin: [0, 0, 0, 8]
+    });
     docDefinition.content.push({
         table: {
             headerRows: 1,
-            body: arrValuesArray
+            body: arrGarmentHeader,
+            pageBreak: 'before'
         }
     });
+    docDefinition.content.push({
+        text: 'Sizing Table', fontSize: 14, bold: true, pageBreak: 'before', margin: [0, 0, 0, 8]
+    });
+    docDefinition.content.push({
+        table: {
+            headerRows: 1,
+            body: arrSizeTbl,
+            pageBreak: 'before'
+        }
+    });
+    docDefinition.content.push({
+        text: 'Product Revisions', fontSize: 14, bold: true, pageBreak: 'before', margin: [0, 0, 0, 8]
+    });
+    docDefinition.content.push({
+        table: {
+            headerRows: 1,
+            body: arrRevisionAttributeData,
+            pageBreak: 'before'
+        }
+    });
+    docDefinition.content.push({
+        text: 'Approved Suppliers', fontSize: 14, bold: true, pageBreak: 'before', margin: [0, 0, 0, 8]
+    });
+    docDefinition.content.push({
+        table: {
+            headerRows: 1,
+            body: arrApprovedSupplierTbl,
+            pageBreak: 'before'
+        }
+    });
+
     pdfMake.createPdf(docDefinition).download();
 
 
@@ -36,6 +92,20 @@
     // pdfMake.createPdf(docDefinition).print();
 
     // download the PDF
-    
+
 
 };
+
+function pdfThisTable(idOfTable) {
+    var arrValuesArray = [];
+    $('#' + idOfTable + ' tr').each(function (index) {
+        var arrSingleRowOfValues = [];
+        $(this).find('th,td').each(function () {
+            var strCellValue = $(this).text();
+            arrSingleRowOfValues.push(strCellValue);
+        });
+        arrValuesArray.push(arrSingleRowOfValues);
+    });
+    return arrValuesArray;
+};
+
