@@ -397,7 +397,7 @@ garmentProduct.prototype.getSpecByName = function (strHostUrlPrefix, strGarmentN
         var numQuantityOfActiveSpecs = 0;
         for (var i = 0; i < arrSpecArray.length; i++) {
             var objLoopObj = arrSpecArray[i];
-            if (objLoopObj.active == true) { 
+            if (objLoopObj.active == true) {
                 numQuantityOfActiveSpecs++;
             };
         };
@@ -619,63 +619,86 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
     if (offLineTurnOff != 1) {
         var numOfDocumentRows = $('row', objDocumentData).length;
         $('row', objDocumentData).each(function (index) {
-            var strImgViewerPrefix1 = strHostUrlPrefix + 'Windchill/rfa/jsp/image/ImageViewer.jsp?imageUrl=&appDataOid=OR:wt.content.ApplicationData:';
-            var strImgViewerPrefix2 = '&contentHolderOid=OR:com.lcs.wc.document.LCSDocument:';
-            //var strImgViewerPrefix3 = "file://res.hbi.net/dfs/BrandedApparel/Activewear/FlexApp/Prod/";
-			//var strImgViewerPrefix3 = "file://res.hbi.net/dfs/BrandedApparel/Activewear/FlexApp/QA/";
-			var strImgViewerPrefix3 = "https://res.hbi.net/dfs/BrandedApparel/Activewear/FlexApp/QA/";
-            if (location.protocol == 'file') {
-                //var strImgViewerPrefix3 = "http://res.hbi.net/dfs/BrandedApparel/Activewear/FlexApp/Prod/";
-            }
-            else {
-            };
-            var name = $(this).find('Document_Master_Name').text();
-            var strpSpecId = $(this).find('patternSpecId').text();
-            var strgSpecId = $(this).find('garmentSpecId').text();
-            var strCompSpecId = $(this).find('comRefSpecId').text();
-            if ($(this).is('row:first')) {
-                var objGSpec = {};
-                var objPSpec = {};
-                objGSpec.currentGarmentSpecId = $(this).find('garmentSpecId').text();
-                objPSpec.currentGarmentSpecId = $(this).find('patternSpecId').text();
-                objGSpec.name = $(this).find('gSpecName').text();
-                objPSpec.name = $(this).find('pSpecName').text();
-            };
-            objComponent = {};
-            objComponent.name = name;
-            objComponent.componentType = 'Document';
-            objComponent.masterId = $(this).find('Document_Master').attr('objectId');
-            objComponent.documentType = $(this).find('Component_Type').text();
-            objComponent.fileName = $(this).find('fileName').text();
-            objComponent.vaultFileName = $(this).find('fileNameOnVault').text();
-            objComponent.fullVaultUrl = strImgViewerPrefix3 + objComponent.vaultFileName;
-            objComponent.seqeuence = $(this).find('Unique_Sequence_Number').text();
-            objComponent.imgSrcUrl = objComponent.seqeuence + " " + objComponent.fileName;
-            objComponent.dataUri = 'initial value';
-            objComponent.description = $(this).find('Description').text();
-            var strStartPointSubString = objComponent.description.substring(11, objComponent.description.length);
-            var numLengthStartPoint = strStartPointSubString.search('x') + 1;
-            var numNumCharsOfWidth = numLengthStartPoint - 1;
-            var numWidth = strStartPointSubString.substring(0, numNumCharsOfWidth);
-            var numLength = strStartPointSubString.substring(numLengthStartPoint, strStartPointSubString.length);
-            objComponent.width = numWidth;
-            objComponent.height = numLength;
-            objComponent.roleDocumentLink = $(this).find('roleDocumentLink').text();
-            var roleB = $(this).find('roleBObjectRef_key_id').text();
-            
-			//objComponent.image = '<div class="item" <h2>' + objComponent.name + '-' + objComponent.fileName + '</h2></br><img width="' + objComponent.width + '" height="' + objComponent.length + '" class="img-responsive hideImg" src="' + strImgViewerPrefix3 + objComponent.vaultFileName + '" /></div>';
-            //changing the imgviewer prefix variable here alters protocol and where the file is being grabbed from
-			objComponent.image = '<div class="item" <h2>' + objComponent.name + '-' + objComponent.fileName + '</h2></br><img width="' + objComponent.width + '" height="' + objComponent.length + '" class="img-responsive hideImg" src="' + strImgViewerPrefix1 + objComponent.vaultFileName + '" /></div>';
-            
-			if (objComponent.ownerType == 'Pattern' && objComponent.name.indexOf('Front/Back Image') == -1) {
+            //var boolCheckForPng = false;
+            var strFileNameString = $(this).find('Application_Data').text();
+            var numCheckForPng = strFileNameString.indexOf('png');
+            if (numCheckForPng == -1) {
 
             }
             else {
-                arrDocuments.push(objComponent);
-            };
 
-            if (index == numOfDocumentRows - 1) {
+                //https://plmqa.hanes.com/Windchill/rfa/jsp/image/ImageViewer.jsp?imageUrl=&appDataOid=OR:wt.content.ApplicationData:2394231&contentHolderOid=OR:com.lcs.wc.document.LCSDocument:2394226
+                var strImgViewerPrefix1 = 'https://plmqa.hanes.com/Windchill/rfa/jsp/image/ImageViewer.jsp?imageUrl=&appDataOid=OR:wt.content.ApplicationData:';
+                var strImgViewerPrefix2 = '&contentHolderOid=OR:com.lcs.wc.document.LCSDocument:';
+                //var strImgViewerPrefix3 = "file://res.hbi.net/dfs/BrandedApparel/Activewear/FlexApp/Prod/";
+                //var strImgViewerPrefix3 = "file:\\\\res.hbi.net\\dfs/BrandedApparel\\Activewear\\FlexApp\\QA\\Prod\\";
+                var strImgViewerPrefix3 = "https://res.hbi.net/dfs/BrandedApparel/Activewear/FlexApp/QA/Prod/";
+                //var strImgViewerPrefix3 = "//res.hbi.net/dfs/BrandedApparel/Activewear/FlexApp/QA/Prod/";
 
+                if (location.protocol == 'file') {
+                    //var strImgViewerPrefix3 = "http://res.hbi.net/dfs/BrandedApparel/Activewear/FlexApp/Prod/";
+                }
+                else {
+                };
+                var name = $(this).find('Document_Master_Name').text();
+                var strpSpecId = $(this).find('patternSpecId').text();
+                var strgSpecId = $(this).find('garmentSpecId').text();
+                var strCompSpecId = $(this).find('comRefSpecId').text();
+                var strApplicationDataPartOneOfLink = $(this).find('documentNotMasterDocumentOid').text();
+                var strDocumentIdPartTwoOfLink = $(this).find('DocumentIdPartTwoOfLink').text();
+
+                strImgViewerPrefix1 = strImgViewerPrefix1 + strDocumentIdPartTwoOfLink + '&contentHolderOid=OR:com.lcs.wc.document.LCSDocument:' + strApplicationDataPartOneOfLink;
+
+                if ($(this).is('row:first')) {
+                    var objGSpec = {};
+                    var objPSpec = {};
+                    objGSpec.currentGarmentSpecId = $(this).find('garmentSpecId').text();
+                    objPSpec.currentGarmentSpecId = $(this).find('patternSpecId').text();
+                    objGSpec.name = $(this).find('gSpecName').text();
+                    objPSpec.name = $(this).find('pSpecName').text();
+                };
+                objComponent = {};
+                objComponent.name = name;
+                objComponent.componentType = 'Document';
+                objComponent.masterId = $(this).find('Document_Master').attr('objectId');
+                objComponent.documentType = $(this).find('Component_Type').text();
+                objComponent.fileName = $(this).find('fileName').text();
+                objComponent.vaultFileName = $(this).find('fileNameOnVault').text();
+
+                objComponent.fullVaultUrl = strImgViewerPrefix3 + objComponent.vaultFileName + '.png';
+                //objComponent.fullVaultUrl = strImgViewerPrefix1;
+
+                objComponent.seqeuence = $(this).find('Unique_Sequence_Number').text();
+                //objComponent.imgSrcUrl = objComponent.seqeuence + " " + objComponent.fileName;
+                objComponent.imgSrcUrl = strImgViewerPrefix1;
+                objComponent.dataUri = 'initial value';
+                objComponent.description = $(this).find('Description').text();
+                var strStartPointSubString = objComponent.description.substring(11, objComponent.description.length);
+                var numLengthStartPoint = strStartPointSubString.search('x') + 1;
+                var numNumCharsOfWidth = numLengthStartPoint - 1;
+                var numWidth = strStartPointSubString.substring(0, numNumCharsOfWidth);
+                var numLength = strStartPointSubString.substring(numLengthStartPoint, strStartPointSubString.length);
+                objComponent.width = numWidth;
+                objComponent.height = numLength;
+                objComponent.roleDocumentLink = $(this).find('roleDocumentLink').text();
+                var roleB = $(this).find('roleBObjectRef_key_id').text();
+
+                //objComponent.image = '<div class="item" <h2>' + objComponent.name + '-' + objComponent.fileName + '</h2></br><img width="' + objComponent.width + '" height="' + objComponent.length + '" class="img-responsive hideImg" src="' + strImgViewerPrefix3 + objComponent.vaultFileName + '" /></div>';
+                //changing the imgviewer prefix variable here alters protocol and where the file is being grabbed from
+                objComponent.image = '<div class="item" <h2>' + objComponent.name + '-' + objComponent.fileName + '</h2></br><iframe width="100%" height="1200" class="img-responsive hideImg" src="' + strImgViewerPrefix1 + '"></iframe></div>';
+
+                //objComponent.image = '<div class="item" <h2>' + objComponent.name + '-' + objComponent.fileName + '</h2></br><img width="' + objComponent.width + '" height="' + objComponent.length + '" class="img-responsive hideImg" src="' + objComponent.fullVaultUrl +  '" /></div>';
+
+                if (objComponent.ownerType == 'Pattern' && objComponent.name.indexOf('Front/Back Image') == -1) {
+
+                }
+                else {
+                    arrDocuments.push(objComponent);
+                };
+
+                if (index == numOfDocumentRows - 1) {
+
+                };
             };
         });
     };
@@ -689,7 +712,7 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
     arrDocuments.sort(objCompareByName);
     objSelfReference.documents = arrDocuments;
     //var initialIndexer = 0;
-    callNextDocument(objSelfReference.documents, 0);
+    //callNextDocument(objSelfReference.documents, 0);
 
     var objMeasurementComp = {};
     $('row', objMeasurementData).each(function (index) {
@@ -714,7 +737,7 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
         data: {
             oid: 'VR:com.lcs.wc.measurements.LCSMeasurements:' + objSelfReference.measurement.branchId,
             //instance: 'net.hbi.res.wsflexappprd1v.windchillAdapter'
-			instance: 'net.hbi.res.wsflexappqa1v.windchillAdapter'
+            instance: 'net.hbi.res.wsflexappqa1v.windchillAdapter'
         },
         async: true
 
@@ -738,7 +761,7 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
         data: {
             oid: 'VR:com.lcs.wc.construction.LCSConstructionInfo:' + objSelfReference.construction.branchId,
             //instance: 'net.hbi.res.wsflexappprd1v.windchillAdapter'
-			instance: 'net.hbi.res.wsflexappqa1v.windchillAdapter'
+            instance: 'net.hbi.res.wsflexappqa1v.windchillAdapter'
         },
         async: true
 
@@ -882,14 +905,14 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
     if (objSelfReference.garmentSourceBoms.length > 0) {
         objSelfReference.sourceBomTableString = convertRowArrayIntoHtmlTable(objSelfReference.garmentSourceBoms, '', '', 'sourceBomTable', '<h1>Source BOM</h1>');
     };
-    if (typeof(objSelfReference.patternSewBom) != 'undefined') {
+    if (typeof (objSelfReference.patternSewBom) != 'undefined') {
         $('#sewBomDiv').append(objSelfReference.sewBomTableString);
     };
     if (objSelfReference.garmentSourceBoms.length != 0) {
         $('#sourceBomDiv').append(objSelfReference.sourceBomTableString);
     };
     //sourceBomDiv
-    if (typeof(objSelfReference.patternSewBom) != 'undefined' && typeof(objSelfReference.garmentSewBoms) != 'undefined') {
+    if (typeof (objSelfReference.patternSewBom) != 'undefined' && typeof (objSelfReference.garmentSewBoms) != 'undefined') {
         $('#sewBomTable').DataTable(sewBomTableOptions);
     };
     var arrConstructionDetailDataContainer;
@@ -920,7 +943,7 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
             $('#approvedSupplierDiv').append('<p>Approved Supplier table was not found.</p>')
         };
     });
-    
+
 
 
 
@@ -1095,6 +1118,9 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
         if (typeof (arrdocs) != 'undefined') {
             for (i = 0; i < arrdocs.length; i++) {
                 if (i == 0) { $('#imagesDiv').append('<h1>Documents</h1>') };
+                //$('#imagesDiv').append(arrdocs[i].image);
+                $('#imagesDiv').append('<div id="img' + i + '"></div>');
+                $('#img' + i).load(arrdocs[i].imgSrcUrl);
                 //$('#imagesDiv').append('<div class="page" id="'+ arrdocs[i].vaultFileName +'"><h2>' + arrdocs[i].name + '</h2>' + arrdocs[i].imageUrl + '</div>');
             };
         };
@@ -1102,7 +1128,7 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
     };
     createRelatedProductsDiv(objSelfReference);
     reportTable.draw();
-    
+
     $('#getMeasurementReport').click(function () {
     });
     $('#getConstructionReport').click(function () {
@@ -1637,7 +1663,7 @@ garmentProduct.prototype.getLabelBoms = function (labelProductObjectId, strUrlPr
     var arrLabelData = [];
     $.get(strGetUrl, function (data) { }).done(function (data) {
         $('row', data).each(function () {
-            
+
             var arrRow = [];
             arrRow.push($(this).find('madeInCountryDisplay').text());
             arrRow.push($(this).find('garmentUse').text());
@@ -1739,7 +1765,7 @@ garmentProduct.prototype.getMoas = function (strUrlPrefix, objSelfReference, obj
         }).done(function () {
             //var strUrlForUsers = 'http://wsflexwebprd1v.res.hbi.net/Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?userIds=' + strUserIdsToGet + '&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A12134557&action=ExecuteReport';
             var strUrlForUsers = 'https://plmqa.hanes.com/Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?userIds=' + strUserIdsToGet + '&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A12134557&action=ExecuteReport';
-			var arrUserArray = [];
+            var arrUserArray = [];
             $.get(strUrlForUsers, function (data3) { }).done(function (data3) {
                 arrUserArray = rowParser('row', data3);
                 for (var i = 0; i < objSelfReference.moaArray.length; i++) {
@@ -1844,14 +1870,14 @@ function pdfPage(objForFile) {
     String.prototype.splice = function (idx, rem, s) {
         return (this.slice(0, idx) + s + this.slice(idx + Math.abs(rem)));
     };
-    
+
     var pageHtml = $('body').not('button,.dataTables_info,.dataTables_paginate,#scriptsToIgnore').html();
     var numKillBegin = pageHtml.indexOf('killBeginPoint');
     var numKillEnd = pageHtml.indexOf('killEndPoint');
     pageHtml = pageHtml.splice(numKillBegin, 0, "<!--");
     pageHtml = pageHtml.splice(numKillEnd, 0, "-->");
-    pageHtml = pageHtml.replace("<!--killBeginPoint-->","");
-    pageHtml = pageHtml.replace("<!--killEndPoint-->","");
+    pageHtml = pageHtml.replace("<!--killBeginPoint-->", "");
+    pageHtml = pageHtml.replace("<!--killEndPoint-->", "");
     //need to turn this into a whole function as this is working perfectly! :), just need to tweak positioning!, just added replace, may work
     var allHtml = header + pageHtml;
     //var fileName = objForFile.name + '.html';
@@ -1874,7 +1900,7 @@ function pdfPage(objForFile) {
         //http://localhost/
         data: objPostObject,//{garmentName:fileName},
         dataType: 'text'
-        
+
     }).done(function () {
         alert('done');
     })
@@ -1886,7 +1912,7 @@ function pdfPage(objForFile) {
     //local pdf onto the user's system
     //pdfItUsingWikihtml(objForFile);
 
-    
+
 };
 // version 2, works but requires a large amount of semi-suspect functionality, less lightweight
 function pdfItUsingWikihtml(objContainingInitialFilePathInName) {
@@ -1941,7 +1967,7 @@ function pdfPageOlder(objForFile) {
 
 };
 
-function pdfPageClassItemForPdf(indexToStopAt,incrementingVariable) {
+function pdfPageClassItemForPdf(indexToStopAt, incrementingVariable) {
     if (indexToStopAt == incrementingVariable) {
 
     }
@@ -1987,49 +2013,49 @@ function pdfPageJSPDFVERSION(objForFile) {
     });
 
 
-var pdf = new jsPDF('l', 'pt', 'a3')
-// source can be HTML-formatted string, or a reference
-// to an actual DOM element from which the text will be scraped.
-, source = strHtmlStringForPdf
+    var pdf = new jsPDF('l', 'pt', 'a3')
+    // source can be HTML-formatted string, or a reference
+    // to an actual DOM element from which the text will be scraped.
+    , source = strHtmlStringForPdf
 
-// we support special element handlers. Register them with jQuery-style
-// ID selector for either ID or node name. ("#iAmID", "div", "span" etc.)
-// There is no support for any other type of selectors
-// (class, of compound) at this time.
-, specialElementHandlers = {
-    // element with id of "bypass" - jQuery style selector
-    '.page': function(element, renderer){
-        // true = "handled elsewhere, bypass text extraction"
-        pdf.addPage()
-        return true
+    // we support special element handlers. Register them with jQuery-style
+    // ID selector for either ID or node name. ("#iAmID", "div", "span" etc.)
+    // There is no support for any other type of selectors
+    // (class, of compound) at this time.
+    , specialElementHandlers = {
+        // element with id of "bypass" - jQuery style selector
+        '.page': function (element, renderer) {
+            // true = "handled elsewhere, bypass text extraction"
+            pdf.addPage()
+            return true
+        }
     }
-}
 
-margins = {
-    top: 0,
-    bottom: 0,
-    left: 0,
-    width: 1190
-  };
-  // all coords and widths are in jsPDF instance's declared units
-  // 'inches' in this case
-pdf.fromHTML(
-    source // HTML string or DOM elem ref.
-    , margins.left // x coord
-    , margins.top // y coord
-    , {
-        'width': margins.width // max width of content on PDF
-        , 'elementHandlers': specialElementHandlers
-        //settings go here
-    },
-    function (dispose) {
-      // dispose: object with X, Y of the last line add to the PDF
-      //          this allow the insertion of new lines after html
-        pdf.save('Test.pdf');
-      },
-    margins
-  )
-	
+    margins = {
+        top: 0,
+        bottom: 0,
+        left: 0,
+        width: 1190
+    };
+    // all coords and widths are in jsPDF instance's declared units
+    // 'inches' in this case
+    pdf.fromHTML(
+        source // HTML string or DOM elem ref.
+        , margins.left // x coord
+        , margins.top // y coord
+        , {
+            'width': margins.width // max width of content on PDF
+            , 'elementHandlers': specialElementHandlers
+            //settings go here
+        },
+        function (dispose) {
+            // dispose: object with X, Y of the last line add to the PDF
+            //          this allow the insertion of new lines after html
+            pdf.save('Test.pdf');
+        },
+        margins
+      )
+
 };
 
 //"\\izone.hbi.net@SSL\sites\PLM\Garment Specs\test.txt"
@@ -2200,11 +2226,12 @@ function callNextDocument(arrayOfDocuments, currentIndex) {
                         $('#' + strRoleAObjectId).append(strOnlySvgText);
                     }
                     else {
-                        $('#imagesDiv').append('<h2>' + strMyName + '</h2></br><div class="row page" id="' + strRoleAObjectId + '">' + strOnlySvgText + '</div></br></br><hr>');
+                        //$('#imagesDiv').append('<h2>' + strMyName + '</h2></br><div class="row page" id="' + strRoleAObjectId + '">' + strOnlySvgText + '</div></br></br><hr>');
+
                     };
                     if (nextIndex < arrayOfDocuments.length) {
 
-                        callNextDocument(arrayOfDocuments, nextIndex);
+                        //callNextDocument(arrayOfDocuments, nextIndex);
 
                     }
                     else {
