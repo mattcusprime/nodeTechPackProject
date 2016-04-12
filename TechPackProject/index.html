@@ -28,12 +28,12 @@
     <link href="DataTables-1.10.7/extensions/Bootstrap-3.3.5/css/bootstrap-theme.min.css" rel="stylesheet" />
     <script src="DataTables-1.10.7/extensions/Bootstrap-3.3.5/js/bootstrap.min.js"></script>
 
-    
+
     DataTables
     <script src="DataTables-1.10.7/media/js/jquery.dataTables.js"></script>
-   
 
-    
+
+
     <script src="DataTables-1.10.7/extensions/ColVis/js/dataTables.colVis.js"></script>
     <script src="DataTables-1.10.7/extensions/TableTools/js/dataTables.tableTools.js"></script>
     <script src="DataTables-1.10.7/extensions/FixedHeader/js/dataTables.fixedHeader.js"></script>
@@ -49,7 +49,7 @@
     <script src="DataTablesDownloadBuilder/DataTables-1.10.9/js/jquery.dataTables.min.js"></script>
     <script src="DataTablesDownloadBuilder/DataTables-1.10.9/js/dataTables.bootstrap.min.js"></script>
     <script src="DataTablesDownloadBuilder/JSZip-2.5.0/jszip.min.js"></script>
-    
+
     <!--<script src="DataTablesDownloadBuilder/pdfmake-0.1.18/build/pdfmake.min.js"></script>-->
     <script src="DataTablesDownloadBuilder/pdfmake-0.1.18/build/pdfmake.min.js"></script>
     <script src="DataTablesDownloadBuilder/pdfmake-0.1.18/build/vfs_fonts.js"></script>
@@ -71,7 +71,7 @@
 
     <!--DataTables-->
     <link href="css/jquery.prompt.css" rel="stylesheet" />
-     
+
 
     <!--PrettyLoader-->
     <link href="prettyLoader.css" rel="stylesheet" />
@@ -112,7 +112,6 @@
     <script src="js/jquery.prompt.js"></script>
     <script src="js/imagesloaded.pkgd.min.js"></script>
     <!--My Scripts begin here-->
-    
     <!--end construction of prototype of Garment Product Class-->
     <!--Svg items
     <link href="jquery.svg.package-1.5.0/jquery.svg.css" rel="stylesheet" />
@@ -128,7 +127,8 @@
 </head>
 <body>
     <div id="scriptsToIgnore">
-        <!--killBeginPoint--><script src="js/myReportGeneratorFunctions.js"></script>
+        <!--killBeginPoint-->
+        <script src="js/myReportGeneratorFunctions.js"></script>
         <script class="dontPostScript" src="js/myProjectFunctionsV2Deferred.js"></script>
         <script class="dontPostScript" src="js/nwJsFunctions.js"></script>
         <script src="js/customPdfer.js"></script>
@@ -144,8 +144,8 @@
             //begin code for type ahead in g prod form
             //use below for prd
             var url = location.href;
-            var strUrlPrefix = 'http://wsflexwebprd1v.res.hbi.net/';
-
+            //var strUrlPrefix = 'http://wsflexwebprd1v.res.hbi.net/';
+            var strUrlPrefix = 'https://plmqa.hanes.com/';
             //use below for dev
             //var strUrlPrefix = 'http://wsflexwebdev1v.res.hbi.net/';
             var strDevPefix = 'http://wsflexwebdev1v.res.hbi.net/';
@@ -163,6 +163,8 @@
             var arrOfAttributeValueListIds = ['2381876', '102771', '2381693', '368058', '100575'];
 
             $('document').ready(function () {
+
+                
                 $('#loadingInfo').parent().hide();
 
                 //getReportsFromXmlFunction(strReportsXmlUrl);
@@ -170,6 +172,7 @@
                 $.prettyLoader();
                 var urlChecker = location.href;
                 console.log(urlChecker);
+                //window.open(strUrlPrefix);
                 getLogin(arrOfAttributeValueListIds, currentGarmentProduct, arrMasterReportIndexer);
 
 
@@ -191,7 +194,7 @@
                         //currentGarmentProduct.getSpecByName(strUrlPrefix, nameToUse, currentGarmentProduct.thenCallSpecs, returnArrays, currentGarmentProduct);
                         currentGarmentProduct.getSpecByNameButNotJustActiveSpec(strUrlPrefix, nameToUse, currentGarmentProduct.thenCallSpecs, returnArrays, currentGarmentProduct);
                         //replacing old version that just grabbed active spec and switching to version that will serve up
-                        //all seasons and specs 
+                        //all seasons and specs
                     }
                     else {
                         $('#gProd').val('');
@@ -309,7 +312,7 @@
     <div class="container-fluid" id="garmentFormContainer">
         <div class="col-md-10 starter-template row">
             <form id="garmentProd">
-                
+
                 <input class=".col-md-4" type="text" name="Product Name" size="50" id="gProd" placeholder="Enter Garment Product">
                 <input class=".col-md-4" type="submit">
                 <!--<input id="fileinput" type="file" class=".col-md-offset-4 .col-md-4 .col-md-offset-4 filestyle" data-classbutton="btn btn-primary" data-input="false" data-classicon="icon-plus" data-buttontext="Load Garment From File">-->
@@ -369,7 +372,7 @@
         <!-- container -->
     </div>
     <!-- /.container -->
-    
+
     <div class="page">
         <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="colorwaysListDiv">
 

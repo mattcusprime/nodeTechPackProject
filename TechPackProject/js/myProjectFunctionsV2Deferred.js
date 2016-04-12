@@ -82,10 +82,10 @@ function garmentProduct(strName, arrAttributes, arrSpecs, arrSources, objColorwa
 
 };
 
-var fs = require('fs.extra');
-var execFile = require('child_process').execFile, child;
-var wkhtmltopdf = require('wkhtmltopdf');
-var gui = require('nw.gui');
+//var fs = require('fs.extra');
+//var execFile = require('child_process').execFile, child;
+//var wkhtmltopdf = require('wkhtmltopdf');
+//var gui = require('nw.gui');
 //Node webkit functionalities
 
 /**
@@ -621,7 +621,9 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
         $('row', objDocumentData).each(function (index) {
             var strImgViewerPrefix1 = strHostUrlPrefix + 'Windchill/rfa/jsp/image/ImageViewer.jsp?imageUrl=&appDataOid=OR:wt.content.ApplicationData:';
             var strImgViewerPrefix2 = '&contentHolderOid=OR:com.lcs.wc.document.LCSDocument:';
-            var strImgViewerPrefix3 = "file://res.hbi.net/dfs/BrandedApparel/Activewear/FlexApp/Prod/";
+            //var strImgViewerPrefix3 = "file://res.hbi.net/dfs/BrandedApparel/Activewear/FlexApp/Prod/";
+			//var strImgViewerPrefix3 = "file://res.hbi.net/dfs/BrandedApparel/Activewear/FlexApp/QA/";
+			var strImgViewerPrefix3 = "https://res.hbi.net/dfs/BrandedApparel/Activewear/FlexApp/QA/";
             if (location.protocol == 'file') {
                 //var strImgViewerPrefix3 = "http://res.hbi.net/dfs/BrandedApparel/Activewear/FlexApp/Prod/";
             }
@@ -660,8 +662,12 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
             objComponent.height = numLength;
             objComponent.roleDocumentLink = $(this).find('roleDocumentLink').text();
             var roleB = $(this).find('roleBObjectRef_key_id').text();
-            objComponent.image = '<div class="item" <h2>' + objComponent.name + '-' + objComponent.fileName + '</h2></br><img width="' + objComponent.width + '" height="' + objComponent.length + '" class="img-responsive hideImg" src="' + strImgViewerPrefix3 + objComponent.vaultFileName + '" /></div>';
-            if (objComponent.ownerType == 'Pattern' && objComponent.name.indexOf('Front/Back Image') == -1) {
+            
+			//objComponent.image = '<div class="item" <h2>' + objComponent.name + '-' + objComponent.fileName + '</h2></br><img width="' + objComponent.width + '" height="' + objComponent.length + '" class="img-responsive hideImg" src="' + strImgViewerPrefix3 + objComponent.vaultFileName + '" /></div>';
+            //changing the imgviewer prefix variable here alters protocol and where the file is being grabbed from
+			objComponent.image = '<div class="item" <h2>' + objComponent.name + '-' + objComponent.fileName + '</h2></br><img width="' + objComponent.width + '" height="' + objComponent.length + '" class="img-responsive hideImg" src="' + strImgViewerPrefix1 + objComponent.vaultFileName + '" /></div>';
+            
+			if (objComponent.ownerType == 'Pattern' && objComponent.name.indexOf('Front/Back Image') == -1) {
 
             }
             else {
@@ -707,7 +713,8 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
         type: 'get',
         data: {
             oid: 'VR:com.lcs.wc.measurements.LCSMeasurements:' + objSelfReference.measurement.branchId,
-            instance: 'net.hbi.res.wsflexappprd1v.windchillAdapter'
+            //instance: 'net.hbi.res.wsflexappprd1v.windchillAdapter'
+			instance: 'net.hbi.res.wsflexappqa1v.windchillAdapter'
         },
         async: true
 
@@ -730,7 +737,8 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
         type: 'get',
         data: {
             oid: 'VR:com.lcs.wc.construction.LCSConstructionInfo:' + objSelfReference.construction.branchId,
-            instance: 'net.hbi.res.wsflexappprd1v.windchillAdapter'
+            //instance: 'net.hbi.res.wsflexappprd1v.windchillAdapter'
+			instance: 'net.hbi.res.wsflexappqa1v.windchillAdapter'
         },
         async: true
 
@@ -1729,8 +1737,9 @@ garmentProduct.prototype.getMoas = function (strUrlPrefix, objSelfReference, obj
 
 
         }).done(function () {
-            var strUrlForUsers = 'http://wsflexwebprd1v.res.hbi.net/Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?userIds=' + strUserIdsToGet + '&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A12134557&action=ExecuteReport';
-            var arrUserArray = [];
+            //var strUrlForUsers = 'http://wsflexwebprd1v.res.hbi.net/Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?userIds=' + strUserIdsToGet + '&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A12134557&action=ExecuteReport';
+            var strUrlForUsers = 'https://plmqa.hanes.com/Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?userIds=' + strUserIdsToGet + '&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A12134557&action=ExecuteReport';
+			var arrUserArray = [];
             $.get(strUrlForUsers, function (data3) { }).done(function (data3) {
                 arrUserArray = rowParser('row', data3);
                 for (var i = 0; i < objSelfReference.moaArray.length; i++) {

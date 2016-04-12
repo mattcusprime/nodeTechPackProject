@@ -8,7 +8,7 @@ var arrButtons = ['copy', {
         modifier: {
             page: 'current'
         },
-    filename: 'testing filename'
+        filename: 'testing filename'
     }
 }];
 var arrButtonsNoButtons = [];
@@ -32,7 +32,7 @@ var measurementTableOptions = {
     'buttons': arrButtons,
     "columnDefs": [
         {
-            "targets": [0, 3, 4, 7,8],
+            "targets": [0, 3, 4, 7, 8],
             "visible": false,
             "searchable": false
         }
@@ -71,7 +71,7 @@ var colorwayBomTableOptions = {
     'pageLength': 100,
     'dom': strDomString,
     'columnDefs': [
-        {'visible':false,'targets':0}
+        { 'visible': false, 'targets': 0 }
     ],
     'responsive': false,
     'buttons': arrButtons
@@ -82,7 +82,7 @@ var spreadBomTableOptions = {
     'scrollY': 600,
     'paging': false,
     'length': 1000,
-    'dom' : strDomString,
+    'dom': strDomString,
     //'data': '',
     'columns': [
         { 'data': 'pCodeSpread' },
@@ -222,8 +222,7 @@ function createRelatedProductsDiv(objCurrentGarmentProduct) {
         strTableString = strTableString + "<tr><td>Pattern Product</td><td>" + objCurrentGarmentProduct.patternProduct.name + "</td></td>";
         $('#topLeftNav').html(objCurrentGarmentProduct.name + '<br> Pattern: ' + objCurrentGarmentProduct.patternProduct.name);
     }
-    else
-    {
+    else {
         $('#topLeftNav').text(objCurrentGarmentProduct.name);
     };
     if (typeof (objCurrentGarmentProduct.labelProduct) != 'undefined') {
@@ -236,7 +235,7 @@ function createRelatedProductsDiv(objCurrentGarmentProduct) {
     strTableString = strTableString + "</tbody></table>";
     //$('head').append(strSpecsDivString);
     $('#garmentHeader').append(strTableString);
-    
+
     //$('#navbar ul').first().append("<li><a href='#garmentHeader'>Relationships</a></li>");
 
 };
@@ -431,7 +430,7 @@ function checkStorageFor(strCheckFor, strJqSelectorToPopulateIfStorageExists) {
  * @param {Object} garmentProduct, it must have measurementDetail
  * @param {String} strTableString is the table string to pass that will be appended and made into a DataTable
  */
-function createComponentTable(strParentJquerySelectorJustStringNoPound, strChildJquerySelectorForTableJustStringNoPound, strTableString,options,removableRows) {
+function createComponentTable(strParentJquerySelectorJustStringNoPound, strChildJquerySelectorForTableJustStringNoPound, strTableString, options, removableRows) {
     //var tableString = objGarmentProductWithMeasurementDetailString.measurementTableString;
     //http://localhost:59193/DataTables-1.10.7/extensions/TableTools/swf/copy_csv_xls_pdf.swf
     $('#' + strParentJquerySelectorJustStringNoPound + ' *').remove();
@@ -454,7 +453,7 @@ function createComponentTable(strParentJquerySelectorJustStringNoPound, strChild
         
         
     });*/
-    
+
 
 
 };
@@ -472,7 +471,7 @@ function compare(a, b) {
     return 0;
 };
 
-function getLogin(arrAttributeValueListArray, objCurrentGarmentProduct,arrReportsArray) {
+function getLogin(arrAttributeValueListArray, objCurrentGarmentProduct, arrReportsArray) {
     var strParsedStringOfUrl = window.location.href;
     if (strParsedStringOfUrl.indexOf('dontRunPrompt') != -1) {
         return false;
@@ -483,21 +482,22 @@ function getLogin(arrAttributeValueListArray, objCurrentGarmentProduct,arrReport
     var strInput4 = strInput1 + strInput2;// + strInput3;
     var strReportsXmlSuffix = 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/invokeAction?oid=OR%3Awt.query.template.ReportTemplate%3A12143436&action=ProduceReport&u8=1'
 
-        
+
     var strUrlPrefixWithPass;
-    
+
     $(strInput4).confirm(function (e) {
-    
-        
-            $('#loadingInfo').parent().fadeIn();
-        
+
+
+        $('#loadingInfo').parent().fadeIn();
+
 
         //e.preventDefault();
         var strUser = $('#usr').val();
         var strPwd = $('#pwd').val();
         localStorage.setItem('mattAppUser', strUser);
         localStorage.setItem('mattAppPass', strPwd);
-        strUrlPrefixWithPass = 'http://' + strUser + ':' + strPwd + '@wsflexwebprd1v.res.hbi.net/'
+        strUrlPrefixWithPass = 'https://' + strUser + ':' + strPwd + '@wsflexwebprd1v.res.hbi.net/'
+        strUrlPrefixWithPass = 'https://' + strUser + ':' + strPwd + '@plmqa.hanes.com/'
         strReportsXmlUrl = strUrlPrefixWithPass + strReportsXmlSuffix;
         $.get(strReportsXmlUrl, function (data) { }).done(function (data) {
 
@@ -534,7 +534,7 @@ function runNewProduct(wipeThisGarmentProductOut) {
     $('#runNew,.clearThisComponentOnNewGarmentLoad,nav').fadeOut();
     $('#garmentFormContainer').fadeIn();
     $('#gProd').val('').focus();
-    
+
 
 };
 /*
@@ -545,10 +545,10 @@ Step 1 In your html file, add a Input tag block like below:
 Step 2 Add a new function in your javascript file like below:
 */
 function saveFile(name, tableDataSourceElementId) {
-        var table = $(tableDataSourceElementId).DataTable();
-        var data = table.data();
-        fs.writeFileSync("blockSpread.csv", data);
-        alert('file saved!')
+    var table = $(tableDataSourceElementId).DataTable();
+    var data = table.data();
+    fs.writeFileSync("blockSpread.csv", data);
+    alert('file saved!')
 
 };
 /*
@@ -627,10 +627,10 @@ function makeMyRowsClickableToRemove(idSelector) {
         var lastClassOfRow = '';
         var thisClassOfRow = '';
         $(idSelector + " tbody tr").each(function () {
-            if ($(this).hasClass('even')){
+            if ($(this).hasClass('even')) {
                 thisClassOfRow = 'even';
             }
-            else if ($(this).hasClass('odd')){
+            else if ($(this).hasClass('odd')) {
                 thisClassOfRow = 'odd';
             };
 
