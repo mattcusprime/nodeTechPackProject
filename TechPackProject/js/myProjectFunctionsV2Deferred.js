@@ -2297,4 +2297,3 @@ function callNextDocument(arrayOfDocuments, currentIndex) {
             });
     };
 };
-

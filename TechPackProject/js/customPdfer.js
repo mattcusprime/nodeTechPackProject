@@ -1,11 +1,13 @@
-﻿function pdfSpec(productToSpec) {
+﻿var numOfImageLoops = 0;
+var docDefinition = {};
+function pdfSpec(productToSpec) {
     var arrRevisionAttributeData = pdfThisTable('revisionAttributeTbl')//.DataTable().rows().data();
     var arrGarmentHeader = pdfThisTable('garmentHeader');
     //sizeTbl,approvedSupplierTbl,
     var arrSizeTbl = pdfThisTable('sizeTbl');
     var arrApprovedSupplierTbl = pdfThisTable('approvedSupplierTbl');
 
-    var docDefinition = {
+    docDefinition = {
         content: [
             { text: productToSpec.name },
             /*{
@@ -81,29 +83,16 @@
             pageBreak: 'before'
         }
     });
+    /*$('img').each(function(){
+		var strSrc = $(this).attr('src');
+		docDefinition.content.push({
+			image: strSrc
+		
+		});
+	});*/
 
-    $('.imageHolder').each(function (index) {
-        var strHeaderName = $(this).attr('headerValue');
-        var numOfImageHolders = $('.imageHolder').length;
-        var numOfLoops = 1;
-        $(this).find('img').each(function () {
-            var strSrc = $(this).attr('src');
-            getDataUri(strSrc, function (dataUri) {
-                // Do whatever you'd like with the Data URI!
-                docDefinition.content.push({
-                    image: dataUri
 
-                });
-                numOfLoops++;
-                if (numOfLoops == numOfImageHolders) {
-                    pdfMake.createPdf(docDefinition).download();
-                };
-            });
-        });
-
-    });
-
-    //pdfMake.createPdf(docDefinition).download();
+    pdfMake.createPdf(docDefinition).download();
 
 
     // open the PDF in a new window
@@ -142,10 +131,41 @@ function getDataUri(url, callback) {
 
         // Get raw image data
         callback(canvas.toDataURL('image/png').replace(/^data:image\/(png|jpg);base64,/, ''));
-
+        console.log(returnDataUrl);
         // ... or get as Data URI
-        callback(canvas.toDataURL('image/png'));
+        //callback(canvas.toDataURL('image/png'));
     };
 
     image.src = url;
 };
+
+function convertImages() {
+    $('img').each(function () {
+        var strUrl = $(this).attr('src');
+        var strParentId = '#' + $(this).parent().attr('id');
+        convertImgToDataURLviaCanvas(strUrl);
+    });
+};
+
+function convertImgToDataURLviaCanvas(url, callback, outputFormat) {
+    var img = new Image();
+    img.crossOrigin = 'Anonymous';
+    img.onload = function () {
+        var canvas = document.createElement('CANVAS');
+        var ctx = canvas.getContext('2d');
+        var dataURL;
+        canvas.height = this.height;
+        canvas.width = this.width;
+        ctx.drawImage(this, 0, 0);
+        dataURL = canvas.toDataURL(outputFormat);
+        callback(dataURL);
+        canvas = null;
+    };
+    img.src = url;
+};
+
+function base64Img(base64Img) {
+    docDefinition.content.push(base64Img);
+    console.log(docDefinition);
+};
+
