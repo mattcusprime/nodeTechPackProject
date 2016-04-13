@@ -646,6 +646,7 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
                 var strCompSpecId = $(this).find('comRefSpecId').text();
                 var strApplicationDataPartOneOfLink = $(this).find('documentNotMasterDocumentOid').text();
                 var strDocumentIdPartTwoOfLink = $(this).find('DocumentIdPartTwoOfLink').text();
+                var strMyFullId = strDocumentIdPartTwoOfLink + "_" + strApplicationDataPartOneOfLink;
 
                 strImgViewerPrefix1 = strImgViewerPrefix1 + strDocumentIdPartTwoOfLink + '&contentHolderOid=OR:com.lcs.wc.document.LCSDocument:' + strApplicationDataPartOneOfLink;
 
@@ -659,6 +660,7 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
                 };
                 objComponent = {};
                 objComponent.name = name;
+                objComponent.myFullId = strMyFullId;
                 objComponent.componentType = 'Document';
                 objComponent.masterId = $(this).find('Document_Master').attr('objectId');
                 objComponent.documentType = $(this).find('Component_Type').text();
@@ -1116,13 +1118,37 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
     if (typeof (objSelfReference.documents != 'undefined')) {
         var arrdocs = objSelfReference.documents;
         if (typeof (arrdocs) != 'undefined') {
-            for (i = 0; i < arrdocs.length; i++) {
-                if (i == 0) { $('#imagesDiv').append('<h1>Documents</h1>') };
-                //$('#imagesDiv').append(arrdocs[i].image);
-                $('#imagesDiv').append('<div id="img' + i + '"></div>');
-                $('#img' + i).load(arrdocs[i].imgSrcUrl);
-                //$('#imagesDiv').append('<div class="page" id="'+ arrdocs[i].vaultFileName +'"><h2>' + arrdocs[i].name + '</h2>' + arrdocs[i].imageUrl + '</div>');
+            for (j = 0; j < arrdocs.length; j++) {
+                if (j == 0) { $('#imagesDiv').append('<h1>Documents</h1>') };
+                $('#imagesDiv').append('<div class="imageHolder col-md-offset-2 col-md-10" id="' + arrdocs[j].myFullId + '" headerValue="' + arrdocs[j].name + '_' + arrdocs[j].fileName + '"></div>');
+
             };
+            for (i = 0; i < arrdocs.length; i++) {
+                var strDivIdToUse = '#' + arrdocs[i].myFullId;
+                var strHeaderName = $(strDivIdToUse).attr('headerValue');
+                strHeaderName = '<h2>' + strHeaderName + '</h2>';
+                var strSrcUrl = arrdocs[i].imgSrcUrl;
+                // below line contains working function for just getting images
+
+                $(strDivIdToUse).load(strSrcUrl + ' img', function () {
+                    console.log(strHeaderName);//this is not presently working
+
+                });
+                /*$.get(arrdocs[i].imgSrcUrl,function(data){}).done(function(data){
+					$(data,'*').each(function(){
+						if($(this).is('img')){
+							var strImgHtml = $(this).html();
+							$('#' + arrdocs[i].myFullId).append(strImgHtml);
+						};
+					});
+					
+					
+				});*/
+
+
+
+            };
+
         };
 
     };
@@ -2271,3 +2297,4 @@ function callNextDocument(arrayOfDocuments, currentIndex) {
             });
     };
 };
+

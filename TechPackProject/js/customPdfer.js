@@ -82,7 +82,28 @@
         }
     });
 
-    pdfMake.createPdf(docDefinition).download();
+    $('.imageHolder').each(function (index) {
+        var strHeaderName = $(this).attr('headerValue');
+        var numOfImageHolders = $('.imageHolder').length;
+        var numOfLoops = 1;
+        $(this).find('img').each(function () {
+            var strSrc = $(this).attr('src');
+            getDataUri(strSrc, function (dataUri) {
+                // Do whatever you'd like with the Data URI!
+                docDefinition.content.push({
+                    image: dataUri
+
+                });
+                numOfLoops++;
+                if (numOfLoops == numOfImageHolders) {
+                    pdfMake.createPdf(docDefinition).download();
+                };
+            });
+        });
+
+    });
+
+    //pdfMake.createPdf(docDefinition).download();
 
 
     // open the PDF in a new window
@@ -109,3 +130,22 @@ function pdfThisTable(idOfTable) {
     return arrValuesArray;
 };
 
+function getDataUri(url, callback) {
+    var image = new Image();
+
+    image.onload = function () {
+        var canvas = document.createElement('canvas');
+        canvas.width = this.naturalWidth; // or 'width' if you want a special/scaled size
+        canvas.height = this.naturalHeight; // or 'height' if you want a special/scaled size
+
+        canvas.getContext('2d').drawImage(this, 0, 0);
+
+        // Get raw image data
+        callback(canvas.toDataURL('image/png').replace(/^data:image\/(png|jpg);base64,/, ''));
+
+        // ... or get as Data URI
+        callback(canvas.toDataURL('image/png'));
+    };
+
+    image.src = url;
+};
