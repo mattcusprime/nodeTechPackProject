@@ -163,6 +163,11 @@
             var gProdQueryURL;// = strUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/invokeAction?oid=OR%3Awt.query.template.ReportTemplate%3A4711650&action=ProduceReport&u8=1'
             var returnArrays;
             var arrOfAttributeValueListIds = ['2381876', '102771', '2381693', '368058', '100575'];
+            //var arrOfAttributeValueListIds = ['2381876', '102771', '2381693', '17436676', '100575'];
+            var strCurrentEnvironment = window.location.href;
+            if (strCurrentEnvironment.indexOf('plmqa.hanes') != -1) {
+                arrOfAttributeValueListIds = ['2381876', '102771', '2381693', '17436676', '100575'];
+            };
 
             $('document').ready(function () {
 
