@@ -496,10 +496,20 @@ function getLogin(arrAttributeValueListArray, objCurrentGarmentProduct, arrRepor
         var strPwd = $('#pwd').val();
         localStorage.setItem('mattAppUser', strUser);
         localStorage.setItem('mattAppPass', strPwd);
-        strUrlPrefixWithPass = 'https://' + strUser + ':' + strPwd + '@wsflexwebprd1v.res.hbi.net/'
-        strUrlPrefixWithPass = 'https://' + strUser + ':' + strPwd + '@plmqa.hanes.com/'
+        //strUrlPrefixWithPass = 'https://' + strUser + ':' + strPwd + '@wsflexwebprd1v.res.hbi.net/'
+        //strUrlPrefixWithPass = 'https://' + strUser + ':' + strPwd + '@plmqa.hanes.com/'
+        strUrlPrefixWithPass = 'https://wsflexwebprd1v.res.hbi.net/';
+        strUrlPrefixWithPass = 'https://@plmqa.hanes.com/';
         strReportsXmlUrl = strUrlPrefixWithPass + strReportsXmlSuffix;
-        $.get(strReportsXmlUrl, function (data) { }).done(function (data) {
+        //$.get(strReportsXmlUrl, function (data) { }).done(function (data) {
+        var strBase64 = btoa(strUser + ":" + strPwd);
+        $.ajax({
+            url: strReportsXmlUrl,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", "Basic " + strBase64);
+            }
+
+        }).done(function (data) {
 
             $('row', data).each(function () {
                 var strObjectId = $(this).find('report').attr('objectId');
