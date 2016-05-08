@@ -108,6 +108,9 @@ function pdfSpec(productToSpec) {
 
 function pdfThisTable(idOfTable) {
     var arrValuesArray = [];
+    //definitely need to replace this by getting rows.data of the DataTable
+    //the function will need to first check if it is a dataTable, if so get the rows
+    //if it is will have to also pull the Api function for the header.
     $('#' + idOfTable + ' tr').each(function (index) {
         var arrSingleRowOfValues = [];
         $(this).find('th,td').each(function () {

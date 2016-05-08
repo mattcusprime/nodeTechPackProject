@@ -498,15 +498,21 @@ function getLogin(arrAttributeValueListArray, objCurrentGarmentProduct, arrRepor
         localStorage.setItem('mattAppPass', strPwd);
         //strUrlPrefixWithPass = 'https://' + strUser + ':' + strPwd + '@wsflexwebprd1v.res.hbi.net/'
         //strUrlPrefixWithPass = 'https://' + strUser + ':' + strPwd + '@plmqa.hanes.com/'
-        strUrlPrefixWithPass = 'https://wsflexwebprd1v.res.hbi.net/';
+        //strUrlPrefixWithPass = 'https://wsflexwebprd1v.res.hbi.net/';
         strUrlPrefixWithPass = 'https://@plmqa.hanes.com/';
         strReportsXmlUrl = strUrlPrefixWithPass + strReportsXmlSuffix;
         //$.get(strReportsXmlUrl, function (data) { }).done(function (data) {
         var strBase64 = btoa(strUser + ":" + strPwd);
         $.ajax({
             url: strReportsXmlUrl,
+            //headers:['Access-Control-Allow-Origin'],
+            crossDomain:true,
+            xhrFields: {
+                withCredentials: true
+            },
+            type: "GET",
             beforeSend: function (xhr) {
-                xhr.setRequestHeader("Authorization", "Basic " + strBase64);
+                xhr.setRequestHeader("Authorization", "Basic " + strBase64, 'Access-Control-Allow-Origin');
             }
 
         }).done(function (data) {
