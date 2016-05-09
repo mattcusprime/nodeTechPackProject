@@ -507,7 +507,7 @@ garmentProduct.prototype.getSpecByNameButNotJustActiveSpec = function (strHostUr
         $('#seasonSpecSelection').append('</br></br>');
         for (var i = 0; i < arrCombinationArray.length; i++) {
             var objLoopObject = arrCombinationArray[i];
-            $('#seasonSpecSelection').append('<button class="seasonSpecButton .btn col-md-4" specId= ' + objLoopObject.specId + '>Season:' + objLoopObject.seasonName + ' Source:' + objLoopObject.sourceName + 'Spec:' + objLoopObject.specName + '</button>')
+            $('#seasonSpecSelection').append('<button class="seasonSpecButton btn col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8 col-xs-offset-2 col-xs-8" specId= ' + objLoopObject.specId + '>Season:' + objLoopObject.seasonName + ' Source:' + objLoopObject.sourceName + 'Spec:' + objLoopObject.specName + '</button><hr></br>')
 
         };
 

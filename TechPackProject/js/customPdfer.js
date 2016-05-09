@@ -127,6 +127,24 @@ function pdfSpec(productToSpec) {
         },
         pageOrientation: 'landscape'
     };
+    $('#colorwaysDiv table').each(function () {
+        var strId = $(this).attr('id');
+        var arrOfValuesFromTable = [];
+        var objTableObject = {};
+        var objTextBreak = { text: '', fontSize: 14, bold: true, pageBreak: 'before', margin: [0, 0, 0, 8] };
+        arrOfValuesFromTable = pdfThisTableV2(strId);
+        objTableObject.table = {
+            headerRows: 1,
+            body: arrOfValuesFromTable
+        }
+        objTableObject.style = 'tableExample';
+        objTableObject.layout = objLayoutObject;
+        docDefinition.content.push(objTableObject);
+        docDefinition.content.push(objTextBreak);
+
+    });
+
+
 
     pdfMake.createPdf(docDefinition).download();
 
