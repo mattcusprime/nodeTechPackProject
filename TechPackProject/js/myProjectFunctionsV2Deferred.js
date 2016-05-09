@@ -1,4 +1,4 @@
-﻿/// <reference path="../Scripts/jquery-2.1.0-vsdoc.js" />
+/// <reference path="../Scripts/jquery-2.1.0-vsdoc.js" />
 /// <reference path="../Scripts/jquery-2.1.4.js" />
 /// <reference path="../Scripts/jquery-2.1.4.intellisense.js" />
 /// <reference path="myReportGeneratorFunctions.js" />
@@ -275,7 +275,7 @@ garmentProduct.prototype.getMyMeasurement = function (strHostUrlPrefix, numMeasu
     arrCurrentMeasurement.sort(compare);
     objSelfReference.measurementDetail = arrCurrentMeasurement;
     var objRowOne = objSelfReference.measurementDetail[0];
-    var strTableHeaderString = '<thead><tr><th>Sorting Number</th><th>POM#</th><th>Measurement Name</th><th>Placement Amount</th><th>Placement Reference</th><th>Tol (+)</th><th>Minus Tolerance</th><th>HTM Instructions</th><th>Comments</th>';
+    var strTableHeaderString = '<thead><tr><th>Sorting Number</th><th>POM#</th><th>Measurement Name</th><th>Placement Amount</th><th>Placement Reference</th><th>Tol (+)</th><th>Tol(-)</th><th>HTM Instructions</th><th>Comments</th>';
     var arrSizes = objRowOne.arrSizeArray;
     var objRowOthers = {};
     for (var i = 0; i < arrSizes.length; i++) {
@@ -1064,8 +1064,7 @@ garmentProduct.prototype.thenCallSpecs = function (objectForCallback, objSelfRef
 garmentProduct.prototype.generateAvailableReportsList = function (objSelfReference) {
     $('#reportsHeader *').remove();
     $('#reportsHeader').append('<table cellpadding="0" cellspacing="0" border="0" class="display compact cell-border" id="reports"><thead><th>Sort Order</th><th>Report</th><th>Name</th></thead><tbody></tbody></table>');
-    //var reportTable = $('#reports').DataTable(reportsTableOptions);
-    var reportTable = $('#reports').DataTable();
+    var reportTable = $('#reports').DataTable(reportsTableOptions);
     // later will need to add here a few documents that we want to exclude intentionally
     // like front back images that come from pattern products
     var sortOrder = 0;
