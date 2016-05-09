@@ -1,96 +1,132 @@
 ﻿var numOfImageLoops = 0;
 var docDefinition = {};
 function pdfSpec(productToSpec) {
-    var arrRevisionAttributeData = pdfThisTable('revisionAttributeTbl')//.DataTable().rows().data();
-    var arrGarmentHeader = pdfThisTable('garmentHeader');
+    var arrRevisionAttributeData = pdfThisTableV2('revisionAttributeTbl')//.DataTable().rows().data();
+    //var arrGarmentHeader = pdfThisTableV2('garmentHeader');
     //sizeTbl,approvedSupplierTbl,
-    var arrSizeTbl = pdfThisTable('sizeTbl');
-    var arrApprovedSupplierTbl = pdfThisTable('approvedSupplierTbl');
-
+    var arrSizeTbl = pdfThisTableV2('sizeTbl');
+    var arrApprovedSupplierTbl = pdfThisTableV2('approvedSupplierTbl');
+    var arrConstructionTbl = pdfThisTableV2('construction');
+    var arrMeasurementTbl = pdfThisTableV2('measurements');
+    var arrLabelBomTbl = pdfThisTableV2('labelBom');
+    var arrCwayGroupTbl = pdfThisTableV2('colorwaysListTable');
+    var objLayoutObject = {
+        hLineWidth: function(i, node) {
+            return (i === 0 || i === node.table.body.length) ? 2 : 1;
+        },
+        vLineWidth: function(i, node) {
+            return (i === 0 || i === node.table.widths.length) ? 2 : 1;
+        },
+        hLineColor: function(i, node) {
+            return (i === 0 || i === node.table.body.length) ? 'black' : 'gray';
+        },
+        vLineColor: function(i, node) {
+            return (i === 0 || i === node.table.widths.length) ? 'black' : 'gray';
+        },
+        // paddingLeft: function(i, node) { return 4; },
+        // paddingRight: function(i, node) { return 4; },
+        // paddingTop: function(i, node) { return 2; },
+        // paddingBottom: function(i, node) { return 2; }
+						};
     docDefinition = {
+        footer: function(currentPage, pageCount) { return currentPage.toString() + ' of ' + pageCount; },
+        header: function(currentPage, pageCount) {
+            // you can apply any logic and return any valid pdfmake element
+
+            return { text: productToSpec.name, alignment: (currentPage % 2) ? 'left' : 'right' };
+        },
         content: [
             { text: productToSpec.name },
-            /*{
-                table: {
-                    headerRows: 1,
-                    body: arrGarmentHeader
-                }
-            },
+           /*
+            Need to add in header items here.
+            */
             	{ text: 'Sizing Table', fontSize: 14, bold: true, pageBreak: 'before', margin: [0, 0, 0, 8] },
             {
+                style: 'tableExample',
                 table: {
                     headerRows: 1,
                     body: arrSizeTbl
-                }
+                },
+                layout: objLayoutObject
             },
             	{ text: 'Product Revisions', fontSize: 14, bold: true, pageBreak: 'before', margin: [0, 0, 0, 8] },
             {
+                style: 'tableExample',
                 table: {
                     headerRows: 1,
                     body: arrRevisionAttributeData
-                }
+                },
+                layout: objLayoutObject
             },
             	{ text: 'Approved Suppliers', fontSize: 14, bold: true, pageBreak: 'before', margin: [0, 0, 0, 8] },
             {
+                style: 'tableExample',
                 table: {
                     headerRows: 1,
                     body: arrApprovedSupplierTbl
-                }
+                },
+                layout: objLayoutObject
+            },
+            	{ text: 'Labels', fontSize: 14, bold: true, pageBreak: 'before', margin: [0, 0, 0, 8] },
+            {
+                style: 'tableExample',
+                table: {
+                    headerRows: 1,
+                    body: arrLabelBomTbl
+                },
+                layout: objLayoutObject
+            },
+            	{ text: 'Construction', fontSize: 14, bold: true, pageBreak: 'before', margin: [0, 0, 0, 8] },
+            {
+                style: 'tableExample',
+                table: {
+                    headerRows: 1,
+                    body: arrConstructionTbl
+                },
+                layout: objLayoutObject
+            },
+            	{ text: 'Measurements', fontSize: 14, bold: true, pageBreak: 'before', margin: [0, 0, 0, 8] },
+            {
+                style: 'tableExample',
+                table: {
+                    headerRows: 1,
+                    body: arrMeasurementTbl
+                },
+                layout: objLayoutObject
+            },
+            	{ text: 'Colorways By Group', fontSize: 14, bold: true, pageBreak: 'before', margin: [0, 0, 0, 8] },
+            {
+                style: 'tableExample',
+                table: {
+                    headerRows: 1,
+                    body: arrCwayGroupTbl
+                },
+                layout: objLayoutObject
             }
-            */
+            
         ],
+        styles: {
+            header: {
+                fontSize: 18,
+                bold: true,
+                margin: [0, 0, 0, 10]
+            },
+            subheader: {
+                fontSize: 16,
+                bold: true,
+                margin: [0, 10, 0, 5]
+            },
+            tableExample: {
+                margin: [0, 5, 0, 15]
+            },
+            tableHeader: {
+                bold: true,
+                fontSize: 13,
+                color: 'black'
+            }
+        },
         pageOrientation: 'landscape'
     };
-
-    //docDefinition.content.push({ text: productToSpec.name });
-    docDefinition.content.push({
-        text: 'Garment Header', fontSize: 14, bold: true, margin: [0, 0, 0, 8]
-    });
-    docDefinition.content.push({
-        table: {
-            headerRows: 1,
-            body: arrGarmentHeader,
-            pageBreak: 'before'
-        }
-    });
-    docDefinition.content.push({
-        text: 'Sizing Table', fontSize: 14, bold: true, pageBreak: 'before', margin: [0, 0, 0, 8]
-    });
-    docDefinition.content.push({
-        table: {
-            headerRows: 1,
-            body: arrSizeTbl,
-            pageBreak: 'before'
-        }
-    });
-    docDefinition.content.push({
-        text: 'Product Revisions', fontSize: 14, bold: true, pageBreak: 'before', margin: [0, 0, 0, 8]
-    });
-    docDefinition.content.push({
-        table: {
-            headerRows: 1,
-            body: arrRevisionAttributeData,
-            pageBreak: 'before'
-        }
-    });
-    docDefinition.content.push({
-        text: 'Approved Suppliers', fontSize: 14, bold: true, pageBreak: 'before', margin: [0, 0, 0, 8]
-    });
-    docDefinition.content.push({
-        table: {
-            headerRows: 1,
-            body: arrApprovedSupplierTbl,
-            pageBreak: 'before'
-        }
-    });
-    /*$('img').each(function(){
-		var strSrc = $(this).attr('src');
-		docDefinition.content.push({
-			image: strSrc
-		
-		});
-	});*/
-
 
     pdfMake.createPdf(docDefinition).download();
 
@@ -124,12 +160,33 @@ function pdfThisTable(idOfTable) {
 
 function pdfThisTableV2(idOfTable) {
     if ($.fn.DataTable.isDataTable('#' + idOfTable)) {
-        var arrValues = $('#' + idOfTable).DataTable().rows().data();
+        var table = $('#' + idOfTable).DataTable();
+        var arrColumnVisibility = table.columns().visible();
+        var arrOfIndexesOfInvisibleColumns = [];
+        for (var i = 0; i < arrColumnVisibility.length; i++) {
+            if (arrColumnVisibility[i]) { arrOfIndexesOfInvisibleColumns.push(i) };
+        };
+        var arrValues = table.rows().data();
+        for (var j = 0; j < arrValues.length; j++) {
+            var arrRowArr = [];
+            arrRowArr = arrValues[j];
+            var arrNewRowArr = [];
+            for (var k = 0; k < arrRowArr.length; k++) {
+                if (arrOfIndexesOfInvisibleColumns.indexOf(k) != -1) {
+                    arrNewRowArr.push(arrRowArr[k]);
+                };
+            };
+            arrValues[j] = arrNewRowArr;
+        };
+
         var strHeaderRowHtml = $('#' + idOfTable).DataTable().columns().header();
         var arrHeaderRow = [];
-        $(strHeaderRowHtml).each(function () {
-            var strHeaderCellText = $(this).text();
-            arrHeaderRow.push(strHeaderCellText);
+        $(strHeaderRowHtml).each(function (indexOfEacher) {
+            if (arrOfIndexesOfInvisibleColumns.indexOf(indexOfEacher) != -1) {
+                var strHeaderCellText = $(this).text();
+                arrHeaderRow.push(strHeaderCellText);
+            };
+
         });
         arrValues.unshift(arrHeaderRow);
         return arrValues;

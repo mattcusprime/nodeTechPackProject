@@ -20,7 +20,7 @@ var constructionTableOptions = {
     'columnDefs': [
         { 'visible': false, 'targets': [0, 11] }
     ],
-    'buttons': arrButtons,
+    //'buttons': arrButtons,
     'responsive': false,
     'dom': strDomString,
     'paging': true
@@ -29,7 +29,7 @@ var measurementTableOptions = {
     'pageLength': 50,
     'order': [[0, 'asc']],
     'dom': strDomString,
-    'buttons': arrButtons,
+    //'buttons': arrButtons,
     "columnDefs": [
         {
             "targets": [0, 3, 4, 7, 8],
@@ -57,14 +57,14 @@ var colorwayListTableOptions = {
     'paging': false,
     'length': 1000,
     'dom': strDomString,
-    'buttons': arrButtons,
+    //'buttons': arrButtons,
 
 };
 var cwayReportTableOptions = {
     'responsive': false,
     'pageLength': 100,
     'dom': strDomString,
-    'buttons': arrButtons
+    //'buttons': arrButtons
 };
 var colorwayBomTableOptions = {
 
@@ -74,7 +74,7 @@ var colorwayBomTableOptions = {
         { 'visible': false, 'targets': 0 }
     ],
     'responsive': false,
-    'buttons': arrButtons
+    //'buttons': arrButtons
 
 };
 var spreadBomTableOptions = {
@@ -111,7 +111,7 @@ var spreadBomTableOptions = {
             "searchable": false
         }
     ],
-    'buttons': arrButtons
+    //'buttons': arrButtons
 };
 var trimBomTableOptions = {
 
@@ -147,7 +147,7 @@ var trimBomTableOptions = {
 };
 var labelBomTableOptions = {
     //"data": arrLabelData,
-    "pageLength": 1000,
+    "pageLength": 50,
     "dom": strDomString,
     'buttons': arrButtons
 
@@ -162,7 +162,7 @@ var sizeTableOptions = {
             "searchable": false
         }
     ],
-    'buttons': arrButtons
+    //'buttons': arrButtons
 };
 var revisionTableTableOptions = {
 
@@ -176,11 +176,11 @@ var revisionTableTableOptions = {
         }
     ],
     "pageLength": 10,
-    'buttons': arrButtons
+    //'buttons': arrButtons
 };
 var reportsTableOptions = {
 
-    'pageLength': 5,
+    'pageLength': 50,
     "dom": strDomString,
     "tableTools": {
         "sSwfPath": "C:/nodeTechPackProject/TechPackProject/js/copy_csv_xls_pdf.swf"
@@ -194,7 +194,7 @@ var reportsTableOptions = {
         }
 
     ],
-    'buttons': arrButtonsNoButtons
+    //'buttons': arrButtonsNoButtons
 };
 var approvedSupplierTableOptions = {
 
@@ -496,10 +496,16 @@ function getLogin(arrAttributeValueListArray, objCurrentGarmentProduct, arrRepor
         var strPwd = $('#pwd').val();
         localStorage.setItem('mattAppUser', strUser);
         localStorage.setItem('mattAppPass', strPwd);
-        //strUrlPrefixWithPass = 'https://' + strUser + ':' + strPwd + '@wsflexwebprd1v.res.hbi.net/'
+        strUrlPrefixWithPass = 'http://' + strUser + ':' + strPwd + '@wsflexwebprd1v.res.hbi.net/'
         //strUrlPrefixWithPass = 'https://' + strUser + ':' + strPwd + '@plmqa.hanes.com/'
-        //strUrlPrefixWithPass = 'https://wsflexwebprd1v.res.hbi.net/';
-        strUrlPrefixWithPass = 'https://@plmqa.hanes.com/';
+        //strUrlPrefixWithPass = 'http://wsflexwebprd1v.res.hbi.net/';
+        var strCurrentEnvironment = window.location.href;
+        if (strCurrentEnvironment.indexOf('plmqa.hanes') != -1) {
+            //arrOfAttributeValueListIds = ['2381876', '102771', '2381693', '17436676', '100575'];
+            //strUrlPrefixWithPass = 'https://plmqa.hanes.com/';
+            strUrlPrefixWithPass = 'https://' + strUser + ':' + strPwd + '@plmqa.hanes.com/';
+        };
+        //strUrlPrefixWithPass = 'https://@plmqa.hanes.com/';
         strReportsXmlUrl = strUrlPrefixWithPass + strReportsXmlSuffix;
         //$.get(strReportsXmlUrl, function (data) { }).done(function (data) {
         var strBase64 = btoa(strUser + ":" + strPwd);

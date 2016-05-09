@@ -275,7 +275,7 @@ garmentProduct.prototype.getMyMeasurement = function (strHostUrlPrefix, numMeasu
     arrCurrentMeasurement.sort(compare);
     objSelfReference.measurementDetail = arrCurrentMeasurement;
     var objRowOne = objSelfReference.measurementDetail[0];
-    var strTableHeaderString = '<thead><tr><th>Sorting Number</th><th>POM Number</th><th>Measurement Name</th><th>Placement Amount</th><th>Placement Reference</th><th>Plus Tolerance</th><th>Minus Tolerance</th><th>HTM Instructions</th><th>Comments</th>';
+    var strTableHeaderString = '<thead><tr><th>Sorting Number</th><th>POM#</th><th>Measurement Name</th><th>Placement Amount</th><th>Placement Reference</th><th>Tol (+)</th><th>Tol(-)</th><th>HTM Instructions</th><th>Comments</th>';
     var arrSizes = objRowOne.arrSizeArray;
     var objRowOthers = {};
     for (var i = 0; i < arrSizes.length; i++) {
@@ -733,13 +733,19 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
     });
     objSelfReference.measurement = objMeasurementComp;
     var strMeasTaskUrl = strHostUrlPrefix + 'Windchill/servlet/IE/tasks/com/lcs/wc/measurements/FindMeasurements.xml'; //?oid=VR:com.lcs.wc.construction.LCSConstructionInfo:' + numConstructionBranchId + '&instance=net.hbi.res.wsflexappprd1v.windchillAdapter';
+    var strInstance = 'net.hbi.res.wsflexappprd1v.windchillAdapter';
+    var strCurrentEnvironment = window.location.href;
+    if (strCurrentEnvironment.indexOf('plmqa.hanes') != -1) {
+        strInstance = 'net.hbi.res.wsflexappqa1v.windchillAdapter';
+    };
+
     var objDefferedMeasurement = $.ajax({
         url: strMeasTaskUrl,
         type: 'get',
         data: {
             oid: 'VR:com.lcs.wc.measurements.LCSMeasurements:' + objSelfReference.measurement.branchId,
-            //instance: 'net.hbi.res.wsflexappprd1v.windchillAdapter'
-            instance: 'net.hbi.res.wsflexappqa1v.windchillAdapter'
+            instance: strInstance,
+            //instance: 'net.hbi.res.wsflexappqa1v.windchillAdapter'
         },
         async: true
 
@@ -757,13 +763,18 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
     });
     objSelfReference.construction = objConstructionComp;
     var conStrTaskUrl = strHostUrlPrefix + 'Windchill/servlet/IE/tasks/com/lcs/wc/construction/FindConstructionInfo.xml'; //?oid=VR:com.lcs.wc.construction.LCSConstructionInfo:' + numConstructionBranchId + '&instance=net.hbi.res.wsflexappprd1v.windchillAdapter';
+    var strInstance = 'net.hbi.res.wsflexappprd1v.windchillAdapter';
+    var strCurrentEnvironment = window.location.href;
+    if (strCurrentEnvironment.indexOf('plmqa.hanes') != -1) {
+        strInstance = 'net.hbi.res.wsflexappqa1v.windchillAdapter';
+    };
     var objDefferedConstruction = $.ajax({
         url: conStrTaskUrl,
         type: 'get',
         data: {
             oid: 'VR:com.lcs.wc.construction.LCSConstructionInfo:' + objSelfReference.construction.branchId,
             //instance: 'net.hbi.res.wsflexappprd1v.windchillAdapter'
-            instance: 'net.hbi.res.wsflexappqa1v.windchillAdapter'
+            instance: strInstance
         },
         async: true
 
