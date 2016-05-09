@@ -122,6 +122,24 @@ function pdfThisTable(idOfTable) {
     return arrValuesArray;
 };
 
+function pdfThisTableV2(idOfTable) {
+    if ($.fn.DataTable.isDataTable('#' + idOfTable)) {
+        var arrValues = $('#' + idOfTable).DataTable().rows().data();
+        var strHeaderRowHtml = $('#' + idOfTable).DataTable().columns().header();
+        var arrHeaderRow = [];
+        $(strHeaderRowHtml).each(function () {
+            var strHeaderCellText = $(this).text();
+            arrHeaderRow.push(strHeaderCellText);
+        });
+        arrValues.unshift(arrHeaderRow);
+        return arrValues;
+    }
+    else {
+        console.log('table was not a datatable.')
+        pdfThisTable(idOfTable);
+    }
+};
+
 function getDataUri(url, callback) {
     var image = new Image();
 
