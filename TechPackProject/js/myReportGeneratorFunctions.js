@@ -56,14 +56,14 @@ var colorwayListTableOptions = {
 
     'paging': false,
     'length': 1000,
-    'dom': strDomString,
+    'dom': strDomString
     //'buttons': arrButtons,
 
 };
 var cwayReportTableOptions = {
     'responsive': false,
     'pageLength': 100,
-    'dom': strDomString,
+    'dom': strDomString
     //'buttons': arrButtons
 };
 var colorwayBomTableOptions = {
@@ -73,7 +73,7 @@ var colorwayBomTableOptions = {
     'columnDefs': [
         { 'visible': false, 'targets': 0 }
     ],
-    'responsive': false,
+    'responsive': false
     //'buttons': arrButtons
 
 };
@@ -110,7 +110,7 @@ var spreadBomTableOptions = {
             "visible": false,
             "searchable": false
         }
-    ],
+    ]
     //'buttons': arrButtons
 };
 var trimBomTableOptions = {
@@ -161,7 +161,7 @@ var sizeTableOptions = {
             "visible": false,
             "searchable": false
         }
-    ],
+    ]
     //'buttons': arrButtons
 };
 var revisionTableTableOptions = {
@@ -193,7 +193,7 @@ var reportsTableOptions = {
             "searchable": false
         }
 
-    ],
+    ]
     //'buttons': arrButtonsNoButtons
 };
 var approvedSupplierTableOptions = {
