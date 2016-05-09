@@ -499,7 +499,14 @@ function getLogin(arrAttributeValueListArray, objCurrentGarmentProduct, arrRepor
         //strUrlPrefixWithPass = 'https://' + strUser + ':' + strPwd + '@wsflexwebprd1v.res.hbi.net/'
         //strUrlPrefixWithPass = 'https://' + strUser + ':' + strPwd + '@plmqa.hanes.com/'
         //strUrlPrefixWithPass = 'https://wsflexwebprd1v.res.hbi.net/';
-        strUrlPrefixWithPass = 'https://@plmqa.hanes.com/';
+        strUrlPrefixWithPass = 'http://' + strUser + ':' + strPwd + '@wsflexwebprd1v.res.hbi.net/'
+        //strUrlPrefixWithPass = 'https://@plmqa.hanes.com/';
+        var strCurrentEnvironment = window.location.href;
+        if (strCurrentEnvironment.indexOf('plmqa.hanes') != -1) {
+            //arrOfAttributeValueListIds = ['2381876', '102771', '2381693', '17436676', '100575'];
+            //strUrlPrefixWithPass = 'https://plmqa.hanes.com/';
+            strUrlPrefixWithPass = 'https://' + strUser + ':' + strPwd + '@plmqa.hanes.com/';
+        };
         strReportsXmlUrl = strUrlPrefixWithPass + strReportsXmlSuffix;
         //$.get(strReportsXmlUrl, function (data) { }).done(function (data) {
         var strBase64 = btoa(strUser + ":" + strPwd);
