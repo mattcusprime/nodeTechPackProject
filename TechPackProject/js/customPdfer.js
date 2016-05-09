@@ -1,4 +1,4 @@
-﻿var numOfImageLoops = 0;
+var numOfImageLoops = 0;
 var docDefinition = {};
 function pdfSpec(productToSpec) {
     var arrRevisionAttributeData = pdfThisTableV2('revisionAttributeTbl')//.DataTable().rows().data();
@@ -246,4 +246,3 @@ function base64Img(base64Img) {
     docDefinition.content.push(base64Img);
     console.log(docDefinition);
 };
-
