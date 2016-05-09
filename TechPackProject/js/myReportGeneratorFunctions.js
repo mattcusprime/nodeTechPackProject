@@ -180,11 +180,11 @@ var revisionTableTableOptions = {
 };
 var reportsTableOptions = {
 
-    'pageLength': 50,
+    'pageLength': 5,
     "dom": strDomString,
-    "tableTools": {
-        "sSwfPath": "C:/nodeTechPackProject/TechPackProject/js/copy_csv_xls_pdf.swf"
-    },
+    //"tableTools": {
+    //    "sSwfPath": "C:/nodeTechPackProject/TechPackProject/js/copy_csv_xls_pdf.swf"
+    //},
     "responsive": false,
     "columnDefs": [
         {
@@ -193,7 +193,7 @@ var reportsTableOptions = {
             "searchable": false
         }
 
-    ]
+    ]//,
     //'buttons': arrButtonsNoButtons
 };
 var approvedSupplierTableOptions = {
@@ -435,8 +435,12 @@ function createComponentTable(strParentJquerySelectorJustStringNoPound, strChild
     //http://localhost:59193/DataTables-1.10.7/extensions/TableTools/swf/copy_csv_xls_pdf.swf
     $('#' + strParentJquerySelectorJustStringNoPound + ' *').remove();
     $('#' + strParentJquerySelectorJustStringNoPound).append(strTableString);
-    var table = $('#' + strChildJquerySelectorForTableJustStringNoPound).DataTable(options);
-
+    if (typeof (options) != 'undefined') {
+        var table = $('#' + strChildJquerySelectorForTableJustStringNoPound).DataTable(options);
+    }
+    else {
+        var table = $('#' + strChildJquerySelectorForTableJustStringNoPound).DataTable();
+    } ''
     /*{
         pageLength: 50,
         order: [[0, 'asc']],
@@ -512,7 +516,7 @@ function getLogin(arrAttributeValueListArray, objCurrentGarmentProduct, arrRepor
         $.ajax({
             url: strReportsXmlUrl,
             //headers:['Access-Control-Allow-Origin'],
-            crossDomain:true,
+            crossDomain: true,
             xhrFields: {
                 withCredentials: true
             },
