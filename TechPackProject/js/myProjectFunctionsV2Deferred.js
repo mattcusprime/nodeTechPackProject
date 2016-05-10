@@ -922,7 +922,7 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
     objSelfReference.garmentSourceBoms = arrGarmentSourceRows;
     objSelfReference.patternSewBoms = arrPatternSewRows;
     if (objSelfReference.garmentSewBoms.length > 0) {
-        objSelfReference.sewBomTableString = convertRowArrayIntoHtmlTable(objSelfReference.garmentSewBoms, 'size', 'usagePerDozen', 'sewBomTable', '<h1>Sew and Sourced BOMs</h1>');
+        objSelfReference.sewBomTableString = convertRowArrayIntoHtmlTable(objSelfReference.garmentSewBoms, 'size', 'usagePerDozen', 'sewBomTable', '<h1>Sew BOMs</h1>');
     };
     if (objSelfReference.garmentSourceBoms.length > 0) {
         objSelfReference.sourceBomTableString = convertRowArrayIntoHtmlTable(objSelfReference.garmentSourceBoms, '', '', 'sourceBomTable', '<h1>Source BOM</h1>');
@@ -932,6 +932,7 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
     };
     if (objSelfReference.garmentSourceBoms.length != 0) {
         $('#sourceBomDiv').append(objSelfReference.sourceBomTableString);
+        $('#sourceBomTable').DataTable(sourceBomTableOptions);
     };
     //sourceBomDiv
     if (typeof (objSelfReference.patternSewBoms) != 'undefined' && typeof (objSelfReference.garmentSewBoms) != 'undefined') {

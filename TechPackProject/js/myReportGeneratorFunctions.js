@@ -52,6 +52,12 @@ var sewBomTableOptions = {
     'buttons': arrButtons,
 
 };
+var sourceBomTableOptions = {
+
+    
+    'buttons': arrButtons,
+
+};
 var colorwayListTableOptions = {
 
     'paging': false,

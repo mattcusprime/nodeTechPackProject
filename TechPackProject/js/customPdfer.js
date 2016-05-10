@@ -1,46 +1,38 @@
 var numOfImageLoops = 0;
 var docDefinition = {};
 function pdfSpec(productToSpec) {
-    var arrRevisionAttributeData = pdfThisTableV2('revisionAttributeTbl')//.DataTable().rows().data();
-    //var arrGarmentHeader = pdfThisTableV2('garmentHeader');
-    //sizeTbl,approvedSupplierTbl,
-    var arrSizeTbl = pdfThisTableV2('sizeTbl');
-    var arrApprovedSupplierTbl = pdfThisTableV2('approvedSupplierTbl');
-    var arrConstructionTbl = pdfThisTableV2('construction');
-    var arrMeasurementTbl = pdfThisTableV2('measurements');
-    var arrLabelBomTbl = pdfThisTableV2('labelBom');
-    var arrCwayGroupTbl = pdfThisTableV2('colorwaysListTable');
     var objLayoutObject = {
-        hLineWidth: function(i, node) {
+        hLineWidth: function (i, node) {
             return (i === 0 || i === node.table.body.length) ? 2 : 1;
         },
-        vLineWidth: function(i, node) {
+        vLineWidth: function (i, node) {
             return (i === 0 || i === node.table.widths.length) ? 2 : 1;
         },
-        hLineColor: function(i, node) {
+        hLineColor: function (i, node) {
             return (i === 0 || i === node.table.body.length) ? 'black' : 'gray';
         },
-        vLineColor: function(i, node) {
+        vLineColor: function (i, node) {
             return (i === 0 || i === node.table.widths.length) ? 'black' : 'gray';
         },
         // paddingLeft: function(i, node) { return 4; },
         // paddingRight: function(i, node) { return 4; },
         // paddingTop: function(i, node) { return 2; },
         // paddingBottom: function(i, node) { return 2; }
-						};
+    };
+    
     docDefinition = {
-        footer: function(currentPage, pageCount) { return currentPage.toString() + ' of ' + pageCount; },
-        header: function(currentPage, pageCount) {
+        footer: function (currentPage, pageCount) { return currentPage.toString() + ' of ' + pageCount; },
+        header: function (currentPage, pageCount) {
             // you can apply any logic and return any valid pdfmake element
 
             return { text: productToSpec.name, alignment: (currentPage % 2) ? 'left' : 'right' };
         },
         content: [
-            { text: productToSpec.name },
+           // { text: productToSpec.name },
            /*
             Need to add in header items here.
             */
-            	{ text: 'Sizing Table', fontSize: 14, bold: true, pageBreak: 'before', margin: [0, 0, 0, 8] },
+            /*	{ text: 'Sizing Table', fontSize: 14, bold: true, pageBreak: 'before', margin: [0, 0, 0, 8] },
             {
                 style: 'tableExample',
                 table: {
@@ -49,21 +41,31 @@ function pdfSpec(productToSpec) {
                 },
                 layout: objLayoutObject
             },
-            	{ text: 'Product Revisions', fontSize: 14, bold: true, pageBreak: 'before', margin: [0, 0, 0, 8] },
-            {
-                style: 'tableExample',
-                table: {
-                    headerRows: 1,
-                    body: arrRevisionAttributeData
-                },
-                layout: objLayoutObject
-            },
+            	
             	{ text: 'Approved Suppliers', fontSize: 14, bold: true, pageBreak: 'before', margin: [0, 0, 0, 8] },
             {
                 style: 'tableExample',
                 table: {
                     headerRows: 1,
                     body: arrApprovedSupplierTbl
+                },
+                layout: objLayoutObject
+            },
+            	{ text: 'Sew Bom', fontSize: 14, bold: true, pageBreak: 'before', margin: [0, 0, 0, 8] },
+            {
+                style: 'tableExample',
+                table: {
+                    headerRows: 1,
+                    body: arrSewBomTbl
+                },
+                layout: objLayoutObject
+            },
+            	{ text: 'Source Bom', fontSize: 14, bold: true, pageBreak: 'before', margin: [0, 0, 0, 8] },
+            {
+                style: 'tableExample',
+                table: {
+                    headerRows: 1,
+                    body: arrSourceBomTbl
                 },
                 layout: objLayoutObject
             },
@@ -103,7 +105,7 @@ function pdfSpec(productToSpec) {
                 },
                 layout: objLayoutObject
             }
-            
+            */
         ],
         styles: {
             header: {
@@ -127,6 +129,102 @@ function pdfSpec(productToSpec) {
         },
         pageOrientation: 'landscape'
     };
+    if ($("#revisionAttributeTbl").length) {
+        var arrRevisionAttributeData = pdfThisTableV2('revisionAttributeTbl');
+        var objContentRevisionAttributeData = {
+            text: {'Product Revision Attributes', fontSize: 14, bold: true, pageBreak: 'before', margin: [0, 0, 0, 8]},
+            style: 'tableExample',
+            table: {headerRows: 1, body: objContentRevisionAttributeData},
+            layout: objLayoutObject
+
+        }
+        docDefinition.content.push(objContentRevisionAttributeData);
+    };
+    if ($("#sizeTbl").length) {
+        var arrSizeTbl = pdfThisTableV2('sizeTbl');
+        var objContentSizeTbl = {
+            text: {'Size Table', fontSize: 14, bold: true, pageBreak: 'before', margin: [0, 0, 0, 8]},
+            style: 'tableExample',
+            table: {headerRows: 1, body: objContentSizeTbl},
+            layout: objLayoutObject
+        
+        };
+        docDefinition.content.push(objContentSizeTbl);
+    };
+    if ($("#approvedSupplierTbl").length) {
+        var arrApprovedSupplierTbl = pdfThisTableV2('approvedSupplierTbl');
+        var objContentApprovedSupplierTbl = {
+        
+            text: {'Approved Suppliers', fontSize: 14, bold: true, pageBreak: 'before', margin: [0, 0, 0, 8]},
+            style: 'tableExample',
+            table: {headerRows: 1, body: arrApprovedSupplierTbl},
+            layout: objLayoutObject
+        
+        
+        };
+        docDefinition.content.push(objContentApprovedSupplierTbl);
+    };
+    if ($("#construction").length) {
+        var arrConstructionTbl = pdfThisTableV2('construction');
+        var objContentConstructionTbl = {
+            text: {'Construction', fontSize: 14, bold: true, pageBreak: 'before', margin: [0, 0, 0, 8]},
+            style: 'tableExample',
+            table: {headerRows: 1, body: arrConstructionTbl},
+            layout: objLayoutObject
+        };
+        docDefinition.content.push(objContentConstructionTbl);
+    };
+    if ($("#measurements").length) {
+        var arrMeasurementTbl = pdfThisTableV2('measurements');
+        var objContentMeasurementTbl = {
+            text: {'Measurements', fontSize: 14, bold: true, pageBreak: 'before', margin: [0, 0, 0, 8]},
+            style: 'tableExample',
+            table: {headerRows: 1, body: arrMeasurementTbl},
+            layout: objLayoutObject
+        };
+        docDefinition.content.push(objContentMeasurementTbl);
+    };
+    if ($("#labelBom").length) {
+        var arrLabelBomTbl = pdfThisTableV2('labelBom');
+        var objContentLabelBomTbl = {
+            text: {'Labels', fontSize: 14, bold: true, pageBreak: 'before', margin: [0, 0, 0, 8]},
+            style: 'tableExample',
+            table: {headerRows: 1, body: arrLabelBomTbl},
+            layout: objLayoutObject
+        };
+        docDefinition.content.push(objContentLabelBomTbl);
+    };
+    if ($("#colorwaysListTable").length) {
+        var arrCwayGroupTbl = pdfThisTableV2('colorwaysListTable');
+        var objContentCwayGroupTbl = {
+            text: {'Colorway Groups', fontSize: 14, bold: true, pageBreak: 'before', margin: [0, 0, 0, 8]},
+            style: 'tableExample',
+            table: {headerRows: 1, body: arrCwayGroupTbl},
+            layout: objLayoutObject
+        };
+        docDefinition.content.push(objContentCwayGroupTbl);
+    };
+    if ($("#sewBomTable").length) {
+        var arrSewBomTbl = pdfThisTableV2('sewBomTable');
+        var objContentSewBomTbl = {
+            text: {'Sew Boms', fontSize: 14, bold: true, pageBreak: 'before', margin: [0, 0, 0, 8]},
+            style: 'tableExample',
+            table: {headerRows: 1, body: arrSewBomTbl},
+            layout: objLayoutObject
+        };
+        docDefinition.content.push(objContentSewBomTbl);
+    };
+    if ($("#sourceBomTable").length) {
+        var arrSourceBomTbl = pdfThisTableV2('sourceBomTable');
+        var objContentSourceBomTbl = {
+            text: {'Source Boms', fontSize: 14, bold: true, pageBreak: 'before', margin: [0, 0, 0, 8]},
+            style: 'tableExample',
+            table: {headerRows: 1, body: objContentSourceBomTbl},
+            layout: objLayoutObject
+        };
+        docDefinition.content.push(objContentSourceBomTbl);
+    };
+    
     $('#colorwaysDiv table').each(function () {
         var strId = $(this).attr('id');
         var arrOfValuesFromTable = [];
