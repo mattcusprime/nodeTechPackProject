@@ -661,11 +661,27 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
                 objComponent = {};
                 objComponent.name = name;
                 objComponent.myFullId = strMyFullId;
+
+
                 objComponent.componentType = 'Document';
                 objComponent.masterId = $(this).find('Document_Master').attr('objectId');
                 objComponent.documentType = $(this).find('Component_Type').text();
                 objComponent.fileName = $(this).find('fileName').text();
                 objComponent.vaultFileName = $(this).find('fileNameOnVault').text();
+                objComponent.pageType = $(this).find('pageType').text();
+                objComponent.pageLayout = $(this).find('pageLayout').text();
+                objComponent.pageDescription = $(this).find('pageDescription').text();
+                objComponent.number = $(this).find('number').text();
+                objComponent.ownerId = $(this).find('ownerId').text();
+                objComponent.specMasterReferenceId = $(this).find('specMasterReferenceId').text();
+                objComponent.garmentSpecMasterId = $(this).find('garmentSpecMasterId').text();
+                objComponent.patternSpecMasterId = $(this).find('patternSpecMasterId').text();
+                if (objComponent.garmentSpecMasterId == objComponent.specMasterReferenceId) {
+                    objComponent.ownerType = 'Garment';
+                }
+                else if (objComponent.patternSpecMasterId == objComponent.specMasterReferenceId) {
+                    objComponent.ownerType = 'Pattern';
+                };
 
                 objComponent.fullVaultUrl = strImgViewerPrefix3 + objComponent.vaultFileName + '.png';
                 //objComponent.fullVaultUrl = strImgViewerPrefix1;
@@ -691,8 +707,8 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
 
                 //objComponent.image = '<div class="item" <h2>' + objComponent.name + '-' + objComponent.fileName + '</h2></br><img width="' + objComponent.width + '" height="' + objComponent.length + '" class="img-responsive hideImg" src="' + objComponent.fullVaultUrl +  '" /></div>';
 
-                if (objComponent.ownerType == 'Pattern' && objComponent.name.indexOf('Front/Back Image') == -1) {
-
+                if (objComponent.ownerType == 'Pattern' && objComponent.pageType == 'frontSketch') {
+                    
                 }
                 else {
                     arrDocuments.push(objComponent);
@@ -1144,17 +1160,36 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
                 $('#imagesDiv').append('<div class="imageHolder col-md-offset-2 col-md-10" id="' + arrdocs[j].myFullId + '" headerValue="' + arrdocs[j].name + '_' + arrdocs[j].fileName + '"></div>');
 
             };
+            var arrWhenDeferredArray = [];
+            var arrDataArray = [];
             for (i = 0; i < arrdocs.length; i++) {
                 var strDivIdToUse = '#' + arrdocs[i].myFullId;
+                var strMyMasterId = '#' + arrdocs[i].masterId;
                 var strHeaderName = $(strDivIdToUse).attr('headerValue');
                 strHeaderName = '<h2>' + strHeaderName + '</h2>';
                 var strSrcUrl = arrdocs[i].imgSrcUrl;
                 // below line contains working function for just getting images
-
-                $(strDivIdToUse).load(strSrcUrl + ' img', function () {
-                    console.log(strHeaderName);//this is not presently working
+                //still reworking the other one
+                var objDefferedOne = $(strDivIdToUse).load(strSrcUrl + ' img', { header: strHeaderName, myDivId: strDivIdToUse, masterId: strMyMasterId }, function (data) {
+                    console.log(data.strHeaderName, data.myDivId, data.masterId);//this is not presently working
 
                 });
+                /*arrDataArray.push({ header: strHeaderName, myDivId: strDivIdToUse, masterId: strMyMasterId, callerUrl: strSrcUrl });
+                var objDefferedOne = $.ajax({
+                    type: "GET",
+                    url: strSrcUrl,
+                    //data: { header: strHeaderName, myDivId: strDivIdToUse, masterId: strMyMasterId },
+                    done: function (data) {
+                        $(strDivIdToUse).append(data);
+                    }
+                });*/
+                arrWhenDeferredArray.push(objDefferedOne);
+                /*.done(function (data) {
+                    $(strDivIdToUse).append(data);
+                });*/
+
+
+
                 /*$.get(arrdocs[i].imgSrcUrl,function(data){}).done(function(data){
 					$(data,'*').each(function(){
 						if($(this).is('img')){
@@ -1169,6 +1204,26 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
 
 
             };
+
+            $.when(arrWhenDeferredArray).done(function (arrWhenDeferredArray) {
+                console.log(arrDataArray);
+                for (var i = 0; i < arrWhenDeferredArray.length; i++) {
+                    arrWhenDeferredArray[i].resolve();
+                    //var strDivForAppending = arrWhenDeferredArray[i].masterId;
+                    //var objImgData = arrWhenDeferredArray[i];
+                    //var arrImgData = objImgData[0];
+                    /*$('img', arrImgData).each(function (index) {
+                        $('#imagesDiv').append(this);
+                    });*/
+                    //var objImgData2 = arrImgData[0];
+                    //var strDivIdToUse = arrDataArray[i].masterId;
+                    //$(strDivIdToUse).append(arrWhenDeferredArray[i].data);
+                    //$(strDivIdToUse).append(objImgData2);
+
+                };
+            });
+
+
 
         };
 
