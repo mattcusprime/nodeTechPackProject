@@ -1208,7 +1208,8 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
             $.when(arrWhenDeferredArray).done(function (arrWhenDeferredArray) {
                 console.log(arrDataArray);
                 for (var i = 0; i < arrWhenDeferredArray.length; i++) {
-                    arrWhenDeferredArray[i].resolve();
+                    //rework this
+                    //arrWhenDeferredArray[i].resolve();
                     //var strDivForAppending = arrWhenDeferredArray[i].masterId;
                     //var objImgData = arrWhenDeferredArray[i];
                     //var arrImgData = objImgData[0];
