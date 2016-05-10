@@ -513,7 +513,7 @@ function getLogin(arrAttributeValueListArray, objCurrentGarmentProduct, arrRepor
         $.ajax({
             url: strReportsXmlUrl,
             //headers:['Access-Control-Allow-Origin'],
-            crossDomain:true,
+            crossDomain: true,
             xhrFields: {
                 withCredentials: true
             },

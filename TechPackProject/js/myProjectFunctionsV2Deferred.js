@@ -812,6 +812,8 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
     //objSelfReference.patternSewBoms = objPatternSewBomDataWithUsage;
     //put this back later when the objects are actually constructed through parsing
     var arrGarmentSewRows = rowParser('row', objGarmentSewBomData);
+
+
     var arrGarmentSourceRows = [];
     //var strGarmentSewBomString = convertRowArrayIntoHtmlTable(arrGarmentSewRows);
     var arrPatternSewRows = rowParser('row', objPatternSewBomDataWithUsage);
@@ -902,13 +904,20 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
 
 
 
-
     };
 
 
 
     //console.log('Garment Sew Bom String ' + strGarmentSewBomString, 'Pattern Sew Bom String ' + strPatternSewBomString);
+    for (var r = 0; r < arrGarmentSewRows.length; r++) {
+        var objSewSourceChecker = arrGarmentSewRows[r];
+        var strSewOrSource = objSewSourceChecker.sewOrSource;
+        if (strSewOrSource != 'sew') {
+            arrGarmentSewRows.splice(r, 1);
+            r = -1;
+        };
 
+    };
     objSelfReference.garmentSewBoms = arrGarmentSewRows;
     objSelfReference.garmentSourceBoms = arrGarmentSourceRows;
     objSelfReference.patternSewBoms = arrPatternSewRows;
@@ -918,14 +927,14 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
     if (objSelfReference.garmentSourceBoms.length > 0) {
         objSelfReference.sourceBomTableString = convertRowArrayIntoHtmlTable(objSelfReference.garmentSourceBoms, '', '', 'sourceBomTable', '<h1>Source BOM</h1>');
     };
-    if (typeof (objSelfReference.patternSewBom) != 'undefined') {
+    if (typeof (objSelfReference.patternSewBoms) != 'undefined') {
         $('#sewBomDiv').append(objSelfReference.sewBomTableString);
     };
     if (objSelfReference.garmentSourceBoms.length != 0) {
         $('#sourceBomDiv').append(objSelfReference.sourceBomTableString);
     };
     //sourceBomDiv
-    if (typeof (objSelfReference.patternSewBom) != 'undefined' && typeof (objSelfReference.garmentSewBoms) != 'undefined') {
+    if (typeof (objSelfReference.patternSewBoms) != 'undefined' && typeof (objSelfReference.garmentSewBoms) != 'undefined') {
         $('#sewBomTable').DataTable(sewBomTableOptions);
     };
     var arrConstructionDetailDataContainer;
