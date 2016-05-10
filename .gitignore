@@ -1,4 +1,4 @@
-*.suo
+# image files as too MANIES
 *.sln
-.DS_Store
-notifications/node_modules
+# adding photoshop files as well, should be tracked in dropbox
+*.suo
