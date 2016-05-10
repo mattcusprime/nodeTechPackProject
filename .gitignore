@@ -1,2 +1,4 @@
+*.suo
+*.sln
 .DS_Store
 notifications/node_modules
