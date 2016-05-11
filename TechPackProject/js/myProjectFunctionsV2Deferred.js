@@ -1223,11 +1223,17 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
                     //arrWhenDeferredArray[i].resolve();
                     //var strDivForAppending = arrWhenDeferredArray[i].masterId;
                     var objImgData = arrWhenDeferredArray[i];
+                    var objImgMeta = arrDataArray[i];
                     var strResponseText = objImgData.responseText;
+                    var objNewImageToAdd = $(strResponseText).find('img');
+                    var myDivId = objImgMeta.myDivId;
+                    $(myDivId).append(objImgMeta.header);
+                    $(myDivId).append(objNewImageToAdd);
+
                     //var arrImgData = objImgData[0];
-                    $('img', strResponseText).each(function (index) {
-                        $('#imagesDiv').append(this);
-                    });
+                   // $('img', strResponseText).each(function (index) {
+                   //     $('#imagesDiv').append(this);
+                   // });
                     //var objImgData2 = arrImgData[0];
                     //var strDivIdToUse = arrDataArray[i].masterId;
                     //$(strDivIdToUse).append(arrWhenDeferredArray[i].data);
