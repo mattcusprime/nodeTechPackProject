@@ -1169,7 +1169,7 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
                 var strDivIdToUse = '#' + arrdocs[i].myFullId;
                 var strMyMasterId = '#' + arrdocs[i].masterId;
                 var strHeaderName = $(strDivIdToUse).attr('headerValue');
-                strHeaderName = '<h2>' + strHeaderName + '</h2>';
+                strHeaderName = '<h3>' + strHeaderName + '</h3>';
                 var strSrcUrl = arrdocs[i].imgSrcUrl;
                 // below line contains working function for just getting images
                 //still reworking the other one
@@ -1210,7 +1210,7 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
 
             };
 
-            $.when.apply($,arrWhenDeferredArray).done(function (responseData) {
+            $.when.apply($, arrWhenDeferredArray).done(function (responseData) {
                 /*$('img', responseData[0]).each(function (index) {
                     var objForExtraImageData = arrDataArray[numIndexerForArray];
                     $('#imagesDiv').append(this);
@@ -1226,20 +1226,36 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
                     var objImgMeta = arrDataArray[i];
                     var strResponseText = objImgData.responseText;
                     var objNewImageToAdd = $(strResponseText).find('img');
+                   
+
+
                     var myDivId = objImgMeta.myDivId;
                     $(myDivId).append(objImgMeta.header);
                     $(myDivId).append(objNewImageToAdd);
 
                     //var arrImgData = objImgData[0];
-                   // $('img', strResponseText).each(function (index) {
-                   //     $('#imagesDiv').append(this);
-                   // });
+                    // $('img', strResponseText).each(function (index) {
+                    //     $('#imagesDiv').append(this);
+                    // });
                     //var objImgData2 = arrImgData[0];
                     //var strDivIdToUse = arrDataArray[i].masterId;
                     //$(strDivIdToUse).append(arrWhenDeferredArray[i].data);
                     //$(strDivIdToUse).append(objImgData2);
 
                 };
+            }).done(function () {
+                $('img').each(function () {
+                    var urlToUse = $(this).attr('src');
+                    var strParentDiv = '#' + $(this).parent().attr('id');
+                    getDataUri(urlToUse, function (dataUri) {
+                        // Do whatever you'd like with the Data URI!
+                        //objNewImageToAdd.src = dataUri;
+                        var strDataImagePrefix = 'data:image/png;base64,';
+                        var strFullDataUri = strDataImagePrefix + dataUri;
+                        //$(strParentDiv).find('img').attr('src', dataUri);
+                        $(strParentDiv).find('img').attr('src', strFullDataUri);
+                    });
+                });
             });
 
 
@@ -2392,3 +2408,23 @@ function callNextDocument(arrayOfDocuments, currentIndex) {
             });
     };
 };
+
+function getDataUri(url, callback) {
+    var image = new Image();
+
+    image.onload = function () {
+        var canvas = document.createElement('canvas');
+        canvas.width = this.naturalWidth; // or 'width' if you want a special/scaled size
+        canvas.height = this.naturalHeight; // or 'height' if you want a special/scaled size
+
+        canvas.getContext('2d').drawImage(this, 0, 0);
+
+        // Get raw image data
+        callback(canvas.toDataURL('image/png').replace(/^data:image\/(png|jpg);base64,/, ''));
+
+        // ... or get as Data URI
+        callback(canvas.toDataURL('image/png'));
+    };
+
+    image.src = url;
+}
