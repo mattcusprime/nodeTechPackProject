@@ -87,7 +87,8 @@ function garmentProduct(strName, arrAttributes, arrSpecs, arrSources, objColorwa
 //var wkhtmltopdf = require('wkhtmltopdf');
 //var gui = require('nw.gui');
 //Node webkit functionalities
-
+var arrDataArray = [];// global var for ajax calls
+var numIndexerForArray = 0;
 /**
  * @method of @class GarmentProduct
  * @param {String} strHostUrlPrefix string denoting the initial characters of the url for the domain in which the construction sits.  All string prior to Windchill.
@@ -1161,7 +1162,8 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
 
             };
             var arrWhenDeferredArray = [];
-            var arrDataArray = [];
+            arrDataArray = [];
+            numIndexerForArray = 0;
             for (i = 0; i < arrdocs.length; i++) {
                 var strDivIdToUse = '#' + arrdocs[i].myFullId;
                 var strMyMasterId = '#' + arrdocs[i].masterId;
@@ -1174,14 +1176,11 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
                     console.log(data.strHeaderName, data.myDivId, data.masterId);//this is not presently working
 
                 });
-                /*arrDataArray.push({ header: strHeaderName, myDivId: strDivIdToUse, masterId: strMyMasterId, callerUrl: strSrcUrl });*/
+                arrDataArray.push({ header: strHeaderName, myDivId: strDivIdToUse, masterId: strMyMasterId, callerUrl: strSrcUrl });
                 var objDefferedOne = $.ajax({
                     type: "GET",
                     url: strSrcUrl,
-                    //data: { header: strHeaderName, myDivId: strDivIdToUse, masterId: strMyMasterId },
-                    done: function (data) {
-                        $(strDivIdToUse).append(data);
-                    }
+                    data: { header: strHeaderName, myDivId: strDivIdToUse, masterId: strMyMasterId }
                 });
                 arrWhenDeferredArray.push(objDefferedOne);
                 /*.done(function (data) {
@@ -1205,9 +1204,11 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
 
             };
 
-            $.when.apply($,arrWhenDeferredArray).done(function (data) {
-                $('img', data).each(function () {
+            $.when.apply($,arrWhenDeferredArray).done(function (responseData) {
+                $('img', responseData).each(function () {
+                    var objForExtraImageData = arrDataArray[numIndexerForArray];
                     $('#imagesDiv').append(this);
+                    numIndexerForArray++;
                 });
 
                 //console.log(arrDataArray);
