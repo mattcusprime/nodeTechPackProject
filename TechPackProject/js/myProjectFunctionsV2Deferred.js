@@ -89,6 +89,7 @@ function garmentProduct(strName, arrAttributes, arrSpecs, arrSources, objColorwa
 //Node webkit functionalities
 var arrDataArray = [];// global var for ajax calls
 var numIndexerForArray = 0;
+var arrWhenDeferredArray = [];
 /**
  * @method of @class GarmentProduct
  * @param {String} strHostUrlPrefix string denoting the initial characters of the url for the domain in which the construction sits.  All string prior to Windchill.
@@ -1161,7 +1162,7 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
                 $('#imagesDiv').append('<div class="imageHolder col-md-offset-2 col-md-10" id="' + arrdocs[j].myFullId + '" headerValue="' + arrdocs[j].name + '_' + arrdocs[j].fileName + '"></div>');
 
             };
-            var arrWhenDeferredArray = [];
+            arrWhenDeferredArray = [];
             arrDataArray = [];
             numIndexerForArray = 0;
             for (i = 0; i < arrdocs.length; i++) {
@@ -1172,17 +1173,22 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
                 var strSrcUrl = arrdocs[i].imgSrcUrl;
                 // below line contains working function for just getting images
                 //still reworking the other one
-                var objDefferedOne = $(strDivIdToUse).load(strSrcUrl + ' img', { header: strHeaderName, myDivId: strDivIdToUse, masterId: strMyMasterId }, function (data) {
+                /*var objDefferedOne = $(strDivIdToUse).load(strSrcUrl + ' img', { header: strHeaderName, myDivId: strDivIdToUse, masterId: strMyMasterId }, function (data) {
                     console.log(data.strHeaderName, data.myDivId, data.masterId);//this is not presently working
 
-                });
+                });*/
                 arrDataArray.push({ header: strHeaderName, myDivId: strDivIdToUse, masterId: strMyMasterId, callerUrl: strSrcUrl });
-                var objDefferedOne = $.ajax({
+                /*var objDefferedOne = $.ajax({
                     type: "GET",
                     url: strSrcUrl,
                     data: { header: strHeaderName, myDivId: strDivIdToUse, masterId: strMyMasterId }
-                });
-                arrWhenDeferredArray.push(objDefferedOne);
+                });*/
+                arrWhenDeferredArray.push($.ajax({
+                    type: "GET",
+                    url: strSrcUrl,
+                    data: { header: strHeaderName, myDivId: strDivIdToUse, masterId: strMyMasterId }
+                }));
+
                 /*.done(function (data) {
                     $(strDivIdToUse).append(data);
                 });*/
@@ -1205,20 +1211,21 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
             };
 
             $.when.apply($,arrWhenDeferredArray).done(function (responseData) {
-                $('img', responseData).each(function () {
+                /*$('img', responseData[0]).each(function (index) {
                     var objForExtraImageData = arrDataArray[numIndexerForArray];
                     $('#imagesDiv').append(this);
                     numIndexerForArray++;
-                });
+                });*/
 
                 //console.log(arrDataArray);
-                /*for (var i = 0; i < arrWhenDeferredArray.length; i++) {
+                for (var i = 0; i < arrWhenDeferredArray.length; i++) {
                     //rework this
                     //arrWhenDeferredArray[i].resolve();
                     //var strDivForAppending = arrWhenDeferredArray[i].masterId;
-                    //var objImgData = arrWhenDeferredArray[i];
+                    var objImgData = arrWhenDeferredArray[i];
+                    var strResponseText = objImgData.responseText;
                     //var arrImgData = objImgData[0];
-                    $('img', arrImgData).each(function (index) {
+                    $('img', strResponseText).each(function (index) {
                         $('#imagesDiv').append(this);
                     });
                     //var objImgData2 = arrImgData[0];
@@ -1226,7 +1233,7 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
                     //$(strDivIdToUse).append(arrWhenDeferredArray[i].data);
                     //$(strDivIdToUse).append(objImgData2);
 
-                };*/
+                };
             });
 
 
