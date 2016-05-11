@@ -278,7 +278,7 @@ function getDataUri(url, callback) {
 
         // Get raw image data
         callback(canvas.toDataURL('image/png').replace(/^data:image\/(png|jpg);base64,/, ''));
-        console.log(returnDataUrl);
+        //  console.log(returnDataUrl);
         // ... or get as Data URI
         //callback(canvas.toDataURL('image/png'));
     };
