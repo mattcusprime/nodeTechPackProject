@@ -1159,17 +1159,18 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
         if (typeof (arrdocs) != 'undefined') {
             for (j = 0; j < arrdocs.length; j++) {
                 if (j == 0) { $('#imagesDiv').append('<h1>Documents</h1>') };
-                $('#imagesDiv').append('<div class="imageHolder col-md-offset-2 col-md-10" id="' + arrdocs[j].myFullId + '" headerValue="' + arrdocs[j].name + '_' + arrdocs[j].fileName + '"></div>');
+                $('#imagesDiv').append('<div class="imageHolder col-md-offset-2 col-md-10" id="' + arrdocs[j].masterId + '" headerValue="' + arrdocs[j].name + '_' + arrdocs[j].fileName + '"></div>');
 
             };
             arrWhenDeferredArray = [];
             arrDataArray = [];
             numIndexerForArray = 0;
             for (i = 0; i < arrdocs.length; i++) {
-                var strDivIdToUse = '#' + arrdocs[i].myFullId;
+                var strDivIdToUse = arrdocs[i].myFullId;
+                //var strDivIdToUseWithHash = '#' + strDivIdToUse;
                 var strMyMasterId = '#' + arrdocs[i].masterId;
-                var strHeaderName = $(strDivIdToUse).attr('headerValue');
-                strHeaderName = '<h3>' + strHeaderName + '</h3>';
+                var strHeaderName = $(strMyMasterId).attr('headerValue');
+                //strHeaderName = '<h3>' + strHeaderName + '</h3>';
                 var strSrcUrl = arrdocs[i].imgSrcUrl;
                 // below line contains working function for just getting images
                 //still reworking the other one
@@ -1177,7 +1178,19 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
                     console.log(data.strHeaderName, data.myDivId, data.masterId);//this is not presently working
 
                 });*/
-                arrDataArray.push({ header: strHeaderName, myDivId: strDivIdToUse, masterId: strMyMasterId, callerUrl: strSrcUrl });
+                arrDataArray.push({
+                    header: strHeaderName,
+                    myDivId: strDivIdToUse,
+                    masterId: strMyMasterId,
+                    callerUrl: strSrcUrl,
+                    pageType: arrdocs[i].pageType,
+                    pageDescription: arrdocs[i].pageDescription,
+                    ownerType: arrdocs[i].ownerType,
+                    pageLayout: arrdocs[i].pageLayout,
+                    name: arrdocs[i].name,
+                    width: arrdocs[i].width,
+                    height: arrdocs[i].height
+                });
                 /*var objDefferedOne = $.ajax({
                     type: "GET",
                     url: strSrcUrl,
@@ -1226,12 +1239,11 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
                     var objImgMeta = arrDataArray[i];
                     var strResponseText = objImgData.responseText;
                     var objNewImageToAdd = $(strResponseText).find('img');
-                   
-
-
                     var myDivId = objImgMeta.myDivId;
-                    $(myDivId).append(objImgMeta.header);
-                    $(myDivId).append(objNewImageToAdd);
+                    var myMasterId = objImgMeta.masterId;
+                    $(objNewImageToAdd).attr('id', myDivId);
+                    $(myMasterId).append('<h3>' + decodeURIComponent(objImgMeta.name) + '</h3>');
+                    $(myMasterId).append(objNewImageToAdd);
 
                     //var arrImgData = objImgData[0];
                     // $('img', strResponseText).each(function (index) {

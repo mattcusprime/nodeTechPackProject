@@ -1,8 +1,9 @@
 var numOfImageLoops = 0;
 var docDefinition = {};
-docDefinition.content = [];
+
 function pdfSpec(productToSpec) {
-    
+    docDefinition = {};
+    docDefinition.content = [];
     var objLayoutObject = {
         hLineWidth: function (i, node) {
             return (i === 0 || i === node.table.body.length) ? 2 : 1;
@@ -161,10 +162,24 @@ function pdfSpec(productToSpec) {
             //text: {'Source Boms', fontSize: 14, bold: true, pageBreak: 'before', margin: [0, 0, 0, 8]},
             style: 'tableExample',
             table: { headerRows: 1, body: arrSourceBomTbl },
-            layout: objLayoutObject
+            layout: objLayoutObject,
+            pageBreak: 'after'
         };
         docDefinition.content.push(objTextObject,objContentSourceBomTbl);
     };
+    //docDefinition.content.images = {};
+    $('#imagesDiv img').each(function (index) {
+        var strTextHeader = $(this).parent().attr('headerValue');
+        var decodedHeader = decodeURIComponent(strTextHeader);
+        var objTextObject = {};
+        objTextObject = { text: decodedHeader, fontSize: 14, bold: true, margin: [0, 0, 0, 8] };
+        var strBase64String = $(this).attr('src');
+        var objImageToAdd = {};
+        objImageToAdd.image = strBase64String;
+        objImageToAdd.fit = [450, 450];
+        objImageToAdd.pageBreak = 'after';
+        docDefinition.content.push(objTextObject,objImageToAdd);
+    });
     /*
     $('#colorwaysDiv table').each(function () {
         var strId = $(this).attr('id');
@@ -185,7 +200,7 @@ function pdfSpec(productToSpec) {
 
 
 
-    pdfMake.createPdf(docDefinition).download();
+    pdfMake.createPdf(docDefinition).download(productToSpec.name + '.pdf');
 
 
     // open the PDF in a new window
