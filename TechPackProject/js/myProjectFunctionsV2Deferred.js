@@ -1174,7 +1174,7 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
                     console.log(data.strHeaderName, data.myDivId, data.masterId);//this is not presently working
 
                 });
-                /*arrDataArray.push({ header: strHeaderName, myDivId: strDivIdToUse, masterId: strMyMasterId, callerUrl: strSrcUrl });
+                /*arrDataArray.push({ header: strHeaderName, myDivId: strDivIdToUse, masterId: strMyMasterId, callerUrl: strSrcUrl });*/
                 var objDefferedOne = $.ajax({
                     type: "GET",
                     url: strSrcUrl,
@@ -1182,7 +1182,7 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
                     done: function (data) {
                         $(strDivIdToUse).append(data);
                     }
-                });*/
+                });
                 arrWhenDeferredArray.push(objDefferedOne);
                 /*.done(function (data) {
                     $(strDivIdToUse).append(data);
@@ -1205,23 +1205,27 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
 
             };
 
-            $.when(arrWhenDeferredArray).done(function (arrWhenDeferredArray) {
-                console.log(arrDataArray);
-                for (var i = 0; i < arrWhenDeferredArray.length; i++) {
+            $.when.apply($,arrWhenDeferredArray).done(function (data) {
+                $('img', data).each(function () {
+                    $('#imagesDiv').append(this);
+                });
+
+                //console.log(arrDataArray);
+                /*for (var i = 0; i < arrWhenDeferredArray.length; i++) {
                     //rework this
                     //arrWhenDeferredArray[i].resolve();
                     //var strDivForAppending = arrWhenDeferredArray[i].masterId;
                     //var objImgData = arrWhenDeferredArray[i];
                     //var arrImgData = objImgData[0];
-                    /*$('img', arrImgData).each(function (index) {
+                    $('img', arrImgData).each(function (index) {
                         $('#imagesDiv').append(this);
-                    });*/
+                    });
                     //var objImgData2 = arrImgData[0];
                     //var strDivIdToUse = arrDataArray[i].masterId;
                     //$(strDivIdToUse).append(arrWhenDeferredArray[i].data);
                     //$(strDivIdToUse).append(objImgData2);
 
-                };
+                };*/
             });
 
 
