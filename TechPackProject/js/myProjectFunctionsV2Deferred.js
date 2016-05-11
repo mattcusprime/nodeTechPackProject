@@ -1159,6 +1159,7 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
         if (typeof (arrdocs) != 'undefined') {
             for (j = 0; j < arrdocs.length; j++) {
                 if (j == 0) { $('#imagesDiv').append('<h1>Documents</h1>') };
+                
                 $('#imagesDiv').append('<div class="imageHolder col-md-offset-2 col-md-10" id="' + arrdocs[j].masterId + '" headerValue="' + arrdocs[j].name + '_' + arrdocs[j].fileName + '"></div>');
 
             };
@@ -1242,7 +1243,7 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
                     var myDivId = objImgMeta.myDivId;
                     var myMasterId = objImgMeta.masterId;
                     $(objNewImageToAdd).attr('id', myDivId);
-                    $(myMasterId).append('<h3>' + decodeURIComponent(objImgMeta.name) + '</h3>');
+                    $(myMasterId).append('<h3>' + decodeURIComponent(objImgMeta.header) + '</h3>');
                     $(myMasterId).append(objNewImageToAdd);
 
                     //var arrImgData = objImgData[0];
