@@ -78,7 +78,7 @@ function garmentProduct(strName, arrAttributes, arrSpecs, arrSources, objColorwa
     //moved to be a property of colorwayobj
     this.blockWeightsSpreadTableString = strBlockWeightsSpreadTableString;
     this.blockWeightsTrimTableString = strTrimSpreadTableString;
-    this.sortingArray = ['sizeXXS', '1', 'sizeXS', '2', 'sizeS', '3', 'sizeM', '4', 'sizeL', '5', 'sizeXL', '6', 'size2X', '7', 'size3X', '8', 'size4X', '9', 'size5X', '10', 'size6X', '11', 'size3M', '1', 'size6M', '2', 'size9M', '3', 'size12M', '4', 'size18M', '5', 'size24M', '6', 'size2T', '7', 'size3T', '8', 'size4T', '9', 'size5T', '10', 'size2', '1', 'size4', '2', 'size5', '3', 'size6', '4', 'size7', '5', 'size8', '6', 'size9', '7', 'size10', '8', 'size11', '9', 'size12', '10', 'size13', '11', 'size14', '12', 'size16', '13', 'size18', '14', 'size20', '15', 'size22', '16', 'size24', '17', 'size26', '18', 'size28', '19', 'size30', '20', 'size32', '21', 'size34', '22', 'size36', '23', 'size38', '24', 'size40', '25', 'size42', '26', 'size44', '27', 'size46', '28', 'size48', '29', 'size50', '30', 'size52', '31', 'size54', '32', 'size56', '33', 'size58', '34', 'size60', '35', 'size62', '36', 'sizeS/M', '1', 'sizeL/XL', '2', 'size16W', '1', 'size20W', '2', 'size24W', '3', 'size28W', '4', 'size32W', '5', 'size36W', '6'];
+    this.sortingArray = ['sizeXXS', '1', 'sizeXS', '2', 'sizeS', '3', 'sizeM', '4', 'sizeL', '5', 'sizeXL', '6', 'size2X', '7', 'size3X', '8', 'size4X', '9', 'size5X', '10', 'size6X', '11', 'size3M', '1', 'size6M', '2', 'size9M', '3', 'size12M', '4', 'size18M', '5', 'size24M', '6', 'size2T', '7', 'size3T', '8', 'size4T', '9', 'size5T', '10', 'size2', '1', 'size4', '2', 'size5', '3', 'size6', '4', 'size7', '5', 'size8', '6', 'size9', '7', 'size10', '8', 'size11', '9', 'size12', '10', 'size13', '11', 'size14', '12', 'size16', '13', 'size18', '14', 'size20', '15', 'size22', '16', 'size24', '17', 'size26', '18', 'size28', '19', 'size30', '20', 'size32', '21', 'size34', '22', 'size36', '23', 'size38', '24', 'size40', '25', 'size42', '26', 'size44', '27', 'size46', '28', 'size48', '29', 'size50', '30', 'size52', '31', 'size54', '32', 'size56', '33', 'size58', '34', 'size60', '35', 'size62', '36', 'sizeS/M', '1', 'sizeL/`', '2', 'size16W', '1', 'size20W', '2', 'size24W', '3', 'size28W', '4', 'size32W', '5', 'size36W', '6'];
 
 };
 
@@ -1149,7 +1149,6 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
             sortOrder++;
         }
         else {
-            //strBlockWeightBomScenario = 'Spread, Trim Straight and Trim Bias';
         };
 
     };
@@ -1157,28 +1156,23 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
     if (typeof (objSelfReference.documents != 'undefined')) {
         var arrdocs = objSelfReference.documents;
         if (typeof (arrdocs) != 'undefined') {
-            for (j = 0; j < arrdocs.length; j++) {
-                if (j == 0) { $('#imagesDiv').append('<h1>Documents</h1>') };
-                
-                $('#imagesDiv').append('<div class="imageHolder col-md-offset-2 col-md-10" id="' + arrdocs[j].masterId + '" headerValue="' + arrdocs[j].name + '_' + arrdocs[j].fileName + '"></div>');
-
-            };
+            
             arrWhenDeferredArray = [];
             arrDataArray = [];
             numIndexerForArray = 0;
             for (i = 0; i < arrdocs.length; i++) {
-                var strDivIdToUse = arrdocs[i].myFullId;
-                //var strDivIdToUseWithHash = '#' + strDivIdToUse;
-                var strMyMasterId = '#' + arrdocs[i].masterId;
-                var strHeaderName = $(strMyMasterId).attr('headerValue');
-                //strHeaderName = '<h3>' + strHeaderName + '</h3>';
-                var strSrcUrl = arrdocs[i].imgSrcUrl;
-                // below line contains working function for just getting images
-                //still reworking the other one
-                /*var objDefferedOne = $(strDivIdToUse).load(strSrcUrl + ' img', { header: strHeaderName, myDivId: strDivIdToUse, masterId: strMyMasterId }, function (data) {
-                    console.log(data.strHeaderName, data.myDivId, data.masterId);//this is not presently working
+                if (i == 0) {
+                    for (x = 0; x < arrdocs.length; x++) {
+                        if (x == 0) { $('#imagesDiv').append('<h1>Documents</h1>') };
 
-                });*/
+                        $('#imagesDiv').append('<div class="imageHolder col-md-12 ' + arrdocs[x].masterId +'" id="' + arrdocs[x].myFullId + '" headerValue="' + arrdocs[x].name + '_' + arrdocs[x].fileName + '"></div>');
+
+                    };
+                };
+                var strDivIdToUse = arrdocs[i].myFullId;
+                var strMyMasterId = '#' + arrdocs[i].masterId;
+                var strHeaderName = $('#' + strDivIdToUse).attr('headerValue');
+                var strSrcUrl = arrdocs[i].imgSrcUrl;
                 arrDataArray.push({
                     header: strHeaderName,
                     myDivId: strDivIdToUse,
@@ -1192,80 +1186,36 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
                     width: arrdocs[i].width,
                     height: arrdocs[i].height
                 });
-                /*var objDefferedOne = $.ajax({
-                    type: "GET",
-                    url: strSrcUrl,
-                    data: { header: strHeaderName, myDivId: strDivIdToUse, masterId: strMyMasterId }
-                });*/
                 arrWhenDeferredArray.push($.ajax({
                     type: "GET",
                     url: strSrcUrl,
                     data: { header: strHeaderName, myDivId: strDivIdToUse, masterId: strMyMasterId }
                 }));
-
-                /*.done(function (data) {
-                    $(strDivIdToUse).append(data);
-                });*/
-
-
-
-                /*$.get(arrdocs[i].imgSrcUrl,function(data){}).done(function(data){
-					$(data,'*').each(function(){
-						if($(this).is('img')){
-							var strImgHtml = $(this).html();
-							$('#' + arrdocs[i].myFullId).append(strImgHtml);
-						};
-					});
-					
-					
-				});*/
-
-
-
             };
-
             $.when.apply($, arrWhenDeferredArray).done(function (responseData) {
-                /*$('img', responseData[0]).each(function (index) {
-                    var objForExtraImageData = arrDataArray[numIndexerForArray];
-                    $('#imagesDiv').append(this);
-                    numIndexerForArray++;
-                });*/
-
-                //console.log(arrDataArray);
-                for (var i = 0; i < arrWhenDeferredArray.length; i++) {
-                    //rework this
-                    //arrWhenDeferredArray[i].resolve();
-                    //var strDivForAppending = arrWhenDeferredArray[i].masterId;
-                    var objImgData = arrWhenDeferredArray[i];
-                    var objImgMeta = arrDataArray[i];
+                for (var z = 0; z < arrWhenDeferredArray.length; z++) {
+                    var objImgData = arrWhenDeferredArray[z];
+                    var objImgMeta = arrDataArray[z];
                     var strResponseText = objImgData.responseText;
                     var objNewImageToAdd = $(strResponseText).find('img');
                     var myDivId = objImgMeta.myDivId;
                     var myMasterId = objImgMeta.masterId;
-                    $(objNewImageToAdd).attr('id', myDivId);
-                    $(myMasterId).append('<h3>' + decodeURIComponent(objImgMeta.header) + '</h3>');
-                    $(myMasterId).append(objNewImageToAdd);
-
-                    //var arrImgData = objImgData[0];
-                    // $('img', strResponseText).each(function (index) {
-                    //     $('#imagesDiv').append(this);
-                    // });
-                    //var objImgData2 = arrImgData[0];
-                    //var strDivIdToUse = arrDataArray[i].masterId;
-                    //$(strDivIdToUse).append(arrWhenDeferredArray[i].data);
-                    //$(strDivIdToUse).append(objImgData2);
-
+                    var strMyMasterIdWithPoundRemoved = myMasterId.replace('#', '');
+                    $(objNewImageToAdd).attr('id', myDivId + 'img');
+                    $('#' + myDivId).append(objNewImageToAdd);
+                    $('#' + myDivId).append('<h3>' + decodeURIComponent(objImgMeta.name) + '</h3>');
+                    $('#' + myDivId).append(objNewImageToAdd);
+                    $('#' + myDivId + 'img').addClass('img-responsive');
+                    $('#' + myDivId + 'img').addClass('col-md-offset-4 col-md-8');
+                    
                 };
             }).done(function () {
                 $('img').each(function () {
                     var urlToUse = $(this).attr('src');
                     var strParentDiv = '#' + $(this).parent().attr('id');
                     getDataUri(urlToUse, function (dataUri) {
-                        // Do whatever you'd like with the Data URI!
-                        //objNewImageToAdd.src = dataUri;
                         var strDataImagePrefix = 'data:image/png;base64,';
                         var strFullDataUri = strDataImagePrefix + dataUri;
-                        //$(strParentDiv).find('img').attr('src', dataUri);
                         $(strParentDiv).find('img').attr('src', strFullDataUri);
                     });
                 });
