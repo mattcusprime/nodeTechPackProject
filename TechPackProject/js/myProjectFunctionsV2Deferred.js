@@ -1165,7 +1165,7 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
                     for (x = 0; x < arrdocs.length; x++) {
                         if (x == 0) { $('#imagesDiv').append('<h1>Documents</h1>') };
 
-                        $('#imagesDiv').append('<div class="imageHolder col-md-12 ' + arrdocs[x].masterId +'" id="' + arrdocs[x].myFullId + '" headerValue="' + arrdocs[x].name + '_' + arrdocs[x].fileName + '"></div>');
+                        $('#imagesDiv').append('<div class="imageHolder container col-md-12 ' + arrdocs[x].masterId +'" id="' + arrdocs[x].myFullId + '" headerValue="' + arrdocs[x].name + '_' + arrdocs[x].fileName + '"></div>');
 
                     };
                 };
@@ -1205,8 +1205,9 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
                     $('#' + myDivId).append(objNewImageToAdd);
                     $('#' + myDivId).append('<h3>' + decodeURIComponent(objImgMeta.name) + '</h3>');
                     $('#' + myDivId).append(objNewImageToAdd);
+                    $('#' + myDivId + 'img').addClass('col-md-4');
                     $('#' + myDivId + 'img').addClass('img-responsive');
-                    $('#' + myDivId + 'img').addClass('col-md-offset-4 col-md-8');
+                    
                     
                 };
             }).done(function () {
@@ -1219,6 +1220,7 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
                         $(strParentDiv).find('img').attr('src', strFullDataUri);
                     });
                 });
+
             });
 
 
