@@ -176,7 +176,7 @@ function pdfSpec(productToSpec) {
         var strBase64String = $(this).attr('src');
         var objImageToAdd = {};
         objImageToAdd.image = strBase64String;
-        objImageToAdd.fit = [450, 450];
+        objImageToAdd.fit = [2550, 3300];
         objImageToAdd.pageBreak = 'after';
         docDefinition.content.push(objTextObject,objImageToAdd);
     });
