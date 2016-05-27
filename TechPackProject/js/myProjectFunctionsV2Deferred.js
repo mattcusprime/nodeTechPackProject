@@ -630,7 +630,8 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
             else {
 
                 //https://plmqa.hanes.com/Windchill/rfa/jsp/image/ImageViewer.jsp?imageUrl=&appDataOid=OR:wt.content.ApplicationData:2394231&contentHolderOid=OR:com.lcs.wc.document.LCSDocument:2394226
-                var strImgViewerPrefix1 = 'https://plmqa.hanes.com/Windchill/rfa/jsp/image/ImageViewer.jsp?imageUrl=&appDataOid=OR:wt.content.ApplicationData:';
+                //var strImgViewerPrefix1 = 'https://plmqa.hanes.com/Windchill/rfa/jsp/image/ImageViewer.jsp?imageUrl=&appDataOid=OR:wt.content.ApplicationData:';
+                var strImgViewerPrefix1 = 'http://wsflexappdev2v/Windchill/rfa/jsp/image/ImageViewer.jsp?imageUrl=&appDataOid=OR:wt.content.ApplicationData:';
                 var strImgViewerPrefix2 = '&contentHolderOid=OR:com.lcs.wc.document.LCSDocument:';
                 //var strImgViewerPrefix3 = "file://res.hbi.net/dfs/BrandedApparel/Activewear/FlexApp/Prod/";
                 //var strImgViewerPrefix3 = "file:\\\\res.hbi.net\\dfs/BrandedApparel\\Activewear\\FlexApp\\QA\\Prod\\";
@@ -710,7 +711,7 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
                 //objComponent.image = '<div class="item" <h2>' + objComponent.name + '-' + objComponent.fileName + '</h2></br><img width="' + objComponent.width + '" height="' + objComponent.length + '" class="img-responsive hideImg" src="' + objComponent.fullVaultUrl +  '" /></div>';
 
                 if (objComponent.ownerType == 'Pattern' && objComponent.pageType == 'frontSketch') {
-                    
+
                 }
                 else {
                     arrDocuments.push(objComponent);
@@ -751,7 +752,8 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
     });
     objSelfReference.measurement = objMeasurementComp;
     var strMeasTaskUrl = strHostUrlPrefix + 'Windchill/servlet/IE/tasks/com/lcs/wc/measurements/FindMeasurements.xml'; //?oid=VR:com.lcs.wc.construction.LCSConstructionInfo:' + numConstructionBranchId + '&instance=net.hbi.res.wsflexappprd1v.windchillAdapter';
-    var strInstance = 'net.hbi.res.wsflexappprd1v.windchillAdapter';
+    //var strInstance = 'net.hbi.res.wsflexappprd1v.windchillAdapter';
+    var strInstance = 'net.hbi.res.wsflexappdev1v.windchillAdapter';
     var strCurrentEnvironment = window.location.href;
     if (strCurrentEnvironment.indexOf('plmqa.hanes') != -1) {
         strInstance = 'net.hbi.res.wsflexappqa1v.windchillAdapter';
@@ -781,7 +783,8 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
     });
     objSelfReference.construction = objConstructionComp;
     var conStrTaskUrl = strHostUrlPrefix + 'Windchill/servlet/IE/tasks/com/lcs/wc/construction/FindConstructionInfo.xml'; //?oid=VR:com.lcs.wc.construction.LCSConstructionInfo:' + numConstructionBranchId + '&instance=net.hbi.res.wsflexappprd1v.windchillAdapter';
-    var strInstance = 'net.hbi.res.wsflexappprd1v.windchillAdapter';
+    //var strInstance = 'net.hbi.res.wsflexappprd1v.windchillAdapter';
+    var strInstance = 'net.hbi.res.wsflexappdev1v.windchillAdapter';
     var strCurrentEnvironment = window.location.href;
     if (strCurrentEnvironment.indexOf('plmqa.hanes') != -1) {
         strInstance = 'net.hbi.res.wsflexappqa1v.windchillAdapter';
@@ -1156,7 +1159,7 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
     if (typeof (objSelfReference.documents != 'undefined')) {
         var arrdocs = objSelfReference.documents;
         if (typeof (arrdocs) != 'undefined') {
-            
+
             arrWhenDeferredArray = [];
             arrDataArray = [];
             numIndexerForArray = 0;
@@ -1165,7 +1168,7 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
                     for (x = 0; x < arrdocs.length; x++) {
                         if (x == 0) { $('#imagesDiv').append('<h1>Documents</h1>') };
 
-                        $('#imagesDiv').append('<div class="imageHolder container col-md-12 ' + arrdocs[x].masterId +'" id="' + arrdocs[x].myFullId + '" headerValue="' + arrdocs[x].name + '_' + arrdocs[x].fileName + '"></div>');
+                        $('#imagesDiv').append('<div class="imageHolder container col-md-12 ' + arrdocs[x].masterId + '" id="' + arrdocs[x].myFullId + '" headerValue="' + arrdocs[x].name + '_' + arrdocs[x].fileName + '"></div>');
 
                     };
                 };
@@ -1207,8 +1210,8 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
                     $('#' + myDivId).append(objNewImageToAdd);
                     $('#' + myDivId + 'img').addClass('col-md-4');
                     $('#' + myDivId + 'img').addClass('img-responsive');
-                    
-                    
+
+
                 };
             }).done(function () {
                 $('img').each(function () {
@@ -1866,7 +1869,7 @@ garmentProduct.prototype.getMoas = function (strUrlPrefix, objSelfReference, obj
 
         }).done(function () {
             //var strUrlForUsers = 'http://wsflexwebprd1v.res.hbi.net/Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?userIds=' + strUserIdsToGet + '&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A12134557&action=ExecuteReport';
-            var strUrlForUsers = 'https://plmqa.hanes.com/Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?userIds=' + strUserIdsToGet + '&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A12134557&action=ExecuteReport';
+            var strUrlForUsers = 'http://wsflexappdev2v/Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?userIds=' + strUserIdsToGet + '&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A12134557&action=ExecuteReport';
             var arrUserArray = [];
             $.get(strUrlForUsers, function (data3) { }).done(function (data3) {
                 arrUserArray = rowParser('row', data3);

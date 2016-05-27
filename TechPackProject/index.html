@@ -147,11 +147,7 @@
             //use below for prd
             var url = location.href;
             var strUrlPrefix = 'http://wsflexwebprd1v.res.hbi.net/';
-            //var strUrlPrefix = 'https://plmqa.hanes.com/';
-            //use below for dev
-            //var strUrlPrefix = 'http://wsflexwebdev1v.res.hbi.net/';
-            var strDevPefix = 'http://wsflexwebdev1v.res.hbi.net/';
-            //var arrGarmentProductsArrayForTypeAhead = [];
+            var strDevPrefix = 'http://wsflexappdev2v/';
             var arrSeasonNamesArray = [];
             var currentGarmentProduct = new garmentProduct();
             var strTypeBaseLink = strUrlPrefix + 'Windchill/servlet/TypeBasedIncludeServlet?oid=VR%3A';
@@ -165,9 +161,9 @@
             var arrOfAttributeValueListIds = ['2381876', '102771', '2381693', '368058', '100575'];
             //var arrOfAttributeValueListIds = ['2381876', '102771', '2381693', '17436676', '100575'];
             var strCurrentEnvironment = window.location.href;
-            if (strCurrentEnvironment.indexOf('plmqa.hanes') != -1) {
+            if (strCurrentEnvironment.indexOf(strDevPrefix) != -1) {
                 arrOfAttributeValueListIds = ['2381876', '102771', '2381693', '17436676', '100575'];
-                strUrlPrefix = 'https://plmqa.hanes.com/';
+                strUrlPrefix = strDevPrefix;
             };
 
             $('document').ready(function () {
