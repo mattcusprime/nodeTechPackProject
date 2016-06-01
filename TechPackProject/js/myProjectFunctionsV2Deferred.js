@@ -1213,7 +1213,10 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
 
 
                 };
+
             }).done(function () {
+                //I swear you had something here iterating through the above 2 arrays in sequence...
+
                 $('img').each(function () {
                     var urlToUse = $(this).attr('src');
                     var strParentDiv = '#' + $(this).parent().attr('id');

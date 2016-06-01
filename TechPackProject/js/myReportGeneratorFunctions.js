@@ -650,7 +650,7 @@ function createGprodQuery() {
 
 function makeMyRowsClickableToRemove(idSelector) {
     //var table = $(idSelector).DataTable(tableOptions);
-
+    //retool this to alter actual data using the DataTables spec
     $(idSelector + " tbody tr").dblclick(function () {
         $(this).remove();
         var lastClassOfRow = '';
