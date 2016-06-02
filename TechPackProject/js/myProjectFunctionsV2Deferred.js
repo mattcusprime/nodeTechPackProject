@@ -1201,14 +1201,17 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
                     var objImgMeta = arrDataArray[z];
                     var strResponseText = objImgData.responseText;
                     var objNewImageToAdd = $(strResponseText).find('img');
+					if(window.location.href.indexOf('.res.hbi.net') == -1){
+						objNewImageToAdd[0].src = objNewImageToAdd[0].src.replace('.res.hbi.net','');
+					};
                     var myDivId = objImgMeta.myDivId;
                     var myMasterId = objImgMeta.masterId;
                     var strMyMasterIdWithPoundRemoved = myMasterId.replace('#', '');
                     $(objNewImageToAdd).attr('id', myDivId + 'img');
                     $('#' + myDivId).append(objNewImageToAdd);
-                    $('#' + myDivId).append('<h3>' + decodeURIComponent(objImgMeta.name) + '</h3>');
+                    $('#' + myDivId).append('<h3 class="col-md-offset-1 col-md-8">' + decodeURIComponent(objImgMeta.name) + '</h3>');
                     $('#' + myDivId).append(objNewImageToAdd);
-                    $('#' + myDivId + 'img').addClass('col-md-4');
+                    $('#' + myDivId + 'img').addClass('col-md-offset-2 col-md-8');
                     $('#' + myDivId + 'img').addClass('img-responsive');
 
 
@@ -1241,10 +1244,10 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
     });
     $('#getConstructionReport').click(function () {
     });
-    var StrUrlPrefix = 'http://wsflexwebprd1v.res.hbi.net/';
+    //var StrUrlPrefix = 'http://wsflexwebprd1v.res.hbi.net/';
     $('.blockWeights').click(function () {
-        objSelfReference.getMyBlockWeightsSpread(StrUrlPrefix, objSelfReference);
-        objSelfReference.getBlockWeightsTrim(StrUrlPrefix, objSelfReference);
+        objSelfReference.getMyBlockWeightsSpread(strUrlPrefix, objSelfReference);
+        objSelfReference.getBlockWeightsTrim(strUrlPrefix, objSelfReference);
     });
 };
 /*
