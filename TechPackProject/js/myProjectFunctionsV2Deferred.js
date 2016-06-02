@@ -1168,7 +1168,7 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
                     for (x = 0; x < arrdocs.length; x++) {
                         if (x == 0) { $('#imagesDiv').append('<h1>Documents</h1>') };
 
-                        $('#imagesDiv').append('<div class="imageHolder container col-md-12 ' + arrdocs[x].masterId + '" id="' + arrdocs[x].myFullId + '" headerValue="' + arrdocs[x].name + '_' + arrdocs[x].fileName + '"></div>');
+                        $('#imagesDiv').append('<div class="imageHolder row col-md-12 ' + arrdocs[x].masterId + '" id="' + arrdocs[x].myFullId + '" headerValue="' + arrdocs[x].name + '_' + arrdocs[x].fileName + '"></div>');
 
                     };
                 };
@@ -1209,11 +1209,14 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
                     var strMyMasterIdWithPoundRemoved = myMasterId.replace('#', '');
                     $(objNewImageToAdd).attr('id', myDivId + 'img');
                     $('#' + myDivId).append(objNewImageToAdd);
-                    $('#' + myDivId).append('<h3 class="col-md-offset-1 col-md-8">' + decodeURIComponent(objImgMeta.name) + '</h3>');
+                    $('#' + myDivId).append('<h3 class="col-md-offset-1 col-md-11 row">' + decodeURIComponent(objImgMeta.name) + '</h3>');
                     $('#' + myDivId).append(objNewImageToAdd);
-                    $('#' + myDivId + 'img').addClass('col-md-offset-2 col-md-8');
+                    //$('#' + myDivId + 'img').addClass('col-md-offset-2 col-md-8');
                     $('#' + myDivId + 'img').addClass('img-responsive');
-
+					// row per image from the below
+					$('#' + myDivId + 'img').addClass('row');
+					//and centers it
+					$('#' + myDivId + 'img').addClass('center-block');
 
                 };
 
