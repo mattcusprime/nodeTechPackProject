@@ -1217,6 +1217,7 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
 					$('#' + myDivId + 'img').addClass('row');
 					//and centers it
 					$('#' + myDivId + 'img').addClass('center-block');
+					$('#' + myDivId + 'img').addClass('documentImage');
 
                 };
 

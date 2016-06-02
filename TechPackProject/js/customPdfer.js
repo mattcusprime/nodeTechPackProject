@@ -30,6 +30,9 @@ function pdfSpec(productToSpec) {
 
         return { text: productToSpec.name, alignment: (currentPage % 2) ? 'left' : 'right' };
     };
+	docDefinition.pageSize = 'A4';
+	
+	
     docDefinition.styles = {
         header: {
             fontSize: 18,
@@ -168,20 +171,29 @@ function pdfSpec(productToSpec) {
         docDefinition.content.push(objTextObject, objContentSourceBomTbl);
     };
     //docDefinition.content.images = {};
-    $('#imagesDiv img').each(function (index) {
+    $('#imagesDiv img.documentImage').each(function (index) {
         var strTextHeader = $(this).parent().attr('headerValue');
         var decodedHeader = decodeURIComponent(strTextHeader);
         var objTextObject = {};
         objTextObject = { text: decodedHeader, fontSize: 14, bold: true, margin: [0, 0, 0, 8] };
-        var strBase64String = $(this).attr('src');
-        var objImageToAdd = {};
-        objImageToAdd.image = strBase64String;
+        //var strBase64String = $(this).attr('src');
+        var numA4Width = 400;
+		var numA4Height = 400
+		var objImageToAdd = $(this);
+		resizeImageProportionally(numA4Width,numA4Height,0,objImageToAdd);
+        //objImageToAdd.image = strBase64String;
         //objImageToAdd.fit = [2550, 3300];
         //8.5 x 11 size above
-        objImageToAdd.fit = [600, 600];
+		;
+        //objImageToAdd.fit = [numA4Width, numA4Height];
         //have to incorporate natural fit size as a ratio
-        objImageToAdd.pageBreak = 'after';
-        docDefinition.content.push(objTextObject, objImageToAdd);
+        //objImageToAdd.pageBreak = 'after';
+		var objImageToPass = {};
+		objImageToPass.pageBreak = 'after';
+		objImageToPass.image = objImageToAdd[0].src;
+		objImageToPass.fit = [objImageToAdd[0].width, objImageToAdd[0].height];
+		
+		docDefinition.content.push(objTextObject, objImageToPass);
     });
     /*
     $('#colorwaysDiv table').each(function () {
@@ -333,3 +345,30 @@ function base64Img(base64Img) {
     docDefinition.content.push(base64Img);
     console.log(docDefinition);
 };
+
+function resizeImageProportionally(maxWidth,maxHeight,ratio,imageToResize){
+	var width = $(imageToResize).width();    // Current image width
+    var height = $(imageToResize).height();  // Current image height
+	
+        // Check if the current width is larger than the max
+        if(width > maxWidth){
+            ratio = maxWidth / width;   // get ratio for scaling image
+            $(imageToResize).css("width", maxWidth); // Set new width
+            $(imageToResize).css("height", height * ratio);  // Scale height based on ratio
+            height = height * ratio;    // Reset height to match scaled image
+            width = width * ratio;    // Reset width to match scaled image
+        }
+
+        // Check if current height is larger than max
+        if(height > maxHeight){
+            ratio = maxHeight / height; // get ratio for scaling image
+            $(imageToResize).css("height", maxHeight);   // Set new height
+            $(imageToResize).css("width", width * ratio);    // Scale width based on ratio
+            width = width * ratio;    // Reset width to match scaled image
+            height = height * ratio;    // Reset height to match scaled image
+        }
+	
+	
+
+};
+
