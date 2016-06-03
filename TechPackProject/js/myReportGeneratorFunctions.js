@@ -220,7 +220,7 @@ function createRelatedProductsDiv(objCurrentGarmentProduct) {
     //$('#relationships').fadeOut().remove();
     $('#garmentHeader *').remove();
     var strSpecsDivString = appendBootStrapDivPage('relationships', 1);
-    var strTableString = '<h1>Relationships</h1><table class="table" id="tblRelationships"><tr><th>Relationship</th><th>Product</th></tr><tbody>';
+    var strTableString = '<h1>Prouct Relationships</h1><table class="table" id="tblRelationships"><tr><th>Relationship</th><th>Product</th></tr><tbody>';
     if (typeof (objCurrentGarmentProduct.colorwayProduct) != 'undefined') {
         strTableString = strTableString + "<tr><td>Colorway Product</td><td>" + objCurrentGarmentProduct.colorwayProduct.name + "</td></td>";
     };
@@ -487,7 +487,7 @@ function getLogin(arrAttributeValueListArray, objCurrentGarmentProduct, arrRepor
     var strInput3 = '<button class="closer">Close Application</button>';
     var strInput4 = strInput1 + strInput2;// + strInput3;
     var strReportsXmlSuffix = 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/invokeAction?oid=OR%3Awt.query.template.ReportTemplate%3A12143436&action=ProduceReport&u8=1'
-
+    var strCacheReportUrl;
 
     var strUrlPrefixWithPass;
 
@@ -519,10 +519,16 @@ function getLogin(arrAttributeValueListArray, objCurrentGarmentProduct, arrRepor
 		
 		
         strReportsXmlUrl = strUrlPrefixWithPass + strReportsXmlSuffix;
+	//condition to use cached file using global objParsedObject
+	//var voteable = (age < 18) ? "Too young":"Old enough";
+	var numReportCheck = typeof(objParsedObject.report);
+	strCacheReportUrl = (numReportCheck == 'undefined') ? strReportsXmlUrl:'cachedReports.xml';
+	//condition to use cached file
         //$.get(strReportsXmlUrl, function (data) { }).done(function (data) {
         var strBase64 = btoa(strUser + ":" + strPwd);
         $.ajax({
-            url: strReportsXmlUrl,
+            //url: strReportsXmlUrl,
+	    url: strCacheReportUrl,
             //headers:['Access-Control-Allow-Origin'],
             crossDomain: true,
             xhrFields: {
@@ -545,7 +551,13 @@ function getLogin(arrAttributeValueListArray, objCurrentGarmentProduct, arrRepor
         }).done(function () {
             var gProdQueryUrlObjectId = getMyReportIdFromReportName('Garment Products For Typeahead');
             gProdQueryURL = strUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/invokeAction?oid=OR%3Awt.query.template.ReportTemplate%3A' + gProdQueryUrlObjectId + '&action=ProduceReport&u8=1';
-            applyTypeAheadToElement(gProdQueryURL, '#gProd', 'Garment_Product_Name');
+            //condition to use cached file using global objParsedObject
+	//var voteable = (age < 18) ? "Too young":"Old enough";
+	var numGprodCheck = typeof(objParsedObject.product);
+	var prodQueryCachedUrl;
+	prodQueryCachedUrl = (numGprodCheck == 'undefined') ? gProdQueryURL:'cachedGarmentProducts.xml';
+	//condition to use cached file
+	    applyTypeAheadToElement(prodQueryCachedUrl, '#gProd', 'Garment_Product_Name');
             currentGarmentProduct.getMyValueLists(strUrlPrefixWithPass, arrAttributeValueListArray, objCurrentGarmentProduct);
             $('#loadingInfo').parent().fadeOut().delay(500);
             $('#garmentFormContainer').fadeIn();

@@ -946,7 +946,7 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
         objSelfReference.sewBomTableString = convertRowArrayIntoHtmlTable(objSelfReference.garmentSewBoms, 'size', 'usagePerDozen', 'sewBomTable', '<h1>Sew BOMs</h1>');
     };
     if (objSelfReference.garmentSourceBoms.length > 0) {
-        objSelfReference.sourceBomTableString = convertRowArrayIntoHtmlTable(objSelfReference.garmentSourceBoms, '', '', 'sourceBomTable', '<h1>Source BOM</h1>');
+        objSelfReference.sourceBomTableString = convertRowArrayIntoHtmlTable(objSelfReference.garmentSourceBoms, '', '', 'sourceBomTable', '<h1>Sourced BOMs</h1>');
     };
     if (typeof (objSelfReference.patternSewBoms) != 'undefined') {
         $('#sewBomDiv').append(objSelfReference.sewBomTableString);
@@ -1250,8 +1250,12 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
     });
     //var StrUrlPrefix = 'http://wsflexwebprd1v.res.hbi.net/';
     $('.blockWeights').click(function () {
-        objSelfReference.getMyBlockWeightsSpread(strUrlPrefix, objSelfReference);
-        objSelfReference.getBlockWeightsTrim(strUrlPrefix, objSelfReference);
+        //turning off temporarily until URL is fixed
+	//
+	console.log('turning off temporarily until URL and table for trim is fixed');
+	//objSelfReference.getMyBlockWeightsSpread(strUrlPrefix, objSelfReference);
+        //
+	objSelfReference.getBlockWeightsTrim(strUrlPrefix, objSelfReference);
     });
 };
 /*
@@ -1398,7 +1402,7 @@ garmentProduct.prototype.getBlockWeightsTrim = function updateTrim(strUrlPrefix,
     param = param.replace('/\s/g', '%20');
     paramSeasonTrim = paramSeasonTrim.replace('/\s/g', '%20');
     paramSpecTrim = paramSpecTrim.replace('/\s/g', '%20');
-    var reportStringTrim1 = "http://wsflexwebprd1v.res.hbi.net/Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?Garment+Product+Season="
+    var reportStringTrim1 = strUrlPrefix + "Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?Garment+Product+Season="
     var reportStringTrim2 = "&Product+Name=";
     var reportStringTrim3 = "&Spec+Name=";
     var reportStringTrim4 = "&oid=OR%3Awt.query.template.ReportTemplate%3A4490123&action=ExecuteReport";

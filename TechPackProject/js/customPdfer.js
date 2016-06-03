@@ -176,6 +176,7 @@ function pdfSpec(productToSpec) {
         var decodedHeader = decodeURIComponent(strTextHeader);
         var objTextObject = {};
         objTextObject = { text: decodedHeader, fontSize: 14, bold: true, margin: [0, 0, 0, 8] };
+	objTextObject.pageBreak = 'before';
         //var strBase64String = $(this).attr('src');
         var numA4Width = 500;
 		var numA4Height = 500
@@ -189,7 +190,7 @@ function pdfSpec(productToSpec) {
         //have to incorporate natural fit size as a ratio
         //objImageToAdd.pageBreak = 'after';
 		var objImageToPass = {};
-		objImageToPass.pageBreak = 'after';
+		//objImageToPass.pageBreak = 'after';
 		objImageToPass.image = objImageToAdd[0].src;
 		//objImageToPass.fit = [objImageToAdd[0].naturalWidth, objImageToAdd[0].naturalHeight];
 		//objImageToPass.width = objImageToAdd[0].naturalWidth;
