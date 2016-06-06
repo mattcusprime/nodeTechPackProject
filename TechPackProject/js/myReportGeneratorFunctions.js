@@ -227,9 +227,15 @@ function createRelatedProductsDiv(objCurrentGarmentProduct) {
     if (typeof (objCurrentGarmentProduct.patternProduct) != 'undefined') {
         strTableString = strTableString + "<tr><td>Pattern Product</td><td>" + objCurrentGarmentProduct.patternProduct.name + "</td></td>";
         $('#topLeftNav').html(objCurrentGarmentProduct.name + '<br> Pattern: ' + objCurrentGarmentProduct.patternProduct.name);
+        //$('#garmentFormContainer').fadeIn();
+        $('nav,li').fadeIn();
+        //$('#runNew,.clearThisComponentOnNewGarmentLoad,nav,li').fadeIn();
     }
     else {
         $('#topLeftNav').text(objCurrentGarmentProduct.name);
+        //$('#garmentFormContainer').fadeIn();
+        $('nav,li').fadeIn();
+        //$('#runNew,.clearThisComponentOnNewGarmentLoad,nav,li').fadeIn();
     };
     if (typeof (objCurrentGarmentProduct.labelProduct) != 'undefined') {
         strTableString = strTableString + "<tr><td>Label Product</td><td>" + objCurrentGarmentProduct.labelProduct.name + "</td></td>";
