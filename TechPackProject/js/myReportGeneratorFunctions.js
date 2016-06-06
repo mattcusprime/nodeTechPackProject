@@ -220,7 +220,7 @@ function createRelatedProductsDiv(objCurrentGarmentProduct) {
     //$('#relationships').fadeOut().remove();
     $('#garmentHeader *').remove();
     var strSpecsDivString = appendBootStrapDivPage('relationships', 1);
-    var strTableString = '<h1>Prouct Relationships</h1><table class="table" id="tblRelationships"><tr><th>Relationship</th><th>Product</th></tr><tbody>';
+    var strTableString = '<h1>Product Relationships</h1><table class="table" id="tblRelationships"><tr><th>Relationship</th><th>Product</th></tr><tbody>';
     if (typeof (objCurrentGarmentProduct.colorwayProduct) != 'undefined') {
         strTableString = strTableString + "<tr><td>Colorway Product</td><td>" + objCurrentGarmentProduct.colorwayProduct.name + "</td></td>";
     };
