@@ -186,26 +186,33 @@ garmentProduct.prototype.getMyConstruction = function (strHostUrlPrefix, numCons
     });
     // and so on for each element that we want to capture
     objSelfReference.constructionDetail = arrCurrentConstruction;
-    var strTableHeaderString = '<thead><tr><th>Sorting Number</th><th>Sewing Operation</th><th>Stitch Type / Description</th><th>Gauge Width</th><th>SPI</th><th>Seam/Trimoff Allowance</th><th>Garment Use</th><th>Needle Thread</th><th>Needle Visibility</th><th>Looper Thread</th><th>Looper Visbility</th><th>Comments</th></tr></thead>';
-    var strTableBodyString = '<tbody>';
-    for (var j = 0; j < objSelfReference.constructionDetail.length; j++) {
-        var objThisRow = objSelfReference.constructionDetail[j];
-        strTableBodyString += '<tr><td>' + objThisRow.sortingNumber + '</td>';
-        strTableBodyString += '<td>' + objThisRow.number + '</td>';
-        strTableBodyString += '<td>' + objThisRow.stitchingDisplay + '</td>';
-        strTableBodyString += '<td>' + objThisRow.hbiGuageWidth + '</td>';
-        strTableBodyString += '<td>' + objThisRow.hbiSpi + '</td>';
-        strTableBodyString += '<td>' + objThisRow.seamTypeDisplay + '</td>';
-        strTableBodyString += '<td>' + objThisRow.hbiGarmentUseDisplay + '</td>';
-        strTableBodyString += '<td>' + objThisRow.hbiNeedleThread + '</td>';
-        strTableBodyString += '<td>' + objThisRow.hbiNeedleColor + '</td>';
-        strTableBodyString += '<td>' + objThisRow.hbiLooperThread + '</td>';
-        strTableBodyString += '<td>' + objThisRow.hbiLooperColor + '</td>';
-        strTableBodyString += '<td>' + objThisRow.comments + '</td>';
+    if (objSelfReference.constructionDetail.length > 0) {
+        var strTableHeaderString = '<thead><tr><th>Sorting Number</th><th>Sewing Operation</th><th>Stitch Type / Description</th><th>Gauge Width</th><th>SPI</th><th>Seam/Trimoff Allowance</th><th>Garment Use</th><th>Needle Thread</th><th>Needle Visibility</th><th>Looper Thread</th><th>Looper Visbility</th><th>Comments</th></tr></thead>';
+        var strTableBodyString = '<tbody>';
+        for (var j = 0; j < objSelfReference.constructionDetail.length; j++) {
+            var objThisRow = objSelfReference.constructionDetail[j];
+            strTableBodyString += '<tr><td>' + objThisRow.sortingNumber + '</td>';
+            strTableBodyString += '<td>' + objThisRow.number + '</td>';
+            strTableBodyString += '<td>' + objThisRow.stitchingDisplay + '</td>';
+            strTableBodyString += '<td>' + objThisRow.hbiGuageWidth + '</td>';
+            strTableBodyString += '<td>' + objThisRow.hbiSpi + '</td>';
+            strTableBodyString += '<td>' + objThisRow.seamTypeDisplay + '</td>';
+            strTableBodyString += '<td>' + objThisRow.hbiGarmentUseDisplay + '</td>';
+            strTableBodyString += '<td>' + objThisRow.hbiNeedleThread + '</td>';
+            strTableBodyString += '<td>' + objThisRow.hbiNeedleColor + '</td>';
+            strTableBodyString += '<td>' + objThisRow.hbiLooperThread + '</td>';
+            strTableBodyString += '<td>' + objThisRow.hbiLooperColor + '</td>';
+            strTableBodyString += '<td>' + objThisRow.comments + '</td>';
+        };
+        strTableBodyString += '</tr>';
+        strTableBodyString += '</tbody>';
+        objSelfReference.constructionTableString = '<h1>Constructions</h1><table id="construction" class="display responsive col-md-12 compact cell-border">' + strTableHeaderString + strTableBodyString + '</table>';
+
+    }
+    else {
+        $('#constructionsLi').fadeOut();
     };
-    strTableBodyString += '</tr>';
-    strTableBodyString += '</tbody>';
-    objSelfReference.constructionTableString = '<h1>Constructions</h1><table id="construction" class="display responsive col-md-12 compact cell-border">' + strTableHeaderString + strTableBodyString + '</table>';
+
 };
 /**
  * @comment Still need to add logic here to deal with size variation and variable columns as a result; this is currently ran within @method getSpecComponentsForActiveSpec
@@ -948,15 +955,22 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
     if (objSelfReference.garmentSourceBoms.length > 0) {
         objSelfReference.sourceBomTableString = convertRowArrayIntoHtmlTable(objSelfReference.garmentSourceBoms, '', '', 'sourceBomTable', '<h1>Sourced BOMs</h1>');
     };
-    if (typeof (objSelfReference.patternSewBoms) != 'undefined') {
+    //if (typeof (objSelfReference.patternSewBoms) != 'undefined') {
+    if (objSelfReference.patternSewBoms.length > 0) {
         $('#sewBomDiv').append(objSelfReference.sewBomTableString);
+    }
+    else {
+        $('#sewBomLi').fadeOut();
     };
     if (objSelfReference.garmentSourceBoms.length != 0) {
         $('#sourceBomDiv').append(objSelfReference.sourceBomTableString);
         $('#sourceBomTable').DataTable(sourceBomTableOptions);
+    }
+    else {
+        $('#sourcedBomLi').fadeOut();
     };
-    //sourceBomDiv
-    if (typeof (objSelfReference.patternSewBoms) != 'undefined' && typeof (objSelfReference.garmentSewBoms) != 'undefined') {
+    //sourceBomDivgarmentSewBoms
+    if (objSelfReference.patternSewBoms.length > 0 && objSelfReference.garmentSewBoms.length > 0) {
         $('#sewBomTable').DataTable(sewBomTableOptions);
     };
     var arrConstructionDetailDataContainer;
@@ -964,10 +978,22 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
     $.when(objDefferedConstruction, objDefferedMeasurement).done(function (objDefferedConstruction, objDefferedMeasurement) {
         arrConstructionDetailDataContainer = objDefferedConstruction[0];
         arrMeasurementDetailDataContainer = objDefferedMeasurement[0];
-        objSelfReference.getMyConstruction(strHostUrlPrefix, objSelfReference.construction.branchId, arrConstructionDetailDataContainer, objSelfReference);
-        createComponentTable('constructionDiv', 'construction', objSelfReference.constructionTableString, constructionTableOptions);
-        objSelfReference.getMyMeasurement(strHostUrlPrefix, objSelfReference.measurement.branchId, arrMeasurementDetailDataContainer, objSelfReference);
-        createComponentTable('measurementDiv', 'measurements', objSelfReference.measurementTableString, measurementTableOptions, true);
+        try {
+            objSelfReference.getMyConstruction(strHostUrlPrefix, objSelfReference.construction.branchId, arrConstructionDetailDataContainer, objSelfReference);
+            createComponentTable('constructionDiv', 'construction', objSelfReference.constructionTableString, constructionTableOptions);
+        } catch (e) {
+            console.log(e);
+            console.log("construction not found");
+            $('#constructionsLi').fadeOut();
+        };
+        try {
+            objSelfReference.getMyMeasurement(strHostUrlPrefix, objSelfReference.measurement.branchId, arrMeasurementDetailDataContainer, objSelfReference);
+            createComponentTable('measurementDiv', 'measurements', objSelfReference.measurementTableString, measurementTableOptions, true);
+        } catch (e) {
+            console.log(e);
+            console.log("construction not found");
+            $('#measurementsLi').fadeOut();
+        };
 
     });
     var strApprovedSupplierUrlObjectId = getMyReportIdFromReportName('garmentProdSpecsGarmentAndPatternComponentsApprovedSuppliers');
@@ -1201,9 +1227,9 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
                     var objImgMeta = arrDataArray[z];
                     var strResponseText = objImgData.responseText;
                     var objNewImageToAdd = $(strResponseText).find('img');
-					if(window.location.href.indexOf('.res.hbi.net') == -1){
-						objNewImageToAdd[0].src = objNewImageToAdd[0].src.replace('.res.hbi.net','');
-					};
+                    if (window.location.href.indexOf('.res.hbi.net') == -1) {
+                        objNewImageToAdd[0].src = objNewImageToAdd[0].src.replace('.res.hbi.net', '');
+                    };
                     var myDivId = objImgMeta.myDivId;
                     var myMasterId = objImgMeta.masterId;
                     var strMyMasterIdWithPoundRemoved = myMasterId.replace('#', '');
@@ -1213,11 +1239,11 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
                     $('#' + myDivId).append(objNewImageToAdd);
                     //$('#' + myDivId + 'img').addClass('col-md-offset-2 col-md-8');
                     $('#' + myDivId + 'img').addClass('img-responsive');
-					// row per image from the below
-					$('#' + myDivId + 'img').addClass('row');
-					//and centers it
-					$('#' + myDivId + 'img').addClass('center-block');
-					$('#' + myDivId + 'img').addClass('documentImage');
+                    // row per image from the below
+                    $('#' + myDivId + 'img').addClass('row');
+                    //and centers it
+                    $('#' + myDivId + 'img').addClass('center-block');
+                    $('#' + myDivId + 'img').addClass('documentImage');
 
                 };
 
@@ -1251,11 +1277,11 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
     //var StrUrlPrefix = 'http://wsflexwebprd1v.res.hbi.net/';
     $('.blockWeights').click(function () {
         //turning off temporarily until URL is fixed
-	//
-	console.log('turning off temporarily until URL and table for trim is fixed');
-	//objSelfReference.getMyBlockWeightsSpread(strUrlPrefix, objSelfReference);
         //
-	objSelfReference.getBlockWeightsTrim(strUrlPrefix, objSelfReference);
+        console.log('turning off temporarily until URL and table for trim is fixed');
+        //objSelfReference.getMyBlockWeightsSpread(strUrlPrefix, objSelfReference);
+        //
+        objSelfReference.getBlockWeightsTrim(strUrlPrefix, objSelfReference);
     });
 };
 /*

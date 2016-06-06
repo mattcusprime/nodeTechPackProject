@@ -30,10 +30,10 @@ function pdfSpec(productToSpec) {
 
         return { text: productToSpec.name, alignment: (currentPage % 2) ? 'left' : 'right' };
     };
-	//docDefinition.pageSize = 'A4';
-	docDefinition.pageSize = { width: 500, height: 900 };
-	docDefinition.pageOrientation = 'landscape';
-	docDefinition.styles = {
+    //docDefinition.pageSize = 'A4';
+    docDefinition.pageSize = { width: 500, height: 900 };
+    docDefinition.pageOrientation = 'landscape';
+    docDefinition.styles = {
         header: {
             fontSize: 18,
             bold: true,
@@ -54,7 +54,7 @@ function pdfSpec(productToSpec) {
         }
     };
 
-    
+
     //};
     if ($("#revisionAttributeTbl").length) {
         var arrRevisionAttributeData = pdfThisTableV2('revisionAttributeTbl');
@@ -176,59 +176,59 @@ function pdfSpec(productToSpec) {
         var decodedHeader = decodeURIComponent(strTextHeader);
         var objTextObject = {};
         objTextObject = { text: decodedHeader, fontSize: 14, bold: true, margin: [0, 0, 0, 8] };
-	objTextObject.pageBreak = 'before';
+        objTextObject.pageBreak = 'before';
         //var strBase64String = $(this).attr('src');
         var numA4Width = 500;
-		var numA4Height = 500
-		var objImageToAdd = $(this);
-		resizeImageProportionally(numA4Width,numA4Height,0,objImageToAdd);
+        var numA4Height = 500
+        var objImageToAdd = $(this);
+        resizeImageProportionally(numA4Width, numA4Height, 0, objImageToAdd);
         //objImageToAdd.image = strBase64String;
         //objImageToAdd.fit = [2550, 3300];
         //8.5 x 11 size above
-		;
+        ;
         //objImageToAdd.fit = [numA4Width, numA4Height];
         //have to incorporate natural fit size as a ratio
         //objImageToAdd.pageBreak = 'after';
-		var objImageToPass = {};
-		//objImageToPass.pageBreak = 'after';
-		objImageToPass.image = objImageToAdd[0].src;
-		//objImageToPass.fit = [objImageToAdd[0].naturalWidth, objImageToAdd[0].naturalHeight];
-		//objImageToPass.width = objImageToAdd[0].naturalWidth;
-		//objImageToPass.height = objImageToAdd[0].naturalHeight;
-		var numMaxWidth = 500;
-		var numMaxHeight = 700;
-		var numBackUpSmallerMaxWidth = 200;
-		//still need to rework this for very tall but very thin images
-		//objImageToPass.height = 600;
-		if(objImageToAdd[0].width < numMaxWidth && objImageToAdd[0].height < numMaxHeight){
-			objImageToPass.width = objImageToAdd[0].width;
-			
-		}
-		else if(objImageToAdd[0].width < numMaxWidth && objImageToAdd[0].height >= numMaxHeight){
-			//objImageToPass.height = objImageToAdd[0].height;
-			//objImageToPass.height = numMaxHeight;
-			objImageToPass.fit = [numMaxWidth,numMaxHeight];
-		}
-		else if(objImageToAdd[0].width >= numMaxWidth && objImageToAdd[0].height < numMaxHeight){
-			//objImageToPass.height = objImageToAdd[0].height;
-			objImageToPass.width = numMaxWidth;
-			//objImageToPass.fit = [numMaxWidth,numMaxHeight];
-			
-		}
-		else if(objImageToAdd[0].width >= numMaxWidth && objImageToAdd[0].height >= numMaxHeight){
-			//objImageToPass.height = objImageToAdd[0].height;
-			//objImageToPass.width = numMaxWidth;
-			//objImageToPass.height = numMaxHeight;
-			objImageToPass = {
-			image: objImageToPass.image,
-			width: numBackUpSmallerMaxWidth//,
-			//: 800
-			};
-		};
-		
-		
-		docDefinition.content.push(objTextObject, objImageToPass);
-		
+        var objImageToPass = {};
+        //objImageToPass.pageBreak = 'after';
+        objImageToPass.image = objImageToAdd[0].src;
+        //objImageToPass.fit = [objImageToAdd[0].naturalWidth, objImageToAdd[0].naturalHeight];
+        //objImageToPass.width = objImageToAdd[0].naturalWidth;
+        //objImageToPass.height = objImageToAdd[0].naturalHeight;
+        var numMaxWidth = 500;
+        var numMaxHeight = 700;
+        var numBackUpSmallerMaxWidth = 200;
+        //still need to rework this for very tall but very thin images
+        //objImageToPass.height = 600;
+        if (objImageToAdd[0].width < numMaxWidth && objImageToAdd[0].height < numMaxHeight) {
+            objImageToPass.width = objImageToAdd[0].width;
+
+        }
+        else if (objImageToAdd[0].width < numMaxWidth && objImageToAdd[0].height >= numMaxHeight) {
+            //objImageToPass.height = objImageToAdd[0].height;
+            //objImageToPass.height = numMaxHeight;
+            objImageToPass.fit = [numMaxWidth, numMaxHeight];
+        }
+        else if (objImageToAdd[0].width >= numMaxWidth && objImageToAdd[0].height < numMaxHeight) {
+            //objImageToPass.height = objImageToAdd[0].height;
+            objImageToPass.width = numMaxWidth;
+            //objImageToPass.fit = [numMaxWidth,numMaxHeight];
+
+        }
+        else if (objImageToAdd[0].width >= numMaxWidth && objImageToAdd[0].height >= numMaxHeight) {
+            //objImageToPass.height = objImageToAdd[0].height;
+            //objImageToPass.width = numMaxWidth;
+            //objImageToPass.height = numMaxHeight;
+            objImageToPass = {
+                image: objImageToPass.image,
+                width: numBackUpSmallerMaxWidth//,
+                //: 800
+            };
+        };
+
+
+        docDefinition.content.push(objTextObject, objImageToPass);
+
     });
     /*
     $('#colorwaysDiv table').each(function () {
@@ -381,33 +381,33 @@ function base64Img(base64Img) {
     console.log(docDefinition);
 };
 
-function resizeImageProportionally(maxWidth,maxHeight,ratio,imageToResize){
-	var width = $(imageToResize).width();    // Current image width
+function resizeImageProportionally(maxWidth, maxHeight, ratio, imageToResize) {
+    var width = $(imageToResize).width();    // Current image width
     var height = $(imageToResize).height();  // Current image height
-	
-        // Check if the current width is larger than the max
-        if(width > maxWidth){
-            ratio = maxWidth / width;   // get ratio for scaling image
-            //$(imageToResize).css("width", maxWidth); // Set new width
-            //$(imageToResize).css("height", height * ratio);  // Scale height based on ratio
-			$(imageToResize).css("naturalWidth", maxWidth); // Set new width
-            $(imageToResize).css("naturalHeight", height * ratio);  // Scale height based on ratio
-            height = height * ratio;    // Reset height to match scaled image
-            width = width * ratio;    // Reset width to match scaled image
-        }
 
-        // Check if current height is larger than max
-        if(height > maxHeight){
-            ratio = maxHeight / height; // get ratio for scaling image
-            //$(imageToResize).css("height", maxHeight);   // Set new height
-            //$(imageToResize).css("width", width * ratio);    // Scale width based on ratio
-			$(imageToResize).css("naturalHeight", maxHeight);   // Set new height
-            $(imageToResize).css("naturalWidth", width * ratio);    // Scale width based on ratio
-            width = width * ratio;    // Reset width to match scaled image
-            height = height * ratio;    // Reset height to match scaled image
-        }
-	
-	
+    // Check if the current width is larger than the max
+    if (width > maxWidth) {
+        ratio = maxWidth / width;   // get ratio for scaling image
+        //$(imageToResize).css("width", maxWidth); // Set new width
+        //$(imageToResize).css("height", height * ratio);  // Scale height based on ratio
+        $(imageToResize).css("naturalWidth", maxWidth); // Set new width
+        $(imageToResize).css("naturalHeight", height * ratio);  // Scale height based on ratio
+        height = height * ratio;    // Reset height to match scaled image
+        width = width * ratio;    // Reset width to match scaled image
+    }
+
+    // Check if current height is larger than max
+    if (height > maxHeight) {
+        ratio = maxHeight / height; // get ratio for scaling image
+        //$(imageToResize).css("height", maxHeight);   // Set new height
+        //$(imageToResize).css("width", width * ratio);    // Scale width based on ratio
+        $(imageToResize).css("naturalHeight", maxHeight);   // Set new height
+        $(imageToResize).css("naturalWidth", width * ratio);    // Scale width based on ratio
+        width = width * ratio;    // Reset width to match scaled image
+        height = height * ratio;    // Reset height to match scaled image
+    }
+
+
 
 };
 

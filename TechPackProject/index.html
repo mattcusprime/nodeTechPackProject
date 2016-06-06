@@ -134,27 +134,27 @@
         <script src="js/customPdfer.js"></script>
         <!--End of HBI custom scripts-->
         <script class="dontPostScript">
-	 /**
-      * $.parseParams - parse query string paramaters into an object.
-      */
-        (function ($) {
-            var re = /([^&=]+)=?([^&]*)/g;
-            var decodeRE = /\+/g;  // Regex for replacing addition symbol with a space
-            var decode = function (str) { return decodeURIComponent(str.replace(decodeRE, " ")); };
-            $.parseParams = function (query) {
-                var params = {}, e;
-                while (e = re.exec(query)) {
-                    var k = decode(e[1]), v = decode(e[2]);
-                    if (k.substring(k.length - 2) === '[]') {
-                        k = k.substring(0, k.length - 2);
-                        (params[k] || (params[k] = [])).push(v);
+            /**
+             * $.parseParams - parse query string paramaters into an object.
+             */
+            (function ($) {
+                var re = /([^&=]+)=?([^&]*)/g;
+                var decodeRE = /\+/g;  // Regex for replacing addition symbol with a space
+                var decode = function (str) { return decodeURIComponent(str.replace(decodeRE, " ")); };
+                $.parseParams = function (query) {
+                    var params = {}, e;
+                    while (e = re.exec(query)) {
+                        var k = decode(e[1]), v = decode(e[2]);
+                        if (k.substring(k.length - 2) === '[]') {
+                            k = k.substring(0, k.length - 2);
+                            (params[k] || (params[k] = [])).push(v);
+                        }
+                        else params[k] = v;
                     }
-                    else params[k] = v;
-                }
-                return params;
-            };
-        })(jQuery);
-	
+                    return params;
+                };
+            })(jQuery);
+
             //report id creator, only hard coded required url, import the rest and
             //this should read them 'ReportsXml' report.
             //later to get the report id we will get the indexOf the Name and then the id value should be at
@@ -178,20 +178,21 @@
             var strLinkCloseTag = '</a>';
             var gProdQueryURL;// = strUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/invokeAction?oid=OR%3Awt.query.template.ReportTemplate%3A4711650&action=ProduceReport&u8=1'
             var returnArrays;
-            var arrOfAttributeValueListIds = ['2381876'/*Prod Only*/, '102771', '2381693'/*Prod Only*/, '368058', '100575','368793'/*Maybe Dev Only.*/];
+            var arrOfAttributeValueListIds = ['2381876'/*Prod Only*/, '102771', '2381693'/*Prod Only*/, '368058', '100575', '368793'/*Maybe Dev Only.*/];
             //var arrOfAttributeValueListIds = ['2381876', '102771', '2381693', '17436676', '100575'];
             var strCurrentEnvironment = window.location.href;
             var numIndexOfWindChill = strCurrentEnvironment.indexOf('Windchill');
-			strUrlPrefix = strCurrentEnvironment.substring(0,numIndexOfWindChill);
+            strUrlPrefix = strCurrentEnvironment.substring(0, numIndexOfWindChill);
             /*if (strCurrentEnvironment.indexOf('plmqa.hanes') != -1) {
                 arrOfAttributeValueListIds = ['2381876', '102771', '2381693', '17436676', '100575'];
                 strUrlPrefix = 'https://plmqa.hanes.com/';
             };*/
-	    var objParsedObject = {};
-	    objParsedObject = $.parseParams(strCurrentEnvironment.split('?')[1] || '');
+            var objParsedObject = {};
+            objParsedObject = $.parseParams(strCurrentEnvironment.split('?')[1] || '');
+
             $('document').ready(function () {
-
-
+                originalNavBar = $('#navbar *').html();
+                $('#runNew,.clearThisComponentOnNewGarmentLoad,nav').fadeOut();
                 $('#loadingInfo').parent().hide();
 
                 //getReportsFromXmlFunction(strReportsXmlUrl);
@@ -216,24 +217,24 @@
 
                         $('#garmentFormContainer').fadeOut();
                         $('.clearThisComponentOnNewGarmentLoad *').remove();
-                        $('#runNew,.clearThisComponentOnNewGarmentLoad,nav').fadeIn();
+                        $('#runNew,.clearThisComponentOnNewGarmentLoad,nav,li').fadeIn();
                         localStorage.setItem('lastGarmentRan', nameToUse);
                         //currentGarmentProduct.getSpecByName(strUrlPrefix, nameToUse, currentGarmentProduct.thenCallSpecs, returnArrays, currentGarmentProduct);
                         currentGarmentProduct.getSpecByNameButNotJustActiveSpec(strUrlPrefix, nameToUse, currentGarmentProduct.thenCallSpecs, returnArrays, currentGarmentProduct);
                         //replacing old version that just grabbed active spec and switching to version that will serve up
                         //all seasons and specs
                     }
-					/*else{
-						var arrOfPossibleOptions = [];
-						for(var i = 0; i < arrGarmentProductsArrayForTypeAhead.length;i++){
-							var strCurrentStringFromType = arrGarmentProductsArrayForTypeAhead[i];
-							if (strCurrentStringFromType.indexOf(nameToUse) != -1) {
-								arrOfPossibleOptions.push(strCurrentStringFromType);
-							};
-							
-						};
-						console.log(arrOfPossibleOptions);
-					};*/
+                        /*else{
+                            var arrOfPossibleOptions = [];
+                            for(var i = 0; i < arrGarmentProductsArrayForTypeAhead.length;i++){
+                                var strCurrentStringFromType = arrGarmentProductsArrayForTypeAhead[i];
+                                if (strCurrentStringFromType.indexOf(nameToUse) != -1) {
+                                    arrOfPossibleOptions.push(strCurrentStringFromType);
+                                };
+
+                            };
+                            console.log(arrOfPossibleOptions);
+                        };*/
                     else {
                         $('#gProd').val('');
                         $('#gProd').focus();
@@ -307,11 +308,11 @@
                 //window.location.hash = target;
 
             });
-	    if($(strJquerySelectorTarget).find('table').length && $(strJquerySelectorTarget).find('img').length){
-		alert('No Content was found for this item');
-	    };
+            if ($(strJquerySelectorTarget).find('table').length && $(strJquerySelectorTarget).find('img').length) {
+                alert('No Content was found for this item');
+            };
         };
-	
+
     </script>
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container" id="navTopDiv">
@@ -331,17 +332,17 @@
                     <li><a href='#tblRelationships'>Top</a></li>
                     <li><a href="javascript:makeMeScrollToDefinedTarget('#garmentHeader',50,-100);">Product Relationships</a></li>
                     <li><a href="javascript:makeMeScrollToDefinedTarget('#imagesDiv',50,-100);">Documents</a></li>
-                    <li><a href="javascript:makeMeScrollToDefinedTarget('#constructionDiv',50, -100);">Constructions</a></li>
-                    <li><a href="javascript:makeMeScrollToDefinedTarget('#measurementDiv',50,-100);makeMyRowsClickableToRemove('#measurements');">Measurements</a></li>
+                    <li id="constructionsLi"><a href="javascript:makeMeScrollToDefinedTarget('#constructionDiv',50, -100);">Constructions</a></li>
+                    <li id="measurementsLi"><a href="javascript:makeMeScrollToDefinedTarget('#measurementDiv',50,-100);makeMyRowsClickableToRemove('#measurements');">Measurements</a></li>
                     <li><a href="javascript:makeMeScrollToDefinedTarget('#labelsDiv',50,-100);">Label BOM</a></li>
-                    <li><a href="javascript:makeMeScrollToDefinedTarget('#sewBomDiv',50,-100);">Sew BOM</a></li>
-		    <li><a href="javascript:makeMeScrollToDefinedTarget('#sourceBomDiv',50,-100);">Sourced BOM</a></li>
-		    <li><a href="javascript:makeMeScrollToDefinedTarget('#colorwaysDiv',50,-100);">Colorway BOMs</a></li>
+                    <li id="sewBomLi"><a href="javascript:makeMeScrollToDefinedTarget('#sewBomDiv',50,-100);">Sew BOM</a></li>
+                    <li id="sourcedBomLi"><a href="javascript:makeMeScrollToDefinedTarget('#sourceBomDiv',50,-100);">Sourced BOM</a></li>
+                    <li><a href="javascript:makeMeScrollToDefinedTarget('#colorwaysDiv',50,-100);">Colorway BOMs</a></li>
                     <li><a href="javascript:makeMeScrollToDefinedTarget('#sizeTableDiv',50,-100);">Sizing Table</a></li>
                     <li><a href="javascript:makeMeScrollToDefinedTarget('#prodRevisionDiv',50,-100);">Product Revisions</a></li>
-		    <li><a href="javascript:makeMeScrollToDefinedTarget('#approvedSupplierDiv',50,-100);">Approved Suppliers</a></li>
-		    <li><a class="blockWeights" href="javascript:makeMeScrollToDefinedTarget('#blockWeightSpreadDiv',50,-100);">Block Weights - For Loading</a></li>
-                    
+                    <li><a href="javascript:makeMeScrollToDefinedTarget('#approvedSupplierDiv',50,-100);">Approved Suppliers</a></li>
+                    <li><a class="blockWeights" href="javascript:makeMeScrollToDefinedTarget('#blockWeightSpreadDiv',50,-100);">Block Weights - For Loading</a></li>
+
                     <!--<li><a href="javascript:convertImages();">Convert Images</a></li>-->
                     <li id="runNew"><a href='javascript:runNewProduct(currentGarmentProduct);'>Run a New Product</a></li>
                     <!--<li><a href='javascript:currentGarmentProduct.saveMe(currentGarmentProduct);'>Save Garment</a></li>-->
@@ -379,7 +380,7 @@
         <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="reportsHeader">
 
         </div> -->
-        <!-- container -->
+    <!-- container -->
     </div>
     <div class="page">
         <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="loadingInfo">

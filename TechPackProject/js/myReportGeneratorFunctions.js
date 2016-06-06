@@ -509,26 +509,26 @@ function getLogin(arrAttributeValueListArray, objCurrentGarmentProduct, arrRepor
         //strUrlPrefixWithPass = 'https://@plmqa.hanes.com/';
         var strCurrentEnvironment = window.location.href;
         //if (strCurrentEnvironment.indexOf('wsflexappdev2v') != -1) {
-            //arrOfAttributeValueListIds = ['2381876', '102771', '2381693', '17436676', '100575'];
-            //strUrlPrefixWithPass = 'https://plmqa.hanes.com/';
+        //arrOfAttributeValueListIds = ['2381876', '102771', '2381693', '17436676', '100575'];
+        //strUrlPrefixWithPass = 'https://plmqa.hanes.com/';
         //    strUrlPrefixWithPass = 'http://' + strUser + ':' + strPwd + '@wsflexappdev2v/';
         //};
-		var strCurrentEnvironment = window.location.href;
+        var strCurrentEnvironment = window.location.href;
         var numIndexOfWindChill = strCurrentEnvironment.indexOf('Windchill');
-		strUrlPrefixWithPass = strCurrentEnvironment.substring(0,numIndexOfWindChill);
-		
-		
+        strUrlPrefixWithPass = strCurrentEnvironment.substring(0, numIndexOfWindChill);
+
+
         strReportsXmlUrl = strUrlPrefixWithPass + strReportsXmlSuffix;
-	//condition to use cached file using global objParsedObject
-	//var voteable = (age < 18) ? "Too young":"Old enough";
-	var numReportCheck = typeof(objParsedObject.report);
-	strCacheReportUrl = (numReportCheck == 'undefined') ? strReportsXmlUrl:'cachedReports.xml';
-	//condition to use cached file
+        //condition to use cached file using global objParsedObject
+        //var voteable = (age < 18) ? "Too young":"Old enough";
+        var numReportCheck = typeof (objParsedObject.report);
+        strCacheReportUrl = (numReportCheck == 'undefined') ? strReportsXmlUrl : 'cachedReports.xml';
+        //condition to use cached file
         //$.get(strReportsXmlUrl, function (data) { }).done(function (data) {
         var strBase64 = btoa(strUser + ":" + strPwd);
         $.ajax({
             //url: strReportsXmlUrl,
-	    url: strCacheReportUrl,
+            url: strCacheReportUrl,
             //headers:['Access-Control-Allow-Origin'],
             crossDomain: true,
             xhrFields: {
@@ -552,12 +552,12 @@ function getLogin(arrAttributeValueListArray, objCurrentGarmentProduct, arrRepor
             var gProdQueryUrlObjectId = getMyReportIdFromReportName('Garment Products For Typeahead');
             gProdQueryURL = strUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/invokeAction?oid=OR%3Awt.query.template.ReportTemplate%3A' + gProdQueryUrlObjectId + '&action=ProduceReport&u8=1';
             //condition to use cached file using global objParsedObject
-	//var voteable = (age < 18) ? "Too young":"Old enough";
-	var numGprodCheck = typeof(objParsedObject.product);
-	var prodQueryCachedUrl;
-	prodQueryCachedUrl = (numGprodCheck == 'undefined') ? gProdQueryURL:'cachedGarmentProducts.xml';
-	//condition to use cached file
-	    applyTypeAheadToElement(prodQueryCachedUrl, '#gProd', 'Garment_Product_Name');
+            //var voteable = (age < 18) ? "Too young":"Old enough";
+            var numGprodCheck = typeof (objParsedObject.product);
+            var prodQueryCachedUrl;
+            prodQueryCachedUrl = (numGprodCheck == 'undefined') ? gProdQueryURL : 'cachedGarmentProducts.xml';
+            //condition to use cached file
+            applyTypeAheadToElement(prodQueryCachedUrl, '#gProd', 'Garment_Product_Name');
             currentGarmentProduct.getMyValueLists(strUrlPrefixWithPass, arrAttributeValueListArray, objCurrentGarmentProduct);
             $('#loadingInfo').parent().fadeOut().delay(500);
             $('#garmentFormContainer').fadeIn();
@@ -578,6 +578,7 @@ function runNewProduct(wipeThisGarmentProductOut) {
         };
     };
     $('#runNew,.clearThisComponentOnNewGarmentLoad,nav').fadeOut();
+    //$('#navbar').html(originalNavBar);
     $('#garmentFormContainer').fadeIn();
     $('#gProd').val('').focus();
 
