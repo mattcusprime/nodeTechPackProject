@@ -555,6 +555,8 @@ function getLogin(arrAttributeValueListArray, objCurrentGarmentProduct, arrRepor
                 if (arrReportsThatIRun.indexOf(objMasterReportObject[strReportName]) != -1) {
                     console.log(objMasterReportObject);
                 };
+
+
             });
 
         }).done(function () {
@@ -635,7 +637,9 @@ function getMyReportIdFromReportName(reportName) {
     var numIndexOfId = numIndexOfReportName - 1;
     var strObjectIdOfReport = arrMasterReportIndexer[numIndexOfId];*/
     strObjectIdOfReport = objMasterReportObject[reportName];
-
+    if (typeof (strObjectIdOfReport) == 'undefined') {
+        console.log(strObjectIdOfReport + ' report not found.');
+    };
     return strObjectIdOfReport;
 };
 
