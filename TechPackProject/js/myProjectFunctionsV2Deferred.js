@@ -339,7 +339,7 @@ garmentProduct.prototype.getSpecByName = function (strHostUrlPrefix, strGarmentN
         alert('No Garment Name was given')
         return;
     }
-    var strSpecUrl = strHostUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?Product+Name=' + strGarmentName + '&oid=OR%3Awt.query.template.ReportTemplate%3A9663785&action=ExecuteReport';
+    var strSpecUrl = strHostUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?Product+Name=' + strGarmentName + '&oid=OR%3Awt.query.template.ReportTemplate%3A' + getMyReportIdFromReportName(GarmentProdtoGarmentSpecs) + 'action=ExecuteReport';
     var numActiveSpecId = 0;
     var strActiveSpecName;
     var arrSpecArray = [];
@@ -438,7 +438,7 @@ garmentProduct.prototype.getSpecByNameButNotJustActiveSpec = function (strHostUr
         alert('No Garment Name was given')
         return;
     }
-    var strSpecUrl = strHostUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?Product+Name=' + strGarmentName + '&oid=OR%3Awt.query.template.ReportTemplate%3A9663785&action=ExecuteReport';
+    var strSpecUrl = strHostUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?Product+Name=' + strGarmentName + '&oid=OR%3Awt.query.template.ReportTemplate%3A' + getMyReportIdFromReportName(GarmentProdtoGarmentSpecs) + '&action=ExecuteReport';
     var numActiveSpecId = 0;
     var strActiveSpecName;
     var arrSpecArray = [];
@@ -1291,7 +1291,8 @@ needs comments
 garmentProduct.prototype.getMyValueLists = function (strUrlPrefix, arrListIds, objSelfReference) {
     //http://wsflexwebprd1v.res.hbi.net/Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?attValueListId=2381876%2C102771%2C2381693&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A10596321&action=ExecuteReport
     var strUrl1 = strUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?attValueListId=';
-    var strUrl2 = '&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A10596321&action=ExecuteReport';
+    //var strUrl2 = '&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A10596321&action=ExecuteReport';
+    var strUrl2 = '&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A' + getMyReportIdFromReportName(garmentProdSpecsAndSuchAttributeValueListCall) + '&action=ExecuteReport';
     var strInStringForQuery = '';
     objSelfReference.displayValues = [];
     objSelfReference.displayKeys = [];
@@ -1523,12 +1524,17 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix, objSelfRefere
     var strTrimCwayBomString = '<h2>Colorway BOM</h2><table id="colorwayReport" class="display responsive col-md-12 compact cell-border"><thead><tr>';//<th>Part Name</th><th>Desc</th><th>Garment Use</th><th>Material</th>';</tr></thead><tbody>';
     var strTrimCwaysTableString = '<h1>Colorways</h1><h2>Colorways by Group</h2> <button id="swapSwatch">Show Swatches</button><table id="colorwaysListTable" class="display responsive col-md-12 compact cell-border"><thead><tr><th>Colorway Group</th><th>Colorway Name</th></tr></thead><tbody>';
     var arrMaterialsToGet = [];
+    var strOidPrefix = 'OR:wt.query.template.ReportTemplate:';
+    var strSkuOidUrl = strOidPrefix + getMyReportIdFromReportName(garmentProdSpecGarmentAndColorwayBoms);
+    var strBranchOidUrl = strOidPrefix + getMyReportIdFromReportName(garmentProdSpecGarmentAndColorwayBomsV2AllColors);
+    var strDefColorways = strOidPrefix + getMyReportIdFromReportName(garmentProdSpecGarmentAndColorwayColorways);
     var objDefferedBranch = $.ajax({
         url: strBeginUrl,
         type: 'get',
         data: {
             objectId: objSelfReference.colorwayProduct.objectId,
-            oid: 'OR:wt.query.template.ReportTemplate:11146551',
+            oid: strBranchOidUrl,
+            //oid: 'OR:wt.query.template.ReportTemplate:11146551',
             xsl2: '',
             xsl2: '',
             format: 'formatDelegate',
@@ -1541,7 +1547,8 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix, objSelfRefere
         type: 'get',
         data: {
             objectId: objSelfReference.colorwayProduct.objectId,
-            oid: 'OR:wt.query.template.ReportTemplate:10732525',
+            oid: strSkuOidUrl,
+            //oid: 'OR:wt.query.template.ReportTemplate:10732525',
             format: 'formatDelegate',
             xsl2: '',
             xsl2: '',
@@ -1555,7 +1562,8 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix, objSelfRefere
         type: 'get',
         data: {
             objectId: objSelfReference.colorwayProduct.objectId,
-            oid: 'OR:wt.query.template.ReportTemplate:10777566',
+            oid: strDefColorways,
+            //oid: 'OR:wt.query.template.ReportTemplate:10777566',
             format: 'formatDelegate',
             xsl2: '',
             xsl2: '',

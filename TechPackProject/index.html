@@ -159,9 +159,60 @@
             //this should read them 'ReportsXml' report.
             //later to get the report id we will get the indexOf the Name and then the id value should be at
             //one position less in the array.
+
             var arrMasterReportIndexer = [];
+            var objMasterReportObject = {};
+            //report names to avoid constant id lookups and to use with environment changes
+
+            var garmentProdSpecsAndSuchAttributeValueListCall = 'garmentProdSpecsAndSuchAttributeValueListCall';
+            var GarmentProdtoGarmentSpecs = 'Garment Prod to Garment Specs';
+            var garmentProdSpecGarmentAndPatternComponentsDOCUMENTSV3 = 'garmentProdSpecGarmentAndPatternComponentsDOCUMENTSV3';
+            var garmentProdSpecsGarmentAndPatternComponentsWEachConnectionMEASUREMENTS = 'garmentProdSpecsGarmentAndPatternComponentsWEachConnectionMEASUREMENTS';
+            var garmentProdSpecGarmentAndPatternComponentsWEachConnectionCONSTRUCTION = 'garmentProdSpecGarmentAndPatternComponentsWEachConnectionCONSTRUCTION';
+            var garmentProdSpecGarmentAndPatternComponentsWEachConnectionBOMS = 'garmentProdSpecGarmentAndPatternComponentsWEachConnectionBOMS';
+            var garmentToLinkedProducts = 'garmentToLinkedProducts';
+            var garmentProdSpecGarmentAndPatternComponentsGarmentSewBom = 'garmentProdSpecGarmentAndPatternComponentsGarmentSewBom';
+            var garmentProdSpecGarmentAndColorwayBomsV2AllColors = 'garmentProdSpecGarmentAndColorwayBomsV2AllColors';
+            var garmentProdSpecGarmentAndColorwayBoms = 'garmentProdSpecGarmentAndColorwayBoms';
+            var garmentProdSpecGarmentAndColorwayColorways = 'garmentProdSpecGarmentAndColorwayColorways';
+            var garmentProdSpecsGarmentLabelProductBom = 'garmentProdSpecsGarmentLabelProductBom';
+            var garmentProdSpecsGarmentMOAs = 'garmentProdSpecsGarmentMOAs';
+            var garmentProdSpecsGarmentAndPatternComponentsApprovedSuppliers = 'garmentProdSpecsGarmentAndPatternComponentsApprovedSuppliers';
+            var garmentProdSpecGarmentAndPatternComponentsRevisionObjects = 'garmentProdSpecGarmentAndPatternComponentsRevisionObjects';
+            var garmentProdSpecGarmentAndPatternComponentsUserIds = 'garmentProdSpecGarmentAndPatternComponentsUserIds';
+            var arrReportsThatIRun = [];
+            arrReportsThatIRun.push(garmentProdSpecsAndSuchAttributeValueListCall);
+            arrReportsThatIRun.push(GarmentProdtoGarmentSpecs);
+            arrReportsThatIRun.push(garmentProdSpecsGarmentAndPatternComponentsWEachConnectionMEASUREMENTS);
+            arrReportsThatIRun.push(garmentProdSpecGarmentAndPatternComponentsWEachConnectionCONSTRUCTION);
+            arrReportsThatIRun.push(garmentProdSpecGarmentAndPatternComponentsWEachConnectionBOMS);
+            arrReportsThatIRun.push(garmentToLinkedProducts);
+            arrReportsThatIRun.push(garmentProdSpecGarmentAndPatternComponentsGarmentSewBom);
+            arrReportsThatIRun.push(garmentProdSpecGarmentAndColorwayBomsV2AllColors);
+            arrReportsThatIRun.push(garmentProdSpecGarmentAndColorwayBoms);
+            arrReportsThatIRun.push(garmentProdSpecGarmentAndColorwayColorways);
+            arrReportsThatIRun.push(garmentProdSpecsGarmentLabelProductBom);
+            arrReportsThatIRun.push(garmentProdSpecsGarmentMOAs);
+            arrReportsThatIRun.push(garmentProdSpecsGarmentAndPatternComponentsApprovedSuppliers);
+            arrReportsThatIRun.push(garmentProdSpecGarmentAndPatternComponentsRevisionObjects);
+            arrReportsThatIRun.push(garmentProdSpecGarmentAndPatternComponentsUserIds);
+
+
+
+
+
+
+
+            //report names to avoid constant id lookups and to use with environment changes
+
 
             //only required URL above
+
+            //infoengines
+            //http://wsflexappdev2v/Windchill/servlet/IE/tasks/com/lcs/wc/measurements/FindMeasurements.xml?oid=VR%3Acom.lcs.wc.measurements.LCSMeasurements%3A2394285&instance=net.hbi.res.wsflexappdev1v.windchillAdapter
+            //http://wsflexappdev2v/Windchill/servlet/IE/tasks/com/lcs/wc/construction/FindConstructionInfo.xml?oid=VR%3Acom.lcs.wc.construction.LCSConstructionInfo%3A2710813&instance=net.hbi.res.wsflexappdev1v.windchillAdapter
+            //infoengines
+
             //var strReportUrlPrefixStealer = strReportsXmlUrl.substring(0, strReportsXmlUrl.indexOf('Windchill/'));
             //begin code for type ahead in g prod form
             //use below for prd

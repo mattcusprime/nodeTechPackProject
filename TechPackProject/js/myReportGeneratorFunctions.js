@@ -551,7 +551,10 @@ function getLogin(arrAttributeValueListArray, objCurrentGarmentProduct, arrRepor
                 var strObjectId = $(this).find('report').attr('objectId');
                 var strReportName = $(this).find('report').text();
                 arrReportsArray.push(strObjectId, strReportName);
-
+                objMasterReportObject[strReportName] = strObjectId;
+                if (arrReportsThatIRun.indexOf(objMasterReportObject[strReportName]) != -1) {
+                    console.log(objMasterReportObject);
+                };
             });
 
         }).done(function () {
@@ -628,9 +631,11 @@ function switchToSwatches() {
 };
 
 function getMyReportIdFromReportName(reportName) {
-    var numIndexOfReportName = arrMasterReportIndexer.indexOf(reportName);
+    /*var numIndexOfReportName = arrMasterReportIndexer.indexOf(reportName);
     var numIndexOfId = numIndexOfReportName - 1;
-    var strObjectIdOfReport = arrMasterReportIndexer[numIndexOfId];
+    var strObjectIdOfReport = arrMasterReportIndexer[numIndexOfId];*/
+    strObjectIdOfReport = objMasterReportObject[reportName];
+
     return strObjectIdOfReport;
 };
 
