@@ -1855,6 +1855,15 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix, objSelfRefere
             var table = $(this).DataTable(colorwayBomTableOptions);
             //table.column(0).visible(false).draw();
         });
+        $('.tblCbomTable tbody').on('click', 'tr', function () {
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+            }
+            else {
+                $(this).addClass('selected');
+            };
+        });
+
         $('#deleteGarmentBomRows').click(function () {
             $('.tblCbomTable').each(function () {
                 var strAttr = $(this).attr('id');
