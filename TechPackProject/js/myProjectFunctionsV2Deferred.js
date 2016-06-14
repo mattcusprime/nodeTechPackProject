@@ -1292,7 +1292,7 @@ garmentProduct.prototype.getMyValueLists = function (strUrlPrefix, arrListIds, o
     //http://wsflexwebprd1v.res.hbi.net/Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?attValueListId=2381876%2C102771%2C2381693&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A10596321&action=ExecuteReport
     var strUrl1 = strUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?attValueListId=';
     //var strUrl2 = '&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A10596321&action=ExecuteReport';
-    var strUrl2 = '&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A'+ getMyReportIdFromReportName(garmentProdSpecsAndSuchAttributeValueListCall) + '&action=ExecuteReport';
+    var strUrl2 = '&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A' + getMyReportIdFromReportName(garmentProdSpecsAndSuchAttributeValueListCall) + '&action=ExecuteReport';
     var strInStringForQuery = '';
     objSelfReference.displayValues = [];
     objSelfReference.displayKeys = [];
@@ -1529,14 +1529,14 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix, objSelfRefere
     var strBranchOidUrl = strOidPrefix + getMyReportIdFromReportName(garmentProdSpecGarmentAndColorwayBomsV2AllColors);
     var strDefColorways = strOidPrefix + getMyReportIdFromReportName(garmentProdSpecGarmentAndColorwayColorways);
     var strDefAllGarmentMaterials = strOidPrefix + getMyReportIdFromReportName(garmentProdSpecGarmentAllBomMaterials);
-    
+
     var objDefferedAllGarmentMaterials = $.ajax({
         url: strBeginUrl,
         type: 'get',
         data: {
             specId: objSelfReference.activeSpecId,
-            oid:strDefAllGarmentMaterials,
-	    //oid: 'OR:wt.query.template.ReportTemplate:11146551',
+            oid: strDefAllGarmentMaterials,
+            //oid: 'OR:wt.query.template.ReportTemplate:11146551',
             xsl2: '',
             xsl2: '',
             format: 'formatDelegate',
@@ -1544,14 +1544,14 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix, objSelfRefere
             action: 'ExecuteReport'
         }
     });
-    
+
     var objDefferedBranch = $.ajax({
         url: strBeginUrl,
         type: 'get',
         data: {
             objectId: objSelfReference.colorwayProduct.objectId,
-            oid:strBranchOidUrl,
-	    //oid: 'OR:wt.query.template.ReportTemplate:11146551',
+            oid: strBranchOidUrl,
+            //oid: 'OR:wt.query.template.ReportTemplate:11146551',
             xsl2: '',
             xsl2: '',
             format: 'formatDelegate',
@@ -1564,8 +1564,8 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix, objSelfRefere
         type: 'get',
         data: {
             objectId: objSelfReference.colorwayProduct.objectId,
-            oid:strSkuOidUrl,
-	    //oid: 'OR:wt.query.template.ReportTemplate:10732525',
+            oid: strSkuOidUrl,
+            //oid: 'OR:wt.query.template.ReportTemplate:10732525',
             format: 'formatDelegate',
             xsl2: '',
             xsl2: '',
@@ -1579,8 +1579,8 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix, objSelfRefere
         type: 'get',
         data: {
             objectId: objSelfReference.colorwayProduct.objectId,
-            oid:strDefColorways,
-	    //oid: 'OR:wt.query.template.ReportTemplate:10777566',
+            oid: strDefColorways,
+            //oid: 'OR:wt.query.template.ReportTemplate:10777566',
             format: 'formatDelegate',
             xsl2: '',
             xsl2: '',
@@ -1598,26 +1598,32 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix, objSelfRefere
     var arrGarmentUses = [];
     var arrGarmentAllMaterials = [];
     //var arrGarmentUseDisplay = [];
-    $.when(objDefferedBranch, objDefferedSkuData, objDefferedColorways,objDefferedAllGarmentMaterials).done(function (objDefferedBranch, objDefferedSkuData, objDefferedColorways,objDefferedAllGarmentMaterials) {
+    $.when(objDefferedBranch, objDefferedSkuData, objDefferedColorways, objDefferedAllGarmentMaterials).done(function (objDefferedBranch, objDefferedSkuData, objDefferedColorways, objDefferedAllGarmentMaterials) {
         arrBranch = objDefferedBranch[0];
         arrSku = objDefferedSkuData[0];
         arrLocalColorways = objDefferedColorways[0];
-	arrGarmentAllMaterials = objDefferedAllGarmentMaterials[0];
-	var arrAlternatesForAltTable = [];
-	var arrOfJustMaterialBranchIdsFromGarment = [];
-	var arrOfJustMaterialObjectIdsFromGarment = [];
+        arrGarmentAllMaterials = objDefferedAllGarmentMaterials[0];
+        var arrAlternatesForAltTable = [];
+        var arrOfJustMaterialBranchIdsFromGarment = [];
+        var arrOfJustMaterialObjectIdsFromGarment = [];
+        var arrOfJustMaterialsMaterialNames = [];
         $('row', arrGarmentAllMaterials).each(function (index) {
-	//later get alternates from this too
-		var numMaterialObjectId = $(this).find('Garment_Product_Child_Material').attr('objectId');
-		var numMaterialBranchId = $(this).find('Garment_Product_Child_Material').attr('branchId');
-		if(arrOfJustMaterialObjectIdsFromGarment.indexOf(numMaterialObjectId) == -1){
-			arrOfJustMaterialObjectIdsFromGarment.push(numMaterialObjectId);
-		};
-		if(arrOfJustMaterialBranchIdsFromGarment.indexOf(numMaterialBranchId) == -1){
-			arrOfJustMaterialBranchIdsFromGarment.push(numMaterialBranchId);
-		};
-	});
-	var arrColorwayObjects = [];
+            //later get alternates from this too
+            var numMaterialObjectId = $(this).find('Garment_Product_Child_Material').attr('objectId');
+            var numMaterialBranchId = $(this).find('Garment_Product_Child_Material').attr('branchId');
+            var strMaterialName = $(this).find('Material').text();
+            if (arrOfJustMaterialObjectIdsFromGarment.indexOf(numMaterialObjectId) == -1) {
+                arrOfJustMaterialObjectIdsFromGarment.push(numMaterialObjectId);
+            };
+            if (arrOfJustMaterialBranchIdsFromGarment.indexOf(numMaterialBranchId) == -1) {
+                arrOfJustMaterialBranchIdsFromGarment.push(numMaterialBranchId);
+            };
+            if (arrOfJustMaterialsMaterialNames.indexOf(strMaterialName) == -1) {
+                arrOfJustMaterialsMaterialNames.push(strMaterialName);
+            };
+
+        });
+        var arrColorwayObjects = [];
         var initCwayString0 = '<h2>';
         var initCwayString1 = '</h2><table id="';
         var initCwayString2 = '" class="tblCbomTable display responsive col-md-12 compact cell-border"><thead><tr><th>Branch Id</th><th>Part Name</th><th>Garment Use</th><th>Material</th><th class="lastBeforeSkip">Fiber Content</th> ';
@@ -1672,13 +1678,13 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix, objSelfRefere
 
             objRow.bomPartId = $(this).find('com_lcs_wc_flexbom_FlexBOMPart').attr('objectId');
             objRow.Branch_Id = $(this).find('Branch_Id').text();
-	    if(arrOfJustMaterialBranchIdsFromGarment.indexOf(objRow.Branch_Id) == -1){
-		objRow.inGarmentProduct = false;
-	    }
-	    else{
-		objRow.inGarmentProduct = true;
-	    };
-	    
+            if (arrOfJustMaterialsMaterialNames.indexOf(objRow.Material) == -1 && objRow.Material != 'material_placeholder' && objRow.Material != '') {
+                objRow.inGarmentProduct = false;
+            }
+            else {
+                objRow.inGarmentProduct = true;
+            };
+
             objRow.garmentUseBranchId = $(this).find('garmentUse').text();
             //objRow.masterMaterialDesc = $(this).find('masterMaterialDesc').text();
             objRow.partName = $(this).find('partName').text();
@@ -1730,7 +1736,7 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix, objSelfRefere
             objRow.specName = $(this).find('Spec_Name').text();
             objRow.Material = $(this).find('Material').text();
             objRow.Branch_Id = $(this).find('bomLinkBranch_Id').text();
-	    objRow.Dimension_Id = $(this).find('Dimension_Id').text();
+            objRow.Dimension_Id = $(this).find('Dimension_Id').text();
             objRow.strIdToUse = objRow.Dimension_Id.replace(/:/g, "").replace(regxPeriod, "").replace(regxHyphen, "");
             objRow.Dimension_Name = $(this).find('Dimension_Name').text();
             objRow.colorName = $(this).find('Att_').text();
@@ -1777,7 +1783,13 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix, objSelfRefere
                 var regxPeriod = /[.\s]+/g;
                 var regxHyphen = /[-\s]+/g;
                 var strIdToUse = objRow.Dimension_Id.replace(/:/g, "").replace(regxPeriod, "").replace(regxHyphen, "");
-                var strThisRow = '<tr id="' + strIdToUse + '">' + '<td>' + objRow.Branch_Id + '</td>' + '<td>' + objRow.partName + '</td>' + '<td>' + objRow.garmentUseBranchId + '</td>' + '<td>' + objRow.Material + '</td>' + '<td>' + objRow.fiberContent + '</td>';
+                var strThisRow = '';
+                if (objRow.inGarmentProduct) {
+                    strThisRow = '<tr id="' + strIdToUse + '">' + '<td>' + objRow.Branch_Id + '</td>' + '<td>' + objRow.partName + '</td>' + '<td>' + objRow.garmentUseBranchId + '</td>' + '<td>' + objRow.Material + '</td>' + '<td>' + objRow.fiberContent + '</td>';
+                }
+                else {
+                    strThisRow = '<tr class="selected" id="' + strIdToUse + '">' + '<td>' + objRow.Branch_Id + '</td>' + '<td>' + objRow.partName + '</td>' + '<td>' + objRow.garmentUseBranchId + '</td>' + '<td>' + objRow.Material + '</td>' + '<td>' + objRow.fiberContent + '</td>';
+                };
                 var strSprecNameToGet = '#' + objRow.specName.replace(/\s/g, "_");
                 strSprecNameToGet = strSprecNameToGet.replace(/:/g, "");
                 var numOfColumns = $(strSprecNameToGet + ' thead tr th').length;
@@ -1834,13 +1846,22 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix, objSelfRefere
                 $(this).text('');
             }
         });
-        $('#colorwaysDiv').append('<button id="swapSwatch">Show Swatches</button>');
+        //$('#colorwaysDiv').append('<button id="swapSwatch">Show Swatches</button>');
+        $('#colorwaysDiv').prepend('<button id="deleteGarmentBomRows">Delete Selected Rows for Extra Materials</button>');
         $('#swapSwatch').click(function () {
             switchToSwatches();
         });
         $('.tblCbomTable').each(function () {
             var table = $(this).DataTable(colorwayBomTableOptions);
             //table.column(0).visible(false).draw();
+        });
+        $('#deleteGarmentBomRows').click(function () {
+            $('.tblCbomTable').each(function () {
+                var strAttr = $(this).attr('id');
+                var table = $('#' + strAttr).DataTable();
+                var rows = table.rows('.selected').remove().draw();
+
+            });
         });
         $('#colorwayReport').DataTable(cwayReportTableOptions);
 
@@ -2463,3 +2484,4 @@ function callNextDocument(arrayOfDocuments, currentIndex) {
             });
     };
 };
+

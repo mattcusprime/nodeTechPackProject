@@ -17,7 +17,7 @@
       <objectIdentifier>wt.org.WTUser:150128</objectIdentifier>
 </executingPrincipal>
 
-    <timeOfExecution>2016-06-03 12:52:47 GMT</timeOfExecution>
+    <timeOfExecution>2016-06-14 14:05:50 GMT</timeOfExecution>
 
     <locale>en_US</locale>
 </metadata>
@@ -1871,6 +1871,10 @@
 
     <row idx="448">
       <report type="wt.query.template.ReportTemplate" objectId="17409697">getAllProductPngs</report>
+</row>
+
+    <row idx="449">
+      <report type="wt.query.template.ReportTemplate" objectId="19554733">garmentProdSpecGarmentAllBomMaterials</report>
 </row>
 </result>
 </queryResult>
