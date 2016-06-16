@@ -989,6 +989,25 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
         try {
             objSelfReference.getMyMeasurement(strHostUrlPrefix, objSelfReference.measurement.branchId, arrMeasurementDetailDataContainer, objSelfReference);
             createComponentTable('measurementDiv', 'measurements', objSelfReference.measurementTableString, measurementTableOptions, true);
+            $('#measurementDiv').append('<button id="deleteSelectedMeasurementRows">Delete Selected Measurement Rows</button>')
+            $('#measurements tbody').on('click', 'tr', function () {
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+            }
+            else {
+                $(this).addClass('selected');
+            };
+        });
+        $('#deleteSelectedMeasurementRows').click(function () {
+            $('#measurements').each(function () {
+                var strAttr = $(this).attr('id');
+                var table = $('#' + strAttr).DataTable();
+                var rows = table.rows('.selected').remove().draw();
+
+            });
+        });
+        
+            
         } catch (e) {
             console.log(e);
             console.log("construction not found");
