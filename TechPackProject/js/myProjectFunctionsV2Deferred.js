@@ -493,6 +493,7 @@ garmentProduct.prototype.getSpecByNameButNotJustActiveSpec = function (strHostUr
             objCombinationObject.sourceName = objSource.name;
             objCombinationObject.specId = objSpec.idNumber;
             objCombinationObject.specName = objSpec.name;
+            objCombinationObject.active = objSpec.active;
             objCombinationObject.seasonId = $(this).find('Garment_Season').attr('objectId');
             objCombinationObject.seasonName = $(this).find('Garment_Season_Season_Name').text();
             objSelfReference.activeSeason = $(this).find('Garment_Season_Season_Name').text();
@@ -516,7 +517,15 @@ garmentProduct.prototype.getSpecByNameButNotJustActiveSpec = function (strHostUr
         $('#seasonSpecSelection').append('</br></br>');
         for (var i = 0; i < arrCombinationArray.length; i++) {
             var objLoopObject = arrCombinationArray[i];
-            $('#seasonSpecSelection').append('<button class="seasonSpecButton btn col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8 col-xs-offset-2 col-xs-8" specId= ' + objLoopObject.specId + '>Season:' + objLoopObject.seasonName + ' Source:' + objLoopObject.sourceName + 'Spec:' + objLoopObject.specName + '</button><hr></br>')
+            var strExtraButtonClass = '';
+            if(objLoopObject.active){
+            		strExtraButtonClass = ' btn-success';
+            }
+            else{
+            	strExtraButtonClass = ' btn-info';
+            };
+            //$('#seasonSpecSelection').append('<button class="seasonSpecButton btn col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8 col-xs-offset-2 col-xs-8' + strExtraButtonClass + '" specId= ' + objLoopObject.specId + '>Season:' + objLoopObject.seasonName + ' Source:' + objLoopObject.sourceName + 'Spec:' + objLoopObject.specName + '</button><hr></br>')
+            $('#seasonSpecSelection').append('<button class="seasonSpecButton btn col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8 col-xs-offset-2 col-xs-8' + strExtraButtonClass + '" specId= ' + objLoopObject.specId + '>' + objLoopObject.specName + '</button><hr></br>');
 
         };
 

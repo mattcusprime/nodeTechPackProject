@@ -201,22 +201,12 @@
             arrReportsThatIRun.push(garmentProdSpecGarmentAndPatternComponentsRevisionObjects);
             arrReportsThatIRun.push(garmentProdSpecGarmentAndPatternComponentsUserIds);
             arrReportsThatIRun.push(garmentProdSpecGarmentAllBomMaterials);
-
-
-
-
-
-
             //report names to avoid constant id lookups and to use with environment changes
-
-
             //only required URL above
-
             //infoengines
             //http://wsflexappdev2v/Windchill/servlet/IE/tasks/com/lcs/wc/measurements/FindMeasurements.xml?oid=VR%3Acom.lcs.wc.measurements.LCSMeasurements%3A2394285&instance=net.hbi.res.wsflexappdev1v.windchillAdapter
             //http://wsflexappdev2v/Windchill/servlet/IE/tasks/com/lcs/wc/construction/FindConstructionInfo.xml?oid=VR%3Acom.lcs.wc.construction.LCSConstructionInfo%3A2710813&instance=net.hbi.res.wsflexappdev1v.windchillAdapter
             //infoengines
-
             //var strReportUrlPrefixStealer = strReportsXmlUrl.substring(0, strReportsXmlUrl.indexOf('Windchill/'));
             //begin code for type ahead in g prod form
             //use below for prd
@@ -249,7 +239,6 @@
                 originalNavBar = $('#navbar *').html();
                 $('#runNew,.clearThisComponentOnNewGarmentLoad,nav').hide();
                 $('#loadingInfo').parent().hide();
-
                 //getReportsFromXmlFunction(strReportsXmlUrl);
                 //document.getElementById('fileinput').addEventListener('change', readSingleFile, false);
                 $.prettyLoader();
@@ -257,14 +246,8 @@
                 //console.log(urlChecker);
                 //window.open(strUrlPrefix);
                 getLogin(arrOfAttributeValueListIds, currentGarmentProduct, arrMasterReportIndexer);
-
-
                 /*applyTypeAheadToElement(gProdQueryURL, '#gProd', 'Garment_Product_Name');
                 currentGarmentProduct.getMyValueLists(arrOfAttributeValueListIds, currentGarmentProduct);*/
-
-
-
-
                 $('#garmentProd').submit(function (e) {
                     e.preventDefault();
                     var nameToUse = $('#gProd').val();
@@ -310,7 +293,6 @@
                 //invoke prettyloader
                 makeMeSCrollSlow();
                 checkStorageFor('lastGarmentRan', '#gProd');
-
                 $('#loadLastGarmentProduct').click(function () {
                     var strGarmentProdString = localStorage.getItem('garmentProductString');
                     if (typeof (strGarmentProdString) != 'undefined') {
@@ -318,7 +300,6 @@
                         //currentGarmentProduct.thenCallSpecs(returnArrays, currentGarmentProduct);
                         console.log(currentGarmentProduct);
                     };
-
                 });
                 $('#fromSaved').click(function () {
                     currentGarmentProduct.saveMe();
