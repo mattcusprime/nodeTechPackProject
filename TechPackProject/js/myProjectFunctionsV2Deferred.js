@@ -526,7 +526,9 @@ garmentProduct.prototype.getSpecByNameButNotJustActiveSpec = function (strHostUr
             };
             //$('#seasonSpecSelection').append('<button class="seasonSpecButton btn col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8 col-xs-offset-2 col-xs-8' + strExtraButtonClass + '" specId= ' + objLoopObject.specId + '>Season:' + objLoopObject.seasonName + ' Source:' + objLoopObject.sourceName + 'Spec:' + objLoopObject.specName + '</button><hr></br>')
             $('#seasonSpecSelection').append('<button class="seasonSpecButton btn col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8 col-xs-offset-2 col-xs-8' + strExtraButtonClass + '" specId= ' + objLoopObject.specId + '>' + objLoopObject.specName + '</button><hr></br>');
-
+			if(arrCombinationArray.length == i){
+			
+			};
         };
 
         $('.seasonSpecButton').click(function () {
@@ -609,6 +611,39 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
             objSellingProduct = objLinkedProduct;
             objSelfReference.sellingProduct = objSellingProduct;
         };
+        
+        if(index == 0){
+        	objSelfReference.generalAttributes = [];
+        	objSelfReference.generalNums = [];
+        	var arrOfTranslations = ['Att13','Designer','Att33','Pattern Version','Att38','Product Manager'];
+        	$(this).find('*').each(function(){
+        		var strPropName = $(this).get(0).tagName;
+        		var numTextLength = $(this).text().length;
+        		if(strPropName.indexOf('Att') != -1 && numTextLength > 1){
+        				var strCleanedPropertyName = strPropName.replace(/_/g,'');
+        				if(arrOfTranslations.indexOf(strCleanedPropertyName) == -1){
+        				objSelfReference[strCleanedPropertyName] = $(this).text();
+        				}
+        				else{
+        					var numPositionOfOldProperty = arrOfTranslations.indexOf(strCleanedPropertyName);
+        					var numNewPosition = numPositionOfOldProperty + 1;
+        					var strNewPropertyName = arrOfTranslations[numNewPosition];
+        					var objToPush = {};
+        					objToPush.key = strNewPropertyName;
+        					objToPush.value = $(this).text();
+        					objSelfReference.generalAttributes.push(objToPush);
+        				};
+        				//objSelfReference.atts.push($(this).text())
+        			}
+        		else if(strPropName.indexOf('Num') != -1 && numTextLength >= 1){
+        			
+        				var strCleanedPropertyName = strPropName.replace(/_/g,'');
+        				objSelfReference[strCleanedPropertyName] = $(this).text();
+        				//objSelfReference.atts.push($(this).text())
+        			
+        		}
+        	});
+        }
     });
     objSelfReference.objectId = numObjectId;
 
@@ -998,7 +1033,7 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
         try {
             objSelfReference.getMyMeasurement(strHostUrlPrefix, objSelfReference.measurement.branchId, arrMeasurementDetailDataContainer, objSelfReference);
             createComponentTable('measurementDiv', 'measurements', objSelfReference.measurementTableString, measurementTableOptions, true);
-            $('#measurementDiv').append('<button id="deleteSelectedMeasurementRows">Delete Selected Measurement Rows</button>')
+            $('#measurementDiv').append('<button class="btn btn-danger" id="deleteSelectedMeasurementRows">Delete Selected Measurement Rows</button>')
             $('#measurements tbody').on('click', 'tr', function () {
             if ($(this).hasClass('selected')) {
                 $(this).removeClass('selected');
@@ -1140,6 +1175,7 @@ garmentProduct.prototype.thenCallSpecs = function (objectForCallback, objSelfRef
     objSelfReference.activeSpecName = objectForCallback.activeSpecName;
     objSelfReference.name = objectForCallback.gProdName;
     objSelfReference.getAllMyDataForMyActiveSpec(strUrlPrefix, objSelfReference.activeSpecId, objSelfReference);
+    
 };
 /**
  * @method of @class GarmentProduct, this method runs to determine, based on available spec components in the objSelfReference, what are the available report sets that 
@@ -1875,7 +1911,7 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix, objSelfRefere
             }
         });
         //$('#colorwaysDiv').append('<button id="swapSwatch">Show Swatches</button>');
-        $('#colorwaysDiv').prepend('<button id="deleteGarmentBomRows">Delete Selected Rows for Extra Materials</button>');
+        $('#colorwaysDiv').prepend('<button class="btn btn-danger" id="deleteGarmentBomRows">Delete Selected Rows for Extra Materials</button>');
         $('#swapSwatch').click(function () {
             switchToSwatches();
         });
