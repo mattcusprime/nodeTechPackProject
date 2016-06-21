@@ -524,8 +524,8 @@ garmentProduct.prototype.getSpecByNameButNotJustActiveSpec = function (strHostUr
             else{
             	strExtraButtonClass = ' btn-info';
             };
-            //$('#seasonSpecSelection').append('<button class="seasonSpecButton btn col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8 col-xs-offset-2 col-xs-8' + strExtraButtonClass + '" specId= ' + objLoopObject.specId + '>Season:' + objLoopObject.seasonName + ' Source:' + objLoopObject.sourceName + 'Spec:' + objLoopObject.specName + '</button><hr></br>')
-            $('#seasonSpecSelection').append('<button class="seasonSpecButton btn col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8 col-xs-offset-2 col-xs-8' + strExtraButtonClass + '" specId= ' + objLoopObject.specId + '>' + objLoopObject.specName + '</button><hr></br>');
+            //$('#seasonSpecSelection').append('<button class="seasonSpecButton btn col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8 col-xs-offset-2 col-xs-8' + strExtraButtonClass + '" specId= ' + objLoopObject.specId + '>Season:' + objLoopObject.seasonName + ' Source:' + objLoopObject.sourceName + 'Spec:' + objLoopObject.specName + '</button></br>')
+            $('#seasonSpecSelection').append('<button class="seasonSpecButton btn col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8 col-xs-offset-2 col-xs-8' + strExtraButtonClass + '" specId= ' + objLoopObject.specId + '>' + objLoopObject.specName + '</button><br><br><br>');
 			if(arrCombinationArray.length == i){
 			
 			};
@@ -630,15 +630,25 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
         					var strNewPropertyName = arrOfTranslations[numNewPosition];
         					var objToPush = {};
         					objToPush.key = strNewPropertyName;
-        					objToPush.value = $(this).text();
+        					var strValueToUse = $(this).text();
+        				if(objSelfReference.displayKeys.indexOf(strValueToUse != -1)){
+        					strValueToUse = getValueDisplayFromKey(strValueToUse,objSelfReference);
+        				};
+        					
+        					
+        					objToPush.value = strValueToUse;
         					objSelfReference.generalAttributes.push(objToPush);
         				};
         				//objSelfReference.atts.push($(this).text())
         			}
         		else if(strPropName.indexOf('Num') != -1 && numTextLength >= 1){
-        			
+        				//getValueDisplayFromKey
+        				var strValueToUse = $(this).text();
+        				if(objSelfReference.displayKeys.indexOf(strValueToUse != -1)){
+        					strValueToUse = getValueDisplayFromKey(strValueToUse,objSelfReference);
+        				};
         				var strCleanedPropertyName = strPropName.replace(/_/g,'');
-        				objSelfReference[strCleanedPropertyName] = $(this).text();
+        				objSelfReference[strCleanedPropertyName] = strValueToUse;
         				//objSelfReference.atts.push($(this).text())
         			
         		}
@@ -1298,11 +1308,13 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
                     var myMasterId = objImgMeta.masterId;
                     var strMyMasterIdWithPoundRemoved = myMasterId.replace('#', '');
                     $(objNewImageToAdd).attr('id', myDivId + 'img');
-                    $('#' + myDivId).append(objNewImageToAdd);
+                    //$('#' + myDivId).append(objNewImageToAdd);
+                    
                     $('#' + myDivId).append('<h3 class="col-md-offset-1 col-md-11 row">' + decodeURIComponent(objImgMeta.name) + '</h3>');
                     $('#' + myDivId).append(objNewImageToAdd);
-                    //$('#' + myDivId + 'img').addClass('col-md-offset-2 col-md-8');
+                    $('#' + myDivId + 'img').addClass('col-md-offset-4 col-md-6');
                     $('#' + myDivId + 'img').addClass('img-responsive');
+                    $('#' + myDivId + 'img').addClass(objImgMeta.pageType);
                     // row per image from the below
                     $('#' + myDivId + 'img').addClass('row');
                     //and centers it
@@ -1313,16 +1325,38 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
 
             }).done(function () {
                 //I swear you had something here iterating through the above 2 arrays in sequence...
-
+				var arrHeaderImages = [];
                 $('img').each(function () {
                     var urlToUse = $(this).attr('src');
+                    
                     var strParentDiv = '#' + $(this).parent().attr('id');
                     getDataUri(urlToUse, function (dataUri) {
                         var strDataImagePrefix = 'data:image/png;base64,';
                         var strFullDataUri = strDataImagePrefix + dataUri;
-                        $(strParentDiv).find('img').attr('src', strFullDataUri);
+                        var target = $(strParentDiv).find('img');
+                        target.attr('src', strFullDataUri);
+                        if(target.hasClass('frontSketch')){
+                        	if ($( "#frontSketch" ).length) {
+                        		
+                        	}
+                        	else{
+                        		$('#frontBackImages').append('<div id="frontSketch" class="col-md-4"></div>');
+                        		
+                        	}
+                        	target.addClass('img-rounded');
+                        	target.detach().appendTo('#frontSketch');
+                        	
+                        };
                     });
                 });
+             
+             $('.frontSketch').each(function () {
+             	// use this to move over
+             	//$(this).detach().appendTo('#frontSketch');
+             	//use this to copy to
+             	//$(this).appendTo('#frontSketch');
+             	
+             });
 
             });
 

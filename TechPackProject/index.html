@@ -223,7 +223,7 @@
             var strLinkCloseTag = '</a>';
             var gProdQueryURL;// = strUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/invokeAction?oid=OR%3Awt.query.template.ReportTemplate%3A4711650&action=ProduceReport&u8=1'
             var returnArrays;
-            var arrOfAttributeValueListIds = ['2381876'/*Prod Only*/, '102771', '2381693'/*Prod Only*/, '368058', '100575', '368793'/*Maybe Dev Only.*/];
+            var arrOfAttributeValueListIds = ['2381876'/*Prod Only*/, '102771', '2381693'/*Prod Only*/, '368058', '100575', '368793'/*Maybe Dev Only.*/,'406136','406161'];
             //var arrOfAttributeValueListIds = ['2381876', '102771', '2381693', '17436676', '100575'];
             var strCurrentEnvironment = window.location.href;
             var numIndexOfWindChill = strCurrentEnvironment.indexOf('Windchill');
@@ -394,10 +394,8 @@
             </div>
         </div>
     </nav>
-    </br></br></br></br></br>
-    <div class="page">
-        
-    </div>
+    <br><br><br><br><br><br><br><br>
+    
     <div class="container-fluid" id="garmentFormContainer">
         <div class="col-md-10 starter-template row">
             <form id="garmentProd">
@@ -423,6 +421,12 @@
         </div> -->
     <!-- container -->
     </div>
+    <br><br><br><br><br><br>
+    <div class="page">
+        <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="frontBackImages">
+        	
+		</div>
+    </div>
     <div class="page">
         <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="loadingInfo">
             <h3 class="col-md-offset-4 col-md-4">Acquiring Product List.</h3>
@@ -447,10 +451,7 @@
     </div>
     <div class="page">
         <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="garmentHeader">
-
-    
-    
-        </div>
+		
     </div>
     <div class="page">
         <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="sizeTableDiv">
