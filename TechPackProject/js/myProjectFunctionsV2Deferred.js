@@ -1341,6 +1341,16 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
                         	}
                         	else{
                         		$('#frontBackImages').append('<div id="frontSketch" class="col-md-4"></div>');
+                        		if(!currentGarmentProduct.generalAttributes.length){
+                        		
+                        	}
+                        	else{
+                        		for (var i = 0; i < currentGarmentProduct.generalAttributes.length;i++){
+                        			var strValue = currentGarmentProduct.generalAttributes[i].value;
+                        			var strKey = currentGarmentProduct.generalAttributes[i].key;
+                        			$('#frontBackImages').append('<tr><td><label>' + strKey + '</label></td><td>' + '<p>'+ strValue + '/<p></td></tr>');
+                        		};
+                        	};
                         		
                         	}
                         	target.addClass('img-rounded');
