@@ -1216,7 +1216,7 @@ garmentProduct.prototype.generateAvailableReportsList = function(objSelfReferenc
 				if (i == 0) {
 					for ( x = 0; x < arrdocs.length; x++) {
 						if (x == 0) {
-							$('#imagesDiv').append('<h1>Documents</h1>')
+							//$('#imagesDiv').append('<h1>Documents</h1>')
 						};
 
 						$('#imagesDiv').append('<div class="imageHolder row col-md-12 ' + arrdocs[x].masterId + '" id="' + arrdocs[x].myFullId + '" headerValue="' + arrdocs[x].name + '_' + arrdocs[x].fileName + '"></div>');
@@ -1307,11 +1307,12 @@ garmentProduct.prototype.generateAvailableReportsList = function(objSelfReferenc
 								};
 
 							}
+							targetParent.find('h3').remove();
 							target.addClass('img-rounded');
 							target.detach().appendTo('#frontSketch');
 
 						} else if (target.hasClass('measurements')) {
-							console.log('dat Meas!');
+							//console.log('dat Meas!');
 							if ($("#measurementImagesSubDiv").length) {
 
 							} else {
@@ -1321,7 +1322,7 @@ garmentProduct.prototype.generateAvailableReportsList = function(objSelfReferenc
 							targetParent.detach().appendTo('#measurementImagesSubDiv');
 
 						} else if (target.hasClass('markerLayout')) {
-							console.log('dat Meas!');
+							//console.log('dat Meas!');
 							if ($("#markerLayoutImagesSubDiv").length) {
 
 							} else {
@@ -1331,7 +1332,7 @@ garmentProduct.prototype.generateAvailableReportsList = function(objSelfReferenc
 							targetParent.detach().appendTo('#markerLayoutImagesSubDiv');
 
 						} else if (target.hasClass('placementDetails')) {
-							console.log('dat Meas!');
+							//console.log('dat Meas!');
 							if ($("#placementImagesSubDiv").length) {
 
 							} else {
@@ -1341,7 +1342,7 @@ garmentProduct.prototype.generateAvailableReportsList = function(objSelfReferenc
 							targetParent.detach().appendTo('#placementImagesSubDiv');
 
 						}else if (target.hasClass('constructionDetails')) {
-							console.log('dat Meas!');
+							//console.log('dat Meas!');
 							if ($("#constructionDetailsImagesSubDiv").length) {
 
 							} else {
@@ -1350,10 +1351,21 @@ garmentProduct.prototype.generateAvailableReportsList = function(objSelfReferenc
 							target.addClass('img-rounded');
 							targetParent.detach().appendTo('#constructionImagesSubDiv');
 
+						}else{
+							if ($("#developmentImagesSubDiv").length) {
+
+							} else {
+								$('#developmentImages').append('<div id="developmentImagesSubDiv" class="col-md-10"><h1 class="col-md-12">Development Images</h1></div>');
+							};
+							target.addClass('img-rounded');
+							targetParent.detach().appendTo('#developmentImagesSubDiv');
+							
 						};
+						
+						
 					});
 				});
-
+				//$('#imagesDiv *').remove();
 				$('.frontSketch').each(function() {
 					// use this to move over
 					//$(this).detach().appendTo('#frontSketch');
