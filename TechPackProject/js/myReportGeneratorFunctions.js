@@ -1,6 +1,6 @@
 //Global Variables
 var arrGarmentProductsArrayForTypeAhead = [];
-var strDomString = '<"top"B>rt<"bottom"flp><"clear">';
+var strDomString = '<"top"Bfp>rt<"bottom"l><"clear">';
 var arrButtons = ['copy', {
     extend: 'pdf',
     text: 'Save section as PDF',
@@ -20,7 +20,7 @@ var constructionTableOptions = {
     'columnDefs': [
         { 'visible': false, 'targets': [0, 11] }
     ],
-    'buttons': arrButtons,
+    'buttons': arrButtonsNoButtons,
     'responsive': false,
     'dom': strDomString,
     'paging': true
@@ -29,7 +29,7 @@ var measurementTableOptions = {
     'pageLength': 50,
     'order': [[0, 'asc']],
     'dom': strDomString,
-    'buttons': arrButtons,
+    'buttons': arrButtonsNoButtons,
     "columnDefs": [
         {
             "targets": [0, 3, 4, 7, 8],
@@ -49,13 +49,13 @@ var sewBomTableOptions = {
             "searchable": false
         }
     ],
-    'buttons': arrButtons,
+    'buttons': arrButtonsNoButtons,
 
 };
 var sourceBomTableOptions = {
 
 
-    'buttons': arrButtons,
+    'buttons': arrButtonsNoButtons,
 
 };
 var colorwayListTableOptions = {
@@ -63,14 +63,14 @@ var colorwayListTableOptions = {
     'paging': false,
     'length': 1000,
     'dom': strDomString,
-    'buttons': arrButtons,
+    'buttons': arrButtonsNoButtons,
 
 };
 var cwayReportTableOptions = {
     'responsive': false,
     'pageLength': 100,
     'dom': strDomString,
-    'buttons': arrButtons
+    'buttons': arrButtonsNoButtons
 };
 var colorwayBomTableOptions = {
 
@@ -80,7 +80,7 @@ var colorwayBomTableOptions = {
         { 'visible': false, 'targets': 0 }
     ],
     'responsive': false,
-    'buttons': arrButtons
+    'buttons': arrButtonsNoButtons
 
 };
 var spreadBomTableOptions = {
@@ -149,13 +149,13 @@ var trimBomTableOptions = {
             "searchable": false
         }
     ],
-    'buttons': arrButtons
+    'buttons': arrButtonsNoButtons
 };
 var labelBomTableOptions = {
     //"data": arrLabelData,
     "pageLength": 1000,
     "dom": strDomString,
-    'buttons': arrButtons
+    'buttons': arrButtonsNoButtons
 
 };
 var sizeTableOptions = {
@@ -163,12 +163,12 @@ var sizeTableOptions = {
     "order": [[11, "asc"]],
     "columnDefs": [
         {
-            "targets": [0, 1, 2, 5, 6, 7, 8, 9, 10, 11],
+            "targets": [0, 1, 2, 5, 6, 7, 8, 9, 10, 11,12],
             "visible": false,
             "searchable": false
         }
     ],
-    'buttons': arrButtons
+    'buttons': arrButtonsNoButtons
 };
 var revisionTableTableOptions = {
 
@@ -176,13 +176,13 @@ var revisionTableTableOptions = {
     "dom": strDomString,
     "columnDefs": [
         {
-            "targets": [2, 3, 4, 11],
+            "targets": [0,2, 3, 4, 11],
             "visible": false,
             "searchable": false
         }
     ],
     "pageLength": 10,
-    'buttons': arrButtons
+    'buttons': arrButtonsNoButtons
 };
 var reportsTableOptions = {
 
