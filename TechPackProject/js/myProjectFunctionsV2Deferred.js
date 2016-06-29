@@ -1289,6 +1289,7 @@ garmentProduct.prototype.generateAvailableReportsList = function(objSelfReferenc
 						var strDataImagePrefix = 'data:image/png;base64,';
 						var strFullDataUri = strDataImagePrefix + dataUri;
 						var target = $(strParentDiv).find('img');
+						var targetParent = target.parent();
 						target.attr('src', strFullDataUri);
 						if (target.hasClass('frontSketch')) {
 							if ($("#frontSketch").length) {
@@ -1308,6 +1309,46 @@ garmentProduct.prototype.generateAvailableReportsList = function(objSelfReferenc
 							}
 							target.addClass('img-rounded');
 							target.detach().appendTo('#frontSketch');
+
+						} else if (target.hasClass('measurements')) {
+							console.log('dat Meas!');
+							if ($("#measurementImagesSubDiv").length) {
+
+							} else {
+								$('#measurementImages').append('<div id="measurementImagesSubDiv" class="col-md-10"><h1 class="col-md-12">Measurement Images</h1></div>');
+							};
+							target.addClass('img-rounded');
+							targetParent.detach().appendTo('#measurementImagesSubDiv');
+
+						} else if (target.hasClass('markerLayout')) {
+							console.log('dat Meas!');
+							if ($("#markerLayoutImagesSubDiv").length) {
+
+							} else {
+								$('#markerLayoutImages').append('<div id="markerLayoutImagesSubDiv" class="col-md-10"><h1 class="col-md-12">Marker Layout Images</h1></div>');
+							};
+							target.addClass('img-rounded');
+							targetParent.detach().appendTo('#markerLayoutImagesSubDiv');
+
+						} else if (target.hasClass('placementDetails')) {
+							console.log('dat Meas!');
+							if ($("#placementImagesSubDiv").length) {
+
+							} else {
+								$('#placementImages').append('<div id="placementImagesSubDiv" class="col-md-10"><h1 class="col-md-12">Placement Images</h1></div>');
+							};
+							target.addClass('img-rounded');
+							targetParent.detach().appendTo('#placementImagesSubDiv');
+
+						}else if (target.hasClass('constructionDetails')) {
+							console.log('dat Meas!');
+							if ($("#constructionDetailsImagesSubDiv").length) {
+
+							} else {
+								$('#constructionDetailsImages').append('<div id="constructionDetailsImagesSubDiv" class="col-md-10"><h1 class="col-md-12">Construction Detail Images</h1></div>');
+							};
+							target.addClass('img-rounded');
+							targetParent.detach().appendTo('#constructionImagesSubDiv');
 
 						};
 					});
@@ -2253,12 +2294,12 @@ function pdfPageJSPDFVERSION(objForFile) {
 	});
 
 	var pdf = new jsPDF('l', 'pt', 'a3')
-	// source can be HTML-formatted string,   or a reference
+	// source can be HTML-formatted string,    or a reference
 	// to an actual DOM element from which the text will be scraped.
 	, source = strHtmlStringForPdf
 
 	// we support special element handlers. Register them with jQuery-style
-	// ID selector for either ID or node name. ("#iAmID",   "div", "span" etc.)
+	// ID selector for either ID or node name. ("#iAmID",    "div", "span" etc.)
 	// There is no support for any other type of selectors
 	// (class, of compound) at this time.
 	, specialElementHandlers = {
