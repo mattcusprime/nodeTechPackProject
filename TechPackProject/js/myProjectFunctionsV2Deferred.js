@@ -2146,7 +2146,7 @@ garmentProduct.prototype.getMoas = function(strUrlPrefix, objSelfReference, obje
 
 				};
 				var strRevisionAttributeTableString = convertRowArrayIntoHtmlTable(arrRevisionAttributeArray, '', '', 'revisionAttributeTbl', '<h1>Product Revisions</h1>');
-				var strSizeTableString = convertRowArrayIntoHtmlTable(arrSizeTableArray, '', '', 'sizeTbl', '<h1>Sizing Table</h1>');
+				var strSizeTableString = convertRowArrayIntoHtmlTable(arrSizeTableArray, '', '', 'sizeTbl', '<h1>Sizing</h1>');
 
 				objSelfReference.revisionAttributes = arrRevisionAttributeArray;
 				objSelfReference.sizeTable = arrSizeTableArray;
