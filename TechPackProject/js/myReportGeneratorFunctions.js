@@ -176,7 +176,7 @@ var revisionTableTableOptions = {
     "dom": strDomString,
     "columnDefs": [
         {
-            "targets": [0,2, 3, 4, 11],
+            "targets": [0,2, 3, 4, 11,13],
             "visible": false,
             "searchable": false
         }
