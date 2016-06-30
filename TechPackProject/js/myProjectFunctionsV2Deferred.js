@@ -573,30 +573,10 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function(strHostUrlPre
 		objLinkedProduct.objectId = $(this).find('linkedProductName').attr('objectId');
 		objLinkedProduct.branchId = $(this).find('linkedProductName').attr('branchId');
 		objLinkedProduct.patternNo = $(this).find('Pattern_No').text();
-
-		if (linkedProductType == "BASIC CUT & SEW - COLORWAY") {
-			objLinkedProduct.type = "Colorway Product";
-			objColorwayProduct = objLinkedProduct;
-			objSelfReference.colorwayProduct = objColorwayProduct;
-		} else if (linkedProductType == "BASIC CUT & SEW - PATTERN") {
-			objLinkedProduct.type = "Pattern Product";
-			objPatternProduct = objLinkedProduct;
-			objSelfReference.patternProduct = objPatternProduct;
-		} else if (linkedProductType == "LABEL") {
-			objLinkedProduct.type = "Label Product";
-			objLabelProduct = objLinkedProduct;
-			objSelfReference.labelProduct = objLabelProduct;
-		} else if (linkedProductType == "BASIC CUT & SEW - SELLING" || linkedProductType == "Selling") {
-			objLinkedProduct.type = "Selling Product";
-			objSellingProduct = objLinkedProduct;
-			objSelfReference.sellingProduct = objSellingProduct;
-		}
-		;
-
-		if (index == 0) {
+if (index == 0) {
 			objSelfReference.generalAttributes = [];
 			objSelfReference.generalNums = [];
-			var arrOfTranslations = ['Att13', 'Designer', 'Att33', 'Pattern Version', 'Att38', 'Product Manager'];
+			var arrOfTranslations = ['Att13', 'Designer', 'Att38', 'Product Manager'];
 			$(this).find('*').each(function() {
 				var strPropName = $(this).get(0).tagName;
 				var numTextLength = $(this).text().length;
@@ -632,6 +612,41 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function(strHostUrlPre
 				}
 			});
 		}
+		
+		if (linkedProductType == "BASIC CUT & SEW - COLORWAY") {
+			objLinkedProduct.type = "Colorway Product";
+			objColorwayProduct = objLinkedProduct;
+			objSelfReference.colorwayProduct = objColorwayProduct;
+		} else if (linkedProductType == "BASIC CUT & SEW - PATTERN") {
+			objLinkedProduct.type = "Pattern Product";
+			objPatternProduct = objLinkedProduct;
+			objSelfReference.patternProduct = objPatternProduct;
+			var patternVersionAndIteration = objLinkedProduct.patternNo;
+			// + $(this).find('patternIteration');
+			if ( typeof (patternVersionAndIteration) != 'undefined') {
+				objToPush = {
+					key : 'Pattern Version',
+					value : patternVersionAndIteration
+				};
+				//objSelfReference.patternVersionAndIteration = objToPush;
+				if ( typeof (objToPush) != 'undefined') {
+					objSelfReference.generalAttributes.push(objToPush);
+				};
+			};
+
+		} else if (linkedProductType == "LABEL") {
+			objLinkedProduct.type = "Label Product";
+			objLabelProduct = objLinkedProduct;
+			objSelfReference.labelProduct = objLabelProduct;
+		} else if (linkedProductType == "BASIC CUT & SEW - SELLING" || linkedProductType == "Selling") {
+			objLinkedProduct.type = "Selling Product";
+			objSellingProduct = objLinkedProduct;
+			objSelfReference.sellingProduct = objSellingProduct;
+		};
+		
+
+		
+
 	});
 	objSelfReference.objectId = numObjectId;
 
@@ -1302,7 +1317,7 @@ garmentProduct.prototype.generateAvailableReportsList = function(objSelfReferenc
 									for (var i = 0; i < currentGarmentProduct.generalAttributes.length; i++) {
 										var strValue = currentGarmentProduct.generalAttributes[i].value;
 										var strKey = currentGarmentProduct.generalAttributes[i].key;
-										$('#frontBackImages').append('<tr><td><label>' + strKey + '</label></td><td>' + '<p>' + strValue + '<p></td></tr>');
+										$('#frontBackImages').append('<tr><td><label> ' + strKey + ' </label></td><td>' + '<p>' + strValue + '<p></td></tr>');
 									};
 								};
 
@@ -1316,7 +1331,7 @@ garmentProduct.prototype.generateAvailableReportsList = function(objSelfReferenc
 							if ($("#measurementImagesSubDiv").length) {
 
 							} else {
-								$('#measurementImages').append('<div id="measurementImagesSubDiv" class="col-md-10"><h1 class="col-md-12">Measurement Images</h1></div>');
+								$('#measurementImages').append('<div id="measurementImagesSubDiv" class="col-md-12"><h1 class="col-md-12">Measurement Images</h1></div>');
 							};
 							target.addClass('img-rounded');
 							targetParent.detach().appendTo('#measurementImagesSubDiv');
@@ -1326,7 +1341,7 @@ garmentProduct.prototype.generateAvailableReportsList = function(objSelfReferenc
 							if ($("#markerLayoutImagesSubDiv").length) {
 
 							} else {
-								$('#markerLayoutImages').append('<div id="markerLayoutImagesSubDiv" class="col-md-10"><h1 class="col-md-12">Marker Layout Images</h1></div>');
+								$('#markerLayoutImages').append('<div id="markerLayoutImagesSubDiv" class="col-md-12"><h1 class="col-md-12">Marker Layout Images</h1></div>');
 							};
 							target.addClass('img-rounded');
 							targetParent.detach().appendTo('#markerLayoutImagesSubDiv');
@@ -1336,33 +1351,33 @@ garmentProduct.prototype.generateAvailableReportsList = function(objSelfReferenc
 							if ($("#placementImagesSubDiv").length) {
 
 							} else {
-								$('#placementImages').append('<div id="placementImagesSubDiv" class="col-md-10"><h1 class="col-md-12">Placement Images</h1></div>');
+								$('#placementImages').append('<div id="placementImagesSubDiv" class="col-md-12"><h1 class="col-md-12">Placement Images</h1></div>');
 							};
 							target.addClass('img-rounded');
 							targetParent.detach().appendTo('#placementImagesSubDiv');
 
-						}else if (target.hasClass('constructionDetails')) {
+						} else if (target.hasClass('constructionDetails')) {
 							//console.log('dat Meas!');
 							if ($("#constructionDetailsImagesSubDiv").length) {
 
 							} else {
-								$('#constructionDetailsImages').append('<div id="constructionDetailsImagesSubDiv" class="col-md-10"><h1 class="col-md-12">Construction Detail Images</h1></div>');
+								$('#constructionDetailsImages').append('<div id="constructionDetailsImagesSubDiv" class="col-md-12"><h1 class="col-md-12">Construction Detail Images</h1></div>');
 							};
 							target.addClass('img-rounded');
 							targetParent.detach().appendTo('#constructionImagesSubDiv');
 
-						}else{
+						} else {
 							if ($("#developmentImagesSubDiv").length) {
 
 							} else {
-								$('#developmentImages').append('<div id="developmentImagesSubDiv" class="col-md-10"><h1 class="col-md-12">Development Images</h1></div>');
+								$('#developmentImages').append('<div id="developmentImagesSubDiv" class="col-md-12"><h1 class="col-md-12">Development Images</h1></div>');
 							};
 							target.addClass('img-rounded');
 							targetParent.detach().appendTo('#developmentImagesSubDiv');
-							
-						};
-						
-						
+
+						}
+						;
+
 					});
 				});
 				//$('#imagesDiv *').remove();
@@ -2053,6 +2068,12 @@ garmentProduct.prototype.getMoas = function(strUrlPrefix, objSelfReference, obje
 			if (objThisLoopObject.Last_Modified.length > 10) {
 				objThisLoopObject.Last_Modified = objThisLoopObject.Last_Modified.substring(0, 10);
 			};
+			if (objThisLoopObject.Product_Type.indexOf('1157890') != -1) {
+				objThisLoopObject.Product_Type = "Garment";
+			} else if (objThisLoopObject.Product_Type.indexOf('2377400') != -1) {
+				objThisLoopObject.Product_Type = "Pattern";
+			}
+			;
 
 		};
 		strRevisionIdsToget = strRevisionIdsToget.substring(1, strRevisionIdsToget.length);
@@ -2306,12 +2327,12 @@ function pdfPageJSPDFVERSION(objForFile) {
 	});
 
 	var pdf = new jsPDF('l', 'pt', 'a3')
-	// source can be HTML-formatted string,    or a reference
+	// source can be HTML-formatted string,     or a reference
 	// to an actual DOM element from which the text will be scraped.
 	, source = strHtmlStringForPdf
 
 	// we support special element handlers. Register them with jQuery-style
-	// ID selector for either ID or node name. ("#iAmID",    "div", "span" etc.)
+	// ID selector for either ID or node name. ("#iAmID",     "div", "span" etc.)
 	// There is no support for any other type of selectors
 	// (class, of compound) at this time.
 	, specialElementHandlers = {
