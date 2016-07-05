@@ -528,7 +528,11 @@ function getLogin(arrAttributeValueListArray, objCurrentGarmentProduct, arrRepor
         //condition to use cached file using global objParsedObject
         //var voteable = (age < 18) ? "Too young":"Old enough";
         var numReportCheck = typeof (objParsedObject.report);
-        strCacheReportUrl = (numReportCheck == 'undefined') ? strReportsXmlUrl : 'cachedReports.xml';
+        strCacheReportUrl = (numReportCheck != 'undefined') ? strReportsXmlUrl : 'cachedReports.xml';
+        if(strReportsXmlUrl == 'cachedReports.xml' && window.location.href.indexOf('wsflexwebprd1v') != -1){
+        	strReportsXmlUrl = 'prodCachedReports.xml';
+        };
+        
         //condition to use cached file
         //$.get(strReportsXmlUrl, function (data) { }).done(function (data) {
         var strBase64 = btoa(strUser + ":" + strPwd);

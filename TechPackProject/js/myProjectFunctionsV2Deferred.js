@@ -693,6 +693,7 @@ if (index == 0) {
 					//var strImgViewerPrefix3 = "http://res.hbi.net/dfs/BrandedApparel/Activewear/FlexApp/Prod/";
 				} else {
 				};
+				
 				var name = $(this).find('Document_Master_Name').text();
 				var strpSpecId = $(this).find('patternSpecId').text();
 				var strgSpecId = $(this).find('garmentSpecId').text();
@@ -700,7 +701,9 @@ if (index == 0) {
 				var strApplicationDataPartOneOfLink = $(this).find('documentNotMasterDocumentOid').text();
 				var strDocumentIdPartTwoOfLink = $(this).find('DocumentIdPartTwoOfLink').text();
 				var strMyFullId = strDocumentIdPartTwoOfLink + "_" + strApplicationDataPartOneOfLink;
-
+				if(window.location.href.indexOf('webprd1') != -1){
+					strImgViewerPrefix1 = 'http://wsflexwebprd1v/Windchill/rfa/jsp/image/ImageViewer.jsp?imageUrl=&appDataOid=OR:wt.content.ApplicationData:';	
+				};
 				strImgViewerPrefix1 = strImgViewerPrefix1 + strDocumentIdPartTwoOfLink + '&contentHolderOid=OR:com.lcs.wc.document.LCSDocument:' + strApplicationDataPartOneOfLink;
 
 				if ($(this).is('row:first')) {
@@ -807,7 +810,11 @@ if (index == 0) {
 	if (strCurrentEnvironment.indexOf('plmqa.hanes') != -1) {
 		strInstance = 'net.hbi.res.wsflexappqa1v.windchillAdapter';
 	};
-
+	if (strCurrentEnvironment.indexOf('wsflexwebprd1v') != -1) {
+		strInstance = 'net.hbi.res.wsflexappprd1v.windchillAdapter';
+	};
+	
+	
 	var objDefferedMeasurement = $.ajax({
 		url : strMeasTaskUrl,
 		type : 'get',
@@ -1274,6 +1281,8 @@ garmentProduct.prototype.generateAvailableReportsList = function(objSelfReferenc
 					if (window.location.href.indexOf('.res.hbi.net') == -1) {
 						objNewImageToAdd[0].src = objNewImageToAdd[0].src.replace('.res.hbi.net', '');
 					};
+					
+										
 					var myDivId = objImgMeta.myDivId;
 					var myMasterId = objImgMeta.masterId;
 					var strMyMasterIdWithPoundRemoved = myMasterId.replace('#', '');
