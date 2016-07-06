@@ -573,66 +573,77 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function(strHostUrlPre
 		objLinkedProduct.objectId = $(this).find('linkedProductName').attr('objectId');
 		objLinkedProduct.branchId = $(this).find('linkedProductName').attr('branchId');
 		objLinkedProduct.patternNo = $(this).find('Pattern_No').text();
-if (index == 0) {
+		if (index == 0) {
 			objSelfReference.generalAttributes = [];
 			objSelfReference.generalNums = [];
-			var arrOfTranslations = ['Att13', 'Designer', 'Att38', 'Product Manager'];
+			var arrOfTranslations = ['Designer', 'Product_Manager', 'Pattern_Iteration', 'HBI_Division', 'Brand', 'Construction_Method_Code', 'APS_Corp_Division', 'Imperfect_Style', 'Irregular_Style', 'Pattern_Version'];
+
 			$(this).find('*').each(function() {
 				var strPropName = $(this).get(0).tagName;
 				var numTextLength = $(this).text().length;
-				if (strPropName.indexOf('Att') != -1 && numTextLength > 1) {
-					var strCleanedPropertyName = strPropName.replace(/_/g, '');
-					if (arrOfTranslations.indexOf(strCleanedPropertyName) == -1) {
-						objSelfReference[strCleanedPropertyName] = $(this).text();
-					} else {
-						var numPositionOfOldProperty = arrOfTranslations.indexOf(strCleanedPropertyName);
-						var numNewPosition = numPositionOfOldProperty + 1;
-						var strNewPropertyName = arrOfTranslations[numNewPosition];
-						var objToPush = {};
-						objToPush.key = strNewPropertyName;
-						var strValueToUse = $(this).text();
-						if (objSelfReference.displayKeys.indexOf(strValueToUse != -1)) {
-							strValueToUse = getValueDisplayFromKey(strValueToUse, objSelfReference);
-						};
-
-						objToPush.value = strValueToUse;
-						objSelfReference.generalAttributes.push(objToPush);
-					};
-					//objSelfReference.atts.push($(this).text())
-				} else if (strPropName.indexOf('Num') != -1 && numTextLength >= 1) {
-					//getValueDisplayFromKey
+				//if (strPropName.indexOf('Att') != -1 && numTextLength > 1) {
+				//var strCleanedPropertyName = strPropName.replace(/_/g, ' ');
+				if (arrOfTranslations.indexOf(strPropName) != -1) {
 					var strValueToUse = $(this).text();
-					if (objSelfReference.displayKeys.indexOf(strValueToUse != -1)) {
+					//objSelfReference[strCleanedPropertyName] = strValueToUse;
+					var objToPush = {};
+					var strCleanedPropertyName = strPropName.replace(/_/g, ' ');
+					objToPush.key = strCleanedPropertyName;
+					var strValueToUse = $(this).text();
+					if (objSelfReference.displayKeys.indexOf(strValueToUse) != -1 && !(isNumber(strValueToUse) && strValueToUse.indexOf('skip') == -1)) {
 						strValueToUse = getValueDisplayFromKey(strValueToUse, objSelfReference);
 					};
-					var strCleanedPropertyName = strPropName.replace(/_/g, '');
-					objSelfReference[strCleanedPropertyName] = strValueToUse;
-					//objSelfReference.atts.push($(this).text())
+					if (strValueToUse.indexOf('skip') != -1) {
+						strValueToUse = strValueToUse.replace(/skip/g, '');
+					};
+					objToPush.value = strValueToUse;
+					objSelfReference.generalAttributes.push(objToPush);
 
 				}
+				//objSelfReference.atts.push($(this).text())
+				//}
 			});
 		}
-		
+
 		if (linkedProductType == "BASIC CUT & SEW - COLORWAY") {
 			objLinkedProduct.type = "Colorway Product";
 			objColorwayProduct = objLinkedProduct;
 			objSelfReference.colorwayProduct = objColorwayProduct;
 		} else if (linkedProductType == "BASIC CUT & SEW - PATTERN") {
-			objLinkedProduct.type = "Pattern Product";
-			objPatternProduct = objLinkedProduct;
-			objSelfReference.patternProduct = objPatternProduct;
-			var patternVersionAndIteration = objLinkedProduct.patternNo;
-			// + $(this).find('patternIteration');
-			if ( typeof (patternVersionAndIteration) != 'undefined') {
-				objToPush = {
-					key : 'Pattern Version',
-					value : patternVersionAndIteration
-				};
-				//objSelfReference.patternVersionAndIteration = objToPush;
-				if ( typeof (objToPush) != 'undefined') {
+			$(this).find('*').each(function() {
+				var arrOfTranslationsPatternAttributes = ['Pattern_No']
+				objLinkedProduct.type = "Pattern Product";
+				objPatternProduct = objLinkedProduct;
+				objSelfReference.patternProduct = objPatternProduct;
+				var strPropName = $(this).get(0).tagName;
+				var numTextLength = $(this).text().length;
+				if (arrOfTranslationsPatternAttributes.indexOf(strPropName) != -1) {
+					var strValueToUse = $(this).text();
+					//objSelfReference[strCleanedPropertyName] = strValueToUse;
+					var objToPush = {};
+					var strCleanedPropertyName = strPropName.replace(/_/g, ' ');
+					objToPush.key = strCleanedPropertyName;
+					//var strValueToUse = $(this).text();
+					if (objSelfReference.displayKeys.indexOf(strValueToUse) != -1 && !(isNumber(strValueToUse) && strValueToUse.indexOf('skip') == -1)) {
+						strValueToUse = getValueDisplayFromKey(strValueToUse, objSelfReference);
+					};
+					objToPush.value = strValueToUse;
 					objSelfReference.generalAttributes.push(objToPush);
+
 				};
-			};
+			})
+			//var patternVersionAndIteration = objLinkedProduct.patternNo;
+			// + $(this).find('patternIteration');
+			/*if ( typeof (patternVersionAndIteration) != 'undefined') {
+			 objToPush = {
+			 key : 'Pattern Version',
+			 value : patternVersionAndIteration
+			 };
+			 //objSelfReference.patternVersionAndIteration = objToPush;
+			 if ( typeof (objToPush) != 'undefined') {
+			 objSelfReference.generalAttributes.push(objToPush);
+			 };
+			 };*/
 
 		} else if (linkedProductType == "LABEL") {
 			objLinkedProduct.type = "Label Product";
@@ -642,10 +653,8 @@ if (index == 0) {
 			objLinkedProduct.type = "Selling Product";
 			objSellingProduct = objLinkedProduct;
 			objSelfReference.sellingProduct = objSellingProduct;
-		};
-		
-
-		
+		}
+		;
 
 	});
 	objSelfReference.objectId = numObjectId;
@@ -693,7 +702,7 @@ if (index == 0) {
 					//var strImgViewerPrefix3 = "http://res.hbi.net/dfs/BrandedApparel/Activewear/FlexApp/Prod/";
 				} else {
 				};
-				
+
 				var name = $(this).find('Document_Master_Name').text();
 				var strpSpecId = $(this).find('patternSpecId').text();
 				var strgSpecId = $(this).find('garmentSpecId').text();
@@ -701,8 +710,8 @@ if (index == 0) {
 				var strApplicationDataPartOneOfLink = $(this).find('documentNotMasterDocumentOid').text();
 				var strDocumentIdPartTwoOfLink = $(this).find('DocumentIdPartTwoOfLink').text();
 				var strMyFullId = strDocumentIdPartTwoOfLink + "_" + strApplicationDataPartOneOfLink;
-				if(window.location.href.indexOf('webprd1') != -1){
-					strImgViewerPrefix1 = 'http://wsflexwebprd1v/Windchill/rfa/jsp/image/ImageViewer.jsp?imageUrl=&appDataOid=OR:wt.content.ApplicationData:';	
+				if (window.location.href.indexOf('webprd1') != -1) {
+					strImgViewerPrefix1 = 'http://wsflexwebprd1v/Windchill/rfa/jsp/image/ImageViewer.jsp?imageUrl=&appDataOid=OR:wt.content.ApplicationData:';
 				};
 				strImgViewerPrefix1 = strImgViewerPrefix1 + strDocumentIdPartTwoOfLink + '&contentHolderOid=OR:com.lcs.wc.document.LCSDocument:' + strApplicationDataPartOneOfLink;
 
@@ -813,8 +822,7 @@ if (index == 0) {
 	if (strCurrentEnvironment.indexOf('wsflexwebprd1v') != -1) {
 		strInstance = 'net.hbi.res.wsflexappprd1v.windchillAdapter';
 	};
-	
-	
+
 	var objDefferedMeasurement = $.ajax({
 		url : strMeasTaskUrl,
 		type : 'get',
@@ -846,6 +854,10 @@ if (index == 0) {
 	if (strCurrentEnvironment.indexOf('plmqa.hanes') != -1) {
 		strInstance = 'net.hbi.res.wsflexappqa1v.windchillAdapter';
 	};
+	if (strCurrentEnvironment.indexOf('wsflexwebprd1v') != -1) {
+		strInstance = 'net.hbi.res.wsflexappprd1v.windchillAdapter';
+	};
+
 	var objDefferedConstruction = $.ajax({
 		url : conStrTaskUrl,
 		type : 'get',
@@ -1281,8 +1293,7 @@ garmentProduct.prototype.generateAvailableReportsList = function(objSelfReferenc
 					if (window.location.href.indexOf('.res.hbi.net') == -1) {
 						objNewImageToAdd[0].src = objNewImageToAdd[0].src.replace('.res.hbi.net', '');
 					};
-					
-										
+
 					var myDivId = objImgMeta.myDivId;
 					var myMasterId = objImgMeta.masterId;
 					var strMyMasterIdWithPoundRemoved = myMasterId.replace('#', '');
@@ -1319,21 +1330,31 @@ garmentProduct.prototype.generateAvailableReportsList = function(objSelfReferenc
 							if ($("#frontSketch").length) {
 
 							} else {
-								$('#frontBackImages').append('<div id="frontSketch" class="col-md-4"></div>');
+								$('#frontBackImages').append('<div id="frontSketch" class="col-md-6 col-sm-6 col-lg-6 col-xs-6"></div>');
 								if (!currentGarmentProduct.generalAttributes.length) {
 
 								} else {
+									var strGeneralAttributesTableString = "<div id='gattributeHolder' class='col-md-6 col-sm-6 col-lg-6 col-xs-6'><table class='display' id='generalAttributes'><thead><tr><th>Label</th><th>Value</th></tr></thead><tbody>"
 									for (var i = 0; i < currentGarmentProduct.generalAttributes.length; i++) {
+
 										var strValue = currentGarmentProduct.generalAttributes[i].value;
 										var strKey = currentGarmentProduct.generalAttributes[i].key;
-										$('#frontBackImages').append('<tr><td><label> ' + strKey + ' </label></td><td>' + '<p>' + strValue + '<p></td></tr>');
+										strGeneralAttributesTableString += '<tr><td><label>' + strKey + '</label></td><td>' + strValue + '</td></tr>';
+										//$('#frontBackImages').append('<tr><td><label> ' + strKey + ' </label></td><td>' + '<p>' + strValue + '<p></td></tr>');
+									};
+									strGeneralAttributesTableString += '</tbody></table></div>';
+									$('#frontBackImages').prepend(strGeneralAttributesTableString);
+									if (! $.fn.DataTable.isDataTable('#generalAttributes')) {
+										$('#generalAttributes').DataTable({
+											'dom':'t'
+										});
 									};
 								};
 
 							}
 							targetParent.find('h3').remove();
 							target.addClass('img-rounded');
-							target.detach().appendTo('#frontSketch');
+							target.detach().prependTo('#frontSketch');
 
 						} else if (target.hasClass('measurements')) {
 							//console.log('dat Meas!');
@@ -1969,7 +1990,7 @@ garmentProduct.prototype.getColorwayBoms = function(strUrlPrefix, objSelfReferen
 		//}).done(function () {
 
 		//materialSwapper(arrMaterialsToGet);
-		$('td').each(function() {
+		$('#revisionAttributeTbl tbody tr td').each(function() {
 			strText = $(this).text();
 			if (strText == '0') {
 				$(this).text('');
@@ -2119,6 +2140,11 @@ garmentProduct.prototype.getMoas = function(strUrlPrefix, objSelfReference, obje
 		}).done(function() {
 			//var strUrlForUsers = 'http://wsflexwebprd1v.res.hbi.net/Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?userIds=' + strUserIdsToGet + '&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A12134557&action=ExecuteReport';
 			var strUrlForUsers = 'http://wsflexappdev2v/Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?userIds=' + strUserIdsToGet + '&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A12134557&action=ExecuteReport';
+			if (window.location.href.indexOf('wsflexwebprd1') != -1) {
+				strUrlForUsers = 'http://wsflexwebprd1v/Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?userIds=' + strUserIdsToGet + '&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A12134557&action=ExecuteReport';
+			};
+			//garmentProdSpecGarmentAndPatternComponentsUserIds
+			//getMyReportIdFromReportName('garmentProdSpecGarmentAndPatternComponentsUserIds');
 			var arrUserArray = [];
 			$.get(strUrlForUsers, function(data3) {
 			}).done(function(data3) {
@@ -2336,12 +2362,12 @@ function pdfPageJSPDFVERSION(objForFile) {
 	});
 
 	var pdf = new jsPDF('l', 'pt', 'a3')
-	// source can be HTML-formatted string,     or a reference
+	// source can be HTML-formatted string,        or a reference
 	// to an actual DOM element from which the text will be scraped.
 	, source = strHtmlStringForPdf
 
 	// we support special element handlers. Register them with jQuery-style
-	// ID selector for either ID or node name. ("#iAmID",     "div", "span" etc.)
+	// ID selector for either ID or node name. ("#iAmID",        "div", "span" etc.)
 	// There is no support for any other type of selectors
 	// (class, of compound) at this time.
 	, specialElementHandlers = {
@@ -2581,3 +2607,6 @@ function callNextDocument(arrayOfDocuments, currentIndex) {
 	};
 };
 
+function isNumber(n) {
+	return /^-?[\d.]+(?:e-?\d+)?$/.test(n);
+} 

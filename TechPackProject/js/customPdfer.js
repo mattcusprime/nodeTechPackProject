@@ -121,7 +121,7 @@ function pdfSpec(productToSpec) {
 
 		});
 		//dateForStuff
-		for (var i = 0; i < productToSpec.generalAttributes.length; i++) {
+		/*for (var i = 0; i < productToSpec.generalAttributes.length; i++) {
 			var objTextObjectKey = {
 
 				text : productToSpec.generalAttributes[i].key,
@@ -137,7 +137,35 @@ function pdfSpec(productToSpec) {
 				margin : [0, 0, 0, 8]
 			}
 			docDefinition.content.push(objTextObjectKey, objTextObjectValue);
+		}*/
+	};
+	
+	
+	if ($("#generalAttributes").length) {
+		var arrGattrTbl = pdfThisTableV2('generalAttributes');
+		for(var i=0;i<arrGattrTbl.length;i++){
+			arrGattrTbl[i] = arrGattrTbl[i].replace(/<label>/g, ' ');
+			arrGattrTbl[i] = arrGattrTbl[i].replace(/<\/label>/g, ' ');
 		}
+		var objTextObject = {};
+		objTextObject = {
+			text : 'General Attributes',
+			fontSize : 14,
+			bold : true,
+			pageBreak : 'before',
+			margin : [0, 0, 0, 8]
+		};
+		var objGattributeContent = {
+			//text: {'Size Table', fontSize: 14, bold: true, pageBreak: 'before', margin: [0, 0, 0, 8]},
+			style : 'tableExample',
+			table : {
+				headerRows : 1,
+				body : arrGattrTbl
+			},
+			layout : objLayoutObject
+
+		};
+		docDefinition.content.push(objTextObject, objGattributeContent);
 	};
 	if ($("#sizeTbl").length) {
 		var arrSizeTbl = pdfThisTableV2('sizeTbl');

@@ -529,7 +529,7 @@ function getLogin(arrAttributeValueListArray, objCurrentGarmentProduct, arrRepor
         //var voteable = (age < 18) ? "Too young":"Old enough";
         var numReportCheck = typeof (objParsedObject.report);
         strCacheReportUrl = (numReportCheck != 'undefined') ? strReportsXmlUrl : 'cachedReports.xml';
-        if(strReportsXmlUrl == 'cachedReports.xml' && window.location.href.indexOf('wsflexwebprd1v') != -1){
+        if(window.location.href.indexOf('wsflexwebprd1v') != -1){
         	strReportsXmlUrl = 'prodCachedReports.xml';
         };
         

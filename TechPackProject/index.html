@@ -220,7 +220,7 @@
 				var gProdQueryURL;
 				// = strUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/invokeAction?oid=OR%3Awt.query.template.ReportTemplate%3A4711650&action=ProduceReport&u8=1'
 				var returnArrays;
-				var arrOfAttributeValueListIds = ['2381876'/*Prod Only*/, '102771', '2381693'/*Prod Only*/, '368058', '100575', '368793'/*Maybe Dev Only.*/, '406136', '406161'];
+				var arrOfAttributeValueListIds = ['2377385','2378941','10661752','2381876'/*Prod Only*/, '102771', '2381693'/*Prod Only*/, '368058', '100575', '368793'/*Maybe Dev Only.*/, '406136', '406161'];
 				//var arrOfAttributeValueListIds = ['2381876', '102771', '2381693', '17436676', '100575'];
 				var strCurrentEnvironment = window.location.href;
 				var numIndexOfWindChill = strCurrentEnvironment.indexOf('Windchill');
@@ -358,7 +358,7 @@
 				<div id="navbar" class="collapse navbar-collapse">
 					<ul class="nav navbar-nav">
 						<li>
-							<a href="javascript:makeMeScrollToDefinedTarget('#frontBackImages',50,-350);">Top</a>
+							<a href="javascript:makeMeScrollToDefinedTarget('#max',50,-350);">Top</a>
 						</li>
 						<li>
 							<a href="javascript:makeMeScrollToDefinedTarget('#garmentHeader',50,-100);">Product Relationships</a>
@@ -450,12 +450,10 @@
 		<!-- container -->
 		</div>
 		<br>
+		
 		<br>
 		<br>
-		<br>
-		<br>
-		<br>
-		<div class="page">
+		<div class="page" id="max">
 			<div class="container-fluid clearThisComponentOnNewGarmentLoad" id="frontBackImages">
 
 			</div>
