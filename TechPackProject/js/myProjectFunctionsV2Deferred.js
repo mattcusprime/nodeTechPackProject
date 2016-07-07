@@ -479,6 +479,8 @@ garmentProduct.prototype.getSpecByNameButNotJustActiveSpec = function(strHostUrl
 			objCombinationObject.active = objSpec.active;
 			objCombinationObject.seasonId = $(this).find('Garment_Season').attr('objectId');
 			objCombinationObject.seasonName = $(this).find('Garment_Season_Season_Name').text();
+			objCombinationObject.patternSpec = encodeURIComponent($(this).find('hbiPatternSpec').text());
+			objCombinationObject.constructionMethodCode = $(this).find('hbiConstructionMethodCode').text();
 			objSelfReference.activeSeason = $(this).find('Garment_Season_Season_Name').text();
 			objCombinationObject.seasonSpecCombo = "" + objCombinationObject.seasonName + " _src_" + objCombinationObject.sourceName + " _spec_" + objCombinationObject.specName
 			arrCombinationArray.push(objCombinationObject);
@@ -507,7 +509,7 @@ garmentProduct.prototype.getSpecByNameButNotJustActiveSpec = function(strHostUrl
 				strExtraButtonClass = ' btn-info';
 			};
 			//$('#seasonSpecSelection').append('<button class="seasonSpecButton btn col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8 col-xs-offset-2 col-xs-8' + strExtraButtonClass + '" specId= ' + objLoopObject.specId + '>Season:' + objLoopObject.seasonName + ' Source:' + objLoopObject.sourceName + 'Spec:' + objLoopObject.specName + '</button></br>')
-			$('#seasonSpecSelection').append('<button class="seasonSpecButton btn col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8 col-xs-offset-2 col-xs-8' + strExtraButtonClass + '" specId= ' + objLoopObject.specId + '>' + objLoopObject.specName + '</button><br><br><br>');
+			$('#seasonSpecSelection').append('<button class="seasonSpecButton btn col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8 col-xs-offset-2 col-xs-8' + strExtraButtonClass + '" specId= ' + objLoopObject.specId + ' constructionMethodCode=' + objLoopObject.constructionMethodCode + ' patternSpec=' + objLoopObject.patternSpec + '>' + objLoopObject.specName + '</button><br><br><br>');
 			if (arrCombinationArray.length == i) {
 
 			};
@@ -515,6 +517,20 @@ garmentProduct.prototype.getSpecByNameButNotJustActiveSpec = function(strHostUrl
 
 		$('.seasonSpecButton').click(function() {
 			var strSelectedSpecId = $(this).attr('specId');
+			var strConstructionMethodCode = $(this).attr('constructionmethodcode');
+			var strPatternSpec = decodeURIComponent($(this).attr('patternspec'));
+			
+			var str1 = 'http://wsflexwebprd1v.res.hbi.net/Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?';
+			var str2 = '&oid=OR%3Awt.query.template.ReportTemplate%3A7360149&action=ExecuteReport';
+			if(window.location.href.indexOf('appdev2') != -1){
+				str1 = 'http://wsflexappdev2v.res.hbi.net/Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?';
+				str2 = '&oid=OR%3Awt.query.template.ReportTemplate%3A7360149&action=ExecuteReport'
+			};
+			
+			//var strNameSubstring = nameToUse.substring(0,5);
+			var fullStr = str1 + 'Garment+Product=' + encodeURIComponent(gProdName) + '&specId=' + strSelectedSpecId + str2;
+			$('#complianceReport').attr('href', fullStr);
+			
 			$('#seasonSpecSelection *').remove();
 			objForCallback = {
 				arrSpecArray : arrSpecArray,
@@ -522,7 +538,9 @@ garmentProduct.prototype.getSpecByNameButNotJustActiveSpec = function(strHostUrl
 				arrCombinationArray : arrCombinationArray,
 				activeSpecId : strSelectedSpecId,
 				gProdName : gProdName,
-				activeSpecName : strActiveSpecName
+				activeSpecName : strActiveSpecName,
+				constructionMethodCode : strConstructionMethodCode,
+				patternSpec : strPatternSpec
 			};
 			funCallback(objForCallback, objSelfReference);
 		});
@@ -576,7 +594,7 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function(strHostUrlPre
 		if (index == 0) {
 			objSelfReference.generalAttributes = [];
 			objSelfReference.generalNums = [];
-			var arrOfTranslations = ['Designer', 'Product_Manager', 'Pattern_Iteration', 'HBI_Division', 'Brand', 'Construction_Method_Code', 'APS_Corp_Division', 'Imperfect_Style', 'Irregular_Style', 'Pattern_Version'];
+			var arrOfTranslations = ['Designer', 'Product_Manager', 'HBI_Division', 'Brand', 'Construction_Method_Code', 'APS_Corp_Division', 'Imperfect_Style', 'Irregular_Style', 'Pattern_Version', 'Technical_Designer'];
 
 			$(this).find('*').each(function() {
 				var strPropName = $(this).get(0).tagName;
@@ -1167,6 +1185,8 @@ garmentProduct.prototype.thenCallSpecs = function(objectForCallback, objSelfRefe
 	objSelfReference.seasonSourceSpecCombos = objectForCallback.arrCombinationArray
 	objSelfReference.activeSpecId = objectForCallback.activeSpecId;
 	objSelfReference.activeSpecName = objectForCallback.activeSpecName;
+	objSelfReference.constructionMethodCode = objectForCallback.constructionMethodCode;
+	objSelfReference.patternSpec = objectForCallback.patternSpec;
 	objSelfReference.name = objectForCallback.gProdName;
 	objSelfReference.getAllMyDataForMyActiveSpec(strUrlPrefix, objSelfReference.activeSpecId, objSelfReference);
 
@@ -1335,6 +1355,13 @@ garmentProduct.prototype.generateAvailableReportsList = function(objSelfReferenc
 
 								} else {
 									var strGeneralAttributesTableString = "<div id='gattributeHolder' class='col-md-6 col-sm-6 col-lg-6 col-xs-6'><table class='display' id='generalAttributes'><thead><tr><th>Label</th><th>Value</th></tr></thead><tbody>"
+									var objToPush1 = {};
+									objToPush1.key = 'Construction Method Code'
+									objToPush1.value = currentGarmentProduct.constructionMethodCode;
+									var objToPush2 = {};
+									objToPush2.key = 'Pattern Spec'
+									objToPush2.value = currentGarmentProduct.patternSpec;
+									currentGarmentProduct.generalAttributes.push(objToPush1, objToPush2);
 									for (var i = 0; i < currentGarmentProduct.generalAttributes.length; i++) {
 
 										var strValue = currentGarmentProduct.generalAttributes[i].value;
@@ -1342,11 +1369,12 @@ garmentProduct.prototype.generateAvailableReportsList = function(objSelfReferenc
 										strGeneralAttributesTableString += '<tr><td><label>' + strKey + '</label></td><td>' + strValue + '</td></tr>';
 										//$('#frontBackImages').append('<tr><td><label> ' + strKey + ' </label></td><td>' + '<p>' + strValue + '<p></td></tr>');
 									};
+
 									strGeneralAttributesTableString += '</tbody></table></div>';
 									$('#frontBackImages').prepend(strGeneralAttributesTableString);
 									if (! $.fn.DataTable.isDataTable('#generalAttributes')) {
 										$('#generalAttributes').DataTable({
-											'dom':'t'
+											'dom' : 't'
 										});
 									};
 								};
@@ -1895,6 +1923,10 @@ garmentProduct.prototype.getColorwayBoms = function(strUrlPrefix, objSelfReferen
 			objRow.strIdToUse = objRow.Dimension_Id.replace(/:/g, "").replace(regxPeriod, "").replace(regxHyphen, "");
 			objRow.Dimension_Name = $(this).find('Dimension_Name').text();
 			objRow.colorName = $(this).find('Att_').text();
+			/*
+			this effectively removes the MC #
+			objRow.colorName = objRow.colorName.substring(10,objRow.colorName.length);
+			*/
 			objRow.hex = $(this).find('hex').text();
 			objRow.Thumbnail = $(this).find('Thumbnail').text();
 			objRow.bPartMaster_bLinkBranchId = $(this).find('bPartMaster_bLinkBranchId').text();
@@ -2362,12 +2394,12 @@ function pdfPageJSPDFVERSION(objForFile) {
 	});
 
 	var pdf = new jsPDF('l', 'pt', 'a3')
-	// source can be HTML-formatted string,        or a reference
+	// source can be HTML-formatted string,         or a reference
 	// to an actual DOM element from which the text will be scraped.
 	, source = strHtmlStringForPdf
 
 	// we support special element handlers. Register them with jQuery-style
-	// ID selector for either ID or node name. ("#iAmID",        "div", "span" etc.)
+	// ID selector for either ID or node name. ("#iAmID",         "div", "span" etc.)
 	// There is no support for any other type of selectors
 	// (class, of compound) at this time.
 	, specialElementHandlers = {
