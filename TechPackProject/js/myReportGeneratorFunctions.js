@@ -530,7 +530,7 @@ function getLogin(arrAttributeValueListArray, objCurrentGarmentProduct, arrRepor
         var numReportCheck = typeof (objParsedObject.report);
         strCacheReportUrl = (numReportCheck != 'undefined') ? strReportsXmlUrl : 'cachedReports.xml';
         if(window.location.href.indexOf('wsflexwebprd1v') != -1){
-        	strReportsXmlUrl = 'prodCachedReports.xml';
+        	strCacheReportUrl = 'prodCachedReports.xml';
         };
         
         //condition to use cached file

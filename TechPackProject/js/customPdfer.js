@@ -107,7 +107,7 @@ function pdfSpec(productToSpec) {
 		var objDateObject = {
 
 			text : productToSpec.name + '\nPublished on ' + dateForStuff,
-			fontSize : 18,
+			fontSize : 12,
 			bold : true,
 			margin : [0, 0, 0, 8]
 		};
@@ -126,26 +126,9 @@ function pdfSpec(productToSpec) {
 			objImageColumns.columns.push(objImageToPass);
 
 		});
-		
+
 		pageOneColumns.push(objImageColumns);
-		//dateForStuff
-		/*for (var i = 0; i < productToSpec.generalAttributes.length; i++) {
-		 var objTextObjectKey = {
 
-		 text : productToSpec.generalAttributes[i].key,
-		 fontSize : 14,
-		 bold : true,
-		 margin : [0, 0, 0, 8]
-		 }
-		 var objTextObjectValue = {
-
-		 text : productToSpec.generalAttributes[i].value,
-		 fontSize : 14,
-		 bold : false,
-		 margin : [0, 0, 0, 8]
-		 }
-		 docDefinition.content.push(objTextObjectKey, objTextObjectValue);
-		 }*/
 	};
 
 	if ($("#generalAttributes").length) {
@@ -185,8 +168,7 @@ function pdfSpec(productToSpec) {
 		//docDefinition.content.push(objTextObject, objGattributeContent);
 		pageOneColumns.push(objGattributeContent);
 	};
-	
-	
+
 	if ($("#sizeTbl").length) {
 		var arrSizeTbl = pdfThisTableV2('sizeTbl');
 		var objTextObject = {};
@@ -204,13 +186,15 @@ function pdfSpec(productToSpec) {
 				headerRows : 1,
 				body : arrSizeTbl
 			},
-			layout : objLayoutObject
+			layout : objLayoutObject,
+			pageBreak : 'after'
 
 		};
-		//docDefinition.content.push(objTextObject, objContentSizeTbl);
+		//docDefinition.content.push(objContentSizeTbl);
 		pageOneColumns.push(objContentSizeTbl);
 	};
-	
+	objPageOneContent.columns = pageOneColumns;
+	docDefinition.content.push(objPageOneContent);
 	if ($("#approvedSupplierTbl").length) {
 		var arrApprovedSupplierTbl = pdfThisTableV2('approvedSupplierTbl');
 		var objTextObject = {};
@@ -232,16 +216,18 @@ function pdfSpec(productToSpec) {
 			layout : objLayoutObject
 
 		};
-		//docDefinition.content.push(objTextObject, objContentApprovedSupplierTbl);
-		pageOneColumns.push(objContentApprovedSupplierTbl);
+		docDefinition.content.push(objContentApprovedSupplierTbl);
+		//pageOneColumns.push(objContentApprovedSupplierTbl);
 	};
+
+	//objPageOneContent.columns = pageOneColumns;
 	
-	objPageOneContent.columns = pageOneColumns;
 	//objPageOneContent.alignment = 'left';
-	docDefinition.content.push(objPageOneContent);
+	//docDefinition.content.push(objPageOneContent);
 	if ($("#revisionAttributeTbl").length) {
 		var arrRevisionAttributeData = pdfThisTableV2('revisionAttributeTbl');
-		//arrRevisionAttributeData = arrRevisionAttributeData.slice(0,9);
+		//reducing revision table to just first most recently sorted rows
+		arrRevisionAttributeData = arrRevisionAttributeData.splice(0,10);
 		var objTextObject = {};
 		objTextObject = {
 			text : 'Product Revision Attributes',

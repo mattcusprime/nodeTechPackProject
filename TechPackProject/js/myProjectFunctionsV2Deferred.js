@@ -629,7 +629,7 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function(strHostUrlPre
 			objSelfReference.colorwayProduct = objColorwayProduct;
 		} else if (linkedProductType == "BASIC CUT & SEW - PATTERN") {
 			$(this).find('*').each(function() {
-				var arrOfTranslationsPatternAttributes = ['Pattern_No']
+				var arrOfTranslationsPatternAttributes = ['']
 				objLinkedProduct.type = "Pattern Product";
 				objPatternProduct = objLinkedProduct;
 				objSelfReference.patternProduct = objPatternProduct;
@@ -2213,6 +2213,7 @@ garmentProduct.prototype.getMoas = function(strUrlPrefix, objSelfReference, obje
 
 				};
 				var strRevisionAttributeTableString = convertRowArrayIntoHtmlTable(arrRevisionAttributeArray, '', '', 'revisionAttributeTbl', '<h1>Product Revisions</h1>');
+				strRevisionAttributeTableString = strRevisionAttributeTableString.replace(/<td>0<\/td>/g,'<td><\/td>');
 				var strSizeTableString = convertRowArrayIntoHtmlTable(arrSizeTableArray, '', '', 'sizeTbl', '<h1>Sizing</h1>');
 
 				objSelfReference.revisionAttributes = arrRevisionAttributeArray;
