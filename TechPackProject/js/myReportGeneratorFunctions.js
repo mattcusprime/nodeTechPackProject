@@ -534,7 +534,7 @@ function getLogin(arrAttributeValueListArray, objCurrentGarmentProduct, arrRepor
         };
         
         //condition to use cached file
-        //$.get(strReportsXmlUrl, function (data) { }).done(function (data) {
+        //$.get(strReportsXmlUrl, function (data)c { }).done(function (data) {
         var strBase64 = btoa(strUser + ":" + strPwd);
         $.ajax({
             //url: strReportsXmlUrl,
