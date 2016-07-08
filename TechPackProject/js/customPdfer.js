@@ -344,6 +344,7 @@ function pdfSpec(productToSpec) {
 			//text: {'Construction', fontSize: 14, bold: true, pageBreak: 'before', margin: [0, 0, 0, 8]},
 			style : 'tableExample',
 			table : {
+				widths: [400,'auto','auto','auto','auto','auto','auto','auto','auto','auto'],
 				headerRows : 1,
 				body : arrConstructionTbl
 			},

@@ -296,7 +296,7 @@ garmentProduct.prototype.getMyMeasurement = function(strHostUrlPrefix, numMeasur
 		strTableBodyString += '</tr>';
 	};
 	strTableBodyString += '</tbody>';
-	objSelfReference.measurementTableString = '<h1>Measurements</h1><table id="measurements" class="display responsive col-md-12 compact cell-border">' + strTableHeaderString + strTableBodyString + '</table>';
+	objSelfReference.measurementTableString = '<h1>Measurements ' + objSelfReference.measurement.name + '</h1><table id="measurements" class="display responsive col-md-12 compact cell-border">' + strTableHeaderString + strTableBodyString + '</table>';
 
 };
 /**
@@ -509,7 +509,7 @@ garmentProduct.prototype.getSpecByNameButNotJustActiveSpec = function(strHostUrl
 				strExtraButtonClass = ' btn-info';
 			};
 			//$('#seasonSpecSelection').append('<button class="seasonSpecButton btn col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8 col-xs-offset-2 col-xs-8' + strExtraButtonClass + '" specId= ' + objLoopObject.specId + '>Season:' + objLoopObject.seasonName + ' Source:' + objLoopObject.sourceName + 'Spec:' + objLoopObject.specName + '</button></br>')
-			$('#seasonSpecSelection').append('<button class="seasonSpecButton btn col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8 col-xs-offset-2 col-xs-8' + strExtraButtonClass + '" specId= ' + objLoopObject.specId + ' constructionMethodCode=' + objLoopObject.constructionMethodCode + ' patternSpec=' + objLoopObject.patternSpec + '>' + objLoopObject.specName + '</button><br><br><br>');
+			$('#seasonSpecSelection').append('<button class="seasonSpecButton btn col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8 col-xs-offset-2 col-xs-8' + strExtraButtonClass + '" specId= ' + objLoopObject.specId + ' constructionMethodCode=' + objLoopObject.constructionMethodCode + ' patternSpec=' + objLoopObject.patternSpec + '>' + objLoopObject.specName + '(' + objLoopObject.sourceName + ')</button><br><br><br>');
 			if (arrCombinationArray.length == i) {
 
 			};
@@ -519,18 +519,18 @@ garmentProduct.prototype.getSpecByNameButNotJustActiveSpec = function(strHostUrl
 			var strSelectedSpecId = $(this).attr('specId');
 			var strConstructionMethodCode = $(this).attr('constructionmethodcode');
 			var strPatternSpec = decodeURIComponent($(this).attr('patternspec'));
-			
+
 			var str1 = 'http://wsflexwebprd1v.res.hbi.net/Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?';
 			var str2 = '&oid=OR%3Awt.query.template.ReportTemplate%3A7360149&action=ExecuteReport';
-			if(window.location.href.indexOf('appdev2') != -1){
+			if (window.location.href.indexOf('appdev2') != -1) {
 				str1 = 'http://wsflexappdev2v.res.hbi.net/Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?';
 				str2 = '&oid=OR%3Awt.query.template.ReportTemplate%3A7360149&action=ExecuteReport'
 			};
-			
+
 			//var strNameSubstring = nameToUse.substring(0,5);
 			var fullStr = str1 + 'Garment+Product=' + encodeURIComponent(gProdName) + '&specId=' + strSelectedSpecId + str2;
 			$('#complianceReport').attr('href', fullStr);
-			
+
 			$('#seasonSpecSelection *').remove();
 			objForCallback = {
 				arrSpecArray : arrSpecArray,
@@ -1054,6 +1054,14 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function(strHostUrlPre
 		try {
 			objSelfReference.getMyMeasurement(strHostUrlPrefix, objSelfReference.measurement.branchId, arrMeasurementDetailDataContainer, objSelfReference);
 			createComponentTable('measurementDiv', 'measurements', objSelfReference.measurementTableString, measurementTableOptions, true);
+			if ($.fn.DataTable.isDataTable('#measurements')) {
+				var table = $('#measurements').DataTable();
+				for (var i = 0; i < table.columns().length; i++) {
+					console.log(table.columns(i).cells().data());
+				};
+
+			}
+
 			$('#measurementDiv').append('<button class="btn btn-danger" id="deleteSelectedMeasurementRows">Delete Selected Measurement Rows</button>')
 			$('#measurements tbody').on('click', 'tr', function() {
 				if ($(this).hasClass('selected')) {
@@ -1924,9 +1932,9 @@ garmentProduct.prototype.getColorwayBoms = function(strUrlPrefix, objSelfReferen
 			objRow.Dimension_Name = $(this).find('Dimension_Name').text();
 			objRow.colorName = $(this).find('Att_').text();
 			/*
-			this effectively removes the MC #
-			objRow.colorName = objRow.colorName.substring(10,objRow.colorName.length);
-			*/
+			 this effectively removes the MC #
+			 objRow.colorName = objRow.colorName.substring(10,objRow.colorName.length);
+			 */
 			objRow.hex = $(this).find('hex').text();
 			objRow.Thumbnail = $(this).find('Thumbnail').text();
 			objRow.bPartMaster_bLinkBranchId = $(this).find('bPartMaster_bLinkBranchId').text();
@@ -2213,7 +2221,7 @@ garmentProduct.prototype.getMoas = function(strUrlPrefix, objSelfReference, obje
 
 				};
 				var strRevisionAttributeTableString = convertRowArrayIntoHtmlTable(arrRevisionAttributeArray, '', '', 'revisionAttributeTbl', '<h1>Product Revisions</h1>');
-				strRevisionAttributeTableString = strRevisionAttributeTableString.replace(/<td>0<\/td>/g,'<td><\/td>');
+				strRevisionAttributeTableString = strRevisionAttributeTableString.replace(/<td>0<\/td>/g, '<td><\/td>');
 				var strSizeTableString = convertRowArrayIntoHtmlTable(arrSizeTableArray, '', '', 'sizeTbl', '<h1>Sizing</h1>');
 
 				objSelfReference.revisionAttributes = arrRevisionAttributeArray;
@@ -2395,12 +2403,12 @@ function pdfPageJSPDFVERSION(objForFile) {
 	});
 
 	var pdf = new jsPDF('l', 'pt', 'a3')
-	// source can be HTML-formatted string,         or a reference
+	// source can be HTML-formatted string,            or a reference
 	// to an actual DOM element from which the text will be scraped.
 	, source = strHtmlStringForPdf
 
 	// we support special element handlers. Register them with jQuery-style
-	// ID selector for either ID or node name. ("#iAmID",         "div", "span" etc.)
+	// ID selector for either ID or node name. ("#iAmID",            "div", "span" etc.)
 	// There is no support for any other type of selectors
 	// (class, of compound) at this time.
 	, specialElementHandlers = {
