@@ -185,7 +185,8 @@ garmentProduct.prototype.getMyConstruction = function(strHostUrlPrefix, numConst
 		};
 		strTableBodyString += '</tr>';
 		strTableBodyString += '</tbody>';
-		var constructionTableString = '<h1>' + headerValue + '</h1><table id="' + idToPass + '" class="display responsive col-md-12 compact cell-border">' + strTableHeaderString + strTableBodyString + '</table>';
+		var strNameAttr = encodeURIComponent(headerValue);
+		var constructionTableString = '<h1>' + headerValue + '</h1><table name="' + strNameAttr + '" id="' + idToPass + '" class="display responsive col-md-12 compact cell-border">' + strTableHeaderString + strTableBodyString + '</table>';
 		if ( typeof (objSelfReference.arrConstructionTableStrings) == 'undefined') {
 			objSelfReference.arrConstructionTableStrings = [];
 		};
