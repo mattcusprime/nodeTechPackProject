@@ -97,7 +97,7 @@ var arrWhenDeferredArray = [];
  * @param {Number} numConstructionBranchId takes the branch id from objConstruction (preferrably) and then turn later constructionDetail of the garmentProduct which runs this to contain all the POMs etc.
  *
  */
-garmentProduct.prototype.getMyConstruction = function(strHostUrlPrefix, numConstructionBranchId, constructionData, objSelfReference, idToPass, header) {
+garmentProduct.prototype.getMyConstruction = function(strHostUrlPrefix, numConstructionBranchId, constructionData, objSelfReference, idToPass, headerValue) {
 	var objCurrentRow = {};
 	var arrCurrentConstruction = [];
 
@@ -185,7 +185,7 @@ garmentProduct.prototype.getMyConstruction = function(strHostUrlPrefix, numConst
 		};
 		strTableBodyString += '</tr>';
 		strTableBodyString += '</tbody>';
-		var constructionTableString = '<h1>' + header + '</h1><table id="' + idToPass + '" class="display responsive col-md-12 compact cell-border">' + strTableHeaderString + strTableBodyString + '</table>';
+		var constructionTableString = '<h1>' + headerValue + '</h1><table id="' + idToPass + '" class="display responsive col-md-12 compact cell-border">' + strTableHeaderString + strTableBodyString + '</table>';
 		if ( typeof (objSelfReference.arrConstructionTableStrings) == 'undefined') {
 			objSelfReference.arrConstructionTableStrings = [];
 		};
@@ -958,8 +958,8 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function(strHostUrlPre
 		//arrConstructionDetailDataContainer = arrOfDeffereds[0];
 		for (var i = 0; i < arguments.length; i++) {
 			try {
-				objSelfReference.getMyConstruction(strHostUrlPrefix, objSelfReference.arrayOfConstructions[i].branchId, arguments[i], objSelfReference, arrayOfConstructions[i].branchId, arrayOfConstructions[i].name);
-				createComponentTable('constructionDiv', arrayOfConstructions[i].branchId, objSelfReference.arrayOfConstructions[i].tableString, constructionTableOptions, true);
+				objSelfReference.getMyConstruction(strHostUrlPrefix, objSelfReference.arrayOfConstructions[i].branchId, arguments[i], objSelfReference, 'constructionBranchId' + objSelfReference.arrayOfConstructions[i].branchId, objSelfReference.arrayOfConstructions[i].name);
+				createComponentTable('constructionDiv', 'constructionBranchId' + objSelfReference.arrayOfConstructions[i].branchId, objSelfReference.arrayOfConstructions[i].tableString, constructionTableOptions, true);
 
 			} catch (e) {
 				console.log(e);
