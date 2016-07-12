@@ -262,7 +262,7 @@ function pdfSpec(productToSpec) {
 		var objContentConstructionTbl = {
 			style : 'tableExample',
 			table : {
-				widths: [200,'*','*','*','*','*','*','*','*','*'],
+				widths: ['auto','auto','auto','auto','auto','auto','auto','auto','auto','auto'],
 				headerRows : 1,
 				body : arrConstructionTbl
 			},
