@@ -212,9 +212,9 @@ garmentProduct.prototype.getMyConstruction = function(strHostUrlPrefix, numConst
  *
  */
 garmentProduct.prototype.getMyMeasurement = function(strHostUrlPrefix, numMeasurementBranchId, measurementData, objSelfReference) {
-	//http://wsflexwebprd1v.res.hbi.net/Windchill/servlet/IE/tasks/com/lcs/wc/measurements/FindMeasurements.xml?oid=VR:com.lcs.wc.measurements.LCSMeasurements:2394285&instance=net.hbi.res.wsflexappprd1v.windchillAdapter
+	
 	var strTaskUrl = strHostUrlPrefix + 'Windchill/servlet/IE/tasks/com/lcs/wc/measurements/FindMeasurements.xml';
-	//?oid=VR:com.lcs.wc.construction.LCSConstructionInfo:' + numConstructionBranchId + '&instance=net.hbi.res.wsflexappprd1v.windchillAdapter';
+	
 	var arrCurrentMeasurement = [];
 	/*if (measurementData.childNodes.length == 1) {
 	 return false;
@@ -843,15 +843,13 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function(strHostUrlPre
 	});
 	objSelfReference.measurement = objMeasurementComp;
 	var strMeasTaskUrl = strHostUrlPrefix + 'Windchill/servlet/IE/tasks/com/lcs/wc/measurements/FindMeasurements.xml';
-	//?oid=VR:com.lcs.wc.construction.LCSConstructionInfo:' + numConstructionBranchId + '&instance=net.hbi.res.wsflexappprd1v.windchillAdapter';
-	//var strInstance = 'net.hbi.res.wsflexappprd1v.windchillAdapter';
 	var strInstance = 'net.hbi.res.wsflexappdev1v.windchillAdapter';
 	var strCurrentEnvironment = window.location.href;
 	if (strCurrentEnvironment.indexOf('plmqa.hanes') != -1) {
 		strInstance = 'net.hbi.res.wsflexappqa1v.windchillAdapter';
 	};
 	if (strCurrentEnvironment.indexOf('wsflexwebprd1v') != -1) {
-		strInstance = 'net.hbi.res.wsflexappprd1v.windchillAdapter';
+		strInstance = 'net.hbi.res.wsflexappprd1v.windchill';
 	};
 
 	/*var objDefferedMeasurement = $.ajax({
@@ -860,7 +858,6 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function(strHostUrlPre
 	 data : {
 	 oid : 'VR:com.lcs.wc.measurements.LCSMeasurements:' + objSelfReference.measurement.branchId,
 	 instance : strInstance,
-	 //instance: 'net.hbi.res.wsflexappqa1v.windchillAdapter'
 	 },
 	 async : true
 
@@ -871,7 +868,7 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function(strHostUrlPre
 		data : {
 			oid : 'VR:com.lcs.wc.measurements.LCSMeasurements:' + objSelfReference.measurement.branchId,
 			instance : strInstance,
-			//instance: 'net.hbi.res.wsflexappqa1v.windchillAdapter'
+			
 		},
 		async : true
 
@@ -927,15 +924,15 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function(strHostUrlPre
 	objSelfReference.construction = objConstructionComp;
 	objSelfReference.arrayOfConstructions = arrOfConstructions;
 	var conStrTaskUrl = strHostUrlPrefix + 'Windchill/servlet/IE/tasks/com/lcs/wc/construction/FindConstructionInfo.xml';
-	//?oid=VR:com.lcs.wc.construction.LCSConstructionInfo:' + numConstructionBranchId + '&instance=net.hbi.res.wsflexappprd1v.windchillAdapter';
-	//var strInstance = 'net.hbi.res.wsflexappprd1v.windchillAdapter';
+	
+	
 	var strInstance = 'net.hbi.res.wsflexappdev1v.windchillAdapter';
 	var strCurrentEnvironment = window.location.href;
 	if (strCurrentEnvironment.indexOf('plmqa.hanes') != -1) {
 		strInstance = 'net.hbi.res.wsflexappqa1v.windchillAdapter';
 	};
 	if (strCurrentEnvironment.indexOf('wsflexwebprd1v') != -1) {
-		strInstance = 'net.hbi.res.wsflexappprd1v.windchillAdapter';
+		strInstance = 'net.hbi.res.wsflexappprd1v.windchill';
 	};
 	var numNumberOfConstructions = 0;
 	var arrOfDeffereds = [];
@@ -947,7 +944,7 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function(strHostUrlPre
 			type : 'get',
 			data : {
 				oid : 'VR:com.lcs.wc.construction.LCSConstructionInfo:' + objCurrentConstruction.branchId,
-				//instance: 'net.hbi.res.wsflexappprd1v.windchillAdapter'
+				
 				instance : strInstance
 			}
 
@@ -973,7 +970,7 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function(strHostUrlPre
 	 type : 'get',
 	 data : {
 	 oid : 'VR:com.lcs.wc.construction.LCSConstructionInfo:' + objSelfReference.construction.branchId,
-	 //instance: 'net.hbi.res.wsflexappprd1v.windchillAdapter'
+	 
 	 instance : strInstance
 	 },
 	 async : true
@@ -2151,10 +2148,7 @@ garmentProduct.prototype.getColorwayBoms = function(strUrlPrefix, objSelfReferen
 					var numOfColumnsToSkip = $(strSprecNameToGet + ' thead tr th:contains("' + cWayName + '")').index();
 
 					$(strToGetForRow).find('td').eq(numOfColumnsToSkip).html(objRow.colorName + '-' + objRow.colorSpecificData).attr('thisColor', objRow.colorName).attr("backupBgColor", '#' + objRow.hex).addClass('colorCell').attr('id', objRow.strIdToUse);
-					//$(strToGetForRow).find('td').eq(numOfColumnsToSkip).html(objRow.colorSpecificMaterial).attr('thisColor', objRow.colorName).attr("backupBgColor", '#' + objRow.hex).addClass('colorCell').attr('id', objRow.strIdToUse);
-					//$(strToGetForRow).find('td').eq(numOfColumnsToSkip)
-
-					//            };
+					
 
 				};
 			} catch (e) {
