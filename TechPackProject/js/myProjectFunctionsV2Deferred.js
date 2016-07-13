@@ -521,7 +521,7 @@ garmentProduct.prototype.getSpecByNameButNotJustActiveSpec = function(strHostUrl
 				strExtraButtonClass = ' btn-info';
 			};
 			//$('#seasonSpecSelection').append('<button class="seasonSpecButton btn col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8 col-xs-offset-2 col-xs-8' + strExtraButtonClass + '" specId= ' + objLoopObject.specId + '>Season:' + objLoopObject.seasonName + ' Source:' + objLoopObject.sourceName + 'Spec:' + objLoopObject.specName + '</button></br>')
-			$('#seasonSpecSelection').append('<button class="seasonSpecButton btn col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8 col-xs-offset-2 col-xs-8' + strExtraButtonClass + '" specId= ' + objLoopObject.specId + ' constructionMethodCode=' + objLoopObject.constructionMethodCode + ' patternSpec=' + objLoopObject.patternSpec + '>' + objLoopObject.specName + '(' + objLoopObject.sourceName + ')</button><br><br><br>');
+			$('#seasonSpecSelection').append('<button class="seasonSpecButton btn col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8 col-xs-offset-2 col-xs-8' + strExtraButtonClass + '" specId= ' + objLoopObject.specId + ' constructionMethodCode=' + objLoopObject.constructionMethodCode + ' patternSpec=' + objLoopObject.patternSpec + ' source=' + encodeURIComponent(objLoopObject.sourceName) + '>' + objLoopObject.specName + '(' + objLoopObject.sourceName + ')</button><br><br><br>');
 			if (arrCombinationArray.length == i) {
 
 			};
@@ -531,7 +531,7 @@ garmentProduct.prototype.getSpecByNameButNotJustActiveSpec = function(strHostUrl
 			var strSelectedSpecId = $(this).attr('specId');
 			var strConstructionMethodCode = $(this).attr('constructionmethodcode');
 			var strPatternSpec = decodeURIComponent($(this).attr('patternspec'));
-
+			var strActiveSourceName = decodeURIComponent($(this).attr('source'));
 			var str1 = 'http://wsflexwebprd1v.res.hbi.net/Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?';
 			var str2 = '&oid=OR%3Awt.query.template.ReportTemplate%3A7360149&action=ExecuteReport';
 			if (window.location.href.indexOf('appdev2') != -1) {
@@ -551,6 +551,7 @@ garmentProduct.prototype.getSpecByNameButNotJustActiveSpec = function(strHostUrl
 				activeSpecId : strSelectedSpecId,
 				gProdName : gProdName,
 				activeSpecName : strActiveSpecName,
+				activeSource: strActiveSourceName,
 				constructionMethodCode : strConstructionMethodCode,
 				patternSpec : strPatternSpec
 			};
@@ -1044,7 +1045,8 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function(strHostUrlPre
 						var numLookUpPosition = objSelfReference.sortingArray.indexOf(strSize);
 						var numIndexToGrabSortPosition = numLookUpPosition + 1;
 						var numActualIndexPosition = objSelfReference.sortingArray[numIndexToGrabSortPosition];
-						objSizeData.sortPosition = numActualIndexPosition;
+						//objSizeData.sortPosition = numActualIndexPosition;
+						objSizeData.sortPosition = numLookUpPosition;
 						objGarmentSewRow.sizeData.push(objSizeData);
 					} else if (objPatternSewRow.garmentUseId != '0' && objPatternSewRow.usagePerDozen != '0') {
 						objSizeData.size = "ALL";
@@ -1326,6 +1328,7 @@ garmentProduct.prototype.thenCallSpecs = function(objectForCallback, objSelfRefe
 	objSelfReference.seasonSourceSpecCombos = objectForCallback.arrCombinationArray
 	objSelfReference.activeSpecId = objectForCallback.activeSpecId;
 	objSelfReference.activeSpecName = objectForCallback.activeSpecName;
+	objSelfReference.activeSource = objectForCallback.activeSource;
 	objSelfReference.constructionMethodCode = objectForCallback.constructionMethodCode;
 	objSelfReference.patternSpec = objectForCallback.patternSpec;
 	objSelfReference.name = objectForCallback.gProdName;
