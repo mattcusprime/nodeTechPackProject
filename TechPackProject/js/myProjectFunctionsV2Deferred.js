@@ -186,7 +186,7 @@ garmentProduct.prototype.getMyConstruction = function(strHostUrlPrefix, numConst
 		strTableBodyString += '</tr>';
 		strTableBodyString += '</tbody>';
 		var strNameAttr = encodeURIComponent(headerValue);
-		var constructionTableString = '<h1>' + headerValue + '</h1><table name="' + strNameAttr + '" id="' + idToPass + '" class="display responsive col-md-12 compact cell-border">' + strTableHeaderString + strTableBodyString + '</table>';
+		var constructionTableString = '<h1>' + headerValue + '</h1><table name="' + strNameAttr + '" id="' + idToPass + '" class="display responsive col-md-12 compact cell-border construction">' + strTableHeaderString + strTableBodyString + '</table>';
 		if ( typeof (objSelfReference.arrConstructionTableStrings) == 'undefined') {
 			objSelfReference.arrConstructionTableStrings = [];
 		};
@@ -1104,7 +1104,7 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function(strHostUrlPre
 
 	};
 	objSelfReference.garmentSewBoms = arrGarmentSewRows;
-	objSelfReference.garmentSourceBoms = arrGarmentSourceRows;
+	objSelfReference.garmentSourceBoms = arrGarmentSourceRows;	
 	objSelfReference.patternSewBoms = arrPatternSewRows;
 	if (objSelfReference.garmentSewBoms.length > 0) {
 		objSelfReference.sewBomTableString = convertRowArrayIntoHtmlTable(objSelfReference.garmentSewBoms, 'size', 'usagePerDozen', 'sewBomTable', '<h1>Sew BOMs</h1>');
