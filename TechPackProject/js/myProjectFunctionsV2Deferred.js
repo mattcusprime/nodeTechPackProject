@@ -1487,6 +1487,7 @@ garmentProduct.prototype.generateAvailableReportsList = function(objSelfReferenc
 						var target = $(strParentDiv).find('img');
 						var targetParent = target.parent();
 						target.attr('src', strFullDataUri);
+						
 						if (target.hasClass('frontSketch')) {
 							if ($("#frontSketch").length) {
 
