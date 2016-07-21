@@ -471,16 +471,45 @@ function pdfSpec(productToSpec) {
             style: 'tablePageHeader'
         };
         arrOfValuesFromTable = pdfThisTableV2(strId);
+        var numOfHeadersInThisTable = arrOfValuesFromTable[0].length;
+        var numOfColorwayHeaders = numOfHeadersInThisTable - 4;
+        console.log(strMyHeader + ' has ' + numOfColorwayHeaders + ' colorways.')
+        var arrOfValuesFromTableSecondSetAfterSeven = [];
+        if (numOfColorwayHeaders > 7) {
+            for (var i = 0; i < arrOfValuesFromTable.length; i++) {
+                var arrSubArray = arrOfValuesFromTable[i];
+                var arrSubArrayForSecondSet = [];
+                for (var j = 0; j < arrSubArray.length; j++) {
+                    if (j <= 4 || j > 7) {
+                        arrSubArrayForSecondSet.push(arrSubArray[j]);
+                    };
+                };
+                arrSubArray = arrSubArray.splice(0, 10);
+                arrOfValuesFromTable[i] = arrSubArray;
+                arrOfValuesFromTableSecondSetAfterSeven.push(arrSubArrayForSecondSet);
+            };
+        };
         objTableObject.table = {
             headerRows: 1,
             //body : arrOfValuesColumnsUpToSeven
             body: arrOfValuesFromTable
-        }
+        };
+        var objTableObject2 = {};
+        if (numOfColorwayHeaders > 7) {
+            objTableObject2.table = {
+                headerRows: 1,
+                //body : arrOfValuesColumnsUpToSeven
+                body: arrOfValuesFromTableSecondSetAfterSeven
+            };
+        };
         objTableObject.style = 'tableExample';
         objTableObject.layout = objLayoutObject;
         objTableObject.pageBreak = 'after'
         docDefinition.content.push(objTextBreak);
         docDefinition.content.push(objTableObject);
+        if (numOfColorwayHeaders > 7) {
+            docDefinition.content.push(objTableObject2);
+        };
 
     });
     if ($("#sewBomTable").length) {

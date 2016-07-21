@@ -953,17 +953,21 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function(strHostUrlPre
 
 	};
 	//var numNumberOfConstructions = 0;
-	$.when.apply($, arrOfDeffereds).done(function(responseData) {
-		//arrConstructionDetailDataContainer = arrOfDeffereds[0];
-		for (var i = 0; i < arguments.length; i++) {
-			try {
-				objSelfReference.getMyConstruction(strHostUrlPrefix, objSelfReference.arrayOfConstructions[i].branchId, arguments[i], objSelfReference, 'constructionBranchId' + objSelfReference.arrayOfConstructions[i].branchId, objSelfReference.arrayOfConstructions[i].name);
-				createComponentTable('constructionDiv', 'constructionBranchId' + objSelfReference.arrayOfConstructions[i].branchId, objSelfReference.arrayOfConstructions[i].tableString, constructionTableOptions, true);
+	$.when.apply($, arrOfDeffereds).done(function (responseData) {
+	    //arrConstructionDetailDataContainer = arrOfDeffereds[0];
+	    for (var i = 0; i < arguments.length; i++) {
+	        try {
+	            objSelfReference.getMyConstruction(strHostUrlPrefix, objSelfReference.arrayOfConstructions[i].branchId, arguments[i], objSelfReference, 'constructionBranchId' + objSelfReference.arrayOfConstructions[i].branchId, objSelfReference.arrayOfConstructions[i].name);
+	            createComponentTable('constructionDiv', 'constructionBranchId' + objSelfReference.arrayOfConstructions[i].branchId, objSelfReference.arrayOfConstructions[i].tableString, constructionTableOptions, true);
 
-			} catch (e) {
-				console.log(e);
-			};
-		};
+	        } catch (e) {
+	            console.log(e);
+	        };
+	    };
+	}).done(function () {
+	    if (!$('table.construction').length) {
+	        $('#constructionsLi').fadeOut();
+	    };
 	});
 	/*var objDefferedConstruction = $.ajax({
 	 url : conStrTaskUrl,
