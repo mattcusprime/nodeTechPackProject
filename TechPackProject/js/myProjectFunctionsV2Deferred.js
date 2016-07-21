@@ -1991,11 +1991,15 @@ garmentProduct.prototype.getColorwayBoms = function(strUrlPrefix, objSelfReferen
 			arrGroupingsTableStrings[i] = arrGroupingsTableStrings[i] + '</tr></thead><tbody></tbody></table><hr  class="page"/>';
 		};
 		strTrimCwaysTableString += '</tbody></table>';
+        //work through here to just clone and remove when there are too many columns.
+
+
 		$('#colorwaysListDiv').append(strTrimCwaysTableString);
 		$('#colorwaysDiv').append('<h1>Colorway BOMs</h1>');
 		for (var i = 0; i < arrGroupingsTableStrings.length; i++) {
 			$('#colorwaysDiv').append(arrGroupingsTableStrings[i]);
 		};
+
 		$('#colorwaysListTable').DataTable(colorwayListTableOptions);
 		var arrTopLevelRows = [];
 		var arrSkuLevelRows = [];
@@ -2176,8 +2180,42 @@ garmentProduct.prototype.getColorwayBoms = function(strUrlPrefix, objSelfReferen
 		$('#swapSwatch').click(function() {
 			switchToSwatches();
 		});
-		$('.tblCbomTable').each(function() {
-			var table = $(this).DataTable(colorwayBomTableOptions);
+		$('.tblCbomTable').each(function(index) {
+		    var table = $(this).DataTable(colorwayBomTableOptions);
+		    var strMyId = $(this).attr('id');
+		    var strMyNewId = $(this).attr('id') + index;
+		    var arrVisibleColumns = table.columns().visible();
+		    var numOfVisibleColumns = 0;
+		    for (var i = 0; i < arrVisibleColumns.length; i++) {
+		        if (arrVisibleColumns[i]) {
+		            numOfVisibleColumns++;
+		        }
+		    };
+		    if (numOfVisibleColumns > 11) {
+		        var newTable = $(this).clone();
+		        newTable.attr('id', strMyNewId);
+		        $('#colorwaysDiv').append(newTable);
+		        $(newTable).DataTable(colorwayBomTableOptions);
+
+		        // newTable.columns([6, 7, 8, 9, 10, 11,12]).visible(false,false);
+		        for (var j = 12; j <= numOfVisibleColumns; j++) {
+		            //table.column(j).visible(false);
+		            $('#' + strMyId).DataTable().column(j).visible(false);
+		        };
+		        $('#' + strMyNewId).DataTable().column(0).visible(true);
+		        $('#' + strMyNewId).DataTable().column(4).visible(false);
+		        $('#' + strMyNewId).DataTable().column(5).visible(false);
+		        $('#' + strMyNewId).DataTable().column(6).visible(false);
+		        $('#' + strMyNewId).DataTable().column(7).visible(false);
+		        $('#' + strMyNewId).DataTable().column(8).visible(false);
+		        $('#' + strMyNewId).DataTable().column(9).visible(false);
+		        $('#' + strMyNewId).DataTable().column(10).visible(false);
+		        //$('#' + strMyId).DataTable().draw('false');
+		        //table.columns.adjust().draw('false');
+		        //newTable.columns.adjust().draw();
+		    };
+		    console.log(numOfVisibleColumns + ' columns are visible.')
+
 			//table.column(0).visible(false).draw();
 		});
 		$('.tblCbomTable tbody').on('click', 'tr', function() {
