@@ -263,6 +263,10 @@ garmentProduct.prototype.getMyMeasurement = function(strHostUrlPrefix, numMeasur
 			var numStartPositionForSizeName = strSizeNameString.search('_') + 1;
 			var strSizeName = strSizeNameString.substring(numStartPositionForSizeName, numStrLength)
 			var strSizePomValue = $(this).text();
+			var numOfPom = Number(strSizePomValue);
+			if (numOfPom > 9000) {
+			    strSizePomValue = '';
+			};
 			var objSizeValueObject = {};
 			objSizeValueObject.sizeName = strSizeName;
 			objSizeValueObject.sizeValue = strSizePomValue;
@@ -1500,7 +1504,7 @@ garmentProduct.prototype.generateAvailableReportsList = function(objSelfReferenc
 								if (!currentGarmentProduct.generalAttributes.length) {
 
 								} else {
-									var strGeneralAttributesTableString = "<div id='gattributeHolder' class='col-md-6 col-sm-6 col-lg-6 col-xs-6'><table class='display' id='generalAttributes'><thead><tr><th>Label</th><th>Value</th></tr></thead><tbody>"
+									var strGeneralAttributesTableString = "<div id='gattributeHolder' class='col-md-6 col-sm-6 col-lg-6 col-xs-6'><table class='display' id='generalAttributes'><thead><tr><th> </th><th>  </th></tr></thead><tbody>"
 									var objToPush1 = {};
 									objToPush1.key = 'Construction Method Code'
 									objToPush1.value = currentGarmentProduct.constructionMethodCode;
@@ -1957,7 +1961,8 @@ garmentProduct.prototype.getColorwayBoms = function(strUrlPrefix, objSelfReferen
 
 		});
 		var arrColorwayObjects = [];
-		var initCwayString0 = '<h2>';
+		var initCwayString0 = '<h2 childTable="';
+		var initCwayString0_5 = '">';
 		var initCwayString1 = '</h2><table id="';
 		var initCwayString2 = '" class="tblCbomTable display responsive col-md-12 compact cell-border"><thead><tr><th>Branch Id</th><th>Part Name</th><th>Garment Use</th><th>Material</th><th class="lastBeforeSkip">Fiber Content</th> ';
 		$('row', arrLocalColorways).each(function(index) {
@@ -1977,7 +1982,7 @@ garmentProduct.prototype.getColorwayBoms = function(strUrlPrefix, objSelfReferen
 			arrColorwayObjects.push(objRow);
 			if (arrGroupings.indexOf(objRow.cwayGrouping) == -1) {
 				arrGroupings.push(objRow.cwayGrouping);
-				arrGroupingsTableStrings.push(initCwayString0 + objRow.specName + initCwayString1 + objRow.specName.replace(/\s/g, "_").replace(/:/g, "") + initCwayString2 + '<th id="SKU_' + objRow.Sku_ARev_Id + '_Spec_' + objRow.specName.replace(/\s/g, "_").replace(/:/g, "") + '">' + objRow.colorwayName + '</th>');
+				arrGroupingsTableStrings.push(initCwayString0 + objRow.specName.replace(/\s/g, "_").replace(/:/g, "") + initCwayString0_5 + objRow.specName.replace(/\//g, "").replace(/:/g, " ") + initCwayString1 + objRow.specName.replace(/\s/g, "_").replace(/:/g, "") + initCwayString2 + '<th id="SKU_' + objRow.Sku_ARev_Id + '_Spec_' + objRow.specName.replace(/\s/g, "_").replace(/:/g, "") + '">' + objRow.colorwayName + '</th>');
 			} else {
 				var numActualIndex = arrGroupings.indexOf(objRow.cwayGrouping);
 				arrGroupingsTableStrings[numActualIndex] = arrGroupingsTableStrings[numActualIndex] + '<th id="SKU_' + objRow.Sku_ARev_Id + '_Spec_' + objRow.specName.replace(/\s/g, "_").replace(/:/g, "") + '">' + objRow.colorwayName + '</th>';
@@ -2193,7 +2198,10 @@ garmentProduct.prototype.getColorwayBoms = function(strUrlPrefix, objSelfReferen
 		    };
 		    if (numOfVisibleColumns > 11) {
 		        var newTable = $(this).clone();
+		        var newTableHeader = $('h2[childTable="' + strMyId + '"]').clone();
 		        newTable.attr('id', strMyNewId);
+		        $(newTableHeader).text($(newTableHeader).text() + ' Page 2');
+		        $('#colorwaysDiv').append(newTableHeader);
 		        $('#colorwaysDiv').append(newTable);
 		        $(newTable).DataTable(colorwayBomTableOptions);
 

@@ -1,6 +1,7 @@
 //Global Variables
 var arrGarmentProductsArrayForTypeAhead = [];
 var strDomString = '<"top"Bfp>rt<"bottom"l><"clear">';
+var strDomMeasurementString = 'frtip';
 var arrButtons = ['copy', {
 	extend : 'pdf',
 	text : 'Save section as PDF',
@@ -11,6 +12,7 @@ var arrButtons = ['copy', {
 		filename : 'testing filename'
 	}
 }];
+var arrButtonsMasurementButtons = ['colvis'];
 var arrButtonsNoButtons = [];
 // maybe put a second DOM string???
 // table options
@@ -29,8 +31,8 @@ var constructionTableOptions = {
 var measurementTableOptions = {
 	'pageLength' : 50,
 	'order' : [[0, 'asc']],
-	'dom' : strDomString,
-	'buttons' : arrButtonsNoButtons,
+	'dom': strDomMeasurementString,
+	'buttons': arrButtonsMasurementButtons,
 	"columnDefs" : [{
 		"targets" : [0, 3, 4, 7, 8],
 		"visible" : false,
