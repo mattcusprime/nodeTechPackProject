@@ -541,7 +541,15 @@ garmentProduct.prototype.getSpecByNameButNotJustActiveSpec = function(strHostUrl
 		};
 
 		$('.seasonSpecButton').click(function() {
-			var strSelectedSpecId = $(this).attr('specId');
+		    var strSelectedSpecId = $(this).attr('specId');
+		    var boolIsItActive;
+		    var target = $(this);
+		    if (target.hasClass('btn-success')) {
+		        boolIsItActive = true;
+		    }
+		    else {
+		        boolIsItActive = false;
+		    }
 			var strConstructionMethodCode = $(this).attr('constructionmethodcode');
 			var strPatternSpec = decodeURIComponent($(this).attr('patternspec'));
 			var strActiveSourceName = decodeURIComponent($(this).attr('source'));
@@ -568,6 +576,7 @@ garmentProduct.prototype.getSpecByNameButNotJustActiveSpec = function(strHostUrl
 				constructionMethodCode : strConstructionMethodCode,
 				patternSpec : strPatternSpec
 			};
+			objSelfReference.isCurrentSpecAnActiveSpec = boolIsItActive;
 			funCallback(objForCallback, objSelfReference);
 		});
 
@@ -705,18 +714,25 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function(strHostUrlPre
 
 	if ( typeof (objSelfReference.colorwayProduct) != 'undefined') {
 		objSelfReference.getColorwayBoms(strHostUrlPrefix, objSelfReference);
-	};
+	}
+	else {
+	    //$('#colorwayBomLi').fadeOut();
+	}
 
-	if ( typeof (objSelfReference.labelProduct) != 'undefined') {
-		var strObjectIdForParam = objSelfReference.labelProduct.objectId;
-		objSelfReference.getLabelBoms(strObjectIdForParam, strHostUrlPrefix, objSelfReference);
-		//get label bom
+	if (typeof (objSelfReference.labelProduct) != 'undefined') {
+	    var strObjectIdForParam = objSelfReference.labelProduct.objectId;
+	    objSelfReference.getLabelBoms(strObjectIdForParam, strHostUrlPrefix, objSelfReference);
+	    //get label bom
+	}
+	else {
+	    //$('#labelBomLi').fadeOut();
 	};
 
 	if ( typeof (objSelfReference.patternProduct) != 'undefined') {
 		objSelfReference.getMoas(strHostUrlPrefix, objSelfReference, objSelfReference.objectId + "%2C" + objSelfReference.patternProduct.objectId);
 	} else {
-		objSelfReference.getMoas(strHostUrlPrefix, objSelfReference, objSelfReference.objectId);
+	    objSelfReference.getMoas(strHostUrlPrefix, objSelfReference, objSelfReference.objectId);
+
 	}
 
 	var offLineTurnOff = $('#offline').val();
@@ -1125,7 +1141,10 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function(strHostUrlPre
 	objSelfReference.patternSewBoms = arrPatternSewRows;
 	if (objSelfReference.garmentSewBoms.length > 0) {
 		objSelfReference.sewBomTableString = convertRowArrayIntoHtmlTable(objSelfReference.garmentSewBoms, 'size', 'usagePerDozen', 'sewBomTable', '<h1>Sew BOMs</h1>');
-	};
+	}
+	else {
+	    //$('#sewBomLi').fadeOut();
+	}
 	if (objSelfReference.garmentSourceBoms.length > 0) {
 		objSelfReference.sourceBomTableString = convertRowArrayIntoHtmlTable(objSelfReference.garmentSourceBoms, '', '', 'sourceBomTable', '<h1>Sourced BOMs</h1>');
 	};
@@ -1133,13 +1152,13 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function(strHostUrlPre
 	if (objSelfReference.patternSewBoms.length > 0) {
 		$('#sewBomDiv').append(objSelfReference.sewBomTableString);
 	} else {
-		$('#sewBomLi').fadeOut();
+		//$('#sewBomLi').fadeOut();
 	};
 	if (objSelfReference.garmentSourceBoms.length != 0) {
 		$('#sourceBomDiv').append(objSelfReference.sourceBomTableString);
 		$('#sourceBomTable').DataTable(sourceBomTableOptions);
 	} else {
-		$('#sourcedBomLi').fadeOut();
+		//$('#sourcedBomLi').fadeOut();
 	};
 	//sourceBomDivgarmentSewBoms
 	if (objSelfReference.patternSewBoms.length > 0 && objSelfReference.garmentSewBoms.length > 0) {
@@ -1147,98 +1166,14 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function(strHostUrlPre
 	};
 	var arrConstructionDetailDataContainer;
 	var arrMeasurementDetailDataContainer;
-	/*$.when(objDefferedConstruction, objDefferedMeasurement).done(function(objDefferedConstruction, objDefferedMeasurement) {
-	 arrConstructionDetailDataContainer = objDefferedConstruction[0];
-	 arrMeasurementDetailDataContainer = objDefferedMeasurement[0];
-	 try {
-	 for (var i = 0; i < objSelfReference.arrayOfConstructions.length; i++) {
-	 try {
-	 objSelfReference.getMyConstruction(strHostUrlPrefix, objSelfReference.construction.branchId, arrConstructionDetailDataContainer, objSelfReference, 'construction' + i);
-	 createComponentTable('constructionDiv', 'construction' + i, objSelfReference.arrConstructionTableStrings[i], constructionTableOptions);
-	 } catch (e) {
-	 }
-	 }
-	 } catch (e) {
-	 console.log(e);
-	 console.log("construction not found");
-	 $('#constructionsLi').fadeOut();
-	 };
-	 try {
-	 objSelfReference.getMyMeasurement(strHostUrlPrefix, objSelfReference.measurement.branchId, arrMeasurementDetailDataContainer, objSelfReference);
-	 createComponentTable('measurementDiv', 'measurements', objSelfReference.measurementTableString, measurementTableOptions, true);
-	 if ($.fn.DataTable.isDataTable('#measurements')) {
-	 var table = $('#measurements').DataTable();
-	 for (var i = 0; i < table.columns().length; i++) {
-	 console.log(table.columns(i).cells().data());
-	 };
-
-	 }
-
-	 $('#measurementDiv').append('<button class="btn btn-danger" id="deleteSelectedMeasurementRows">Delete Selected Measurement Rows</button>')
-	 $('#measurements tbody').on('click', 'tr', function() {
-	 if ($(this).hasClass('selected')) {
-	 $(this).removeClass('selected');
-	 } else {
-	 $(this).addClass('selected');
-	 };
-	 });
-	 $('#deleteSelectedMeasurementRows').click(function() {
-	 $('#measurements').each(function() {
-	 var strAttr = $(this).attr('id');
-	 var table = $('#' + strAttr).DataTable();
-	 var rows = table.rows('.selected').remove().draw();
-
-	 });
-	 });
-
-	 } catch (e) {
-	 console.log(e);
-	 console.log("measurement not found");
-	 $('#measurementsLi').fadeOut();
-	 };
-
-	 });
-
-	 $.when(objDefferedMeasurement).done(function(objDefferedMeasurement) {
-	 arrMeasurementDetailDataContainer = objDefferedMeasurement[0];
-	 try {
-	 objSelfReference.getMyMeasurement(strHostUrlPrefix, objSelfReference.measurement.branchId, objDefferedMeasurement[0], objSelfReference);
-	 createComponentTable('measurementDiv', 'measurements', objSelfReference.measurementTableString, measurementTableOptions, true);
-	 if ($.fn.DataTable.isDataTable('#measurements')) {
-	 var table = $('#measurements').DataTable();
-	 for (var i = 0; i < table.columns().length; i++) {
-	 console.log(table.columns(i).cells().data());
-	 };
-
-	 }
-
-	 $('#measurementDiv').append('<button class="btn btn-danger" id="deleteSelectedMeasurementRows">Delete Selected Measurement Rows</button>')
-	 $('#measurements tbody').on('click', 'tr', function() {
-	 if ($(this).hasClass('selected')) {
-	 $(this).removeClass('selected');
-	 } else {
-	 $(this).addClass('selected');
-	 };
-	 });
-	 $('#deleteSelectedMeasurementRows').click(function() {
-	 $('#measurements').each(function() {
-	 var strAttr = $(this).attr('id');
-	 var table = $('#' + strAttr).DataTable();
-	 var rows = table.rows('.selected').remove().draw();
-
-	 });
-	 });
-
-	 } catch (e) {
-	 console.log(e);
-	 console.log("measurement not found");
-	 $('#measurementsLi').fadeOut();
-	 };
-	 });*/
 	var strApprovedSupplierUrlObjectId = getMyReportIdFromReportName('garmentProdSpecsGarmentAndPatternComponentsApprovedSuppliers');
 	var strApprovedSupplierUrl = strUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?u8&action=ExecuteReport&specId=' + objSelfReference.activeSpecId + '&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A' + strApprovedSupplierUrlObjectId + '&xsl1=&format=formatDelegate&delegateName=XML&jrb=wt.query.template.reportTemplateRB&sortByIndex=6&sortOrder=asc';
 	var arrApprovedSupplierArray = [];
 	var strApprovedSupplierTableString = '';
+
+	
+
+	
 	$.get(strApprovedSupplierUrl, function(data) {
 	}).done(function(data) {
 		arrApprovedSupplierArray = rowParser('row', data);
@@ -1254,6 +1189,35 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function(strHostUrlPre
 	});
 
 };
+
+function checkForColorwayAndLabelProductsToRemoveBoms(objGarmentProductTocheck) {
+    if (typeof (objGarmentProductTocheck.colorwayProduct) != 'undefined') {
+    }
+    else {
+        $('#colorwayBomLi').fadeOut();
+    }
+
+    if (typeof (objGarmentProductTocheck.labelProduct) != 'undefined') {
+    }
+    else {
+        $('#labelBomLi').fadeOut();
+    };
+    if (objGarmentProductTocheck.garmentSewBoms.length > 0) {
+    }
+    else {
+        $('#sewBomLi').fadeOut();
+    }
+    if (objGarmentProductTocheck.patternSewBoms.length > 0) {
+    } else {
+        $('#sewBomLi').fadeOut();
+    };
+    if (objGarmentProductTocheck.garmentSourceBoms.length != 0) {
+    } else {
+        $('#sourcedBomLi').fadeOut();
+    };
+    
+};
+
 /**
  * @method of @class GarmentProduct, this method runs a sequence of ajax calls to get all necessary data sets for running @method getSpecComponentsForActiveSpec, then it sequentially calls them
  * @param {String} strHostUrlPrefix string denoting the initial characters of the url for the domain in which the measurement sits.  All string prior to Windchill.
@@ -1493,7 +1457,8 @@ garmentProduct.prototype.generateAvailableReportsList = function(objSelfReferenc
 
 			}).done(function() {
 				//I swear you had something here iterating through the above 2 arrays in sequence...
-				var arrHeaderImages = [];
+			    var arrHeaderImages = [];
+			    checkForColorwayAndLabelProductsToRemoveBoms(currentGarmentProduct);
 				$('img').each(function() {
 					var urlToUse = $(this).attr('src');
 
