@@ -326,6 +326,7 @@ garmentProduct.prototype.getMyMeasurement = function(strHostUrlPrefix, numMeasur
  * without further developer input but rather in other methods within the class so that no further code is necessary.
  *
  */
+// this function is  NOT PRESENTLY IN USE
 garmentProduct.prototype.getSpecByName = function(strHostUrlPrefix, strGarmentName, funCallback, objForCallback, objSelfReference) {
 	if ( typeof (strGarmentName) == 'undefined')// How can I stop working of function here?
 	{
@@ -359,7 +360,8 @@ garmentProduct.prototype.getSpecByName = function(strHostUrlPrefix, strGarmentNa
 			var strSpecName = $(this).find('Spec_Name').text();
 			var strType = $(this).find('specLink').attr('type');
 			var strHbiActiveSpec = $(this).find('hbiActiveSpec').text().substring(3, 6);
-			if (strSpecName.indexOf(strHbiActiveSpec) == -1) {
+            
+			if (strSpecName.indexOf(strHbiActiveSpec) == -1 || strHbiActiveSpec) {
 				objSpec.active = false;
 			} else {
 				objSpec.active = true;
@@ -464,7 +466,14 @@ garmentProduct.prototype.getSpecByNameButNotJustActiveSpec = function(strHostUrl
 			var strSpecName = $(this).find('Spec_Name').text();
 			var strType = $(this).find('specLink').attr('type');
 			var strHbiActiveSpec = $(this).find('hbiActiveSpec').text().substring(3, 6);
-			if (strSpecName.indexOf(strHbiActiveSpec) == -1) {
+			var isItNull = $(this).find('hbiActiveSpec').attr('isNull');
+			if (isItNull == 'true') {
+			    isItNull = true;
+			}
+			else {
+			    isItNull = false;
+			}
+			if (strSpecName.indexOf(strHbiActiveSpec) == -1 || isItNull) {
 				objSpec.active = false;
 			} else {
 				objSpec.active = true;
