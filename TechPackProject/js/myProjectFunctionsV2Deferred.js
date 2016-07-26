@@ -1513,29 +1513,50 @@ garmentProduct.prototype.generateAvailableReportsList = function(objSelfReferenc
 								if (!currentGarmentProduct.generalAttributes.length) {
 
 								} else {
-									var strGeneralAttributesTableString = "<div id='gattributeHolder' class='col-md-6 col-sm-6 col-lg-6 col-xs-6'><table class='display' id='generalAttributes'><thead><tr><th> </th><th>  </th></tr></thead><tbody>"
-									var objToPush1 = {};
+								    var strGenAttributesId = 'generalAttributes';
+								    var strGenAttributesId2 = 'generalAttributes2';
+								    var strGeneralAttributesTableString = "<div id='gattributeHolder' class='col-md-3 col-sm-3 col-lg-3 col-xs-3'><table class='display' id='" + strGenAttributesId + "'><thead><tr><th> </th><th>  </th></tr></thead><tbody>"
+								    var strGeneralAttributesTableString2 = "<div id='gattributeHolder' class='col-md-3 col-sm-3 col-lg-3 col-xs-3'><table class='display' id='" + strGenAttributesId2 + "'><thead><tr><th> </th><th>  </th></tr></thead><tbody>"
+								    var objToPush1 = {};
 									objToPush1.key = 'Construction Method Code'
 									objToPush1.value = currentGarmentProduct.constructionMethodCode;
 									var objToPush2 = {};
 									objToPush2.key = 'Pattern Spec'
 									objToPush2.value = currentGarmentProduct.patternSpec;
-									currentGarmentProduct.generalAttributes.push(objToPush1, objToPush2);
+								    //currentGarmentProduct.generalAttributes.push(objToPush1, objToPush2);
+								    // removed pattern spec above from the push per Wendy
+									currentGarmentProduct.generalAttributes.push(objToPush1);
 									for (var i = 0; i < currentGarmentProduct.generalAttributes.length; i++) {
 
 										var strValue = currentGarmentProduct.generalAttributes[i].value;
 										var strKey = currentGarmentProduct.generalAttributes[i].key;
-										strGeneralAttributesTableString += '<tr><td><label>' + strKey + '</label></td><td>' + strValue + '</td></tr>';
-										//$('#frontBackImages').append('<tr><td><label> ' + strKey + ' </label></td><td>' + '<p>' + strValue + '<p></td></tr>');
+										if (i <= 3) {
+										    strGeneralAttributesTableString += '<tr><td><label>' + strKey + '</label></td><td>' + strValue + '</td></tr>';
+										}
+										else {
+										    strGeneralAttributesTableString2 += '<tr><td><label>' + strKey + '</label></td><td>' + strValue + '</td></tr>';
+										}
+									    //$('#frontBackImages').append('<tr><td><label> ' + strKey + ' </label></td><td>' + '<p>' + strValue + '<p></td></tr>');
 									};
 
 									strGeneralAttributesTableString += '</tbody></table></div>';
-									$('#frontBackImages').prepend(strGeneralAttributesTableString);
+									strGeneralAttributesTableString2 += '</tbody></table></div>';
+									$('#frontBackImages').append(strGeneralAttributesTableString);
+
 									if (! $.fn.DataTable.isDataTable('#generalAttributes')) {
 										$('#generalAttributes').DataTable({
 											'dom' : 't'
 										});
 									};
+									if (currentGarmentProduct.generalAttributes.length > 3) {
+									    $('#frontBackImages').prepend(strGeneralAttributesTableString2);
+
+									    if (!$.fn.DataTable.isDataTable('#generalAttributes2')) {
+									        $('#generalAttributes2').DataTable({
+									            'dom': 't'
+									        });
+									    };
+									}
 								};
 
 							}

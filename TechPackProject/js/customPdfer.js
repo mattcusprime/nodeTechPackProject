@@ -191,8 +191,9 @@ function pdfSpec(productToSpec) {
 
     if ($("#generalAttributes").length) {
         var arrGattrTbl = pdfThisTableV2('generalAttributes');
-        var arrGattrTbl2 = pdfThisTableV2('generalAttributes');
-
+        if ($("#generalAttributes2").length) {
+            var arrGattrTbl2 = pdfThisTableV2('generalAttributes2');
+        };
         for (var i = 0; i < arrGattrTbl.length; i++) {
             var arrLittle = arrGattrTbl[i];
 
@@ -221,9 +222,9 @@ function pdfSpec(productToSpec) {
             arrGattrTbl2[i] = arrLittle;
 
         };
-        arrGattrTbl = arrGattrTbl.splice(0, 5);
-        arrGattrTbl2 = arrGattrTbl2.splice(5, arrGattrTbl2.length - 5);
-        arrGattrTbl2.unshift([{ text: '', style: 'tableHeader' }, { text: '', style: 'tableHeader' }]);
+        //arrGattrTbl = arrGattrTbl.splice(0, 5);
+        //arrGattrTbl2 = arrGattrTbl2.splice(5, arrGattrTbl2.length - 5);
+        //arrGattrTbl2.unshift([{ text: '', style: 'tableHeader' }, { text: '', style: 'tableHeader' }]);
 
         var objTextObject = {};
         objTextObject = {
@@ -237,19 +238,29 @@ function pdfSpec(productToSpec) {
                 headerRows: 1,
                 body: arrGattrTbl
             },
-            layout: objLayoutObject
+            layout: objLayoutObject,
+            margin: [0, 0, 0, 25],
+            width: 'auto'
 
         };
-        var objGattributeContent2 = {
-            style: 'tableExample',
-            table: {
-                headerRows: 1,
-                body: arrGattrTbl2
-            },
-            layout: objLayoutObject
+        if ($("#generalAttributes2").length) {
+            var objGattributeContent2 = {
+                style: 'tableExample',
+                table: {
+                    headerRows: 1,
+                    body: arrGattrTbl2
+                },
+                layout: objLayoutObject,
+                margin: [0, 0, 0, 25],
+                width: 'auto'
 
-        };
-        pageOneColumns.push(objGattributeContent, objGattributeContent2);
+            };
+
+            pageOneColumns.push(objGattributeContent2,objGattributeContent);
+        }
+        else {
+            pageOneColumns.push(objGattributeContent);
+        }
     };
 
     if ($("#sizeTbl").length) {
@@ -265,7 +276,8 @@ function pdfSpec(productToSpec) {
                 headerRows: 1,
                 body: arrSizeTbl
             },
-            layout: objLayoutObject
+            layout: objLayoutObject,
+            width: '*'
 
         };
         //pageOneColumns.push(objContentSizeTbl);
@@ -282,7 +294,8 @@ function pdfSpec(productToSpec) {
                 body: arrApprovedSupplierTbl
             },
             layout: objLayoutObject,
-            pageBreak: 'after'
+            pageBreak: 'after',
+            width: 'auto'
         };
         //docDefinition.content.push(objContentApprovedSupplierTbl);
         //pageOneColumns.push(objContentApprovedSupplierTbl);
@@ -296,7 +309,8 @@ function pdfSpec(productToSpec) {
                 body: arrApprovedSupplierTbl
             },
             layout: objLayoutObject,
-            pageBreak: 'after'
+            pageBreak: 'after',
+            width:'auto'
         };
         //docDefinition.content.push(objContentApprovedSupplierTbl);
         //pageOneColumns.push(objContentApprovedSupplierTbl);
@@ -534,52 +548,7 @@ function pdfSpec(productToSpec) {
             docDefinition.content.push(objTextBreak);
             docDefinition.content.push(objTableObject);
         };
-        /*
-        var arrOfValuesFromTableSecondSetAfterSeven = [];
-        var objTextBreak2 = {
-            text: strMyHeader + ' Page 2',
-            style: 'tablePageHeader'
-        };
-        //objTextBreak2.text = objTextBreak2.text + ' Page 2';
-        if (numOfColorwayHeaders > 7) {
-
-            for (var i = 0; i < objTableObject.table.body.length; i++) {
-                var arrSubArray = objTableObject.table.body[i];
-                var arrSubArrayForSecondSet = [];
-                //var numNumberOfHits = 0;
-                for (var j = 0; j < arrSubArray.length; j++) {
-
-                    if (j <= 3 || j >= 11) {
-                        var objToPush = {};
-                        objToPush = arrSubArray[j];
-                        arrSubArrayForSecondSet.push(objToPush);
-                        //objTableObject2.table.body[numNumberOfHits] = arrSubArray[j];
-                        //numNumberOfHits++;
-                    };
-                };
-                arrOfValuesFromTableSecondSetAfterSeven.push(arrSubArrayForSecondSet);
-                arrSubArray = arrSubArray.splice(0, 11);
-                objTableObject.table.body[i] = arrSubArray;
-                //objTableObject2.table.body[i] = arrSubArrayForSecondSet;
-
-            };
-            objTableObject2.table = {
-                headerRows: 1,
-                body: arrOfValuesFromTableSecondSetAfterSeven
-            };
-
-            objTableObject2.style = 'tableExample';
-            objTableObject2.layout = objLayoutObject;
-            objTableObject2.pageBreak = 'after';
-            docDefinition.content.push(objTextBreak);
-            docDefinition.content.push(objTableObject);
-            docDefinition.content.push(objTextBreak2);
-            docDefinition.content.push(objTableObject2);
-        }
-        else {
-            docDefinition.content.push(objTextBreak);
-            docDefinition.content.push(objTableObject);
-        };*/
+       
 
     });
     if ($("#sewBomTable").length) {
@@ -667,6 +636,8 @@ function pdfSpec(productToSpec) {
         var indexToRemove = docDefinition.content.indexOf(objToRemove);
         docDefinition.content.splice(indexToRemove, 1);
     };
+    var numItemToRemove = docDefinition.content.length - 1;
+    docDefinition.content[numItemToRemove].pageBreak = '';
 
 
     pdfMake.createPdf(docDefinition).download(productToSpec.name + '  ' + dateForStuff + '.pdf');
