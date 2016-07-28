@@ -68,13 +68,13 @@ var colorwayListTableOptions = {
 var cwayReportTableOptions = {
 	'responsive' : false,
 	'pageLength' : 100,
-	'dom': strCwayBomDomString,
+	'dom': strDomString,
 	'buttons' : arrButtonsNoButtons
 };
 var colorwayBomTableOptions = {
 
 	'pageLength' : 100,
-	'dom' : strDomString,
+	'dom': strCwayBomDomString,
 	'columnDefs' : [{
 		'visible' : false,
 		'targets' : 0
