@@ -533,6 +533,12 @@ garmentProduct.prototype.getSpecByNameButNotJustActiveSpec = function(strHostUrl
 			} else {
 				strExtraButtonClass = ' btn-info';
 			};
+			if (objLoopObject.patternSpec = '') {
+			    objLoopObject.patternSpec = '" "';
+			};
+			if (objLoopObject.constructionMethodCode = '') {
+			    objLoopObject.constructionMethodCode = '" "';
+			};
 			//$('#seasonSpecSelection').append('<button class="seasonSpecButton btn col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8 col-xs-offset-2 col-xs-8' + strExtraButtonClass + '" specId= ' + objLoopObject.specId + '>Season:' + objLoopObject.seasonName + ' Source:' + objLoopObject.sourceName + 'Spec:' + objLoopObject.specName + '</button></br>')
 			$('#seasonSpecSelection').append('<button class="seasonSpecButton btn col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8 col-xs-offset-2 col-xs-8' + strExtraButtonClass + '" specId= ' + objLoopObject.specId + ' constructionMethodCode=' + objLoopObject.constructionMethodCode + ' patternSpec=' + objLoopObject.patternSpec + ' source=' + encodeURIComponent(objLoopObject.sourceName) + '>' + objLoopObject.specName + '(' + objLoopObject.sourceName + ')</button><br><br><br>');
 			if (arrCombinationArray.length == i) {
@@ -2029,7 +2035,8 @@ garmentProduct.prototype.getColorwayBoms = function(strUrlPrefix, objSelfReferen
 			objRow.Dimension_Id = $(this).find('Dimension_Id').text();
 			objRow.Dimension_Name = $(this).find('Dimension_Name').text();
 			objRow.fiberContent = $(this).find('fiberContent').text();
-
+		    //getValueDisplayFromKey
+			objRow.fiberContent = getValueDisplayFromKey(objRow.fiberContent, objSelfReference);
 			objRow.variationRows = [];
 			if (objRow.Dimension_Name == ':SKU') {
 				objRow.colorSpecificData = $(this).find('cVariationData').text();
@@ -2426,8 +2433,13 @@ garmentProduct.prototype.getMoas = function(strUrlPrefix, objSelfReference, obje
  * @return {String} strvalue return the display value from the key
  */
 function getValueDisplayFromKey(strkey, objGarmentProduct) {
-	var numIndexPositionOfKeyInKeyArray = objGarmentProduct.displayKeys.indexOf(strkey);
-	var strvalue = objGarmentProduct.displayValues[numIndexPositionOfKeyInKeyArray];
+    var numIndexPositionOfKeyInKeyArray = objGarmentProduct.displayKeys.indexOf(strkey);
+    if (numIndexPositionOfKeyInKeyArray != -1) {
+        var strvalue = objGarmentProduct.displayValues[numIndexPositionOfKeyInKeyArray];
+    }
+    else {
+        var strvalue = '';
+    }
 	return strvalue;
 };
 

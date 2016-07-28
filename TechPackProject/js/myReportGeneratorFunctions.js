@@ -1,6 +1,7 @@
 //Global Variables
 var arrGarmentProductsArrayForTypeAhead = [];
-var strDomString = '<"top"Bfp>rt<"bottom"l><"clear">';
+var strDomString = '<"top"fp>rt<"bottom"l><"clear">';
+var strCwayBomDomString = 'l<"top"fp>rt<"bottom"l><"clear">';
 var strDomMeasurementString = 'frtip';
 var arrButtons = ['copy', {
 	extend : 'pdf',
@@ -67,7 +68,7 @@ var colorwayListTableOptions = {
 var cwayReportTableOptions = {
 	'responsive' : false,
 	'pageLength' : 100,
-	'dom' : strDomString,
+	'dom': strCwayBomDomString,
 	'buttons' : arrButtonsNoButtons
 };
 var colorwayBomTableOptions = {

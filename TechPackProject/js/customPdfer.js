@@ -168,6 +168,7 @@ function pdfSpec(productToSpec) {
         var pageTwoColumns = [];
         var objImageColumns = {};
         objImageColumns.columns = [];
+        try{
         $("#frontBackImages img").each(function () {
             var strBaseSrcString = $(this).attr('src');
             var target = $(this);
@@ -192,6 +193,10 @@ function pdfSpec(productToSpec) {
 
         //pageOneColumns.push(objImageColumns);
         pageTwoColumns.push(objImageColumns);
+        } catch (e) {
+            console.log(e);
+            console.log('image problem line 198 in custompdfer js');
+        }
 
     };
 
