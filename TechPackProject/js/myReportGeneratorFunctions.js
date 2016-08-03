@@ -77,7 +77,8 @@ var colorwayBomTableOptions = {
 	'dom': strCwayBomDomString,
 	'columnDefs' : [{
 		'visible' : false,
-		'targets' : 0
+		'targets': [0, 1,2],
+        'orderData': [0,1,2]
 	}],
 	'responsive' : false,
 	'buttons' : arrButtonsNoButtons

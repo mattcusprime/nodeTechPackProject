@@ -1,0 +1,4 @@
+SQL: 
+SELECT A0B.name C1C0,A0.classnameA2A2,A0.idA2A2,A1.classnameA2A2,A1.idA2A2,A3.att13 C1C3,A1B.name C1C4,A4.thumbnail C1C5,A1.att3 C1C6 FROM LCSProduct A0,WTPartMaster A0B,LCSSKU A1,WTPartMaster A1B,LCSSKUSourcingLink A2,LCSSourcingConfig A3,LCSSourcingConfigMaster A3B,LCSColor A4 WHERE (A0.idA3masterReference=A0B.idA2A2) AND (A1.idA3masterReference=A1B.idA2A2) AND (A3.idA3masterReference=A3B.idA2A2) AND (((A0.latestiterationInfo = ?) AND (A0.flexTypeIdPath = ?) AND (A0.idA3B12 <> ?) AND (A1.latestiterationInfo = ?) AND (A1.skuARevId = ?) AND (A3.idA3masterReference = A2.idA3B5) AND (A1.idA3masterReference = A2.idA3A5) AND (A0B.name LIKE ('%')||('')||('%')) AND (A3.latestiterationInfo = ?) AND (A1B.name LIKE '%CW%') AND (A2.active = ?) AND (A0.idA3masterReference = A3B.idA3A6) AND (A1.num1 = A4.idA2A2))) ORDER BY  NLSSORT(C1C3,'NLS_SORT = ASCII7')
+[1, \20081\1984481, 0, 1, 0, 1, 1]
+
