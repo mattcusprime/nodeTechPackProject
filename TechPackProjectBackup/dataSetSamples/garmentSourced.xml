@@ -1,0 +1,791 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<queryResult>
+  <metadata>
+    <name>Garment (Sourced BOM only) XML replaecment for GJSPX</name>
+
+    <description></description>
+
+    <objectIdentifier>wt.query.template.ReportTemplate:4702196</objectIdentifier>
+
+    <sourceSystem>http://wsflexwebprd1v.res.hbi.net:80/Windchill</sourceSystem>
+
+    <sourceGateway>http://wsflexwebprd1v.res.hbi.net/Windchill/servlet/WindchillAuthGW/</sourceGateway>
+
+    <executingPrincipal>
+      <fullName>menglish</fullName>
+
+      <objectIdentifier>wt.org.WTUser:150128</objectIdentifier>
+</executingPrincipal>
+
+    <timeOfExecution>2015-07-07 22:25:34 GMT</timeOfExecution>
+
+    <locale>en_US</locale>
+</metadata>
+
+  <auxData>
+    <dataItem name="Product Name">10188 Boys Knit Brief ExpWB B252</dataItem>
+
+    <dataItem name="Garment Season Name">Garment  BIW</dataItem>
+
+    <dataItem name="oid">OR:wt.query.template.ReportTemplate:4702196</dataItem>
+
+    <dataItem name="action">ExecuteReport</dataItem>
+
+    <dataItem name="Garment Spec Name">002</dataItem>
+
+    <dataItem name="jrb">wt.query.template.reportTemplateRB</dataItem>
+</auxData>
+
+  <qml bypassAccessControl="false">
+	
+    <parameter name="Product Name" type="java.lang.Object">
+		
+      <parameterDefault isMacro="false">
+			WLB747
+		</parameterDefault>
+
+	</parameter>
+
+	
+    <parameter name="Garment Season Name" type="java.lang.Object"></parameter>
+
+	
+    <parameter name="Garment Spec Name" type="java.lang.Object"></parameter>
+
+	
+    <statement>
+		
+      <query>
+			
+        <select distinct="false" group="false">
+				
+          <function heading="Concatenate" name="CONCAT" type="java.lang.String">
+					
+            <column alias="Garment Product Child Material" heading="Num33" isExternal="false" propertyName="num33" selectOnly="false" type="double">
+						num33
+					</column>
+
+					
+            <column alias="com.lcs.wc.foundation.LCSLifecycleManaged" heading="com.lcs.wc.foundation.LCSLifecycleManaged Persist Info.Object Identifier.Id" isExternal="false" propertyName="persistInfo.objectIdentifier.id" selectOnly="false" type="long">
+						thePersistInfo.theObjectIdentifier.id
+					</column>
+
+				</function>
+
+				
+          <column alias="Garment Product Child Material" heading="Accessory Length" isExternal="false" propertyName="num33" selectOnly="false" type="double">
+					num33
+				</column>
+
+				
+          <column alias="com.lcs.wc.foundation.LCSLifecycleManaged" heading="Persist Info.Object Identifier.Id" isExternal="false" propertyName="persistInfo.objectIdentifier.id" selectOnly="false" type="long">
+					thePersistInfo.theObjectIdentifier.id
+				</column>
+
+				
+          <object alias="Garment product" heading="Garment product" propertyName=""></object>
+
+				
+          <column alias="Garment Product Spec" heading="Spec Name" isExternal="false" propertyName="name" selectOnly="false" type="java.lang.String">
+					master&gt;name
+				</column>
+
+				
+          <object alias="Garment Product Spec" heading="Spec Link" propertyName=""></object>
+
+				
+          <object alias="com.lcs.wc.foundation.LCSLifecycleManaged" heading="com.lcs.wc.foundation.LCSLifecycleManaged" propertyName=""></object>
+
+				
+          <column alias="Garment Product BOM Link" heading="Garment Product Garment Use" isExternal="false" propertyName="num37" selectOnly="false" type="double">
+					num37
+				</column>
+
+				
+          <object alias="Garment Product Child Material" heading="Garment Product Child Material" propertyName=""></object>
+
+				
+          <object alias="Garment Product BOM Link" heading="Garment Master Material" propertyName="child.name">
+					
+            <property name="child">
+						
+              <property name="name"></property>
+
+					</property>
+
+				</object>
+
+				
+          <column alias="Garment Product Child Material" heading="Minor Category" isExternal="false" propertyName="att47" selectOnly="false" type="java.lang.String">
+					att47
+				</column>
+
+				
+          <column alias="Garment Product Child Material" heading="Item Description" isExternal="false" propertyName="att29" selectOnly="false" type="java.lang.String">
+					att29
+				</column>
+
+				
+          <column alias="Garment Product BOM Part" heading="Garment Product BOM Name" isExternal="false" propertyName="name" selectOnly="false" type="java.lang.String">
+					master&gt;name
+				</column>
+
+				
+          <column alias="Garment Product BOM Link" heading="Part Name" isExternal="false" propertyName="att4" selectOnly="false" type="java.lang.String">
+					att4
+				</column>
+
+				
+          <object alias="Garment Product BOM Part" heading="Garment BOM Type Name" propertyName="flexType.typeName">
+					
+            <property name="flexType">
+						
+              <property name="typeName"></property>
+
+					</property>
+
+				</object>
+
+				
+          <column alias="Garment Product BOM Part" heading="Flex Type Id Path" isExternal="false" propertyName="flexTypeIdPath" selectOnly="false" type="java.lang.String">
+					flexTypeIdPath
+				</column>
+
+				
+          <column alias="Garment Product Child Material" heading="Garment Usage UOM" isExternal="false" propertyName="att45" selectOnly="false" type="java.lang.String">
+					att45
+				</column>
+
+				
+          <column alias="Garment Season" heading="Season Name" isExternal="false" propertyName="name" selectOnly="false" type="java.lang.String">
+					master&gt;name
+				</column>
+
+				
+          <column alias="Garment product" heading="Name" isExternal="false" propertyName="name" selectOnly="false" type="java.lang.String">
+					master&gt;name
+				</column>
+
+			</select>
+
+			
+        <from>
+				
+          <table alias="Garment product" isExternal="false">
+					com.lcs.wc.product.LCSProduct
+				</table>
+
+				
+          <table alias="Garment Product BOM Link" isExternal="false">
+					com.lcs.wc.flexbom.FlexBOMLink
+				</table>
+
+				
+          <table alias="Garment Product BOM Part" isExternal="false">
+					com.lcs.wc.flexbom.FlexBOMPart
+				</table>
+
+				
+          <table alias="Garment Product Child Material" isExternal="false">
+					com.lcs.wc.material.LCSMaterial
+				</table>
+
+				
+          <table alias="Garment Season" isExternal="false">
+					com.lcs.wc.season.LCSSeason
+				</table>
+
+				
+          <table alias="Garment Product Spec" isExternal="false">
+					com.lcs.wc.specification.FlexSpecification
+				</table>
+
+				
+          <table alias="com.lcs.wc.foundation.LCSLifecycleManaged" isExternal="false">
+					com.lcs.wc.foundation.LCSLifecycleManaged
+				</table>
+
+				
+          <table alias="Garment Flex Spec to Component Link" isExternal="false">
+					com.lcs.wc.specification.FlexSpecToComponentLink
+				</table>
+
+			</from>
+
+			
+        <where>
+				
+          <compositeCondition type="and">
+					
+            <condition>
+						
+              <operand>
+							
+                <column alias="Garment product" heading="Name" isExternal="false" propertyName="name" selectOnly="false" type="java.lang.String">
+								master&gt;name
+							</column>
+
+						</operand>
+
+						
+              <operator type="like"></operator>
+
+						
+              <operand>
+							
+                <function heading="Concatenate" name="CONCAT" type="java.lang.String">
+								
+                  <constant heading="%" isMacro="false" type="java.lang.Object">
+									%
+								</constant>
+
+								
+                  <parameterTarget name="Product Name"></parameterTarget>
+
+								
+                  <constant heading="%" isMacro="false" type="java.lang.Object">
+									%
+								</constant>
+
+							</function>
+
+						</operand>
+
+					</condition>
+
+					
+            <condition>
+						
+              <operand>
+							
+                <column alias="Garment product" heading="Latest Iteration" isExternal="false" propertyName="latestIteration" selectOnly="false" type="boolean">
+								iterationInfo.latest
+							</column>
+
+						</operand>
+
+						
+              <operator type="equal"></operator>
+
+						
+              <operand>
+							
+                <constant heading="1" isMacro="false" type="java.lang.Object">
+								1
+							</constant>
+
+						</operand>
+
+					</condition>
+
+					
+            <condition>
+						
+              <operand>
+							
+                <column alias="Garment Product BOM Link" heading="Parent Reference.Object Id.Id" isExternal="false" propertyName="parentReference.objectId.id" selectOnly="false" type="long">
+								parentReference.key.id
+							</column>
+
+						</operand>
+
+						
+              <operator type="equal"></operator>
+
+						
+              <operand>
+							
+                <column alias="Garment Product BOM Part" heading="Master Reference.Object Id.Id" isExternal="false" propertyName="masterReference.objectId.id" selectOnly="false" type="long">
+								masterReference.key.id
+							</column>
+
+						</operand>
+
+					</condition>
+
+					
+            <condition>
+						
+              <operand>
+							
+                <column alias="Garment Product BOM Part" heading="Latest Iteration" isExternal="false" propertyName="latestIteration" selectOnly="false" type="boolean">
+								iterationInfo.latest
+							</column>
+
+						</operand>
+
+						
+              <operator type="equal"></operator>
+
+						
+              <operand>
+							
+                <constant heading="1" isMacro="false" type="java.lang.String">
+								1
+							</constant>
+
+						</operand>
+
+					</condition>
+
+					
+            <condition>
+						
+              <operand>
+							
+                <column alias="Garment Product Child Material" heading="Master Reference.Object Id.Id" isExternal="false" propertyName="masterReference.objectId.id" selectOnly="false" type="long">
+								masterReference.key.id
+							</column>
+
+						</operand>
+
+						
+              <operator type="equal"></operator>
+
+						
+              <operand>
+							
+                <column alias="Garment Product BOM Link" heading="Child Reference.Object Id.Id" isExternal="false" propertyName="childReference.objectId.id" selectOnly="false" type="long">
+								childReference.key.id
+							</column>
+
+						</operand>
+
+					</condition>
+
+					
+            <condition>
+						
+              <operand>
+							
+                <column alias="Garment Product Child Material" heading="Latest Iteration" isExternal="false" propertyName="latestIteration" selectOnly="false" type="boolean">
+								iterationInfo.latest
+							</column>
+
+						</operand>
+
+						
+              <operator type="equal"></operator>
+
+						
+              <operand>
+							
+                <constant heading="1" isMacro="false" type="java.lang.String">
+								1
+							</constant>
+
+						</operand>
+
+					</condition>
+
+					
+            <condition>
+						
+              <operand>
+							
+                <column alias="Garment Product BOM Link" heading="Out Date" isExternal="false" propertyName="outDate" selectOnly="false" type="java.sql.Timestamp">
+								outDate
+							</column>
+
+						</operand>
+
+						
+              <nullOperator type="isNull"></nullOperator>
+
+					</condition>
+
+					
+            <condition>
+						
+              <operand>
+							
+                <column alias="Garment Product BOM Link" heading="Dropped" isExternal="false" propertyName="dropped" selectOnly="false" type="boolean">
+								dropped
+							</column>
+
+						</operand>
+
+						
+              <operator type="equal"></operator>
+
+						
+              <operand>
+							
+                <constant heading="0" isMacro="false" type="java.lang.String">
+								0
+							</constant>
+
+						</operand>
+
+					</condition>
+
+					
+            <condition>
+						
+              <operand>
+							
+                <column alias="Garment product" heading="Season Master Reference.Object Id.Id" isExternal="false" propertyName="seasonMasterReference.objectId.id" selectOnly="false" type="long">
+								seasonMasterReference.key.id
+							</column>
+
+						</operand>
+
+						
+              <operator type="equal"></operator>
+
+						
+              <operand>
+							
+                <column alias="Garment Season" heading="Master Reference.Object Id.Id" isExternal="false" propertyName="masterReference.objectId.id" selectOnly="false" type="long">
+								masterReference.key.id
+							</column>
+
+						</operand>
+
+					</condition>
+
+					
+            <condition>
+						
+              <operand>
+							
+                <column alias="Garment Season" heading="Latest Iteration" isExternal="false" propertyName="latestIteration" selectOnly="false" type="boolean">
+								iterationInfo.latest
+							</column>
+
+						</operand>
+
+						
+              <operator type="equal"></operator>
+
+						
+              <operand>
+							
+                <constant heading="1" isMacro="false" type="java.lang.String">
+								1
+							</constant>
+
+						</operand>
+
+					</condition>
+
+					
+            <condition>
+						
+              <operand>
+							
+                <column alias="Garment Season" heading="Name" isExternal="false" propertyName="name" selectOnly="false" type="java.lang.String">
+								master&gt;name
+							</column>
+
+						</operand>
+
+						
+              <operator type="like"></operator>
+
+						
+              <operand>
+							
+                <function heading="Concatenate" name="CONCAT" type="java.lang.String">
+								
+                  <constant heading="%" isMacro="false" type="java.lang.Object">
+									%
+								</constant>
+
+								
+                  <parameterTarget name="Garment Season Name"></parameterTarget>
+
+								
+                  <constant heading="%" isMacro="false" type="java.lang.Object">
+									%
+								</constant>
+
+							</function>
+
+						</operand>
+
+					</condition>
+
+					
+            <condition>
+						
+              <operand>
+							
+                <column alias="Garment Product Spec" heading="Latest Iteration" isExternal="false" propertyName="latestIteration" selectOnly="false" type="boolean">
+								iterationInfo.latest
+							</column>
+
+						</operand>
+
+						
+              <operator type="equal"></operator>
+
+						
+              <operand>
+							
+                <constant heading="1" isMacro="false" type="java.lang.Object">
+								1
+							</constant>
+
+						</operand>
+
+					</condition>
+
+					
+            <condition>
+						
+              <operand>
+							
+                <column alias="Garment Product Spec" heading="Name" isExternal="false" propertyName="name" selectOnly="false" type="java.lang.String">
+								master&gt;name
+							</column>
+
+						</operand>
+
+						
+              <operator type="like"></operator>
+
+						
+              <operand>
+							
+                <function heading="Concatenate" name="CONCAT" type="java.lang.String">
+								
+                  <constant heading="%" isMacro="false" type="java.lang.Object">
+									%
+								</constant>
+
+								
+                  <parameterTarget name="Garment Spec Name"></parameterTarget>
+
+								
+                  <constant heading="%" isMacro="false" type="java.lang.Object">
+									%
+								</constant>
+
+							</function>
+
+						</operand>
+
+					</condition>
+
+					
+            <compositeCondition type="or">
+						
+              <condition>
+							
+                <operand>
+								
+                  <column alias="Garment Product BOM Link" heading="Num37" isExternal="false" propertyName="num37" selectOnly="false" type="double">
+									num37
+								</column>
+
+							</operand>
+
+							
+                <operator type="equal"></operator>
+
+							
+                <operand>
+								
+                  <column alias="com.lcs.wc.foundation.LCSLifecycleManaged" heading="Persist Info.Object Identifier.Id" isExternal="false" propertyName="persistInfo.objectIdentifier.id" selectOnly="false" type="long">
+									thePersistInfo.theObjectIdentifier.id
+								</column>
+
+							</operand>
+
+						</condition>
+
+					</compositeCondition>
+
+					
+            <condition>
+						
+              <operand>
+							
+                <column alias="Garment Product BOM Part" heading="Flex Type Id Path" isExternal="false" propertyName="flexTypeIdPath" selectOnly="false" type="java.lang.String">
+								flexTypeIdPath
+							</column>
+
+						</operand>
+
+						
+              <operator type="equal"></operator>
+
+						
+              <operand>
+							
+                <constant heading="\20157\22052\100030\2374344" isMacro="false" type="java.lang.String">
+								\20157\22052\100030\2374344
+							</constant>
+
+						</operand>
+
+					</condition>
+
+					
+            <condition>
+						
+              <operand>
+							
+                <column alias="Garment Product Spec" heading="Master Reference.Object Id.Id" isExternal="false" propertyName="masterReference.objectId.id" selectOnly="false" type="long">
+								masterReference.key.id
+							</column>
+
+						</operand>
+
+						
+              <operator type="equal"></operator>
+
+						
+              <operand>
+							
+                <column alias="Garment Flex Spec to Component Link" heading="Specification Master Reference.Object Id.Id" isExternal="false" propertyName="specificationMasterReference.objectId.id" selectOnly="false" type="long">
+								specificationMasterReference.key.id
+							</column>
+
+						</operand>
+
+					</condition>
+
+					
+            <condition>
+						
+              <operand>
+							
+                <column alias="Garment Flex Spec to Component Link" heading="Component Reference.Object Id.Id" isExternal="false" propertyName="componentReference.objectId.id" selectOnly="false" type="long">
+								componentReference.key.id
+							</column>
+
+						</operand>
+
+						
+              <operator type="equal"></operator>
+
+						
+              <operand>
+							
+                <column alias="Garment Product BOM Part" heading="Master Reference.Object Id.Id" isExternal="false" propertyName="masterReference.objectId.id" selectOnly="false" type="long">
+								masterReference.key.id
+							</column>
+
+						</operand>
+
+					</condition>
+
+					
+            <condition>
+						
+              <operand>
+							
+                <column alias="Garment product" heading="Master Reference.Object Id.Id" isExternal="false" propertyName="masterReference.objectId.id" selectOnly="false" type="long">
+								masterReference.key.id
+							</column>
+
+						</operand>
+
+						
+              <operator type="equal"></operator>
+
+						
+              <operand>
+							
+                <column alias="Garment Product Spec" heading="Spec Owner Reference.Object Id.Id" isExternal="false" propertyName="specOwnerReference.objectId.id" selectOnly="false" type="long">
+								specOwnerReference.key.id
+							</column>
+
+						</operand>
+
+					</condition>
+
+					
+            <condition>
+						
+              <operand>
+							
+                <column alias="Garment Product BOM Part" heading="Att6" isExternal="false" propertyName="att6" selectOnly="false" type="java.lang.String">
+								att6
+							</column>
+
+						</operand>
+
+						
+              <operator type="equal"></operator>
+
+						
+              <operand>
+							
+                <constant heading="source" isMacro="false" type="java.lang.String">
+								source
+							</constant>
+
+						</operand>
+
+					</condition>
+
+				</compositeCondition>
+
+			</where>
+
+			
+        <orderBy>
+				
+          <orderByItem type="asc">
+					
+            <columnTarget heading="Spec Name"></columnTarget>
+
+				</orderByItem>
+
+			</orderBy>
+
+		</query>
+
+	</statement>
+
+</qml>
+
+  <actualParameter parameterId="Product Name" displayName="10188 Boys Knit Brief ExpWB B252">10188 Boys Knit Brief ExpWB B252</actualParameter>
+
+  <actualParameter parameterId="Garment Season Name" displayName="Garment  BIW">Garment  BIW</actualParameter>
+
+  <actualParameter parameterId="Garment Spec Name" displayName="002">002</actualParameter>
+
+  <result>
+    <heading type="java.lang.String" tag="Concatenate">Concatenate</heading>
+
+    <heading type="java.lang.Double" tag="Accessory_Length">Accessory Length</heading>
+
+    <heading type="java.lang.Long" tag="Persist_Info_Object_Identifier_Id">Persist Info.Object Identifier.Id</heading>
+
+    <heading type="com.lcs.wc.product.LCSProduct" tag="Garment_product">Garment product</heading>
+
+    <heading type="java.lang.String" tag="Spec_Name">Spec Name</heading>
+
+    <heading type="com.lcs.wc.specification.FlexSpecification" tag="Spec_Link">Spec Link</heading>
+
+    <heading type="com.lcs.wc.foundation.LCSLifecycleManaged" tag="com_lcs_wc_foundation_LCSLifecycleManaged">com.lcs.wc.foundation.LCSLifecycleManaged</heading>
+
+    <heading type="java.lang.Double" tag="Garment_Product_Garment_Use">Garment Product Garment Use</heading>
+
+    <heading type="com.lcs.wc.material.LCSMaterial" tag="Garment_Product_Child_Material">Garment Product Child Material</heading>
+
+    <heading type="java.lang.String" tag="Garment_Master_Material">Garment Master Material</heading>
+
+    <heading type="java.lang.String" tag="Minor_Category">Minor Category</heading>
+
+    <heading type="java.lang.String" tag="Item_Description">Item Description</heading>
+
+    <heading type="java.lang.String" tag="Garment_Product_BOM_Name">Garment Product BOM Name</heading>
+
+    <heading type="java.lang.String" tag="Part_Name">Part Name</heading>
+
+    <heading type="java.lang.String" tag="Garment_BOM_Type_Name">Garment BOM Type Name</heading>
+
+    <heading type="java.lang.String" tag="Flex_Type_Id_Path">Flex Type Id Path</heading>
+
+    <heading type="java.lang.String" tag="Garment_Usage_UOM">Garment Usage UOM</heading>
+
+    <heading type="java.lang.String" tag="Season_Name">Season Name</heading>
+
+    <heading type="java.lang.String" tag="Name">Name</heading>
+</result>
+</queryResult>

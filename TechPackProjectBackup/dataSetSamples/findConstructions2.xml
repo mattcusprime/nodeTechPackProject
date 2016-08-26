@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wc:COLLECTION xmlns:wc="http://www.ptc.com/infoengine/1.0">
+<Unknown-Class-Name NAME="results" TYPE="Unknown" STATUS="0">
+  <wc:INSTANCE>
+    <id javaType="java.lang.Integer">4</id>
+    <sortingNumber javaType="java.lang.Integer">3</sortingNumber>
+    <IDA2A2>OR:com.lcs.wc.construction.LCSConstructionDetail:3268259</IDA2A2>
+    <hbiLooperThread>tex18TexturizedPoly</hbiLooperThread>
+    <libraryItemReference>OR:com.lcs.wc.construction.LCSConstructionDetail:1851310</libraryItemReference>
+    <detailImage></detailImage>
+    <hbiGarmentUse>1157748</hbiGarmentUse>
+    <hbiGarmentUseDisplay>Tape</hbiGarmentUseDisplay>
+    <constructionPart NIL="true"/>
+    <hbiNeedleColor>Side A</hbiNeedleColor>
+    <stitching>3237418</stitching>
+    <stitchingDisplay>607 4N flatseam-no topcover</stitchingDisplay>
+    <hbiSpi>10</hbiSpi>
+    <comments NIL="true"/>
+    <hbiGuageWidth>sixteenggper6mm</hbiGuageWidth>
+    <hbiLooperColor>Side B</hbiLooperColor>
+    <hbiNeedleThread>tex18TexturizedPoly</hbiNeedleThread>
+    <number>Seam panel with tape.</number>
+    <instruction NIL="true"/>
+    <constructionPartDetail>4N flatseam-no topcover</constructionPartDetail>
+    <topStitch></topStitch>
+    <topStitchDisplay></topStitchDisplay>
+    <seamType>175099</seamType>
+    <seamTypeDisplay>1/4&quot; trimoff</seamTypeDisplay>
+  </wc:INSTANCE>
+  <wc:INSTANCE>
+    <id javaType="java.lang.Integer">8</id>
+    <sortingNumber javaType="java.lang.Integer">7</sortingNumber>
+    <IDA2A2>OR:com.lcs.wc.construction.LCSConstructionDetail:2710833</IDA2A2>
+    <hbiLooperThread>zna</hbiLooperThread>
+    <libraryItemReference>OR:com.lcs.wc.construction.LCSConstructionDetail:1465161</libraryItemReference>
+    <detailImage></detailImage>
+    <hbiGarmentUse></hbiGarmentUse>
+    <hbiGarmentUseDisplay></hbiGarmentUseDisplay>
+    <constructionPart NIL="true"/>
+    <hbiNeedleColor NIL="true"/>
+    <stitching>175219</stitching>
+    <stitchingDisplay>N/A</stitchingDisplay>
+    <hbiSpi>N/A</hbiSpi>
+    <comments NIL="true"/>
+    <hbiGuageWidth>na</hbiGuageWidth>
+    <hbiLooperColor NIL="true"/>
+    <hbiNeedleThread>zna</hbiNeedleThread>
+    <number>Set garment label (heat transfer) centered over band seam.</number>
+    <instruction NIL="true"/>
+    <constructionPartDetail>N/A</constructionPartDetail>
+    <topStitch></topStitch>
+    <topStitchDisplay></topStitchDisplay>
+    <seamType>174923</seamType>
+    <seamTypeDisplay>N/A</seamTypeDisplay>
+  </wc:INSTANCE>
+  <wc:INSTANCE>
+    <id javaType="java.lang.Integer">7</id>
+    <sortingNumber javaType="java.lang.Integer">6</sortingNumber>
+    <IDA2A2>OR:com.lcs.wc.construction.LCSConstructionDetail:2710835</IDA2A2>
+    <hbiLooperThread>tex18TexturizedPoly</hbiLooperThread>
+    <libraryItemReference>OR:com.lcs.wc.construction.LCSConstructionDetail:1851358</libraryItemReference>
+    <detailImage></detailImage>
+    <hbiGarmentUse>1157684</hbiGarmentUse>
+    <hbiGarmentUseDisplay>Body</hbiGarmentUseDisplay>
+    <constructionPart NIL="true"/>
+    <hbiNeedleColor>Side A</hbiNeedleColor>
+    <stitching>175267</stitching>
+    <stitchingDisplay>607 4N flatseam</stitchingDisplay>
+    <hbiSpi>14</hbiSpi>
+    <comments NIL="true"/>
+    <hbiGuageWidth>sixteenggper6mm</hbiGuageWidth>
+    <hbiLooperColor>Side B</hbiLooperColor>
+    <hbiNeedleThread>tex18TexturizedPoly</hbiNeedleThread>
+    <number>Flatseam crotch.</number>
+    <instruction NIL="true"/>
+    <constructionPartDetail>4N flatseam</constructionPartDetail>
+    <topStitch></topStitch>
+    <topStitchDisplay></topStitchDisplay>
+    <seamType>175107</seamType>
+    <seamTypeDisplay>1/4&quot; overlap; 1/4&quot; trimoff</seamTypeDisplay>
+  </wc:INSTANCE>
+  <wc:INSTANCE>
+    <id javaType="java.lang.Integer">6</id>
+    <sortingNumber javaType="java.lang.Integer">5</sortingNumber>
+    <IDA2A2>OR:com.lcs.wc.construction.LCSConstructionDetail:2710838</IDA2A2>
+    <hbiLooperThread>tex18TexturizedPoly</hbiLooperThread>
+    <libraryItemReference>OR:com.lcs.wc.construction.LCSConstructionDetail:2110612</libraryItemReference>
+    <detailImage></detailImage>
+    <hbiGarmentUse>1157836</hbiGarmentUse>
+    <hbiGarmentUseDisplay>Waist</hbiGarmentUseDisplay>
+    <constructionPart NIL="true"/>
+    <hbiNeedleColor>Side A</hbiNeedleColor>
+    <stitching>175203</stitching>
+    <stitchingDisplay>407 3N bottom coverstitch</stitchingDisplay>
+    <hbiSpi>12</hbiSpi>
+    <comments NIL="true"/>
+    <hbiGuageWidth>sixteenggper6mm</hbiGuageWidth>
+    <hbiLooperColor>Side B</hbiLooperColor>
+    <hbiNeedleThread>tex24TexturizedPoly</hbiNeedleThread>
+    <number>Attach exposed elastic to waist.</number>
+    <instruction NIL="true"/>
+    <constructionPartDetail>3N coverseam</constructionPartDetail>
+    <topStitch></topStitch>
+    <topStitchDisplay></topStitchDisplay>
+    <seamType>175091</seamType>
+    <seamTypeDisplay>5/16&quot; overlap; 1/4&quot; trimoff</seamTypeDisplay>
+  </wc:INSTANCE>
+  <wc:INSTANCE>
+    <id javaType="java.lang.Integer">5</id>
+    <sortingNumber javaType="java.lang.Integer">4</sortingNumber>
+    <IDA2A2>OR:com.lcs.wc.construction.LCSConstructionDetail:2710840</IDA2A2>
+    <hbiLooperThread>tex18TexturizedPoly</hbiLooperThread>
+    <libraryItemReference>OR:com.lcs.wc.construction.LCSConstructionDetail:1851318</libraryItemReference>
+    <detailImage></detailImage>
+    <hbiGarmentUse>1157716</hbiGarmentUse>
+    <hbiGarmentUseDisplay>Leg</hbiGarmentUseDisplay>
+    <constructionPart NIL="true"/>
+    <hbiNeedleColor>Side A</hbiNeedleColor>
+    <stitching>175243</stitching>
+    <stitchingDisplay>406 2N bottom coverstitch</stitchingDisplay>
+    <hbiSpi>12</hbiSpi>
+    <comments NIL="true"/>
+    <hbiGuageWidth>eightggPer3mm</hbiGuageWidth>
+    <hbiLooperColor>Side B</hbiLooperColor>
+    <hbiNeedleThread>tex24TexturizedPoly</hbiNeedleThread>
+    <number>Bind legs with elastic/rubber.</number>
+    <instruction NIL="true"/>
+    <constructionPartDetail>2N coverseam</constructionPartDetail>
+    <topStitch></topStitch>
+    <topStitchDisplay></topStitchDisplay>
+    <seamType>175115</seamType>
+    <seamTypeDisplay>folder 1T-9/16&quot; finish binding</seamTypeDisplay>
+  </wc:INSTANCE>
+  <wc:INSTANCE>
+    <id javaType="java.lang.Integer">9</id>
+    <sortingNumber javaType="java.lang.Integer">9</sortingNumber>
+    <IDA2A2>OR:com.lcs.wc.construction.LCSConstructionDetail:2710832</IDA2A2>
+    <hbiLooperThread NIL="true"/>
+    <libraryItemReference>OR:com.lcs.wc.construction.LCSConstructionDetail:2056499</libraryItemReference>
+    <detailImage></detailImage>
+    <hbiGarmentUse></hbiGarmentUse>
+    <hbiGarmentUseDisplay></hbiGarmentUseDisplay>
+    <constructionPart NIL="true"/>
+    <hbiNeedleColor NIL="true"/>
+    <stitching></stitching>
+    <stitchingDisplay></stitchingDisplay>
+    <hbiSpi NIL="true"/>
+    <comments NIL="true"/>
+    <hbiGuageWidth NIL="true"/>
+    <hbiLooperColor NIL="true"/>
+    <hbiNeedleThread NIL="true"/>
+    <number>APPROVED ALTERNATES:</number>
+    <instruction NIL="true"/>
+    <constructionPartDetail NIL="true"/>
+    <topStitch></topStitch>
+    <topStitchDisplay></topStitchDisplay>
+    <seamType></seamType>
+    <seamTypeDisplay></seamTypeDisplay>
+  </wc:INSTANCE>
+  <wc:INSTANCE>
+    <id javaType="java.lang.Integer">3</id>
+    <sortingNumber javaType="java.lang.Integer">2</sortingNumber>
+    <IDA2A2>OR:com.lcs.wc.construction.LCSConstructionDetail:2710847</IDA2A2>
+    <hbiLooperThread>tex18TexturizedPoly</hbiLooperThread>
+    <libraryItemReference>OR:com.lcs.wc.construction.LCSConstructionDetail:1986404</libraryItemReference>
+    <detailImage></detailImage>
+    <hbiGarmentUse>1157700</hbiGarmentUse>
+    <hbiGarmentUseDisplay>Fly</hbiGarmentUseDisplay>
+    <constructionPart NIL="true"/>
+    <hbiNeedleColor>Side A</hbiNeedleColor>
+    <stitching>175243</stitching>
+    <stitchingDisplay>406 2N bottom coverstitch</stitchingDisplay>
+    <hbiSpi>10</hbiSpi>
+    <comments NIL="true"/>
+    <hbiGuageWidth>eightggPer3mm</hbiGuageWidth>
+    <hbiLooperColor>Side B</hbiLooperColor>
+    <hbiNeedleThread>tex18TexturizedPoly</hbiNeedleThread>
+    <number>Bind fly.</number>
+    <instruction NIL="true"/>
+    <constructionPartDetail>2N coverseam</constructionPartDetail>
+    <topStitch></topStitch>
+    <topStitchDisplay></topStitchDisplay>
+    <seamType>175123</seamType>
+    <seamTypeDisplay>folder 1T-5/16&quot; finish binding</seamTypeDisplay>
+  </wc:INSTANCE>
+  <wc:INSTANCE>
+    <id javaType="java.lang.Integer">2</id>
+    <sortingNumber javaType="java.lang.Integer">1</sortingNumber>
+    <IDA2A2>OR:com.lcs.wc.construction.LCSConstructionDetail:2710850</IDA2A2>
+    <hbiLooperThread>tex18TexturizedPoly</hbiLooperThread>
+    <libraryItemReference>OR:com.lcs.wc.construction.LCSConstructionDetail:1851280</libraryItemReference>
+    <detailImage></detailImage>
+    <hbiGarmentUse>1157836</hbiGarmentUse>
+    <hbiGarmentUseDisplay>Waist</hbiGarmentUseDisplay>
+    <constructionPart NIL="true"/>
+    <hbiNeedleColor>Side B</hbiNeedleColor>
+    <stitching>175235</stitching>
+    <stitchingDisplay>503 2 thread overedge</stitchingDisplay>
+    <hbiSpi>25 min</hbiSpi>
+    <comments NIL="true"/>
+    <hbiGuageWidth>twelveggPer4mm</hbiGuageWidth>
+    <hbiLooperColor>Side A/B</hbiLooperColor>
+    <hbiNeedleThread>tex18TexturizedPoly</hbiNeedleThread>
+    <number>Seam waist elastic with latch-tack.</number>
+    <instruction NIL="true"/>
+    <constructionPartDetail>2 thread overedge</constructionPartDetail>
+    <topStitch></topStitch>
+    <topStitchDisplay></topStitchDisplay>
+    <seamType>2544664</seamType>
+    <seamTypeDisplay>1/8&quot; trimoff</seamTypeDisplay>
+  </wc:INSTANCE>
+  <wc:INSTANCE>
+    <id javaType="java.lang.Integer">1</id>
+    <sortingNumber javaType="java.lang.Integer">8</sortingNumber>
+    <IDA2A2>OR:com.lcs.wc.construction.LCSConstructionDetail:2710854</IDA2A2>
+    <hbiLooperThread NIL="true"/>
+    <hbiGarmentUse></hbiGarmentUse>
+    <hbiGarmentUseDisplay></hbiGarmentUseDisplay>
+    <constructionPart NIL="true"/>
+    <hbiNeedleColor NIL="true"/>
+    <stitching></stitching>
+    <stitchingDisplay></stitchingDisplay>
+    <hbiSpi NIL="true"/>
+    <comments NIL="true"/>
+    <hbiGuageWidth NIL="true"/>
+    <hbiLooperColor NIL="true"/>
+    <hbiNeedleThread NIL="true"/>
+    <number NIL="true"/>
+    <instruction NIL="true"/>
+    <constructionPartDetail NIL="true"/>
+    <topStitch></topStitch>
+    <topStitchDisplay></topStitchDisplay>
+    <seamType></seamType>
+    <seamTypeDisplay></seamTypeDisplay>
+  </wc:INSTANCE>
+  <wc:INSTANCE>
+    <id javaType="java.lang.Integer">12</id>
+    <sortingNumber javaType="java.lang.Integer">12</sortingNumber>
+    <IDA2A2>OR:com.lcs.wc.construction.LCSConstructionDetail:2710856</IDA2A2>
+    <hbiLooperThread>tex18TexturizedPoly</hbiLooperThread>
+    <libraryItemReference>OR:com.lcs.wc.construction.LCSConstructionDetail:2064269</libraryItemReference>
+    <detailImage></detailImage>
+    <hbiGarmentUse></hbiGarmentUse>
+    <hbiGarmentUseDisplay></hbiGarmentUseDisplay>
+    <constructionPart NIL="true"/>
+    <hbiNeedleColor>Side A</hbiNeedleColor>
+    <stitching>175275</stitching>
+    <stitchingDisplay>605 3N topcover</stitchingDisplay>
+    <hbiSpi>12</hbiSpi>
+    <comments NIL="true"/>
+    <hbiGuageWidth>sixteenggper6mm</hbiGuageWidth>
+    <hbiLooperColor>Side B</hbiLooperColor>
+    <hbiNeedleThread>tex18TexturizedPoly</hbiNeedleThread>
+    <number>Topcover seams.</number>
+    <instruction NIL="true"/>
+    <constructionPartDetail>3N topcover</constructionPartDetail>
+    <topStitch></topStitch>
+    <topStitchDisplay></topStitchDisplay>
+    <seamType>175075</seamType>
+    <seamTypeDisplay>no trimoff</seamTypeDisplay>
+  </wc:INSTANCE>
+  <wc:INSTANCE>
+    <id javaType="java.lang.Integer">11</id>
+    <sortingNumber javaType="java.lang.Integer">11</sortingNumber>
+    <IDA2A2>OR:com.lcs.wc.construction.LCSConstructionDetail:2710858</IDA2A2>
+    <hbiLooperThread>tex18TexturizedPoly</hbiLooperThread>
+    <libraryItemReference>OR:com.lcs.wc.construction.LCSConstructionDetail:2064268</libraryItemReference>
+    <detailImage></detailImage>
+    <hbiGarmentUse></hbiGarmentUse>
+    <hbiGarmentUseDisplay></hbiGarmentUseDisplay>
+    <constructionPart NIL="true"/>
+    <hbiNeedleColor>Side B</hbiNeedleColor>
+    <stitching>175251</stitching>
+    <stitchingDisplay>504 3 thread overedge</stitchingDisplay>
+    <hbiSpi>12</hbiSpi>
+    <comments NIL="true"/>
+    <hbiGuageWidth>eightggPer3mm</hbiGuageWidth>
+    <hbiLooperColor>Side B</hbiLooperColor>
+    <hbiNeedleThread>tex18TexturizedPoly</hbiNeedleThread>
+    <number>Attach pieces.</number>
+    <instruction NIL="true"/>
+    <constructionPartDetail>3 thread overedge</constructionPartDetail>
+    <topStitch></topStitch>
+    <topStitchDisplay></topStitchDisplay>
+    <seamType>175083</seamType>
+    <seamTypeDisplay>3/8&quot;; 1/4&quot; trimoff</seamTypeDisplay>
+  </wc:INSTANCE>
+  <wc:INSTANCE>
+    <id javaType="java.lang.Integer">10</id>
+    <sortingNumber javaType="java.lang.Integer">10</sortingNumber>
+    <IDA2A2>OR:com.lcs.wc.construction.LCSConstructionDetail:2710860</IDA2A2>
+    <hbiLooperThread NIL="true"/>
+    <libraryItemReference>OR:com.lcs.wc.construction.LCSConstructionDetail:2056876</libraryItemReference>
+    <detailImage></detailImage>
+    <hbiGarmentUse></hbiGarmentUse>
+    <hbiGarmentUseDisplay></hbiGarmentUseDisplay>
+    <constructionPart NIL="true"/>
+    <hbiNeedleColor NIL="true"/>
+    <stitching></stitching>
+    <stitchingDisplay></stitchingDisplay>
+    <hbiSpi NIL="true"/>
+    <comments NIL="true"/>
+    <hbiGuageWidth NIL="true"/>
+    <hbiLooperColor NIL="true"/>
+    <hbiNeedleThread NIL="true"/>
+    <number>Alternate seaming to be used only where 607 flatseam is not available due to capacity (Requires prior approval).</number>
+    <instruction NIL="true"/>
+    <constructionPartDetail NIL="true"/>
+    <topStitch></topStitch>
+    <topStitchDisplay></topStitchDisplay>
+    <seamType></seamType>
+    <seamTypeDisplay></seamTypeDisplay>
+  </wc:INSTANCE>
+</Unknown-Class-Name>
+</wc:COLLECTION>
