@@ -1,4 +1,4 @@
-/// <reference path="../Scripts/jquery-2.1.0-vsdoc.js" />
+﻿/// <reference path="../Scripts/jquery-2.1.0-vsdoc.js" />
 /// <reference path="../Scripts/jquery-2.1.4.js" />
 /// <reference path="../Scripts/jquery-2.1.4.intellisense.js" />
 /// <reference path="myReportGeneratorFunctions.js" />
@@ -1986,7 +1986,7 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix, objSelfRefere
             arrColorwayObjects.push(objRow);
             if (arrGroupings.indexOf(objRow.cwayGrouping) == -1) {
                 arrGroupings.push(objRow.cwayGrouping);
-                arrGroupingsTableStrings.push(initCwayString0 + objRow.specName.replace(/\s/g, "_").replace(/:/g, "") + initCwayString0_5 + objRow.specName.replace(/\//g, "").replace(/:/g, " ") + initCwayString1 + objRow.specName.replace(/\s/g, "_").replace(/:/g, "") + initCwayString2 + '<th id="SKU_' + objRow.Sku_ARev_Id + '_Spec_' + objRow.specName.replace(/\s/g, "_").replace(/:/g, "") + '">' + objRow.colorwayName + '</th>');
+                arrGroupingsTableStrings.push(initCwayString0 + objRow.specName.replace(/\s/g, "_").replace(/:/g, "") + initCwayString0_5 + objRow.specName.replace(/\//g, "-").replace(/:/g, " ").replace(/&/g, "and") + initCwayString1 + objRow.specName.replace(/\s/g, "_").replace(/:/g, "").replace(/\//g, "_").replace(/&/g, "_") + initCwayString2 + '<th id="SKU_' + objRow.Sku_ARev_Id + '_Spec_' + objRow.specName.replace(/\s/g, "_").replace(/:/g, "") + '">' + objRow.colorwayName + '</th>');
             } else {
                 var numActualIndex = arrGroupings.indexOf(objRow.cwayGrouping);
                 arrGroupingsTableStrings[numActualIndex] = arrGroupingsTableStrings[numActualIndex] + '<th id="SKU_' + objRow.Sku_ARev_Id + '_Spec_' + objRow.specName.replace(/\s/g, "_").replace(/:/g, "") + '">' + objRow.colorwayName + '</th>';
