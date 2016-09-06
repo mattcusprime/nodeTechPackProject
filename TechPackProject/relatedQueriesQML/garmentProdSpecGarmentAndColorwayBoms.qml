@@ -12,8 +12,7 @@
         </column>
         <function heading="bPartMaster_bLinkBranchId"
             name="CONCAT" type="java.lang.String">
-          <column alias="com.lcs.wc.flexbom.FlexBOMPart"
-              heading="Master Reference.Object Id.Id"
+          <column alias="com.lcs.wc.flexbom.FlexBOMPart"         heading="Master Reference.Object Id.Id"
               isExternal="false"
               propertyName="masterReference.objectId.id"
               selectOnly="false" type="long">
