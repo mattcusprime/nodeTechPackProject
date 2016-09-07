@@ -1858,10 +1858,14 @@ garmentProduct.prototype.saveMe = function (objSelfReference) {
     });
 };
 
-function constructOneColorwayBom(strUrlPrefix, partIdStringForInfoEngine) {
+function constructOneColorwayBom(strUrlPrefix, partIdStringForInfoEngine, nameOfBomForSection, sourceName,scMasterIdForInfoEngine, objSelfReference) {
     var strColorwayBomTaskUrl = strUrlPrefix + 'Windchill/servlet/IE/tasks/com/lcs/wc/flexbom/FindFlexBOM.xml';
     var strInstance = 'net.hbi.res.wsflexappdev1v.windchillAdapter';
     var strCurrentEnvironment = window.location.href;
+    var arrOfColorwayObjects = objSelfReference.colorwayProduct.colorways;
+    var objBom = {};
+    objBom.name = nameOfBomForSection;
+    objBom.scMasterIdForInfoEngine = nameOfBomForSection;
     if (strCurrentEnvironment.indexOf('plmqa.hanes') != -1) {
         strInstance = 'net.hbi.res.wsflexappqa1v.windchillAdapter';
     };
@@ -1887,20 +1891,60 @@ function constructOneColorwayBom(strUrlPrefix, partIdStringForInfoEngine) {
         data: {
             partId: 'VR:com.lcs.wc.flexbom.FlexBOMPart:' + partIdStringForInfoEngine,
             instance: strInstance,
-            skuMode: 'ALL_SKUS'
+            skuMode: 'ALL_SKUS',
+            scMasterId: scMasterIdForInfoEngine
 
         },
         async: true
 
     }).done(function (data) {
         //console.log(data.responseText);
-
+       
         var arrBomRows = [];
+        var arrHeaderRow = [];
         var arrOfInstances = [];
-        $(data).each(function () {
+        var arrTesting = [];
+        var arrOfNewlyCreatedDataFilledColorwayObjects = [];
+        /*$(data).each(function () {
             arrOfInstances = data.getElementsByTagNameNS('http://www.ptc.com/infoengine/1.0', 'INSTANCE');
+        });*/
+        // process header row
+        var wcCollection = $(data).first();
+        var arrOfColorwaysWithData = [];
+        arrOfInstances = $(wcCollection).find('branchId').parent();
+        arrOfColorwaysWithData = $(wcCollection).find('branchId').parent();
+        arrOfColorwaysWithData = $(arrOfColorwaysWithData).find('*[NAME]');
+        arrTesting = [];
+        $(arrOfColorwaysWithData).each(function (index) {
+
+            var arrOfDetailForVariation = [];
+            var objCurrentVariationObject = {};
+            var name = $(this).attr('NAME');
+            arrOfDetailForVariation = name.split("$");
+            objCurrentVariationObject.attributeName = arrOfDetailForVariation[0];
+            objCurrentVariationObject.variationType = arrOfDetailForVariation[1];
+            objCurrentVariationObject.branchIdOfVariation = arrOfDetailForVariation[2];
+            objCurrentVariationObject.value = $(this).text();
+            if (objCurrentVariationObject.attributeName == 'childId') {
+                if (objCurrentVariationObject.value == '20240') {
+
+                }
+                else {
+                    arrTesting.push(objCurrentVariationObject.value);
+                };
+            };
+            
         });
-        
+        console.log(arrTesting);
+
+        $(wcCollection).find('branchId').parent().find('*[NAME]').each(function (index) {
+            var strTest = $(this).text();
+            arrOfColorwaysWithData.push(strTest);
+        });
+        console.log(arrOfColorwaysWithData);
+        var strForBreakPoint;
+
+        // process table rows
         $(arrOfInstances).each(function (index) {
             var objRowObject = {};
             objRowObject.partName = $(this).find('partName').text();;
@@ -1921,39 +1965,57 @@ function constructOneColorwayBom(strUrlPrefix, partIdStringForInfoEngine) {
                 arrOfDetailForVariation = name.split("$");
                 objCurrentVariationObject.attributeName = arrOfDetailForVariation[0];
                 objCurrentVariationObject.variationType = arrOfDetailForVariation[1];
-                objCurrentVariationObject.branchIdOfVariation = arrOfDetailForVariation[2];
+                objCurrentVariationObject.skuMasterId = arrOfDetailForVariation[2];
                 objCurrentVariationObject.value = $(arrOfVariationData[i]).text();
+                for (var j = 0; j < objSelfReference.colorwayProduct.colorways.length; j++) {
+                    var objColorway = objSelfReference.colorwayProduct.colorways[j];
+                    if (objColorway.skuMasterId == objCurrentVariationObject.skuMasterId) {
+                        objCurrentVariationObject.colorwayName = objColorway.colorwayName
+                        objCurrentVariationObject.cwayGrouping = objColorway.cwayGrouping
+                        objCurrentVariationObject.parentProductName = objColorway.parentProductName
+                        objCurrentVariationObject.specName = objColorway.specName
+                        objCurrentVariationObject.sourceFromBomSourceName = sourceName
+                    }
+
+                };
+
                 objRowObject.variations.push(objCurrentVariationObject);
-                console.log(objCurrentVariationObject);
+                if (objCurrentVariationObject.value.length > 1) {
+
+                    //console.log(objCurrentVariationObject);
+
+                };
 
             };
             //objRowObject.partName = $(this).find();
             arrBomRows.push(objRowObject);
 
 
-
         });
-        console.log(arrBomRows);
-
+        //console.log(arrBomRows);
+        objBom.rows = arrBomRows;
+        objSelfReference.colorwayProduct.boms.push(objBom);
     });
 
 }
 
 
 garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix, objSelfReference) {
-
+    objSelfReference.colorwayProduct.boms = [];
     var strBeginUrl = strUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction'//objectId=<param>&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A10734353&action=ExecuteReport';
     var strTrimCwayBomString = '<h2>Colorway BOM</h2><table id="colorwayReport" class="display responsive col-md-12 compact cell-border"><thead><tr>';
     //<th>Part Name</th><th>Desc</th><th>Garment Use</th><th>Material</th>';</tr></thead><tbody>';
     var strTrimCwaysTableString = '<h1>Colorways</h1><h2>Colorways by Group</h2> <button id="swapSwatch">Show Swatches</button><table id="colorwaysListTable" class="display responsive col-md-12 compact cell-border"><thead><tr><th>Colorway Group</th><th>Colorway Name</th></tr></thead><tbody>';
-    var arrMaterialsToGet = [];
     var strOidPrefix = 'OR:wt.query.template.ReportTemplate:';
     var strSkuOidUrl = strOidPrefix + getMyReportIdFromReportName(garmentProdSpecGarmentAndColorwayBoms);
     var strBranchOidUrl = strOidPrefix + getMyReportIdFromReportName(garmentProdSpecGarmentAndColorwayBomsV2AllColors);
     var strDefColorways = strOidPrefix + getMyReportIdFromReportName(garmentProdSpecGarmentAndColorwayColorways);
     var strDefAllGarmentMaterials = strOidPrefix + getMyReportIdFromReportName(garmentProdSpecGarmentAllBomMaterials);
     var strDefgarmentProdSpecBomsOfColorwayProduct = strOidPrefix + getMyReportIdFromReportName(garmentProdSpecBomsOfColorwayProduct);
-
+    var arrMaterialsToGet = [];
+    var arrColumns = ['Grouping', 'Part Name', 'Garment Use', 'Material'];
+    var arrColorwayObjects = [];
+    var arrGroupings = [];
     var objDefferedAllGarmentMaterials = $.ajax({
         url: strBeginUrl,
         type: 'get',
@@ -1970,12 +2032,14 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix, objSelfRefere
     }).done(function (data) {
         console.log('\n begin material data from garment proudct \n' + data);
         //material parsing from garment goes here
+
+
         $.ajax({
             url: strBeginUrl,
             type: 'get',
             data: {
                 objectId: objSelfReference.colorwayProduct.objectId,
-                oid: strDefgarmentProdSpecBomsOfColorwayProduct,
+                oid: strDefColorways,
                 //oid: 'OR:wt.query.template.ReportTemplate:10777566',
                 format: 'formatDelegate',
                 xsl2: '',
@@ -1983,18 +2047,76 @@ garmentProduct.prototype.getColorwayBoms = function (strUrlPrefix, objSelfRefere
                 delegateName: 'XML',
                 action: 'ExecuteReport'
             }
-        }).done(function (cBomData) {
-            console.log('\n data from colorway boms \n');
-            $('row', cBomData).each(function () {
-                var numActualBranch = $(this).find('com_lcs_wc_flexbom_FlexBOMPart').attr('branchId');
-                var strFullPartString = numActualBranch;
-                console.log(strFullPartString);
-                constructOneColorwayBom(strUrlPrefix, strFullPartString);
+        }).done(function(dataLocalColorways){
+            //begin processing the colorways of the colorway product
+           
+            $('row', dataLocalColorways).each(function (index) {
+                var objRow = {};
+                objRow.cwayGrouping = $(this).find('cwayGroupDescription').text();
+                objRow.specName = $(this).find('specName').text();
+                objRow.colorwayName = $(this).find('Colorway_Name').text();
+                objRow.Sku_ARev_Id = $(this).find('Sku_ARev_Id').text();
+                objRow.skuBranchId = $(this).find('skuBranchId').text();
+                objRow.skuObjectId = $(this).find('skuObjectId').text();
+                objRow.scMasterId = $(this).find('scMasterId_branchSourceToSeaonLink').text();
+                objRow.skuMasterId = $(this).find('skuMasterId').text();
+                objRow.parentProductArevId = $(this).find('Product_ARev_Id').text();
+                objRow.parentProductObjectId = $(this).find('Colorway_Product_Name_Link').attr('objectId');
+                objRow.parentProductName = $(this).find('Colorway_Product_Name_Link').text();
+                objRow.parentProductBranchId = $(this).find('Colorway_Product_Name_Link').attr('branchId');
+                strTrimCwaysTableString += '<tr>' + '<td>' + objRow.specName + '</td>' + '<td>' + objRow.colorwayName + '</td>' + '</tr>'
+                arrColumns.push(objRow.colorwayName);
+                arrColorwayObjects.push(objRow);
+                if (arrGroupings.indexOf(objRow.cwayGrouping) == -1) {
+                    arrGroupings.push(objRow.cwayGrouping);
+                    //arrGroupingsTableStrings.push(initCwayString0 + objRow.specName.replace(/\s/g, "_").replace(/:/g, "") + initCwayString0_5 + objRow.specName.replace(/\//g, "-").replace(/:/g, " ").replace(/&/g, "and") + initCwayString1 + objRow.specName.replace(/\s/g, "_").replace(/:/g, "").replace(/\//g, "_").replace(/&/g, "_") + initCwayString2 + '<th id="SKU_' + objRow.Sku_ARev_Id + '_Spec_' + objRow.specName.replace(/\s/g, "_").replace(/:/g, "") + '">' + objRow.colorwayName + '</th>');
+                } else {
+                    var numActualIndex = arrGroupings.indexOf(objRow.cwayGrouping);
+                    //arrGroupingsTableStrings[numActualIndex] = arrGroupingsTableStrings[numActualIndex] + '<th id="SKU_' + objRow.Sku_ARev_Id + '_Spec_' + objRow.specName.replace(/\s/g, "_").replace(/:/g, "") + '">' + objRow.colorwayName + '</th>';
+                };
+            });
+            if (typeof (objSelfReference.colorwayProduct) != 'undefined') {
+                objSelfReference.colorwayProduct.colorways = arrColorwayObjects;
+            };
 
-            })
-            //begin reading each bom from colorway product here
 
-        });
+            //end processing the colorways of the colorway product
+            //begin individual colorway boms
+            $.ajax({
+                url: strBeginUrl,
+                type: 'get',
+                data: {
+                    objectId: objSelfReference.colorwayProduct.objectId,
+                    oid: strDefgarmentProdSpecBomsOfColorwayProduct,
+                    //oid: 'OR:wt.query.template.ReportTemplate:10777566',
+                    format: 'formatDelegate',
+                    xsl2: '',
+                    xsl2: '',
+                    delegateName: 'XML',
+                    action: 'ExecuteReport'
+                }
+            }).done(function (cBomData) {
+                console.log('\n data from colorway boms \n');
+                
+
+                $('row', cBomData).each(function () {
+                    var numActualBranch = $(this).find('com_lcs_wc_flexbom_FlexBOMPart').attr('branchId');
+                    var numScMasterIdForIngoEngineCall = $(this).find('scMasterId_branchIdSourceToSeason').text();
+                    var sourceName = $(this).find('bomname').text();
+                    var strBomName = $(this).find('sourcingConfigAttOne').text();
+                    var strFullPartString = numActualBranch;
+                    console.log(strFullPartString);
+                    constructOneColorwayBom(strUrlPrefix, strFullPartString, strBomName, sourceName,numScMasterIdForIngoEngineCall, objSelfReference);
+
+                })
+                //begin reading each bom from colorway product here
+
+
+            }); //end close individual colorway Boms
+            
+
+        });//end cclose of single colorways
+
 
     })
 
