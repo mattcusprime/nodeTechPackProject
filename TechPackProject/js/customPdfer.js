@@ -1,4 +1,4 @@
-/*
+﻿/*
 example work from pdfmake playround:
 
 var dd = {
@@ -537,7 +537,8 @@ function pdfSpec(productToSpec) {
 
     $('#colorwaysDiv table').each(function () {
         var strId = $(this).attr('id');
-        var strMyHeader = strId.replace(/_/g, ' ');
+        var strIdPrint = $(this).attr('printHeader');
+        var strMyHeader = strIdPrint.replace(/_/g, ' ');
         var arrOfValuesFromTable = [];
         var objTableObject = {};
         var objTableObject2 = {};
