@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
-MinimumVisualStudioVersion = 10.0.40219.1
+# Visual Studio 2012
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "TechPackProject", ".", "{8786E33E-39F3-4931-A71C-3331F3711B9D}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
@@ -21,7 +19,6 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "TechPackProject", ".", "{87
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
 		VWDPort = "59193"
-		SlnRelativePath = "..\TechPackProject\"
 	EndProjectSection
 EndProject
 Global
@@ -30,6 +27,7 @@ Global
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{8786E33E-39F3-4931-A71C-3331F3711B9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8786E33E-39F3-4931-A71C-3331F3711B9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

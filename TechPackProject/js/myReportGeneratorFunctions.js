@@ -1,4 +1,4 @@
-//Global Variables
+﻿//Global Variables
 var arrGarmentProductsArrayForTypeAhead = [];
 var strDomString = '<"top"fp>rt<"bottom"l><"clear">';
 var strCwayBomDomString = 'l<"top"fp>rt<"bottom"l><"clear">';

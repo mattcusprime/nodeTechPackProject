@@ -96,6 +96,10 @@
 		<script src="jsPdf/plugins/standard_fonts_metrics.js"></script>
 		<script src="jsPdf/plugins/svg.js"></script>
 		<script src="jsPdf/plugins/total_pages.js"></script>
+        <script src="jsPdf/libs/png_support/png.js"></script>
+        <script src="jsPdf/libs/png_support/zlib.js"></script>
+        <script src="jsPdf/libs/deflate.js"></script>
+
 		<!--plugins-->
 		<!--libs-->
 		<script src="jsPdf/libs/FileSaver.js/FileSaver.js"></script>
@@ -129,8 +133,11 @@
 			<script src="js/myReportGeneratorFunctions.js"></script>
 			<script class="dontPostScript" src="js/myProjectFunctionsV2Deferred.js"></script>
 			<script class="dontPostScript" src="js/nwJsFunctions.js"></script>
-			<script src="js/customPdfer.js"></script>
-			<!--End of HBI custom scripts-->
+			
+            <!--<script src="js/customPdfer.js"></script>-->
+            <script src="js/customPdferWithJsPdf.js"></script>
+			
+            <!--End of HBI custom scripts-->
 			<script class="dontPostScript">
 				/**
 				 * $.parseParams - parse query string paramaters into an object.
@@ -230,7 +237,7 @@
 				var gProdQueryURL;
 				// = strUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/invokeAction?oid=OR%3Awt.query.template.ReportTemplate%3A4711650&action=ProduceReport&u8=1'
 				var returnArrays;
-				var arrOfAttributeValueListIds = ['16699175', '2377385', '2378941', '10661752', '2381876'/*Prod Only*/, '102771', '2381693'/*Prod Only*/, '368058', '100575', '368793'/*Maybe Dev Only.*/, '406136', '406161','1333792','17429704'];
+				var arrOfAttributeValueListIds = ['16699146','16699175', '2377385', '2378941', '10661752', '2381876'/*Prod Only*/, '102771', '2381693'/*Prod Only*/, '368058', '100575', '368793'/*Maybe Dev Only.*/, '406136', '406161','1333792','17429704'];
 				//var arrOfAttributeValueListIds = ['2381876', '102771', '2381693', '17436676', '100575'];
 				var strCurrentEnvironment = window.location.href;
 				var numIndexOfWindChill = strCurrentEnvironment.indexOf('Windchill');
@@ -413,7 +420,8 @@
 						</li>
 						<!--<li><a href='javascript:currentGarmentProduct.saveMe(currentGarmentProduct);'>Save Garment</a></li>-->
 						<li>
-							<a href="javascript:pdfSpec(currentGarmentProduct)">PDF Garment Spec</a>
+							<!--<a href="javascript:pdfSpec(currentGarmentProduct)">PDF Garment Spec</a>-->
+                            <a href="javascript:pdfPage(currentGarmentProduct)">PDF Garment Spec</a>
 						</li>
 						<li>
                             <a href="http://wsflexwebprd1v.res.hbi.net/Windchill/wtcore/jsp/report/adhocReportCriteria.jsp?oid=OR%3Awt.query.template.ReportTemplate%3A23394008&u8=1" target="_blank">Block Weights</a>
