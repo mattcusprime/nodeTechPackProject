@@ -34,7 +34,8 @@ function docProcessor(garmentProduct) {
     this.yMarginReset = 35;
     this.xPosition = this.xMarginReset;
     this.yPosition = this.yMarginReset;
-    this.movePositions = function (xMove,yMove) {
+    this.amountAddedForExtraLineInText = 0;
+    this.movePositions = function (xMove, yMove) {
         this.xPosition += xMove;
         this.yPosition += yMove;
     };
@@ -42,9 +43,9 @@ function docProcessor(garmentProduct) {
         //var arrPageOneAttributes = [];
         var objAtt = {};
         for (var i = 0; i < this.garment.generalAttributes.length; i++) {
-            
+
             //this.pageOneAttributes[this.garment.generalAttributes[i].key] = this.garment.generalAttributes[i].value;
-            var strKey = this.garment.generalAttributes[i].key.replace(/ /g,"_");
+            var strKey = this.garment.generalAttributes[i].key.replace(/ /g, "_");
             objAtt[strKey] = this.garment.generalAttributes[i].value;
             //arrPageOneAttributes.push(objAtt);
         };
@@ -74,7 +75,7 @@ function docProcessor(garmentProduct) {
     this.nameAlert = function () {
         alert(this.garment.name);
     };
-    
+
     if ($("#frontBackImages img").length) {
         this.frontImage = $('#frontSketch img:first').attr('src');
     }
@@ -87,17 +88,13 @@ function docProcessor(garmentProduct) {
     else {
         this.backImage = false;
     };
-    
-    this.aThing = function () {
-
-    };
     if (typeof (garmentProduct.approvedSuppliers) != 'undefined' && garmentProduct.approvedSuppliers.length != 0) {
         this.approvedSuppliers = garmentProduct.approvedSuppliers;
     }
     else {
         this.approvedSuppliers = false;
     };
-    this.setXandYpositions = function (x,y) {
+    this.setXandYpositions = function (x, y) {
         this.xPosition = x;
         this.yPosition = y;
     };
@@ -110,36 +107,163 @@ function docProcessor(garmentProduct) {
     this.resetYbutSpecifyX = function (x) {
         this.setXandYpositions(x, this.yMarginReset);
     };
+
+    this.parseThroughAndSetGreatestHeightOfRow = function (arrayOfCells,numLengthToCheck) {
+        var greatestHeight = 1;
+        var numTextHeight = 0;
+        for (var i = 0; i < arrayOfCells.length; i++) {
+            var strIterString = arrayOfCells[i];
+            var objText = this.doc.getTextDimensions(strIterString);
+            numTextHeight = objText.h;
+            var numOfTiers = Math.floor(strIterString.length / numLengthToCheck) + 1;
+            if (numOfTiers > greatestHeight) {
+                greatestHeight = numOfTiers;
+            };
+
+        };
+        //var totalHeight;
+        //totalHeight = greatestHeight * numTextHeight;
+        return greatestHeight;
+        
+    };
+
     this.processTextUsingCurrentXandYPosition = function (funcText, xDeviation, yDeviation) {
+        switch (arguments.length) {
+            case 1:
+                this.doc.text(decodeURIComponent(funcText), this.xPosition, this.yPosition - 3);
+                break;
+            case 2:
+                this.doc.text(decodeURIComponent(funcText), this.xPosition + xDeviation, this.yPosition);
+                break;
+            case 3:
+                this.doc.text(decodeURIComponent(funcText), this.xPosition + xDeviation, this.yPosition + yDeviation);
+                break;
+        };
+    };
+
+    this.processTextUsingCurrentXandYPositionTable = function (funcText, yOffset, numModulusDivisor, numLineChangeRatio) {
         /*if (funcText.length > 20) {
             this.yPosition += 10;
         };*/
-        switch (arguments.length) {
-            case 1:
-                this.doc.text(this.xPosition, this.yPosition, decodeURIComponent(funcText));
-                break;
-            case 2:
-                this.doc.text(this.xPosition + xDeviation, this.yPosition, decodeURIComponent(funcText));
-                break;
-            case 3:
-                this.doc.text(this.xPosition + yDeviation, this.yPosition, decodeURIComponent(funcText));
-                break;
-        };
-        //this.doc.text(this.xPosition, this.yPosition, decodeURIComponent(funcText));
-        
-    };
-    /*this.processTextUsingCurrentXandYPosition = function (funcText) {
-        //this.docDefinition.text(this.xPosition, this.yPosition, decodeURIComponent(funcText));
-        this.docDefinition.content.push(decodeURIComponent(funcText));
 
-    };*/
-    this.drawLineRectangle = function (R,G,B,width,height) {
-        /*documentToPDF.setDrawColor(255, 255, 255);
-        documentToPDF.rect(rectX, rectY, rectAngleWidth, rectAngleHeight, 'FD');*/
-        //this.doc.setDrawColor(210, 198, 198);
-        this.doc.setFillColor(R, G, B);
-        this.doc.rect(0, this.yPosition - height + 3, width, height, 'FD')
+        funcText = decodeURIComponent(funcText);
+        //regex to replace only double spaces or longer 
+        funcText = funcText.replace(/  +/g, ' ');
+        //regex to replace only double spaces or longer 
+        var arrOfStrings = [];
+        if (typeof (numModulusDivisor) == 'undefined') {
+            numModulusDivisor = 25;
+        };
+        var numBeginStringAt = 0;
+        var numFunctTextLength = funcText.length;
+        var numOfArguments = arguments.length;
+        var numOfLoopIterations = Math.floor(numFunctTextLength / numModulusDivisor) + 1;
+        var numFuncOffset = yOffset;
+        //var numRunningfOffset = 0;
+        //var numLineChangeRatio = 0.25
+        if (typeof (numLineChangeRatio) == 'undefined') {
+            numLineChangeRatio = 0.25;
+        };
+        var startingFontZize = this.doc.internal.getFontSize();
+        var i = 0;
+        var xOffest = 0;
+        var numHeight = 0;
+        var initialYposition = this.yPosition;
+        while (i < numOfLoopIterations) {
+            var strSnippet = funcText.substring(numBeginStringAt, numBeginStringAt + numModulusDivisor);
+            this.doc.setTextColor(0, 0, 0);
+            //this.doc.text(strSnippet, this.xPosition, this.yPosition - numHeight);
+            this.yPosition += numHeight / 2;
+
+            if (this.yPosition > this.furthestYPosition) {
+                this.furthestYPosition = this.yPosition;
+            };
+            if (this.xPosition > this.furthestYPosition) {
+                this.furthestXPosition = this.xPosition;
+            };
+            this.doc.setFontType("normal");
+            this.doc.setTextColor(0, 0, 0);
+            this.doc.text(strSnippet, this.xPosition, this.yPosition);
+            var objText = this.doc.getTextDimensions(strSnippet);
+            numHeight = objText.h;
+            numBeginStringAt += numModulusDivisor;
+            i++;
+        };
+        this.yPosition = initialYposition;
     };
+
+    this.processTextUsingCurrentXandYPositionTableForHeader = function (funcText, yOffset, numModulusDivisor, numLineChangeRatio) {
+        /*if (funcText.length > 20) {
+            this.yPosition += 10;
+        };*/
+
+        funcText = decodeURIComponent(funcText);
+        //regex to replace only double spaces or longer 
+        funcText = funcText.replace(/  +/g, ' ');
+        //this.doc.setFont("helvetica");
+        this.doc.setFontType("bold");
+        this.doc.setTextColor(0, 0, 0);
+        //regex to replace only double spaces or longer 
+        var arrOfStrings = [];
+        if (typeof (numModulusDivisor) == 'undefined') {
+            numModulusDivisor = 25;
+        };
+        var numBeginStringAt = 0;
+        var numFunctTextLength = funcText.length;
+        var numOfArguments = arguments.length;
+        var numOfLoopIterations = Math.floor(numFunctTextLength / numModulusDivisor) + 1;
+        var numFuncOffset = yOffset;
+        if (typeof (numLineChangeRatio) == 'undefined') {
+            numLineChangeRatio = 0.25;
+        };
+        var startingFontZize = this.doc.internal.getFontSize();
+        var i = 0;
+
+        var xOffest = 0;
+        while (i < numOfLoopIterations) {
+            var strSnippet = funcText.substring(numBeginStringAt, numBeginStringAt + numModulusDivisor);
+
+            //this.doc.rect(this.xPosition, this.yPosition - textDimensionsObject.h, (textDimensionsObject.w / 2), textDimensionsObject.h);
+            //width of current text
+
+          
+            if (numOfLoopIterations == 1) {
+                this.doc.text(strSnippet, this.xPosition, this.yPosition - (yOffset / 2));
+            }
+            else if (numOfLoopIterations != 1) {
+                switch (i) {
+                    case 0:
+                        this.doc.text(strSnippet, this.xPosition + 2, this.yPosition - (yOffset * numLineChangeRatio));
+                        break;
+                    case 1:
+                        this.doc.text(strSnippet, this.xPosition + 2, this.yPosition - (yOffset / 2));
+                        break;
+                    default:
+
+                        this.doc.text(strSnippet, this.xPosition + 2, this.yPosition + ((yOffset * i) * numLineChangeRatio));
+                        //I think this may be causing my text/rectangle offset
+                        this.yPosition += yOffset * numLineChangeRatio;
+                        //I think this may be causing my text/rectangle offset
+
+                }
+            }
+            if (this.yPosition > this.furthestYPosition) {
+                this.furthestYPosition = this.yPosition;
+            }
+            if (this.xPosition > this.furthestYPosition) {
+                this.furthestXPosition = this.xPosition;
+            };
+            numBeginStringAt += numModulusDivisor;
+            i++;
+        };
+    };
+
+    this.drawLineRectangle = function (R, G, B, width, height) {
+        this.doc.setFillColor(R, G, B);
+        this.doc.rect(0, this.yPosition - height, width, height, 'F');
+    };
+
+
     this.header = function () {
         //date
         var m_names = new Array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
@@ -153,6 +277,7 @@ function docProcessor(garmentProduct) {
         var numLogoWidth = 35;
         var numFrontWidth = 35;
         var numSpacer = 10;
+        this.doc.setTextColor(0, 0, 0);
         this.doc.setFontSize(7);
         this.doc.addImage(this.hanesImageDataUri, 'PNG', numCurrentX, 0, numLogoWidth, 10, 'logo', 'fast');
         numCurrentX += numLogoWidth;
@@ -190,11 +315,28 @@ function docProcessor(garmentProduct) {
     this.footer = function () {
 
     };
+    this.furthestYPosition = 0;
+    this.furthestXPosition = 0;
+    this.previousFurthestXPosition = 0;
+    this.previousFurthestYPosition = 0;
+    this.resetPreviousPositions = function () {
+        this.furthestYPosition = 0;
+        this.furthestXPosition = 0;
+        this.previousFurthestXPosition = 0;
+        this.previousFurthestYPosition = 0;
+    };
     this.addPageAndReset = function () {
+        this.furthestYPosition = 0;
+        this.resetPreviousPositions();
         this.footer();
         this.doc.addPage();
         this.fullReset();
         this.header();
+    };
+    this.checkTextLength = function (string, limit, newFontSize) {
+        if (string.length > limit) {
+            this.doc.fontSize = newFontSize;
+        };
     };
     this.createPageOne = function () {
         this.header();
@@ -206,46 +348,85 @@ function docProcessor(garmentProduct) {
         var R2 = 255;
         var G2 = 255;
         var B2 = 255;
-        this.doc.setFontSize(15);
-        this.drawLineRectangle(R1, G1, B1, 800, yOffsetPerLine);
-        this.processTextUsingCurrentXandYPosition(encodeURIComponent( 'APS Corp Division : ' + this.pageOneAttributes.APS_Corp_Division));
-        this.movePositions(0, yOffsetPerLine);
+        this.doc.setFontSize(7);
         this.drawLineRectangle(R2, G2, B2, 800, yOffsetPerLine);
-        this.processTextUsingCurrentXandYPosition(encodeURIComponent( 'Construction Method Code : ' + this.pageOneAttributes.Construction_Method_Code));
-        this.movePositions(0, yOffsetPerLine);
-        this.drawLineRectangle(R1, G1, B1, 800, yOffsetPerLine);
-        this.processTextUsingCurrentXandYPosition(encodeURIComponent( 'HBI Division : ' + this.pageOneAttributes.HBI_Division));
-        this.movePositions(0, yOffsetPerLine);
-        this.drawLineRectangle(R2, G2, B2, 800, yOffsetPerLine);
-        this.processTextUsingCurrentXandYPosition(encodeURIComponent( 'Irregular Style : ' + this.pageOneAttributes.Irregular_Style));
+        this.checkTextLength(this.pageOneAttributes.APS_Corp_Division, 15, 10);
+        this.processTextUsingCurrentXandYPosition(encodeURIComponent('APS Corp Division : ' + this.pageOneAttributes.APS_Corp_Division), 0, -3);
+        this.doc.setFontSize(7);
         this.movePositions(0, yOffsetPerLine);
         this.drawLineRectangle(R1, G1, B1, 800, yOffsetPerLine);
-        this.processTextUsingCurrentXandYPosition(encodeURIComponent( 'Imperfect Style : ' + this.pageOneAttributes.Imperfect_Style));
+        this.checkTextLength(this.pageOneAttributes.Construction_Method_Code, 15, 10);
+        this.processTextUsingCurrentXandYPosition(encodeURIComponent('Construction Method Code : ' + this.pageOneAttributes.Construction_Method_Code), 0, -3);
+        this.doc.setFontSize(7);
         this.movePositions(0, yOffsetPerLine);
         this.drawLineRectangle(R2, G2, B2, 800, yOffsetPerLine);
-        this.processTextUsingCurrentXandYPosition(encodeURIComponent('APS Corp Division : ' + this.pageOneAttributes.APS_Corp_Division));
+        this.checkTextLength(this.pageOneAttributes.HBI_Division, 25, 13);
+        this.processTextUsingCurrentXandYPosition(encodeURIComponent('HBI Division : ' + this.pageOneAttributes.HBI_Division), 0, -3);
+        this.doc.setFontSize(7);
+        this.movePositions(0, yOffsetPerLine);
+        this.drawLineRectangle(R1, G1, B1, 800, yOffsetPerLine);
+        this.checkTextLength(this.pageOneAttributes.Irregular_Style, 25, 13);
+        this.processTextUsingCurrentXandYPosition(encodeURIComponent('Irregular Style : ' + this.pageOneAttributes.Irregular_Style), 0, -3);
+        this.doc.setFontSize(7);
+        this.movePositions(0, yOffsetPerLine);
+        this.drawLineRectangle(R2, G2, B2, 800, yOffsetPerLine);
+        this.checkTextLength(this.pageOneAttributes.Imperfect_Style, 25, 13);
+        this.processTextUsingCurrentXandYPosition(encodeURIComponent('Imperfect Style : ' + this.pageOneAttributes.Imperfect_Style), 0, -3);
+        this.doc.setFontSize(7);
+        this.movePositions(0, yOffsetPerLine);
+        this.drawLineRectangle(R1, G1, B1, 800, yOffsetPerLine);
+        this.checkTextLength(this.pageOneAttributes.APS_Corp_Division, 25, 13);
+        this.processTextUsingCurrentXandYPosition(encodeURIComponent('APS Corp Division : ' + this.pageOneAttributes.APS_Corp_Division), 0, -3);
+        this.doc.setFontSize(7);
         // put to top middle
         this.resetYbutSpecifyX(xOffsetToCenter);
         //this.drawFullLineRectangle(220, 218, 218);
         //this.movePositions(xOffsetToCenter,this.yMarginReset);
         // put to top middle
         //this.doc.text(this.xPosition, this.yPosition, 'Brand:' + this.pageOneAttributes.Brand);
-        this.processTextUsingCurrentXandYPosition(encodeURIComponent('Brand : ' + this.pageOneAttributes.Brand));
+        this.checkTextLength(this.pageOneAttributes.APS_Corp_Division, 25, 13);
+        this.processTextUsingCurrentXandYPosition(encodeURIComponent('Brand : ' + this.pageOneAttributes.Brand, 0, -3), 0, -3);
+        this.doc.setFontSize(7);
         this.movePositions(0, yOffsetPerLine, 800, yOffsetPerLine);
         //this.drawFullLineRectangle(210, 198, 198);
-        this.processTextUsingCurrentXandYPosition(encodeURIComponent('Designer : ' + this.pageOneAttributes.Designer));
+        this.checkTextLength(this.pageOneAttributes.APS_Corp_Division, 25, 13);
+        this.processTextUsingCurrentXandYPosition(encodeURIComponent('Designer : ' + this.pageOneAttributes.Designer), 0, -3);
+        this.doc.setFontSize(7);
         this.movePositions(0, yOffsetPerLine, 800, yOffsetPerLine);
         //this.drawFullLineRectangle(220, 218, 218);
-        this.processTextUsingCurrentXandYPosition(encodeURIComponent('Product Manager : ' + this.pageOneAttributes.Product_Manager));
+        this.checkTextLength(this.pageOneAttributes.APS_Corp_Division, 25, 13);
+        this.processTextUsingCurrentXandYPosition(encodeURIComponent('Product Manager : ' + this.pageOneAttributes.Product_Manager), 0, -3);
+        this.doc.setFontSize(7);
         this.movePositions(0, yOffsetPerLine, 800, yOffsetPerLine);
         //this.drawFullLineRectangle(210, 198, 198);
-        this.processTextUsingCurrentXandYPosition(encodeURIComponent('Technical Designer : ' + this.pageOneAttributes.Technical_Designer));
+        this.checkTextLength(this.pageOneAttributes.APS_Corp_Division, 25, 13);
+        this.processTextUsingCurrentXandYPosition(encodeURIComponent('Technical Designer : ' + this.pageOneAttributes.Technical_Designer), 0, -3);
+        this.doc.setFontSize(7);
         this.movePositions(0, yOffsetPerLine, 800, yOffsetPerLine);
-
+        this.doc.setFontSize(7);
 
     };
 
-    this.processADataTableResponseArray = function (arrayToProcess, xOffsetPerCell, yOffsetPerLine, numRowsBeforeNewPage) {
+    this.drawFullPageLineAtFurthestYposition = function () {
+        this.doc.setDrawColor(140, 140, 140);
+        this.doc.setLineWidth(0.5);
+        this.doc.line(0, this.furthestYPosition + 2, this.doc.internal.pageSize.width, this.furthestYPosition + 2,'FD');
+    };
+
+    this.drawFullPageLineAtCurrentYposition = function () {
+        this.doc.setDrawColor(0, 0, 0);
+        this.doc.setLineWidth(0.75);
+        this.doc.line(0, this.yPosition + 2, this.doc.internal.pageSize.width, this.yPosition + 2);
+    };
+    this.arrCurrentArrayOfWidths = [];
+
+    this.drawRectFromPrevious = function () {
+        this.doc.setDrawColor(255, 0, 0);
+        this.doc.setFillColor(180, 180, 180);
+        this.doc.rect(0, this.previousFurthestYPosition + 2, this.doc.internal.pageSize.width, this.furthestYPosition - this.previousFurthestYPosition, 'FD');
+    };
+    this.lastRowWasEvenOrOdd = 'even';
+    this.processADataTableResponseArray = function (arrayToProcess, xOffsetPerCell, yOffsetPerLine, numRowsBeforeNewPage, numMaxCharacterLength) {
         var R1 = 240;
         var G1 = 240;
         var B1 = 240;
@@ -255,31 +436,58 @@ function docProcessor(garmentProduct) {
         var R3 = 0;
         var G3 = 0;
         var B3 = 0;
-        var yOffsetPerLineForRectangle = 10;
+        var yOffsetPerLineForRectangle = yOffsetPerLine;
         var rowCounter = 0;
+        var numPageHeight = this.doc.internal.pageSize.height;
+        var numPageWidth = this.doc.internal.pageSize.width;
+        var numStaticXToUseForOffset;
+        var numLineRatio = 0.25;
+        var headerWidth = 0;
+        var boolArrayOfcoordinatesPassedForXcolumns = false;
+        var boolResetToNewPage = false;
+        var numLastNumOffset = 0;
+        if (typeof (numMaxCharacterLength) == 'undefined') {
+            numMaxCharacterLength = 25;//setting default max character
+        };
+        if ($.isArray(xOffsetPerCell)) {
+            boolArrayOfcoordinatesPassedForXcolumns = true;
+        }
+        else {
+            numStaticXToUseForOffset = xOffsetPerCell;
+        };
         for (var i = 0; i < arrayToProcess.length; i++) {
-            if (i == 0) {
-                this.doc.setTextColor(255, 255, 255);
-                if (rowCounter == numRowsBeforeNewPage) {
-                    this.addPageAndReset();
-                    rowCounter = 0;
-                };
-                var arrHeaderRow = arrayToProcess[i];
+            //var lastRowWasEvenOrOdd = 'even';
+            if ((this.yPosition + yOffsetPerLine) > numPageHeight) {
+                boolResetToNewPage = true;
+                this.addPageAndReset();
+            };
+            var numInitialRowiY = this.yPosition;
+            
+            
+            //delimiter line
+            if (i == 0 || boolResetToNewPage) {
+                var arrHeaderRow = arrayToProcess[0];
+                boolResetToNewPage = false;
+                this.drawFullPageLineAtCurrentYposition();
                 for (var j = 0; j < arrHeaderRow.length; j++) {
-                    if (j == 0) {
-                        //this.drawLineRectangle(R1, G1, B1, xOffsetPerCell * arrHeaderRow.length, this.yPosition);
-                        this.drawLineRectangle(R3, G3, B3, this.xPosition + (xOffsetPerCell * arrHeaderRow.length), yOffsetPerLineForRectangle);
-                        
+                    if (boolArrayOfcoordinatesPassedForXcolumns) {
+                        numStaticXToUseForOffset = xOffsetPerCell[j];
+                    }
+                    else {
+                        numStaticXToUseForOffset = xOffsetPerCell;
                     };
+                    var numCurrentFontSize = this.doc.internal.getFontSize();
                     var strTextToGet = arrHeaderRow[j].text;
-                    /*this.doc.setFillColor(R1, G1, B1);
-                    this.doc.rect(this.xPosition - (xOffsetPerCell / 2), this.yPosition + 3, this.xPosition + (xOffsetPerCell / 2), this.yPosition, 'FD');*/
-                    this.processTextUsingCurrentXandYPosition(strTextToGet);
-                    this.xPosition += xOffsetPerCell;
+                    //this.doc.setDrawColor(0, 0, 0);
+                    //this.doc.setTextColor(255, 255, 255);
+                    //this.doc.rect(this.xPosition, this.yPosition - yOffsetPerLine, numStaticXToUseForOffset, yOffsetPerLine);
+                    this.processTextUsingCurrentXandYPositionTableForHeader(strTextToGet, yOffsetPerLine, numMaxCharacterLength, numLineRatio);
+                    //this.doc.setTextColor(0, 0, 0);
+                    //this.doc.setDrawColor(255, 255, 255);
+                    this.xPosition += numStaticXToUseForOffset;
                     //this.movePositions(0, yOffsetPerLine);
                     if (j == arrHeaderRow.length - 1) {
-                        //this.movePositions(xOffsetPerCell, 0);
-                        
+                        //this.drawFullPageLineAtYposition();
                         this.yPosition += yOffsetPerLine;
                         this.resetXbutSpecifyY(this.yPosition);
                     };
@@ -287,30 +495,89 @@ function docProcessor(garmentProduct) {
 
             }
             else {
-                this.doc.setTextColor(0, 0, 0);
+                //this.doc.setTextColor(0, 0, 0);
                 var arrNormalRow = arrayToProcess[i];
+                //variables created to work with text height but maybe just the formula can work
+                var strLongestString = '';
+                var numInitialYPosition = this.yPosition;
+                //variables created to work with text height but maybe just the formula can work
                 for (var j = 0; j < arrNormalRow.length; j++) {
+
+                    
                     var strTextToGet = arrNormalRow[j];
+                    if (strLongestString.length < strTextToGet.length) {
+                        strLongestString = strTextToGet;
+                    };
+                    if (boolArrayOfcoordinatesPassedForXcolumns) {
+                        numStaticXToUseForOffset = xOffsetPerCell[j];
+                    }
+                    else {
+                        numStaticXToUseForOffset = xOffsetPerCell;
+                    };
+                    //this.processTextUsingCurrentXandYPositionTable(strTextToGet, true, yOffsetPerLine, numMaxCharacterLength, numLineRatio);
+
                     if (j == 0) {
-                    //this.drawLineRectangle(R1, G1, B1, xOffsetPerCell * arrNormalRow.length, this.yPosition);
-                        var evenOdd = i % 2;
-                        if (evenOdd == 0) {
-                            this.doc.setFillColor(R1, G1, B1);
+                        var numOfWrapRows = this.parseThroughAndSetGreatestHeightOfRow(arrNormalRow, numMaxCharacterLength);
+                        var objText = this.doc.getTextDimensions(encodeURIComponent(strTextToGet));
+                        var textHeight = objText.h;
+                        if (textHeight < 1 || typeof(textHeight) == 'undefined') {
+                            textHeight = 1;
+                        };
+                        var numRectangleHeight = numOfWrapRows * (textHeight / 2);
+                        this.previousFurthestYPosition = this.furthestYPosition;
+                        if ((this.yPosition + yOffsetPerLine) >= (this.yPosition + numRectangleHeight) || numOfWrapRows == 1) {
+                            this.furthestYPosition = this.yPosition;// + yOffsetPerLine;
+                        }
+                        else{
+                            this.furthestYPosition = this.yPosition + numRectangleHeight;
+                        };
+                        //this.drawFullPageLineAtFurthestYposition();
+                        this.doc.setDrawColor(0, 0, 0);
+                        if (this.lastRowWasEvenOrOdd == 'even') {
+                            this.doc.setFillColor(169, 169, 169);
+                            this.lastRowWasEvenOrOdd = 'odd';
                         }
                         else {
-                            this.doc.setFillColor(R2, G2, B2);
+                            this.doc.setFillColor(192, 192, 192);
+                            this.lastRowWasEvenOrOdd = 'even';
                         };
-                        this.drawLineRectangle(R1, G1, B1, this.xPosition + (xOffsetPerCell * arrNormalRow.length), yOffsetPerLineForRectangle);
+
+                        this.doc.rect(0, this.furthestYPosition + 2, this.doc.internal.pageSize.width, (this.furthestYPosition - this.previousFurthestYPosition) * -1, 'FD');
                     };
-                    /*this.doc.setFillColor(R2, G2, B2);
-                    this.doc.rect(this.xPosition - (xOffsetPerCell / 2), this.yPosition + 3, this.xPosition + (xOffsetPerCell / 2), this.yPosition, 'FD');*/
-                    this.processTextUsingCurrentXandYPosition(strTextToGet);
-                    this.xPosition += xOffsetPerCell;
-                    //this.movePositions(0, yOffsetPerLine);
+
+                    this.processTextUsingCurrentXandYPositionTable(strTextToGet, yOffsetPerLine, numMaxCharacterLength, numLineRatio);
+                    
+                    //draw!
+                    
+
+                    this.xPosition += numStaticXToUseForOffset;
                     if (j == arrNormalRow.length - 1) {
-                        //this.movePositions(xOffsetPerCell, 0);
-                        
-                        this.yPosition += yOffsetPerLine;
+                        var numLongestCharacter = 0;
+                        for (var k = 0; k < arrNormalRow.length; k++) {
+                            if (numLongestCharacter < arrNormalRow[k].length) {
+                                numLongestCharacter = arrNormalRow[k].length;
+                            };
+                        };
+                        var numHeightOfLargestCell = Math.floor(numLongestCharacter / numMaxCharacterLength) + 1;
+                        var objText = this.doc.getTextDimensions(strLongestString);
+                        var numTextCreatedOffset = objText.h;
+                        var numOffset;
+                        if (numTextCreatedOffset > yOffsetPerLine) {
+                            numOffset = numTextCreatedOffset * numHeightOfLargestCell;
+                        }else if (strLongestString.length == 0) {
+                            numOffset = 2;
+                        }else {
+                            numOffset = yOffsetPerLine * numHeightOfLargestCell;
+                        };
+                        //var initialPosition = this.yPosition;
+                        this.yPosition += numOffset;
+                        //drawing things
+                        //this.drawFullPageLineAtFurthestYposition();// this works
+
+                        //this.drawRectFromPrevious();
+
+                        //drawing things
+                        numLastNumOffset = numOffset;
                         this.resetXbutSpecifyY(this.yPosition);
                     };
 
@@ -318,6 +585,7 @@ function docProcessor(garmentProduct) {
 
             };
             rowCounter++;
+            
         };
 
 
@@ -329,16 +597,17 @@ function docProcessor(garmentProduct) {
             console.log(arrSizeTbl);
             //pageOneColumns.push(objContentSizeTbl);
             //pageOneColumnsSectionTwo.push(objContentSizeTbl);
-            this.processADataTableResponseArray(arrSizeTbl,40,10,8);
+
+            this.processADataTableResponseArray(arrSizeTbl, 40, 10, 8);
 
         }
     };
-   
+
     this.addApprovedSupplier = function () {
         var arrApprovedSupplierTbl = [];
         if ($("#approvedSupplierTbl").length) {
             arrApprovedSupplierTbl = pdfThisTableV2('approvedSupplierTbl');
-            
+
         }
         else {
             arrApprovedSupplierTbl = [[{ text: 'Supplier', style: 'tableHeader' }, { text: 'Mfg Flow', style: 'tableHeader' }, { text: 'Green Seal', style: 'tableHeader' }, { text: 'Red Seal', style: 'tableHeader' }, { text: 'Comments', style: 'tableHeader' }], ['', '', '', '', '']];
@@ -347,8 +616,166 @@ function docProcessor(garmentProduct) {
         this.processADataTableResponseArray(arrApprovedSupplierTbl, 20, 10, 15);
     };
 
+    this.addRevisionTable = function () {
+        if ($("#revisionAttributeTbl").length) {
+
+            var arrRevisionAttributeData = pdfThisTableV2('revisionAttributeTbl');
+            //reducing revision table to just first most recently sorted rows
+            arrRevisionAttributeData = arrRevisionAttributeData.splice(0, 11);
+            this.addPageAndReset();
+            var arrOfColumnWidths = [15, 25, 25, 35, 35, 75, 35, 35];
+            this.processADataTableResponseArray(arrRevisionAttributeData, arrOfColumnWidths, 8, 35, 60);
+
+        };
+    };
+
+    this.addMeasurements = function () {
+        if ($("#measurements").length) {
+            var strHeaderValue = $('#measurementDiv h1').text();
+            var arrMeasurementTbl = pdfThisTableV2('measurements');
+            var numOfSizeColumns = arrMeasurementTbl[0].length - 4;
+            var arrOfColumnWidths = [10, 50, 10, 10];
+            var numSumOfAllColumns = 0;
+            for (var i = 0; i < arrOfColumnWidths.length; i++) {
+                numSumOfAllColumns += arrOfColumnWidths[i];
+            };
+            var numOfRemainingRoom = this.doc.internal.pageSize.width - numSumOfAllColumns;
+            var numOfReaminingRoomPerColumn = Math.floor(numOfRemainingRoom / numOfSizeColumns);
+            var z = 0;
+            while (z < numOfSizeColumns) {
+                arrOfColumnWidths.push(numOfReaminingRoomPerColumn);
+                z++;
+            };
+            this.doc.setFontSize(30);
+            this.processTextUsingCurrentXandYPosition(strHeaderValue);
+            this.doc.setFontSize(7);
+            this.yPosition += 20;
+            //this.xPosition += this.xMarginReset;
+            //have the function below if one of the params is an array and then process that differently
+
+            //this.processADataTableResponseArray(arrMeasurementTbl, 20, 10, 15);
+            this.processADataTableResponseArray(arrMeasurementTbl, arrOfColumnWidths, 7, 15, 40);
+        };
+    };
+
+    this.addMeasurementImagesSubDivImg = function () {
+        var selector = '#measurementImagesSubDiv img';
+        this.processAnImageWithATitleInHeaderValue(selector);
+    };
+
+    this.addConstruction = function () {
+        var arrOfConstructions = [];
+        if ($(".construction").length) {
+
+            $(".construction").each(function () {
+                var strTableid = $(this).attr('id');
+                var strConstructionTableName = decodeURIComponent($(this).attr('name'));
+                var arrConstructionTbl = pdfThisTableV2(strTableid);
+                var objConstruction = {};
+                objConstruction.array = arrConstructionTbl;
+                objConstruction.name = strConstructionTableName;
+                arrOfConstructions.push(objConstruction);
+                //this.processADataTableResponseArray(arrConstructionTbl, 20, 10, 15);
+            });
+            for (var i = 0; i < arrOfConstructions.length; i++) {
+                var objCurrent = arrOfConstructions[i];
+                this.addPageAndReset();
+                this.doc.setFontSize(30);
+                if (objCurrent.name > 40) {
+                    this.doc.setFontSize(20);
+                }
+                this.processTextUsingCurrentXandYPosition(objCurrent.name);
+                this.doc.setFontSize(6);
+                this.yPosition += 10;
+                var numPageWidth = this.doc.internal.pageSize.width;
+                var numOfColumns = objCurrent.array[0].length;
+                var arrOfColumnWidths = [80, 40, 30, 20, 20, 20, 20, 20, 20, 20];
+
+                //this.processADataTableResponseArray(objCurrent.array, 20, 10, 15);
+                this.processADataTableResponseArray(objCurrent.array, arrOfColumnWidths, 15, 35, 80);
+                //this.processADataTableResponseArray()
+            };
+
+        };
+    };
+
+    this.addConstructionDetailsImagesSubDivImg = function () {
+        var selector = '#constructionDetailsImagesSubDiv img';
+        this.processAnImageWithATitleInHeaderValue(selector);
+    };
+
+    this.addPlacementImagesSubDivImg = function () {
+        var selector = '#placementImagesSubDiv img';
+        this.processAnImageWithATitleInHeaderValue(selector);
+    };
+
+    this.addMarkerLayoutImagesSubDivImg = function () {
+        var selector = '#markerLayoutImagesSubDiv img';
+        this.processAnImageWithATitleInHeaderValue(selector);
+    };
+
+    this.addColorwaysDivTables = function () {
+
+    };
+
+    this.addLabelBom = function () {
+
+    };
+
+
+    this.processTheTitleAndItsImage = function (title, image, imgX, imgY, numImageWidth, numImageHeight, tag) {
+        this.addPageAndReset();
+        this.doc.setFontSize(30);
+        if (title.length > 80) {
+            this.doc.setFontSize(16);
+        }
+        else if (title.length > 70) {
+            this.doc.setFontSize(17);
+        }
+        else if (title.length > 60) {
+            this.doc.setFontSize(18);
+        }
+        else if (title.length > 50) {
+            this.doc.setFontSize(19);
+        }
+        else if (title.length > 40) {
+            this.doc.setFontSize(20);
+        };
+
+        this.processTextUsingCurrentXandYPosition(title);
+        this.doc.setFontSize(16);
+        //this.doc.addImage(image, 'PNG', imgX, imgY, numImageWidth, numImageHeight, tag, 'fast');
+        //compress above, no compress below
+        this.doc.addImage(image, 'PNG', imgX, imgY, numImageWidth, numImageHeight, tag);
+
+    };
+    this.processAnImageWithATitleInHeaderValue = function (selector) {
+        /*var funcScope = function (decodedHeader, imageSrc) {
+            this.processTheTitleAndItsImage(decodedHeader, imageSrc, 10, 10, 400, 400);
+        };*/
+        if ($(selector).length) {
+            var arrOfImageObjectsWithTitles = [];
+            $(selector).each(function (index) {
+                var strTextHeader = $(this).parent().attr('headerValue');
+                decodedHeader = decodeURIComponent(strTextHeader);
+                var imageSrc = $(this).attr('src');
+                var imageObject = {};
+                imageObject.imageSrc = imageSrc;
+                imageObject.decodedHeader = decodedHeader
+                //this.processTheTitleAndItsImage(decodedHeader, imageSrc, 10, 10, 400, 400);
+                arrOfImageObjectsWithTitles.push(imageObject);
+                //funcScope(decodedHeader, imageSrc);
+            });
+            for (var i = 0; i < arrOfImageObjectsWithTitles.length; i++) {
+                var objCurrent = arrOfImageObjectsWithTitles[i];
+                this.processTheTitleAndItsImage(objCurrent.decodedHeader, objCurrent.imageSrc, 50, 50, 150, 150);
+            };
+        };
+    };
+
+
     this.runAndSave = function () {
-        
+
         var m_names = new Array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
         var d = new Date();
         var curr_date = d.getDate();
@@ -363,13 +790,30 @@ function docProcessor(garmentProduct) {
         var numMidPointXofPage = 140;
         this.resetXbutSpecifyY(this.yPosition);
         this.addSizingTable();
-
         this.yPosition = numMidPointOfPageOne;
         this.xPosition = numMidPointXofPage;
         this.addPageAndReset();
         this.addApprovedSupplier();
         this.addPageAndReset();
         this.addFrontBackImages();
+        this.addRevisionTable();
+        this.addPageAndReset();
+        this.addMeasurements();//components all add their own pages, only first few pages always show
+        //this.addPageAndReset();
+        this.addMeasurementImagesSubDivImg();
+        //this.addPageAndReset();
+        this.addConstruction();
+        //this.addPageAndReset();
+        this.addConstructionDetailsImagesSubDivImg();
+        //this.addPageAndReset();
+        this.addPlacementImagesSubDivImg();
+        //this.addPageAndReset();
+        this.addMarkerLayoutImagesSubDivImg();
+        /*this.addPageAndReset();
+        this.addColorwaysDivTables();
+        this.addPageAndReset();
+        this.addLabelBom();*/
+
         this.doc.save(this.garment.name + '_' + dateForStuff + '.pdf');
         //pdfMake.createPdf(this.docDefinition).download(this.garment.name + '  ' + dateForStuff + '.pdf');
     };

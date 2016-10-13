@@ -40,9 +40,10 @@ function pdfSpec(productToSpec) {
     };
     //docDefinition.pageMargins = [40, 80, 40, 40];
     var arrImageMargins = [0, 0, 0, 0];
-    var backImageSrc = $('#frontSketch img:last').attr('src');
-    var frontImageSrc = $('#frontSketch img:first').attr('src');
-
+	if ($("#frontBackImages img").length) {
+		var backImageSrc = $('#frontSketch img:last').attr('src');
+		var frontImageSrc = $('#frontSketch img:first').attr('src');
+    };
     var m_names = new Array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
 
     var d = new Date();
