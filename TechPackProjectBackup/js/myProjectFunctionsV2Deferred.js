@@ -3233,12 +3233,43 @@ garmentProduct.prototype.getMoas = function (strUrlPrefix, objSelfReference, obj
                 var arrSizeTableArray = [];
                 for (var i = 0; i < objSelfReference.moaArray.length; i++) {
                     var objThisLoopObject = objSelfReference.moaArray[i];
+                    if (objThisLoopObject.Table_Name == "Revision Attribute") {
+                        if (objThisLoopObject.Product_Type == 'Pattern') {
+                            if (objSelfReference.patternSpec.indexOf(objThisLoopObject.Spec) != -1) {
+                                objSelfReference.activePatternSpecSpecNumber = Number(objThisLoopObject.Spec);
+                            };
+                        };
+                    };
+
+                };
+
+                for (var i = 0; i < objSelfReference.moaArray.length; i++) {
+                    var objThisLoopObject = objSelfReference.moaArray[i];
 
                     if (objThisLoopObject.Table_Name == "Revision Attribute") {
-                        if ((objSelfReference.activeSpecName.indexOf(objThisLoopObject.Spec) != -1 && objThisLoopObject.Product_Type == 'Garment') || (objSelfReference.patternSpec.indexOf(objThisLoopObject.Spec) != -1 && objThisLoopObject.Product_Type == 'Pattern')) {
+                        if(objThisLoopObject.Product_Type == 'Garment'){
+                            //var specNum = Number(objSelfReference.activeSpecName.substring(0, 2));
+                            var specNum = Number(objThisLoopObject.Spec);
+                            var thisSpecNum = objSelfReference.activeSpecName.substring(0, 3);
+                            thisSpecNum = Number(thisSpecNum);
+                            if (specNum <= thisSpecNum) {
+                                arrRevisionAttributeArray.push(objThisLoopObject);
+                            };
+
+                        }
+                        else if (objThisLoopObject.Product_Type == 'Pattern') {
+                            //var specNum = Number(objSelfReference.patternSpec.substring(0, 2));
+                            var specNum = Number(objThisLoopObject.Spec);
+                            //var thisSpecNum = Number(objThisLoopObject.Spec.indexOf(0, 2));
+                            if (specNum <= objSelfReference.activePatternSpecSpecNumber) {
+                                arrRevisionAttributeArray.push(objThisLoopObject);
+                            };
+
+                        };
+                        /*if ((objSelfReference.activeSpecName.indexOf(objThisLoopObject.Spec) != -1 && objThisLoopObject.Product_Type == 'Garment') || (objSelfReference.patternSpec.indexOf(objThisLoopObject.Spec) != -1 && objThisLoopObject.Product_Type == 'Pattern')) {
                             //objThisLoopObject.Spec = objThisLoopObject.Product_Type + '-' + objThisLoopObject.Spec;
                             arrRevisionAttributeArray.push(objThisLoopObject);
-                        };
+                        };*/
 
                     } else if (objThisLoopObject.Table_Name == "Sizing Table") {
                         arrSizeTableArray.push(objThisLoopObject);
