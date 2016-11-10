@@ -189,10 +189,10 @@ var sizeTableOptions = {
 };
 var revisionTableTableOptions = {
 
-	"order" : [[10, "desc"], [0, "asc"], [1, "desc"]],
+    "order": [[10, "desc"]],
 	"dom" : strDomString,
 	"columnDefs" : [{
-		"targets" : [0, 2, 3, 4, 11, 13],
+		"targets" : [0, 2, 3, 4, 11,13],
 		"visible" : false,
 		"searchable" : false
 	}],
@@ -229,7 +229,8 @@ var approvedSupplierTableOptions = {
  */
 function createRelatedProductsDiv(objCurrentGarmentProduct) {
 	//$('#relationships').fadeOut().remove();
-	$('#garmentHeader *').remove();
+    $('#garmentHeader *').remove();
+    $('#topLeftNav *').remove();
 	var strSpecsDivString = appendBootStrapDivPage('relationships', 1);
 	var strTableString = '<h1>Product Relationships</h1><table class="table" id="tblRelationships"><tr><th>Relationship</th><th>Product</th></tr><tbody>';
 	if ( typeof (objCurrentGarmentProduct.colorwayProduct) != 'undefined') {
@@ -237,12 +238,12 @@ function createRelatedProductsDiv(objCurrentGarmentProduct) {
 	};
 	if ( typeof (objCurrentGarmentProduct.patternProduct) != 'undefined') {
 		strTableString = strTableString + "<tr><td>Pattern Product</td><td>" + objCurrentGarmentProduct.patternProduct.name + "</td></td>";
-		$('#topLeftNav').html(objCurrentGarmentProduct.name + '<br> Pattern: ' + objCurrentGarmentProduct.patternProduct.name);
+		$('#topLeftNav').html('Season (' + objCurrentGarmentProduct.activeSeason + ') Spec (' + objCurrentGarmentProduct.activeSpecName + ') <br>Garment (' + objCurrentGarmentProduct.name + ') Pattern (' + objCurrentGarmentProduct.patternProduct.name + ')');
 		//$('#garmentFormContainer').fadeIn();
 		$('nav,li').fadeIn();
 		//$('#runNew,.clearThisComponentOnNewGarmentLoad,nav,li').fadeIn();
 	} else {
-		$('#topLeftNav').text(objCurrentGarmentProduct.name);
+	    $('#topLeftNav').html('Season (' + objCurrentGarmentProduct.activeSeason + ') Spec (' + objCurrentGarmentProduct.activeSpecName + ') <br>Garment (' + objCurrentGarmentProduct.name + ')');
 		//$('#garmentFormContainer').fadeIn();
 		$('nav,li').fadeIn();
 		//$('#runNew,.clearThisComponentOnNewGarmentLoad,nav,li').fadeIn();
@@ -451,8 +452,23 @@ function createComponentTable(strParentJquerySelectorJustStringNoPound, strChild
 	if ( typeof (dontRemove) == 'undefined'|| dontRemove == false) {
 		$('#' + strParentJquerySelectorJustStringNoPound + ' *').remove();
 	};
-	$('#' + strParentJquerySelectorJustStringNoPound).append(strTableString);
-	var table = $('#' + strChildJquerySelectorForTableJustStringNoPound).DataTable(options);
+    
+        $('#' + strParentJquerySelectorJustStringNoPound).append(strTableString);
+        if (!$.fn.DataTable.isDataTable('#' + strChildJquerySelectorForTableJustStringNoPound)) {
+            var table = $('#' + strChildJquerySelectorForTableJustStringNoPound).DataTable(options);
+        } else {
+            console.log('#' + strChildJquerySelectorForTableJustStringNoPound + ' table has already been initialized.');
+            $('#' + strChildJquerySelectorForTableJustStringNoPound).parent().remove();
+            $('h1[headerForThisTable="' + strChildJquerySelectorForTableJustStringNoPound + '"]').not('h1[headerForThisTable="' + strChildJquerySelectorForTableJustStringNoPound + '"]:last').each(function () {
+                var strMyheaderValue = $(this).attr('headerForThisTable');
+                if (strMyheaderValue == strChildJquerySelectorForTableJustStringNoPound) {
+                    $(this).remove();
+                };
+            });
+            var table = $('#' + strChildJquerySelectorForTableJustStringNoPound).DataTable(options);
+        }
+
+	
 
 };
 

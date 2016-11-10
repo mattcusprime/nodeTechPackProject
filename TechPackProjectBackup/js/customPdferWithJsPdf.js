@@ -128,6 +128,7 @@ function docProcessor(garmentProduct) {
     };
 
     this.processTextUsingCurrentXandYPosition = function (funcText, xDeviation, yDeviation) {
+        try{
         switch (arguments.length) {
             case 1:
                 this.doc.text(decodeURIComponent(funcText), this.xPosition, this.yPosition - 3);
@@ -139,14 +140,31 @@ function docProcessor(garmentProduct) {
                 this.doc.text(decodeURIComponent(funcText), this.xPosition + xDeviation, this.yPosition + yDeviation);
                 break;
         };
+        } catch (e) {
+            console.log(e);
+            switch (arguments.length) {
+                case 1:
+                    this.doc.text(funcText, this.xPosition, this.yPosition - 3);
+                    break;
+                case 2:
+                    this.doc.text(funcText, this.xPosition + xDeviation, this.yPosition);
+                    break;
+                case 3:
+                    this.doc.text(funcText, this.xPosition + xDeviation, this.yPosition + yDeviation);
+                    break;
+            };
+        }
     };
 
     this.processTextUsingCurrentXandYPositionTable = function (funcText, yOffset, numModulusDivisor, numLineChangeRatio) {
         /*if (funcText.length > 20) {
             this.yPosition += 10;
         };*/
-
-        funcText = decodeURIComponent(funcText);
+        try {
+            funcText = decodeURIComponent(funcText);
+        } catch (e) {
+            console.log(e);
+        };
         //regex to replace only double spaces or longer 
         funcText = funcText.replace(/  +/g, ' ');
         //regex to replace only double spaces or longer 
@@ -678,6 +696,7 @@ function docProcessor(garmentProduct) {
                 //this.processADataTableResponseArray(arrConstructionTbl, 20, 10, 15);
             });
             for (var i = 0; i < arrOfConstructions.length; i++) {
+                try{
                 var objCurrent = arrOfConstructions[i];
                 this.addPageAndReset();
                 this.doc.setFontSize(30);
@@ -693,7 +712,10 @@ function docProcessor(garmentProduct) {
 
                 //this.processADataTableResponseArray(objCurrent.array, 20, 10, 15);
                 this.processADataTableResponseArray(objCurrent.array, arrOfColumnWidths, 15, 35, 80);
-                //this.processADataTableResponseArray()
+                    //this.processADataTableResponseArray()
+                } catch (e) {
+                    console.log('error on this.addConstruction and error was\n' + e)
+                }
             };
 
         };
@@ -715,6 +737,50 @@ function docProcessor(garmentProduct) {
     };
 
     this.addColorwaysDivTables = function () {
+        var arrOfColorwayBoms = [];
+        if ($('#colorwaysDiv table').length) {
+            $('#colorwaysDiv table').each(function () {
+                var strTableid = $(this).attr('id');
+                var strCwayTableName = $(this).attr('printheader');
+                var arrCwayTbl = pdfThisTableV2(strTableid);
+                var objCway = {};
+                objCway.array = arrCwayTbl;
+                objCway.name = strCwayTableName;
+                arrOfColorwayBoms.push(objCway);
+            });
+            //console.log(arrOfColorwayBoms);
+            for (var i = 0; i < arrOfColorwayBoms.length; i++) {
+                var objCurrent = arrOfColorwayBoms[i];
+                this.addPageAndReset();
+                this.doc.setFontSize(30);
+                if (objCurrent.name > 40) {
+                    this.doc.setFontSize(20);
+                };
+                this.processTextUsingCurrentXandYPosition(objCurrent.name);
+                this.doc.setFontSize(6);
+                this.yPosition += 10;
+                var numPageWidth = this.doc.internal.pageSize.width;
+                var numOfColumns = objCurrent.array[0].length;
+                var arrOfColumnWidths = [30, 20, 25, 30, 30];// need to add functionality to compress around the header
+                var numOfColorwayColumns = objCurrent.array[0].length - arrOfColumnWidths.length;
+                var numSumOfAllColumns = 0;
+                for (var j = 0; j < arrOfColumnWidths.length; j++) {
+                    numSumOfAllColumns += arrOfColumnWidths[j];
+                };
+                var numOfRemainingRoom = this.doc.internal.pageSize.width - numSumOfAllColumns;
+                var numOfReaminingRoomPerColumn = Math.floor(numOfRemainingRoom / numOfColorwayColumns);
+                var z = 0;
+                while (z < numOfColorwayColumns) {
+                    arrOfColumnWidths.push(numOfReaminingRoomPerColumn);
+                    z++;
+                };
+
+                //this.processADataTableResponseArray(objCurrent.array, 20, 10, 15);
+                this.processADataTableResponseArray(objCurrent.array, arrOfColumnWidths, 15, 35, 55);
+                //this.processADataTableResponseArray()
+            };
+
+        };
 
     };
 
@@ -772,7 +838,9 @@ function docProcessor(garmentProduct) {
             };
         };
     };
-
+    this.addBlankRow = function () {
+        //create manual blank row adding to avoid display issue occurring when entire row is blank in pdfing
+    };
 
     this.runAndSave = function () {
 
@@ -809,9 +877,9 @@ function docProcessor(garmentProduct) {
         this.addPlacementImagesSubDivImg();
         //this.addPageAndReset();
         this.addMarkerLayoutImagesSubDivImg();
-        /*this.addPageAndReset();
+        //this.addPageAndReset();
         this.addColorwaysDivTables();
-        this.addPageAndReset();
+        /*this.addPageAndReset();
         this.addLabelBom();*/
 
         this.doc.save(this.garment.name + '_' + dateForStuff + '.pdf');

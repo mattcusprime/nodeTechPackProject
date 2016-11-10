@@ -186,7 +186,7 @@ garmentProduct.prototype.getMyConstruction = function (strHostUrlPrefix, numCons
         strTableBodyString += '</tr>';
         strTableBodyString += '</tbody>';
         var strNameAttr = encodeURIComponent(headerValue);
-        var constructionTableString = '<h1>' + headerValue + '</h1><table name="' + strNameAttr + '" id="' + idToPass + '" class="display responsive col-md-12 compact cell-border construction">' + strTableHeaderString + strTableBodyString + '</table>';
+        var constructionTableString = '<h1 headerForThisTable="' + idToPass + '">' + headerValue + '</h1><table name="' + strNameAttr + '" id="' + idToPass + '" class="display responsive col-md-12 compact cell-border construction">' + strTableHeaderString + strTableBodyString + '</table>';
         if (typeof (objSelfReference.arrConstructionTableStrings) == 'undefined') {
             objSelfReference.arrConstructionTableStrings = [];
         };
@@ -460,26 +460,66 @@ garmentProduct.prototype.getSpecByNameButNotJustActiveSpec = function (strHostUr
             var techDesignerDisplay = getValueDisplayFromKey(techDesignerKey, objSelfReference);
             var productManagerDisplay = getValueDisplayFromKey(productManagerKey, objSelfReference);
             var objSpec = {};
+            objSpec.active = false;
+            objSpec.ready = false;
             objSpec.name = $(this).find('Spec_Name').text();
             objSpec.idNumber = $(this).find('specLink').attr('objectId');
+            objSpec.activeDevspec = $(this).find('hbiActiveDevelopmentSpec').text();
+            objSpec.activeDevspecDate = $(this).find('activeDevelopmentSpecComplete').text();
+            objSpec.activeSpec = $(this).find('hbiActiveSpec').text();
+            objSpec.activeSpecificationCompleteDate = $(this).find('hbiActiveSpecificationComplete').text();
+            objSpec.primarySource = $(this).find('hbiPrimarySource').text();
+            objSpec.SpecName = $(this).find('Spec_Name').text();
+            objSpec.Type = $(this).find('specLink').attr('type');
+            objSpec.flexIdPath = $(this).find('flexTypeIdPath').text();
+            objSpec.activeSpecNull = $(this).find('hbiActiveSpec').attr('isNull');
+            objSpec.activeDevSpecNull = $(this).find('activeDevspec').attr('isNull');
             //http://wsflexwebprd1v.res.hbi.net/Windchill/servlet/TypeBasedIncludeServlet?oid=VR%3Acom.lcs.wc.specification.FlexSpecification%3A5532945&u8=1
-            var strSpecName = $(this).find('Spec_Name').text();
-            var strType = $(this).find('specLink').attr('type');
-            var strHbiActiveSpec = $(this).find('hbiActiveSpec').text().substring(3, 6);
-            var isItNull = $(this).find('hbiActiveSpec').attr('isNull');
+            var strSpecName = objSpec.name;
+            var strType = objSpec.Type;
+            var strHbiActiveSpec = objSpec.activeSpec.substring(3, 6);
+            var strHbiActiveDevSpec = objSpec.activeDevspec.substring(3, 6);
+            var isItNull = objSpec.activeSpecNull;
+            var isDevSpecNull = objSpec.activeDevSpecNull;
             if (isItNull == 'true') {
                 isItNull = true;
             }
             else {
                 isItNull = false;
             }
-            if (strSpecName.indexOf(strHbiActiveSpec) == -1 || isItNull) {
-                objSpec.active = false;
-            } else {
+
+            //definition of active
+
+            if (objSpec.activeSpecificationCompleteDate.length > 0 && objSpec.primarySource == 'Yes' && strSpecName.indexOf(strHbiActiveSpec) != -1 && isItNull != true) {
                 objSpec.active = true;
+            }
+            else {
+                //objSpec.active = false;
+                if (objSpec.activeDevspecDate.length > 0 && strSpecName.indexOf(strHbiActiveDevSpec) != -1 && isDevSpecNull != true && strHbiActiveDevSpec.length > 0) {
+                    objSpec.ready = true;
+                };
+
+            };
+
+            numActiveSpecId = objSpec.idNumber;
+            strActiveSpecName = objSpec.name;
+
+            /*if (strSpecName.indexOf(strHbiActiveSpec) == -1 || isItNull) {
+                objSpec.active = false;
+                // build in conditions for other possibilities here, i.e. dev spec etc.
+
+                // build in conditions for other possibilities here, i.e. dev spec etc.
+
+            } else {
+                if (objSpec.activeSpecificationCompleteDate.length > 0 && objSpec.primarySource == 'Yes') {
+                    objSpec.active = true;
+                };
                 numActiveSpecId = objSpec.idNumber;
                 strActiveSpecName = objSpec.name;
-            };
+            };*/
+
+            //definition of active
+
             var strId = objSpec.idNumber;
             var strReturnString = strLinkBeginTag + strTypeBaseLink + strType + strEncodeColonString + strId + strU8 + strLinkMidTag + strSpecName + strLinkCloseTag;
             objSpec.link = strReturnString
@@ -492,8 +532,8 @@ garmentProduct.prototype.getSpecByNameButNotJustActiveSpec = function (strHostUr
             strId = objSource.idNumber
             strReturnString = strLinkBeginTag + strTypeBaseLink + strType + strEncodeColonString + strId + strU8 + strLinkMidTag + strSpecName + strLinkCloseTag;
             objSource.link = strReturnString;
-            var strPrimary = $(this).find('Primary_Source').text();
-            objSource.primary = strPrimary == 1 ? true : false;
+            /*var strPrimary = $(this).find('Primary_Source').text();
+            objSource.primary = strPrimary == 1 ? true : false;*/
             arrSourceArray.push(objSource);
             //show viable combinations
             var objCombinationObject = {};
@@ -501,7 +541,16 @@ garmentProduct.prototype.getSpecByNameButNotJustActiveSpec = function (strHostUr
             objCombinationObject.sourceName = objSource.name;
             objCombinationObject.specId = objSpec.idNumber;
             objCombinationObject.specName = objSpec.name;
+            objCombinationObject.activeSpecName = objSpec.name;
+            //adding more conditions for what defines active 11.3.2016
+            objCombinationObject.activeDevspec = objSpec.activeDevspec;
+            objCombinationObject.activeDevspecDate = objSpec.activeDevspecDate;
+            objCombinationObject.activeSpecificationCompleteDate = objSpec.activeSpecificationCompleteDate;
+            objCombinationObject.primarySource = objSpec.primarySource;
+            objCombinationObject.flexIdPath = objSpec.flexIdPath;
+            //adding more conditions for what defines active 11.3.2016
             objCombinationObject.active = objSpec.active;
+            objCombinationObject.ready = objSpec.ready;
             objCombinationObject.seasonId = $(this).find('Garment_Season').attr('objectId');
             objCombinationObject.seasonName = $(this).find('Garment_Season_Season_Name').text();
             objCombinationObject.patternSpec = encodeURIComponent($(this).find('hbiPatternSpec').text());
@@ -513,13 +562,13 @@ garmentProduct.prototype.getSpecByNameButNotJustActiveSpec = function (strHostUr
         arrSpecArray.reverse();
         arrSourceArray.reverse();
         arrCombinationArray.reverse();
-        var numQuantityOfActiveSpecs = 0;
+        /*var numQuantityOfActiveSpecs = 0;
         for (var i = 0; i < arrSpecArray.length; i++) {
             var objLoopObj = arrSpecArray[i];
             if (objLoopObj.active == true) {
                 numQuantityOfActiveSpecs++;
             };
-        };
+        };*/
         console.log(arrSpecArray);
         console.log(arrSourceArray);
         console.log(arrCombinationArray);
@@ -530,6 +579,8 @@ garmentProduct.prototype.getSpecByNameButNotJustActiveSpec = function (strHostUr
             var strExtraButtonClass = '';
             if (objLoopObject.active) {
                 strExtraButtonClass = ' btn-success';
+            } else if (objLoopObject.ready) {
+                strExtraButtonClass = ' btn-warning';
             } else {
                 strExtraButtonClass = ' btn-info';
             };
@@ -540,10 +591,18 @@ garmentProduct.prototype.getSpecByNameButNotJustActiveSpec = function (strHostUr
                 objLoopObject.constructionMethodCode = '" "';
             };
             //$('#seasonSpecSelection').append('<button class="seasonSpecButton btn col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8 col-xs-offset-2 col-xs-8' + strExtraButtonClass + '" specId= ' + objLoopObject.specId + '>Season:' + objLoopObject.seasonName + ' Source:' + objLoopObject.sourceName + 'Spec:' + objLoopObject.specName + '</button></br>')
-            $('#seasonSpecSelection').append('<button class="seasonSpecButton btn col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8 col-xs-offset-2 col-xs-8' + strExtraButtonClass + '" specId= ' + objLoopObject.specId + ' constructionMethodCode=' + objLoopObject.constructionMethodCode + ' patternSpec=' + objLoopObject.patternSpec + ' source=' + encodeURIComponent(objLoopObject.sourceName) + '>' + objLoopObject.specName + '(' + objLoopObject.sourceName + ')</button><br><br><br>');
+            var numOffset = 1;
+            var numColSize = 10;
+            $('#seasonSpecSelection').prepend('<button class="seasonSpecButton btn col-md-offset-' + numOffset + ' col-md-' + numColSize + ' col-lg-offset-' + numOffset + ' col-lg-' + numColSize + ' col-xs-offset-' + numOffset + ' col-xs-' + numColSize + '' + strExtraButtonClass + '" specId= ' + objLoopObject.specId + ' constructionMethodCode=' + objLoopObject.constructionMethodCode + ' patternSpec=' + objLoopObject.patternSpec + ' season=' + encodeURIComponent(objLoopObject.seasonName) + ' source=' + encodeURIComponent(objLoopObject.sourceName) + ' Spec_Name=' + encodeURIComponent(objLoopObject.activeSpecName) + '>' + 'Season(' + objLoopObject.seasonName + ')  Spec(' + objLoopObject.specName + ')  Source(' + objLoopObject.sourceName + ')</button><br><br><br>');
             if (arrCombinationArray.length == i) {
 
             };
+            if (i == arrCombinationArray.length - 1) {
+                var numOffset = 2;
+                var numColumnsToTake = 8;
+                $('#seasonSpecSelection').append('<p class="lead col-sm-offset-' + numOffset + ' col-sm-' + numColumnsToTake + '  col-md-offset-' + numOffset + ' col-md-' + numColumnsToTake + ' col-lg-offset-' + numOffset + ' col-lg-' + numColumnsToTake + ' col-xl-offset-' + numOffset + ' col-xl-' + numColumnsToTake + ' ">Green buttons = Active Specifications <br> Orange Buttons = Fully developed Specs that are not the preferred active spec but are likely still in production.  <br> Teal Buttons = Specs that are incomplete i.e. not fully developed or active.</p>');
+            };
+
         };
         if ($(".seasonSpecButton").length) {
             $('.seasonSpecButton').click(function () {
@@ -559,6 +618,8 @@ garmentProduct.prototype.getSpecByNameButNotJustActiveSpec = function (strHostUr
                 var strConstructionMethodCode = decodeURIComponent($(this).attr('constructionmethodcode'));
                 var strPatternSpec = decodeURIComponent($(this).attr('patternspec'));
                 var strActiveSourceName = decodeURIComponent($(this).attr('source'));
+                var strActiveSeasonName = decodeURIComponent($(this).attr('season'));
+                var strActiveSpecName = decodeURIComponent($(this).attr('Spec_Name'));
                 var str1 = 'http://wsflexwebprd1v.res.hbi.net/Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?';
                 var str2 = '&oid=OR%3Awt.query.template.ReportTemplate%3A7360149&action=ExecuteReport';
                 if (window.location.href.indexOf('appdev2') != -1) {
@@ -580,7 +641,8 @@ garmentProduct.prototype.getSpecByNameButNotJustActiveSpec = function (strHostUr
                     activeSpecName: strActiveSpecName,
                     activeSource: strActiveSourceName,
                     constructionMethodCode: strConstructionMethodCode,
-                    patternSpec: strPatternSpec
+                    patternSpec: strPatternSpec,
+                    activeSeason: strActiveSeasonName
                 };
                 objSelfReference.isCurrentSpecAnActiveSpec = boolIsItActive;
                 funCallback(objForCallback, objSelfReference);
@@ -1134,7 +1196,9 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
         for (var i = 0; i < arguments.length; i++) {
             try {
                 objSelfReference.getMyConstruction(strHostUrlPrefix, objSelfReference.arrayOfConstructions[i].branchId, arguments[i], objSelfReference, 'constructionBranchId' + objSelfReference.arrayOfConstructions[i].branchId, objSelfReference.arrayOfConstructions[i].name);
-                createComponentTable('constructionDiv', 'constructionBranchId' + objSelfReference.arrayOfConstructions[i].branchId, objSelfReference.arrayOfConstructions[i].tableString, constructionTableOptions, true);
+                
+                    createComponentTable('constructionDiv', 'constructionBranchId' + objSelfReference.arrayOfConstructions[i].branchId, objSelfReference.arrayOfConstructions[i].tableString, constructionTableOptions, true);
+                
 
             } catch (e) {
                 console.log(e);
@@ -1561,7 +1625,7 @@ garmentProduct.prototype.getAndProcessDocuments = function (objSelfReference) {
 
                                 } else {
                                     $('#frontBackImages').append('<div id="frontSketch" class="col-md-6 col-sm-6 col-lg-6 col-xs-6"></div>');
-                                    if (!currentGarmentProduct.generalAttributes.length) {
+                                    if (typeof (currentGarmentProduct.generalAttributes) == 'undefined' || !currentGarmentProduct.generalAttributes.length) {
 
                                     } else {
                                         var strGenAttributesId = 'generalAttributes';
@@ -3171,7 +3235,11 @@ garmentProduct.prototype.getMoas = function (strUrlPrefix, objSelfReference, obj
                     var objThisLoopObject = objSelfReference.moaArray[i];
 
                     if (objThisLoopObject.Table_Name == "Revision Attribute") {
-                        arrRevisionAttributeArray.push(objThisLoopObject);
+                        if ((objSelfReference.activeSpecName.indexOf(objThisLoopObject.Spec) != -1 && objThisLoopObject.Product_Type == 'Garment') || (objSelfReference.patternSpec.indexOf(objThisLoopObject.Spec) != -1 && objThisLoopObject.Product_Type == 'Pattern')) {
+                            //objThisLoopObject.Spec = objThisLoopObject.Product_Type + '-' + objThisLoopObject.Spec;
+                            arrRevisionAttributeArray.push(objThisLoopObject);
+                        };
+
                     } else if (objThisLoopObject.Table_Name == "Sizing Table") {
                         arrSizeTableArray.push(objThisLoopObject);
                     }
