@@ -896,10 +896,11 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
                 var strStartPointSubString = objComponent.description.substring(11, objComponent.description.length);
                 var numLengthStartPoint = strStartPointSubString.search('x') + 1;
                 var numNumCharsOfWidth = numLengthStartPoint - 1;
-                var numWidth = strStartPointSubString.substring(0, numNumCharsOfWidth);
-                var numLength = strStartPointSubString.substring(numLengthStartPoint, strStartPointSubString.length);
+                var numWidth = Number(strStartPointSubString.substring(0, numNumCharsOfWidth));
+                var numLength = Number(strStartPointSubString.substring(numLengthStartPoint, strStartPointSubString.length));
                 objComponent.width = numWidth;
                 objComponent.height = numLength;
+                
                 objComponent.roleDocumentLink = $(this).find('roleDocumentLink').text();
                 var roleB = $(this).find('roleBObjectRef_key_id').text();
 
@@ -1602,6 +1603,8 @@ garmentProduct.prototype.getAndProcessDocuments = function (objSelfReference) {
                         //and centers it
                         $('#' + myDivId + 'img').addClass('center-block');
                         $('#' + myDivId + 'img').addClass('documentImage');
+                        //$('#' + myDivId + 'img').attr('numWidth', objNewImageToAdd.width);
+                        //$('#' + myDivId + 'img').attr('numHeight', objNewImageToAdd.height);
 
                     };
 
