@@ -45,13 +45,19 @@ var measurementTableOptions = {
 var sewBomTableOptions = {
 
 	"columnDefs" : [{
-		"targets" : [0, 1, 2, 3, 4, 5, 7, 8, 11, 13, 15, 14, 16, 17, 18, 19, 20],
+		"targets" : [0, 1, 2, 3, 4, 5,7,8,11,13,14,15,16,18,19,20],
 		"visible" : false,
 		"searchable" : false
 	}],
 	'buttons' : arrButtonsNoButtons,
 
 };
+
+/*var sewBomTableOptions = {
+
+    'buttons': arrButtonsNoButtons,
+
+};*/
 var sourceBomTableOptions = {
 
 	'buttons' : arrButtonsNoButtons,

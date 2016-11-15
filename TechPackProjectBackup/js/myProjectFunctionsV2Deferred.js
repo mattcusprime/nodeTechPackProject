@@ -1257,6 +1257,7 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
     //var strGarmentSewBomString = convertRowArrayIntoHtmlTable(arrGarmentSewRows);
     var arrPatternSewRows = rowParser('row', objPatternSewBomDataWithUsage);
     //var strPatternSewBomString = convertRowArrayIntoHtmlTable(arrPatternSewRows);
+    var arrOfUniqueSizes = [];
     for (var i = 0; i < arrGarmentSewRows.length; i++) {
         var objGarmentSewRow = {};
 
@@ -1273,6 +1274,22 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
         };
         objGarmentSewRow.sizeData = [];
         if (objGarmentSewRow.sewOrSource == 'sew' && arrPatternSewRows.length != 0) {
+
+
+            
+            for (var k = 0; k < arrPatternSewRows.length; k++) {
+                var objPatternSewRow = {};
+                objPatternSewRow = arrPatternSewRows[k];
+                if (objGarmentSewRow.patternBranch == objPatternSewRow.branchId && objGarmentSewRow.accessorySize == objPatternSewRow.accessorySize) {
+                    objSizeData = {};
+                    if (objPatternSewRow.garmentUseId == '0' && objPatternSewRow.usagePerDozen != '0') {
+                        objSizeData.size = objPatternSewRow.size;
+                        if (arrOfUniqueSizes.indexOf(objSizeData.size) == -1) {
+                            arrOfUniqueSizes.push(objSizeData.size);
+                        };
+                    };
+                };
+            };
             for (var k = 0; k < arrPatternSewRows.length; k++) {
                 var objPatternSewRow = {};
                 objPatternSewRow = arrPatternSewRows[k];
@@ -1334,6 +1351,27 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
         };
 
         objGarmentSewRow.sizeData.sort(objCompareBySortPosition);
+        if (typeof (objGarmentSewRow.patternBranch) == 'undefined') {
+            objGarmentSewRow.patternBranch = ' ';
+        };
+        if (objGarmentSewRow.sizeData.length == 0) {
+            for (var y = 0; y < arrOfUniqueSizes.length; y++) {
+                var strSize = arrOfUniqueSizes[y];
+                var newObjForSize = {};
+                newObjForSize.size = strSize;
+                newObjForSize.usagePerDozen = " ";
+                var strSize2 = 'size' + objSizeData.size;
+                var numLookUpPosition = objSelfReference.sortingArray.indexOf(strSize2);
+                newObjForSize.sortPosition = numLookUpPosition;
+                objGarmentSewRow.sizeData.push(newObjForSize);
+
+            };
+        };
+        
+          
+          
+
+
         arrGarmentSewRows[i] = objGarmentSewRow;
 
     };
@@ -1361,11 +1399,11 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
         objSelfReference.sourceBomTableString = convertRowArrayIntoHtmlTable(objSelfReference.garmentSourceBoms, '', '', 'sourceBomTable', '<h1>Sourced BOMs</h1>');
     };
     //if (typeof (objSelfReference.patternSewBoms) != 'undefined') {
-    if (objSelfReference.patternSewBoms.length > 0) {
+    /*if (objSelfReference.patternSewBoms.length > 0) {
         $('#sewBomDiv').append(objSelfReference.sewBomTableString);
     } else {
         //$('#sewBomLi').fadeOut();
-    };
+    };*/
     if (objSelfReference.garmentSourceBoms.length != 0) {
         $('#sourceBomDiv').append(objSelfReference.sourceBomTableString);
         $('#sourceBomTable').DataTable(sourceBomTableOptions);
@@ -1374,6 +1412,7 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
     };
     //sourceBomDivgarmentSewBoms
     if (objSelfReference.patternSewBoms.length > 0 && objSelfReference.garmentSewBoms.length > 0) {
+        $('#sewBomDiv').append(objSelfReference.sewBomTableString);
         $('#sewBomTable').DataTable(sewBomTableOptions);
     };
     var arrConstructionDetailDataContainer;

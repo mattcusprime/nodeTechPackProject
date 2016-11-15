@@ -694,7 +694,7 @@ function docProcessor(garmentProduct) {
             var strHeaderValue = $('#measurementDiv h1').text();
             var arrMeasurementTbl = pdfThisTableV2('measurements');
             var numOfSizeColumns = arrMeasurementTbl[0].length - 4;
-            var arrOfColumnWidths = [10, 50, 10, 10];
+            var arrOfColumnWidths = [10, 50, 10, 20];
             var numSumOfAllColumns = 0;
             for (var i = 0; i < arrOfColumnWidths.length; i++) {
                 numSumOfAllColumns += arrOfColumnWidths[i];
@@ -706,9 +706,9 @@ function docProcessor(garmentProduct) {
                 arrOfColumnWidths.push(numOfReaminingRoomPerColumn);
                 z++;
             };
-            this.doc.setFontSize(30);
+            this.doc.setFontSize(8);
             this.processTextUsingCurrentXandYPosition(strHeaderValue);
-            this.doc.setFontSize(7);
+            this.doc.setFontSize(8);
             this.yPosition += 20;
             //this.xPosition += this.xMarginReset;
             //have the function below if one of the params is an array and then process that differently
@@ -741,10 +741,11 @@ function docProcessor(garmentProduct) {
                 try{
                 var objCurrent = arrOfConstructions[i];
                 this.addPageAndReset();
-                this.doc.setFontSize(30);
+                /*this.doc.setFontSize(30);
                 if (objCurrent.name > 40) {
                     this.doc.setFontSize(20);
-                }
+                }*/
+                this.doc.setFontSize(8);
                 this.processTextUsingCurrentXandYPosition(objCurrent.name);
                 this.doc.setFontSize(6);
                 this.yPosition += 10;
@@ -850,6 +851,10 @@ function docProcessor(garmentProduct) {
             this.doc.setFontSize(20);
         };
         this.doc.setFontSize(8);
+        var numIndexOf_ = title.indexOf('_');
+        if (numIndexOf_ != -1) {
+            title = title.substring(0, numIndexOf_);
+        };
         this.processTextUsingCurrentXandYPosition(title);
         
         //this.doc.addImage(image, 'PNG', imgX, imgY, numImageWidth, numImageHeight, tag, 'fast');
