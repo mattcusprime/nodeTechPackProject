@@ -1229,6 +1229,7 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
         var strFlexBomType = $(this).find('Flex_Type_Type_Name').text();
         objBomComponent = {};
         objBomComponent.name = name;
+        objBomComponent.branchId = $(this).find('Branch_Identifier').text();
         objBomComponent.fileName = "";
         objBomComponent.componentType = 'BOM';
         objBomComponent.imageUrl = "<img src='' />";
@@ -1243,6 +1244,10 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
         ;
         arrTableDataArray.push(objBomComponent);
         arrBoms.push(objBomComponent);
+        if (objBomComponent.flexType == 'Garment Routing Table') {
+            $('#revi')
+            objSelfReference.getAndProcessMyRoutingBOM(objBomComponent,objSelfReference);
+        };
 
     });
     objSelfReference.boms = arrBoms;
@@ -1466,6 +1471,60 @@ function checkForColorwayAndLabelProductsToRemoveBoms(objGarmentProductTocheck) 
     } else {
         $('#sourcedBomLi').fadeOut();
     };
+
+};
+
+garmentProduct.prototype.getAndProcessMyRoutingBOM = function (objRoutingBom, objSelfReference) {
+    console.log('routing bom is');
+    console.log(objRoutingBom);
+    var strFullBranchParameter = 'VR:com.lcs.wc.flexbom.FlexBOMPart:' + objRoutingBom.branchId;
+    var arrOfRoutingRows = [];
+    $.ajax({
+        url: 'http://wsflexwebprd1v/Windchill/servlet/IE/tasks/com/lcs/wc/flexbom/FindFlexBOM.xml',
+        type: 'get',
+        data: {
+            instance: 'net.hbi.res.wsflexappprd1v.windchill',
+            skuMode: 'ALL_SKUS',
+            partId: strFullBranchParameter
+
+        }
+    }).done(function (data) {
+        var wcCollection = $(data).first();
+        arrOfInstances = $(wcCollection).find('branchId').parent();
+        var strTableString = '<table id="routing"><thead><tr><th>Manf Style</th><th>Knit</th><th>BL DY Finish</th><th>Cut Plant</th><th>Primary</th><th>Sew</th><th>Routing</th><th>Comments</th></tr></thead><tbody>'
+        $(arrOfInstances).each(function () {
+            var objRoutingRow = {};
+            var strTrBegin = '<tr>'
+            var strTdBegin = '<td>'
+            var strTrEnd = '</tr>'
+            var strTdEnd = '</td>'
+            strTableString += strTrBegin;
+            objRoutingRow.manfStyle = $(this).find('partName').text();
+            strTableString += strTdBegin + objRoutingRow.manfStyle + strTdEnd;
+            objRoutingRow.knit = $(this).find('hbiknitDisplay').text();
+            strTableString += strTdBegin + objRoutingRow.knit + strTdEnd;
+            objRoutingRow.bldy = $(this).find('hbiBLDYFinishDisplay').text();
+            strTableString += strTdBegin + objRoutingRow.bldy + strTdEnd;
+            objRoutingRow.cut = $(this).find('hbiRoutingCutPlantDisplay').text();
+            strTableString += strTdBegin + objRoutingRow.cut + strTdEnd;
+            objRoutingRow.primary = $(this).find('hbiPrimary').text().toUpperCase();
+            strTableString += strTdBegin + objRoutingRow.primary + strTdEnd;
+            objRoutingRow.sew = $(this).find('hbiRoutingSewDisplay').text();
+            strTableString += strTdBegin + objRoutingRow.sew + strTdEnd;
+            objRoutingRow.routing = $(this).find('hbiRouting').text();
+            objRoutingRow.routing = objRoutingRow.routing.replace('hbi', '');
+            strTableString += strTdBegin + objRoutingRow.routing + strTdEnd;
+            objRoutingRow.comments = $(this).find('hbiRoutingComments').text();
+            strTableString += strTdBegin + objRoutingRow.comments + strTdEnd;
+            strTableString += strTrEnd;
+            arrOfRoutingRows.push(objRoutingRow);
+        });
+        strTableString += '</tbody></table>';
+        objSelfReference.routingRows = arrOfRoutingRows;
+        $('#routingBomDiv').append(strTableString);
+        $('#routing').DataTable();
+        console.log(arrOfRoutingRows);
+    });
 
 };
 
@@ -2274,10 +2333,13 @@ function cwayProductBomsToTable(objSelfReference) {
 
                 if (typeof (strColorDescription) == 'undefined') {
                     strColorDescription = ' ';
-                }/*else {
-                    strColorDescription = ' _ ' + strColorDescription;
-                }*/
+                } else {
+                    //removing first characters from MC # piece
+                    strColorDescription = strColorDescription.substring(11, strColorDescription.length);
+                    //removing first characters from MC # piece
+                }
 
+                
                 var strVariationCellValue = strColorDescription + strColorSpecific + strPrintCode;
                 var numColumnToUse = Number(arrPositionIndex.indexOf(skuMasterId)) + numOfStaticColumns;
                 objSingleTableRow.arrSingleTableRowData[numColumnToUse] = strVariationCellValue;
@@ -2488,7 +2550,7 @@ function constructOneColorwayBom(strUrlPrefix, partIdStringForInfoEngine, nameOf
                         if (numIndex == -1) {
                             objSelfReference.allColorwayBomMaterialColorIds.push(value);
                         }
-                    };
+                    }
 
                 };
                 objRowObject.variations.push(objCurrentVariationObject);

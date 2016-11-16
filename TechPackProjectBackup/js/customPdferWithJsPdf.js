@@ -522,7 +522,17 @@ function docProcessor(garmentProduct) {
                 this.addPageAndReset();
             };
             var numInitialRowiY = this.yPosition;
-            
+            /*var arrCheckerRow = arrayToProcess[i];
+            var boolWasItAllBlank = false;
+            for (var w = 0; w < arrCheckerRow.length; w++) {
+                var strTextToGet = arrCheckerRow[w].text;
+                if (typeof (strTextToGet) != 'undefined') {
+                    //continue;
+                    if (strTextToGet.length != '') { boolWasItAllBlank = true };
+                }
+               
+            };
+            if (!boolWasItAllBlank) { continue;}*/
             
             //delimiter line
             if (i == 0 || boolResetToNewPage) {
@@ -625,7 +635,7 @@ function docProcessor(garmentProduct) {
                         if (numTextCreatedOffset > yOffsetPerLine) {
                             numOffset = numTextCreatedOffset * numHeightOfLargestCell;
                         }else if (strLongestString.length == 0) {
-                            numOffset = 2;
+                            numOffset = yOffsetPerLine;
                         }else {
                             numOffset = yOffsetPerLine * numHeightOfLargestCell;
                         };
@@ -659,6 +669,60 @@ function docProcessor(garmentProduct) {
             //pageOneColumnsSectionTwo.push(objContentSizeTbl);
 
             this.processADataTableResponseArray(arrSizeTbl, 40, 10, 8);
+
+        }
+    };
+
+    this.addSewBomTable = function () {
+        if ($("#sewBomTable").length) {
+            this.addPageAndReset();
+            var arrSewBomTbl = pdfThisTableV2('sewBomTable');
+            console.log(arrSewBomTbl);
+            //pageOneColumns.push(objContentSizeTbl);
+            //pageOneColumnsSectionTwo.push(objContentSizeTbl);
+            var numOfSizeColumns = arrSewBomTbl[0].length - 5;
+            var arrOfColumnWidths = [25, 25, 25, 25];
+            var numSumOfAllColumns = 0;
+            for (var i = 0; i < arrOfColumnWidths.length; i++) {
+                numSumOfAllColumns += arrOfColumnWidths[i];
+            };
+            var numOfRemainingRoom = this.doc.internal.pageSize.width - numSumOfAllColumns;
+            var numOfReaminingRoomPerColumn = Math.floor(numOfRemainingRoom / numOfSizeColumns);
+            var z = 0;
+            while (z < numOfSizeColumns) {
+                arrOfColumnWidths.push(numOfReaminingRoomPerColumn);
+                z++;
+            };
+
+            this.processADataTableResponseArray(arrSewBomTbl, arrOfColumnWidths, 25, 8);
+            //this.processADataTableResponseArray()
+
+        }
+    };
+
+    this.addSourceBomTable = function () {
+        if ($("#sourceBomTable").length) {
+            this.addPageAndReset();
+            var arrSourceBomTbl = pdfThisTableV2('sourceBomTable');
+            console.log(arrSourceBomTbl);
+            var arrOfColumnWidths = [25, 25, 25, 25];
+            //pageOneColumns.push(objContentSizeTbl);
+            //pageOneColumnsSectionTwo.push(objContentSizeTbl);
+
+            this.processADataTableResponseArray(arrSourceBomTbl, arrOfColumnWidths, 10, 8);
+
+        }
+    };
+
+    this.addRoutingTable = function () {
+        if ($("#routing").length) {
+            this.addPageAndReset();
+            var arrRoutingTbl = pdfThisTableV2('routing');
+            console.log(arrRoutingTbl);
+            //pageOneColumns.push(objContentSizeTbl);
+            //pageOneColumnsSectionTwo.push(objContentSizeTbl);
+            var arrOfColumnWidths = [15, 40, 40, 40,10,40,40];
+            this.processADataTableResponseArray(arrRoutingTbl, arrOfColumnWidths, 25, 8);
 
         }
     };
@@ -751,7 +815,7 @@ function docProcessor(garmentProduct) {
                 this.yPosition += 10;
                 var numPageWidth = this.doc.internal.pageSize.width;
                 var numOfColumns = objCurrent.array[0].length;
-                var arrOfColumnWidths = [80, 40, 30, 20, 20, 20, 20, 20, 20, 20];
+                var arrOfColumnWidths = [80, 40, 20, 15, 35, 20, 20, 20, 20, 20];
 
                 //this.processADataTableResponseArray(objCurrent.array, 20, 10, 15);
                 this.processADataTableResponseArray(objCurrent.array, arrOfColumnWidths, 15, 35, 80);
@@ -804,7 +868,7 @@ function docProcessor(garmentProduct) {
                 this.yPosition += 10;
                 var numPageWidth = this.doc.internal.pageSize.width;
                 var numOfColumns = objCurrent.array[0].length;
-                var arrOfColumnWidths = [30, 20, 25, 30, 30];// need to add functionality to compress around the header
+                var arrOfColumnWidths = [15, 20, 25, 30, 30];// need to add functionality to compress around the header
                 var numOfColorwayColumns = objCurrent.array[0].length - arrOfColumnWidths.length;
                 var numSumOfAllColumns = 0;
                 for (var j = 0; j < arrOfColumnWidths.length; j++) {
@@ -819,7 +883,7 @@ function docProcessor(garmentProduct) {
                 };
 
                 //this.processADataTableResponseArray(objCurrent.array, 20, 10, 15);
-                this.processADataTableResponseArray(objCurrent.array, arrOfColumnWidths, 15, 35, 55);
+                this.processADataTableResponseArray(objCurrent.array, arrOfColumnWidths, 15, 28, 19);
                 //this.processADataTableResponseArray()
             };
 
@@ -828,7 +892,16 @@ function docProcessor(garmentProduct) {
     };
 
     this.addLabelBom = function () {
+        if ($("#labelBom").length) {
+            this.addPageAndReset();
+            var arrRoutingTbl = pdfThisTableV2('labelBom');
+            console.log(arrRoutingTbl);
+            //pageOneColumns.push(objContentSizeTbl);
+            //pageOneColumnsSectionTwo.push(objContentSizeTbl);
+            var arrOfColumnWidths = [45, 25, 25, 25, 25, 55, 25,25];
+            this.processADataTableResponseArray(arrRoutingTbl, arrOfColumnWidths, 20, 8);
 
+        }
     };
 
 
@@ -966,6 +1039,15 @@ function docProcessor(garmentProduct) {
         //this.addPageAndReset();
         this.addMarkerLayoutImagesSubDivImg();
         //this.addPageAndReset();
+
+        //newest sections
+
+        this.addSewBomTable();
+        this.addSourceBomTable();
+        this.addRoutingTable();
+        this.addLabelBom();
+
+        //newest sections
         this.addColorwaysDivTables();
         /*this.addPageAndReset();
         this.addLabelBom();*/
