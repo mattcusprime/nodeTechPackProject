@@ -2335,7 +2335,12 @@ function cwayProductBomsToTable(objSelfReference) {
                     strColorDescription = ' ';
                 } else {
                     //removing first characters from MC # piece
-                    strColorDescription = strColorDescription.substring(11, strColorDescription.length);
+                    if (strColorDescription.length > 11) {
+                        strColorDescription = strColorDescription.substring(11, strColorDescription.length);
+                    }
+                    else {
+
+                    };
                     //removing first characters from MC # piece
                 }
 
