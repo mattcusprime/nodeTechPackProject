@@ -7,7 +7,7 @@
 		<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 		<meta name="description" content="Garment Spec Report">
 		<meta name="author" content="Matthew English">
-		<title>Product View</title>
+		<title>Test jsPdf Product View</title>
 		<!-- Bootstrap core CSS -->
 		<link href="bootstrap-3.3.4-dist/css/bootstrap.min.css" rel="stylesheet" />
 		<!-- Custom styles for this template -->
@@ -96,6 +96,10 @@
 		<script src="jsPdf/plugins/standard_fonts_metrics.js"></script>
 		<script src="jsPdf/plugins/svg.js"></script>
 		<script src="jsPdf/plugins/total_pages.js"></script>
+        <script src="jsPdf/libs/png_support/png.js"></script>
+        <script src="jsPdf/libs/png_support/zlib.js"></script>
+        <script src="jsPdf/libs/deflate.js"></script>
+
 		<!--plugins-->
 		<!--libs-->
 		<script src="jsPdf/libs/FileSaver.js/FileSaver.js"></script>
@@ -119,6 +123,9 @@
 			tr.notInGarment {
 				background-color: red;
 			}
+            #topLeftNav, .navbar-nav > li {
+                font-size: 13px;
+            }
 		</style>
 
 	</head>
@@ -129,8 +136,11 @@
 			<script src="js/myReportGeneratorFunctions.js"></script>
 			<script class="dontPostScript" src="js/myProjectFunctionsV2Deferred.js"></script>
 			<script class="dontPostScript" src="js/nwJsFunctions.js"></script>
-			<script src="js/customPdfer.js"></script>
-			<!--End of HBI custom scripts-->
+			
+            <!--<script src="js/customPdfer.js"></script>-->
+            <script src="js/customPdferWithJsPdf.js"></script>
+			
+            <!--End of HBI custom scripts-->
 			<script class="dontPostScript">
 				/**
 				 * $.parseParams - parse query string paramaters into an object.
@@ -241,7 +251,7 @@
 				 };*/
 				var objParsedObject = {};
 				objParsedObject = $.parseParams(strCurrentEnvironment.split('?')[1] || '');
-
+                console.log(objParsedObject);
 				$('document').ready(function() {
 					originalNavBar = $('#navbar *').html();
 					$('#runNew,.clearThisComponentOnNewGarmentLoad,nav').hide();
@@ -387,6 +397,9 @@
                         <li id="labelBomLi">
                             <a href="javascript:makeMeScrollToDefinedTarget('#labelsDiv',50,-100);">Label BOM</a>
                         </li>
+                        <li id="routingBomLi">
+                            <a href="javascript:makeMeScrollToDefinedTarget('#routingBomDiv',0,-100);">Routing</a>
+                        </li>
 						<li id="sewBomLi">
 							<a href="javascript:makeMeScrollToDefinedTarget('#sewBomDiv',50,-100);">Sew BOM</a>
 						</li>
@@ -413,7 +426,8 @@
 						</li>
 						<!--<li><a href='javascript:currentGarmentProduct.saveMe(currentGarmentProduct);'>Save Garment</a></li>-->
 						<li>
-							<a href="javascript:pdfSpec(currentGarmentProduct)">PDF Garment Spec</a>
+							<!--<a href="javascript:pdfSpec(currentGarmentProduct)">PDF Garment Spec</a>-->
+                            <a href="javascript:pdfPage(currentGarmentProduct)">PDF Garment Spec</a>
 						</li>
 						<li>
                             <a href="http://wsflexwebprd1v.res.hbi.net/Windchill/wtcore/jsp/report/adhocReportCriteria.jsp?oid=OR%3Awt.query.template.ReportTemplate%3A23394008&u8=1" target="_blank">Block Weights</a>
@@ -549,6 +563,12 @@
 				</div>
 				<!-- container -->
 			</div>
+            <div class="page">
+                <div id="routingBomDiv" class="container-fluid clearThisComponentOnNewGarmentLoad">
+
+                </div>
+                <!-- container -->
+            </div>
 
 			<div class="page">
 				<div id="sewBomDiv" class="container-fluid clearThisComponentOnNewGarmentLoad">
