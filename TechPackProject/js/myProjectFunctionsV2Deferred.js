@@ -2384,7 +2384,10 @@ function cwayProductBomsToTable(objSelfReference) {
         strBomName = strBomName.replace(/:/g, "").replace(/\//g, "_").replace(/&/g, "_");
         var strHeaderSection = '<h2>' + strBomName + '</h2>';
         var strThisTableSimpleString = '<table id="' + strEncodedBomName + '" class="display tblCbomTable" printHeader="' + strBomName + '"></table>';
-
+        if (!$('#maxColorways').length) {
+            $('#colorwaysDiv').append('<br><div class="form-group"><label for="maxColorways">Input maximum number of colorways per page for PDF output here.</label><input id="maxColorways" value="4" type="number"></input></div>');
+        };
+        
         $('#colorwaysDiv').append(strHeaderSection + strThisTableSimpleString);
         var colorwayBomTableOptions2 = {
             'data': arrTableRows,

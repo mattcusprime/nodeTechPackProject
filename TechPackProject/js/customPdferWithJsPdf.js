@@ -666,6 +666,79 @@ function docProcessor(garmentProduct) {
 
 
     };
+    this.arrayOfArraysToProcess = [];
+    this.processColorwayDataTableResponseArray = function (arrayToProcess, yOffsetPerLine, numMaxCharacterLength) {
+        var arrOfArraysToProcess = [];
+        //var numOfColorwaysToAllow = 4;
+        var numOfColorwaysToAllow;
+        if ($('#maxColorways').length) {
+            numOfColorwaysToAllow = Number($('#maxColorways').val());
+        }
+        else {
+            numOfColorwaysToAllow = 4;
+        };
+        var numOfStaticColumnsAllow = 5;
+        var numTotalNumberOfColumns = arrayToProcess[0].length;
+        
+        var numIndexer = (Math.floor((numTotalNumberOfColumns - numOfStaticColumnsAllow) / numOfColorwaysToAllow));
+        if (numIndexer < 1) {
+            numIndexer = 1;
+        };
+        var i = 0;
+        while (i < numIndexer) {
+            var arrOneColorwayTableArray = [];
+            for (var j = 0; j < arrayToProcess.length; j++) {
+                var arrSub = arrayToProcess[j];
+                var arrStatics = arrSub.slice(0, numOfStaticColumnsAllow);
+                var numBeginForColorways = numOfStaticColumnsAllow + (i * numOfColorwaysToAllow);
+                var numEndForColorways = numBeginForColorways + numOfColorwaysToAllow;
+                /*if (numEndForColorways > arrSub.length) {
+                    numEndForColorways = arrSub.length;
+                };*/
+                var arrColorwayColumns = arrSub.slice(numBeginForColorways, numEndForColorways);
+                /*console.log("Static");
+                console.log(arrStatics);
+                console.log("Dynamic");
+                console.log(arrColorwayColumns);*/
+                try {
+                    var arrComboArray = arrStatics.concat(arrColorwayColumns);
+                } catch (e) {
+                    var arrComboArray = arrStatics;
+                };
+                console.log(arrComboArray);
+                arrOneColorwayTableArray.push(arrComboArray);
+            };
+            this.arrayOfArraysToProcess.push(arrOneColorwayTableArray);
+            i++;
+        };
+        console.log(this.arrayOfArraysToProcess);
+
+        for (var k = 0; k < this.arrayOfArraysToProcess.length; k++) {
+                var arrToUse = this.arrayOfArraysToProcess[k];
+            //if ((numOfStaticColumnsAllow + numOfColorwaysToAllow) > xOffsetPerCell.length) {
+                var numPageWidth = this.doc.internal.pageSize.width;
+                var numOfColumns = arrToUse[0].length;
+                var arrOfColumnWidths = [15, 20, 25, 30, 40];// need to add functionality to compress around the header
+                var numOfColorwayColumns = arrToUse[0].length - arrOfColumnWidths.length;
+                var numSumOfAllColumns = 0;
+                for (var j = 0; j < arrOfColumnWidths.length; j++) {
+                    numSumOfAllColumns += arrOfColumnWidths[j];
+                };
+                var numOfRemainingRoom = this.doc.internal.pageSize.width - numSumOfAllColumns;
+                var numOfReaminingRoomPerColumn = Math.floor(numOfRemainingRoom / numOfColorwayColumns);
+                var z = 0;
+                while (z < numOfColorwayColumns) {
+                    arrOfColumnWidths.push(numOfReaminingRoomPerColumn);
+                    z++;
+                };
+            //};
+                this.processADataTableResponseArray(arrToUse, arrOfColumnWidths, yOffsetPerLine, numMaxCharacterLength);
+            //if(this.yPosition != this.yMarginReset){
+                this.addPageAndReset();
+            //};
+        };
+    };
+
 
     this.addSizingTable = function () {
         if ($("#sizeTbl").length) {
@@ -879,7 +952,9 @@ function docProcessor(garmentProduct) {
             //console.log(arrOfColorwayBoms);
             for (var i = 0; i < arrOfColorwayBoms.length; i++) {
                 var objCurrent = arrOfColorwayBoms[i];
-                this.addPageAndReset();
+                if (i == 0) {
+                    this.addPageAndReset();
+                };
                 this.doc.setFontSize(30);
                 if (objCurrent.name > 40) {
                     this.doc.setFontSize(20);
@@ -887,24 +962,10 @@ function docProcessor(garmentProduct) {
                 this.processTextUsingCurrentXandYPosition(objCurrent.name);
                 this.doc.setFontSize(6);
                 this.yPosition += 10;
-                var numPageWidth = this.doc.internal.pageSize.width;
-                var numOfColumns = objCurrent.array[0].length;
-                var arrOfColumnWidths = [15, 20, 25, 30, 30];// need to add functionality to compress around the header
-                var numOfColorwayColumns = objCurrent.array[0].length - arrOfColumnWidths.length;
-                var numSumOfAllColumns = 0;
-                for (var j = 0; j < arrOfColumnWidths.length; j++) {
-                    numSumOfAllColumns += arrOfColumnWidths[j];
-                };
-                var numOfRemainingRoom = this.doc.internal.pageSize.width - numSumOfAllColumns;
-                var numOfReaminingRoomPerColumn = Math.floor(numOfRemainingRoom / numOfColorwayColumns);
-                var z = 0;
-                while (z < numOfColorwayColumns) {
-                    arrOfColumnWidths.push(numOfReaminingRoomPerColumn);
-                    z++;
-                };
+                
 
                 //this.processADataTableResponseArray(objCurrent.array, 20, 10, 15);
-                this.processADataTableResponseArray(objCurrent.array, arrOfColumnWidths, 7,28);
+                this.processColorwayDataTableResponseArray(objCurrent.array, 7, 28);
                 //this.processADataTableResponseArray()
             };
 
