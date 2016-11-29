@@ -608,13 +608,23 @@ garmentProduct.prototype.getSpecByNameButNotJustActiveSpec = function (strHostUr
             $('.seasonSpecButton').click(function () {
                 var strSelectedSpecId = $(this).attr('specId');
                 var boolIsItActive;
+                var boolIsItAnAvailableOrangeSpec;
                 var target = $(this);
                 if (target.hasClass('btn-success')) {
                     boolIsItActive = true;
+                    boolIsItAnAvailableOrangeSpec = false;
                 }
                 else {
-                    boolIsItActive = false;
-                }
+                    if (target.hasClass('btn-warning')) {
+                        boolIsItActive = false;
+                        boolIsItAnAvailableOrangeSpec = true;
+                    }
+                    else {
+                        boolIsItActive = false;
+                        boolIsItAnAvailableOrangeSpec = false;
+                    };
+                };
+
                 var strConstructionMethodCode = decodeURIComponent($(this).attr('constructionmethodcode'));
                 var strPatternSpec = decodeURIComponent($(this).attr('patternspec'));
                 var strActiveSourceName = decodeURIComponent($(this).attr('source'));
@@ -645,6 +655,7 @@ garmentProduct.prototype.getSpecByNameButNotJustActiveSpec = function (strHostUr
                     activeSeason: strActiveSeasonName
                 };
                 objSelfReference.isCurrentSpecAnActiveSpec = boolIsItActive;
+                objSelfReference.isCurrentSpecAnAvailableSpec = boolIsItAnAvailableOrangeSpec;
                 funCallback(objForCallback, objSelfReference);
             });
         } else {
@@ -900,7 +911,7 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
                 var numLength = Number(strStartPointSubString.substring(numLengthStartPoint, strStartPointSubString.length));
                 objComponent.width = numWidth;
                 objComponent.height = numLength;
-                
+
                 objComponent.roleDocumentLink = $(this).find('roleDocumentLink').text();
                 var roleB = $(this).find('roleBObjectRef_key_id').text();
 
@@ -935,9 +946,9 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
     var strApprovedSupplierUrlObjectId = getMyReportIdFromReportName('garmentProdSpecsGarmentAndPatternComponentsApprovedSuppliers');
     var strApprovedSupplierUrl = strUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?u8&action=ExecuteReport&specId=' + objSelfReference.activeSpecId + '&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A' + strApprovedSupplierUrlObjectId + '&xsl1=&format=formatDelegate&delegateName=XML&jrb=wt.query.template.reportTemplateRB&sortByIndex=6&sortOrder=asc';
     */
-    
-    if (objSelfReference.documents == 0 && typeof(objSelfReference.patternProduct) == 'undefined') {
-    
+
+    if (objSelfReference.documents == 0 && typeof (objSelfReference.patternProduct) == 'undefined') {
+
         $.ajax({
             url: garmentProdSpecGarmentAndPatternComponentsDOCUMENTSV3NoPatternUrl,
             type: 'get',
@@ -1059,7 +1070,7 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
             objSelfReference.documents = arrDocuments;
             objSelfReference.getAndProcessDocuments(objSelfReference);
         });
-        
+
 
     };
     //var initialIndexer = 0;
@@ -1197,9 +1208,9 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
         for (var i = 0; i < arguments.length; i++) {
             try {
                 objSelfReference.getMyConstruction(strHostUrlPrefix, objSelfReference.arrayOfConstructions[i].branchId, arguments[i], objSelfReference, 'constructionBranchId' + objSelfReference.arrayOfConstructions[i].branchId, objSelfReference.arrayOfConstructions[i].name);
-                
-                    createComponentTable('constructionDiv', 'constructionBranchId' + objSelfReference.arrayOfConstructions[i].branchId, objSelfReference.arrayOfConstructions[i].tableString, constructionTableOptions, true);
-                
+
+                createComponentTable('constructionDiv', 'constructionBranchId' + objSelfReference.arrayOfConstructions[i].branchId, objSelfReference.arrayOfConstructions[i].tableString, constructionTableOptions, true);
+
 
             } catch (e) {
                 console.log(e);
@@ -1246,7 +1257,7 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
         arrBoms.push(objBomComponent);
         if (objBomComponent.flexType == 'Garment Routing Table') {
             $('#revi')
-            objSelfReference.getAndProcessMyRoutingBOM(objBomComponent,objSelfReference);
+            objSelfReference.getAndProcessMyRoutingBOM(objBomComponent, objSelfReference);
         };
 
     });
@@ -1281,7 +1292,7 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
         if (objGarmentSewRow.sewOrSource == 'sew' && arrPatternSewRows.length != 0) {
 
 
-            
+
             for (var k = 0; k < arrPatternSewRows.length; k++) {
                 var objPatternSewRow = {};
                 objPatternSewRow = arrPatternSewRows[k];
@@ -1372,9 +1383,9 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
 
             };
         };
-        
-          
-          
+
+
+
 
 
         arrGarmentSewRows[i] = objGarmentSewRow;
@@ -2344,7 +2355,7 @@ function cwayProductBomsToTable(objSelfReference) {
                     //removing first characters from MC # piece
                 }
 
-                
+
                 var strVariationCellValue = strColorDescription + strColorSpecific + strPrintCode;
                 var numColumnToUse = Number(arrPositionIndex.indexOf(skuMasterId)) + numOfStaticColumns;
                 objSingleTableRow.arrSingleTableRowData[numColumnToUse] = strVariationCellValue;
@@ -2382,12 +2393,13 @@ function cwayProductBomsToTable(objSelfReference) {
         var numOfTimesRanForColorway = 0;
         var strEncodedBomName = strBomNameForId.replace(/\s/g, "_").replace(/:/g, "").replace(/\//g, "_").replace(/&/g, "_");
         strBomName = strBomName.replace(/:/g, "").replace(/\//g, "_").replace(/&/g, "_");
-        var strHeaderSection = '<h2>' + strBomName + '</h2>';
+        var strHeaderSection = '<h2 bomChild="' + strEncodedBomName + '">' + strBomName + '</h2>';
         var strThisTableSimpleString = '<table id="' + strEncodedBomName + '" class="display tblCbomTable" printHeader="' + strBomName + '"></table>';
         if (!$('#maxColorways').length) {
             $('#colorwaysDiv').append('<br><div class="form-group"><label for="maxColorways">Input maximum number of colorways per page for PDF output here.</label><input id="maxColorways" value="4" type="number"></input></div>');
         };
-        
+        var strJsText = "javascript:makeMeScrollToDefinedTarget('#cwayGroupingNew',50,-200);";
+        //var strBackLink = '<a href="' + strJsText + '">All Boms</a>';
         $('#colorwaysDiv').append(strHeaderSection + strThisTableSimpleString);
         var colorwayBomTableOptions2 = {
             'data': arrTableRows,
@@ -2425,6 +2437,8 @@ function cwayProductBomsToTable(objSelfReference) {
             $(this).addClass('selected');
         };
     });
+
+
     $('#deleteGarmentBomRows').click(function () {
         $('.tblCbomTable').each(function () {
             var strAttr = $(this).attr('id');
@@ -2433,8 +2447,123 @@ function cwayProductBomsToTable(objSelfReference) {
 
         });
     });
+    if (typeof (objSelfReference.colorwayProduct.boms) != 'undefined') {
+        var strHeaderString = '<button id="bomRemover" class="btn-primary">Remove Highlighted Boms</button><table class="display" id="cwayGroupingNew"><thead><tr><th>Select BOM</th><th>BOM</th><th>Colorway</th></tr></thead><tbody>';
+            var strEndTableString = '</tbody></table>';
+            var strTableString = strHeaderString;
+            for (var i = 0; i < objSelfReference.colorwayProduct.boms.length; i++) {
+                var objCurrentBom = objSelfReference.colorwayProduct.boms[i];
+                for (var j = 0; j < objCurrentBom.colorways.length; j++) {
+                    var objCurrentCway = objCurrentBom.colorways[j];
+                    var strBeginCell = '<td>';
+                    var strEndCell = '</td>';
+                    var strBeginRow = '<tr>';
+                    var strEndRow = '</tr>';
+                    var strSelectCellCway = '<a href="#" class="selectColorwayRow">Select Colorway</a>';
+                    var strSelectCellBom = '<a href="#" class="selectBomRow">Select BOM</a>';
+                    var strBomId = objCurrentBom.partId;
+                    var strBomName = objCurrentBom.name;
+                    //strBomName = strBomName.replace(/:/g, "").replace(/\//g, "_").replace(/&/g, "_");
+                    var strBomNameForId = strBomName + '_bompartId_' + strBomId;
+                    var strEncodedBomName = strBomNameForId.replace(/\s/g, "_").replace(/:/g, "").replace(/\//g, "_").replace(/&/g, "_");
+                    var strLinkBegin = '<a href="#" class="groupingLink" bPartId="' + strEncodedBomName + '" bName="' + strBomName + '">';
+                    var strLinkEnd = '</a>';
+                    
+                    strTableString += strBeginRow + strBeginCell + strSelectCellBom + strEndCell + strBeginCell + strLinkBegin + objCurrentBom.name + strLinkEnd + strEndCell + strBeginCell + objCurrentCway.colorwayName + strEndCell + strEndRow;
+                }
+            };
+            strTableString += strEndTableString;
+            //$('#cwayGrouing').remove();
+            $('#colorwaysListDiv').append(strTableString);
+            $('#cwayGroupingNew').DataTable(cwayReportTableOptions);
+            $('.groupingLink').click(function (e) {
+                e.preventDefault();
+                var strBname = $(this).attr('bPartId');//.substring(0,3);
+                //var target = this.hash;
+                var $target;
+                $('#colorwaysDiv h2').each(function () {
+                    var strCompare = $(this).attr('bomChild');
+                    //var strCompare = $(this).text();
+                    if (strBname == strCompare) {
+                        console.log('yes');
+                        $target = $(this);
+                        $('html, body').stop().animate({
+                            'scrollTop': $target.offset().top - 200
+                        }, 1100, 'swing', function () {
+                            window.location.hash = target;
+                        });
+                    } else {
+                        console.log('no');
+                    };
+                });
+            });
+            $('#bomRemover').click(function () {
+                var arrOfBomsToRemove = [];
+                $('#cwayGroupingNew tr').each(function () {
+                    if ($(this).hasClass('selected')) {
+                        var idToGet = $(this).find('.groupingLink').attr('bPartId');
+                        if (arrOfBomsToRemove.indexOf(idToGet) == -1) {
+                            arrOfBomsToRemove.push(idToGet);
+                            
+                        };
+                        $(this).remove();
+                    }
+                    else {
 
+                    };
+                    for (var i = 0; i < arrOfBomsToRemove.length; i++) {
+                        var strRemovalStringBoms = '#' + arrOfBomsToRemove[i] + '_wrapper';
+                        $(strRemovalStringBoms).remove();
+                        $('#colorwaysDiv h2').each(function () {
+                            var strCompare = $(this).attr('bomChild');
+                            if (strCompare == arrOfBomsToRemove[i]) {
+                                $(this).remove();
+                            };
+                        });
 
+                    };
+
+                });
+            });
+            /*$('.selectColorwayRow').click(function (e) {
+                e.preventDefault();
+                if ($(this).parent().parent().hasClass('selected')) {
+                    $(this).parent().parent().removeClass('selected');
+                } else {
+                    $(this).parent().parent().addClass('selected');
+                };
+                
+            });*/
+            $('.selectBomRow').click(function (e) {
+                e.preventDefault();
+                var idToUse = $(this).parent().parent().find('.groupingLink').attr('bPartId');
+                $('#cwayGroupingNew tr').each(function () {
+                    var idToCompare = $(this).find('.groupingLink').attr('bPartId');
+                    if (idToUse == idToCompare) {
+                        if ($(this).hasClass('selected')) {
+                            $(this).removeClass('selected');
+                        } else {
+                            $(this).addClass('selected');
+                        };
+                    };
+
+                });
+                /*if ($(this).parent().parent().hasClass('selected')) {
+                    $(this).parent().parent().removeClass('selected');
+                } else {
+                    $(this).parent().parent().addClass('selected');
+                };*/
+
+            });
+            /*$('#cwayGroupingNew tbody').not('.groupingLink').on('click', 'tr', function () {
+                if ($(this).hasClass('selected')) {
+                    $(this).removeClass('selected');
+                } else {
+                    $(this).addClass('selected');
+                };
+            });*/
+
+    };
 
 };
 
@@ -3359,7 +3488,7 @@ garmentProduct.prototype.getMoas = function (strUrlPrefix, objSelfReference, obj
                     var objThisLoopObject = objSelfReference.moaArray[i];
 
                     if (objThisLoopObject.Table_Name == "Revision Attribute") {
-                        if(objThisLoopObject.Product_Type == 'Garment'){
+                        if (objThisLoopObject.Product_Type == 'Garment') {
                             //var specNum = Number(objSelfReference.activeSpecName.substring(0, 2));
                             var specNum = Number(objThisLoopObject.Spec);
                             var thisSpecNum = objSelfReference.activeSpecName.substring(0, 3);

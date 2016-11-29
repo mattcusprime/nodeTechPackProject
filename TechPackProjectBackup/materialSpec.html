@@ -1,0 +1,188 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+		<meta name="description" content="Garment Spec Report">
+		<meta name="author" content="Matthew English">
+		<title>Test jsPdf Product View</title>
+		<!-- Bootstrap core CSS -->
+		<link href="bootstrap-3.3.4-dist/css/bootstrap.min.css" rel="stylesheet" />
+		<!-- Custom styles for this template -->
+		<link href="css/starter-template.css" rel="stylesheet">
+		<link href="css/carousel.css" rel="stylesheet" />
+		<link href="DataTables-1.10.7/media/css/jquery.dataTables_themeroller.css" rel="stylesheet" />
+		<!-- Bootstrap core JavaScript
+		================================================== -->
+		<!-- Placed at the end of the document so the pages load faster -->
+		<script src="js/jquery-2.1.3.js"></script>
+		<script src="js/d3.v3.min.js"></script>
+		<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+		<script src="js/ie10-viewport-bug-workaround.js"></script>
+		<script src="typeAhead/typeAheadBundle.js"></script>
+		
+		<link rel="stylesheet" type="text/css" href="css/print.css" media="print" />
+		<script src="DataTablesDownloadBuilder/DataTables-1.10.9/js/jquery.dataTables.min.js"></script>
+		<script src="DataTablesDownloadBuilder/DataTables-1.10.9/js/dataTables.bootstrap.min.js"></script>
+		<script src="DataTablesDownloadBuilder/JSZip-2.5.0/jszip.min.js"></script>
+
+		<!--<script src="DataTablesDownloadBuilder/pdfmake-0.1.18/build/pdfmake.min.js"></script>-->
+		<script src="DataTablesDownloadBuilder/pdfmake-0.1.18/build/pdfmake.min.js"></script>
+		<script src="DataTablesDownloadBuilder/pdfmake-0.1.18/build/vfs_fonts.js"></script>
+		<script src="DataTablesDownloadBuilder/Buttons-1.0.3/js/dataTables.buttons.min.js"></script>
+		<!--NEED TO ALWAYS PUT THE CORE MIN LIBRARY BEFORE THE EXTENSIONS-->
+		<script src="DataTablesDownloadBuilder/Buttons-1.0.3/js/buttons.bootstrap.min.js"></script>
+		<script src="DataTablesDownloadBuilder/Buttons-1.0.3/js/buttons.colVis.min.js"></script>
+		<script src="DataTablesDownloadBuilder/Buttons-1.0.3/js/buttons.foundation.min.js"></script>
+		<script src="DataTablesDownloadBuilder/Buttons-1.0.3/js/buttons.html5.min.js"></script>
+		<script src="DataTablesDownloadBuilder/Buttons-1.0.3/js/buttons.jqueryui.min.js"></script>
+		<script src="DataTablesDownloadBuilder/Buttons-1.0.3/js/buttons.print.min.js"></script>
+		<script src="DataTablesDownloadBuilder/DataTables-1.10.9/js/dataTables.bootstrap.min.js"></script>
+		
+        <link href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" rel="stylesheet">
+        <link href="https://cdn.datatables.net/buttons/1.2.1/css/buttons.dataTables.min.css" rel="stylesheet">
+
+        <!--DataTables-->
+        <link href="css/jquery.prompt.css" rel="stylesheet" />
+
+		<!--PrettyLoader-->
+		<link href="prettyLoader.css" rel="stylesheet" />
+		<!--PrettyLoader-->
+		<!--PrettyLoader-->
+
+		<script src="js/jquery.browser.js"></script>
+		<script src="js/jquery.prettyLoader.js"></script>
+		<!--PrettyLoader-->
+		<!--jsPdf precursors -->
+		<script src="node_modules/rasterizehtml/dist/rasterizeHTML.allinone.js"></script>
+		<!--jsPdf-->
+		<script src="jsPdf/jspdf.js"></script>
+		<!--plugins-->
+		<script src="jsPdf/plugins/addhtml.js"></script>
+		<script src="jsPdf/plugins/addimage.js"></script>
+		<script src="jsPdf/plugins/annotations.js"></script>
+		<script src="jsPdf/plugins/autoprint.js"></script>
+		<script src="jsPdf/plugins/canvas.js"></script>
+		<script src="jsPdf/plugins/cell.js"></script>
+		<script src="jsPdf/plugins/context2d.js"></script>
+		<script src="jsPdf/plugins/from_html.js"></script>
+		<script src="jsPdf/plugins/javascript.js"></script>
+		<script src="jsPdf/plugins/outline.js"></script>
+		<script src="jsPdf/plugins/png_support.js"></script>
+		<script src="jsPdf/plugins/split_text_to_size.js"></script>
+		<script src="jsPdf/plugins/standard_fonts_metrics.js"></script>
+		<script src="jsPdf/plugins/svg.js"></script>
+		<script src="jsPdf/plugins/total_pages.js"></script>
+        <script src="jsPdf/libs/png_support/png.js"></script>
+        <script src="jsPdf/libs/png_support/zlib.js"></script>
+        <script src="jsPdf/libs/deflate.js"></script>
+
+		<!--plugins-->
+		<!--libs-->
+		<script src="jsPdf/libs/FileSaver.js/FileSaver.js"></script>
+		<script src="jsPdf/libs/Blob.js/Blob.js"></script>
+		<script src="jsPdf/libs/adler32cs.js/adler32cs.js"></script>
+		<!--libs-->
+		<!--jspdf-->
+		<script src="js/jquery.prompt.js"></script>
+		<script src="js/imagesloaded.pkgd.min.js"></script>
+		<!--My Scripts begin here-->
+		<!--end construction of prototype of Garment Product Class-->
+		<!--Svg items
+		<link href="jquery.svg.package-1.5.0/jquery.svg.css" rel="stylesheet" />
+		<script src="jquery.svg.package-1.5.0/jquery.svg.js"></script>
+		<script src="jquery.svg.package-1.5.0/jquery.svgdom.js"></script>-->
+		<!--Svg items-->
+		<style>
+			.page {
+				page-break-after: always;
+			}
+			tr.notInGarment {
+				background-color: red;
+			}
+            #topLeftNav, .navbar-nav > li {
+                font-size: 13px;
+            }
+		</style>
+
+	</head>
+	<body>
+		
+			<!--killBeginPoint-->
+			<!--Beginning of HBI custom scripts-->
+			<script src="js/myReportGeneratorFunctions.js"></script>
+			<script class="dontPostScript" src="js/myProjectFunctionsV2Deferred.js"></script>
+			<script class="dontPostScript" src="js/nwJsFunctions.js"></script>
+			
+            <!--<script src="js/customPdfer.js"></script>-->
+            <script src="js/customPdferWithJsPdf.js"></script>
+			
+            <!--End of HBI custom scripts-->
+			<script class="dontPostScript">
+				/**
+				 * $.parseParams - parse query string paramaters into an object.
+				 */
+				(function($) {
+					var re = /([^&=]+)=?([^&]*)/g;
+					var decodeRE = /\+/g;
+					// Regex for replacing addition symbol with a space
+					var decode = function(str) {
+						return decodeURIComponent(str.replace(decodeRE, " "));
+					};
+					$.parseParams = function(query) {
+						var params = {}, e;
+						while ( e = re.exec(query)) {
+							var k = decode(e[1]), v = decode(e[2]);
+							if (k.substring(k.length - 2) === '[]') {
+								k = k.substring(0, k.length - 2);
+								(params[k] || (params[k] = [])).push(v);
+							} else
+								params[k] = v;
+						}
+						return params;
+					};
+				})(jQuery);
+
+				
+		</script>
+		<nav class="navbar navbar-inverse navbar-fixed-top">
+			<div class="container" id="navTopDiv">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+
+					</button>
+					<a id="topLeftNav" class="navbar-brand" href="#navTopDiv">Material Spec Report Page</a>
+
+				</div>
+				<div id="navbar" class="collapse navbar-collapse">
+					<ul class="nav navbar-nav">
+						
+						<li>
+<!--							<a href="javascript:makeMeScrollToDefinedTarget('#garmentHeader',50,-100);">Product Relationships</a>-->
+						</li>
+						
+					</ul>
+
+				</div>
+			</div>
+		</nav>
+		
+		<div class="page" id="max">
+			<div class="container-fluid clearThisComponentOnNewGarmentLoad" id="materialData">
+
+			</div>
+		</div>
+		<div class="page">
+			<div class="container-fluid clearThisComponentOnNewGarmentLoad" id="loadingInfo">
+
+			</div>
+		</div>
+
+	</body>
+</html>

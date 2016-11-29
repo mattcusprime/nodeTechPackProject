@@ -123,6 +123,9 @@
 			tr.notInGarment {
 				background-color: red;
 			}
+            #topLeftNav, .navbar-nav > li {
+                font-size: 13px;
+            }
 		</style>
 
 	</head>
@@ -248,7 +251,7 @@
 				 };*/
 				var objParsedObject = {};
 				objParsedObject = $.parseParams(strCurrentEnvironment.split('?')[1] || '');
-				console.log(objParsedObject);
+                console.log(objParsedObject);
 				$('document').ready(function() {
 					originalNavBar = $('#navbar *').html();
 					$('#runNew,.clearThisComponentOnNewGarmentLoad,nav').hide();
@@ -393,6 +396,9 @@
 						</li>
                         <li id="labelBomLi">
                             <a href="javascript:makeMeScrollToDefinedTarget('#labelsDiv',50,-100);">Label BOM</a>
+                        </li>
+                        <li id="routingBomLi">
+                            <a href="javascript:makeMeScrollToDefinedTarget('#routingBomDiv',0,-100);">Routing</a>
                         </li>
 						<li id="sewBomLi">
 							<a href="javascript:makeMeScrollToDefinedTarget('#sewBomDiv',50,-100);">Sew BOM</a>
@@ -557,6 +563,12 @@
 				</div>
 				<!-- container -->
 			</div>
+            <div class="page">
+                <div id="routingBomDiv" class="container-fluid clearThisComponentOnNewGarmentLoad">
+
+                </div>
+                <!-- container -->
+            </div>
 
 			<div class="page">
 				<div id="sewBomDiv" class="container-fluid clearThisComponentOnNewGarmentLoad">

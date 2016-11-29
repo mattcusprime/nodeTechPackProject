@@ -384,7 +384,7 @@ function docProcessor(garmentProduct) {
         this.previousFurthestYPosition = 0;
     };
     this.addPageAndReset = function () {
-    	if(!garmentProduct.isCurrentSpecAnActiveSpec){
+        if (!garmentProduct.isCurrentSpecAnActiveSpec && !garmentProduct.isCurrentSpecAnAvailableSpec) {
     		//imgBase64DevImage
     		this.doc.addImage(imgBase64DevImage, 'PNG', 0, 0, this.doc.internal.pageSize.width, this.doc.internal.pageSize.height, 'fast');
     	};
@@ -505,18 +505,18 @@ function docProcessor(garmentProduct) {
         var numStaticXToUseForOffset;
         var numLineRatio = 0.25;
         var headerWidth = 0;
-        var boolArrayOfcoordinatesPassedForXcolumns = false;
+        var boolArrayOfcoordinatesPassedForXcolumns = true;
         var boolResetToNewPage = false;
         var numLastNumOffset = 0;
         if (typeof (numMaxCharacterLength) == 'undefined') {
             numMaxCharacterLength = 25;//setting default max character
         };
-        if ($.isArray(xOffsetPerCell)) {
+        /*if ($.isArray(xOffsetPerCell)) {
             boolArrayOfcoordinatesPassedForXcolumns = true;
         }
         else {
             numStaticXToUseForOffset = xOffsetPerCell;
-        };
+        };*/
         for (var i = 0; i < arrayToProcess.length; i++) {
             //var lastRowWasEvenOrOdd = 'even';
             if ((this.yPosition + yOffsetPerLine) > numPageHeight) {
@@ -544,10 +544,10 @@ function docProcessor(garmentProduct) {
                 for (var j = 0; j < arrHeaderRow.length; j++) {
                     if (boolArrayOfcoordinatesPassedForXcolumns) {
                         numStaticXToUseForOffset = xOffsetPerCell[j];
-                    }
+                    }/*
                     else {
                         numStaticXToUseForOffset = xOffsetPerCell;
-                    };
+                    };*/
                     var numCurrentFontSize = this.doc.internal.getFontSize();
                     var strTextToGet = arrHeaderRow[j].text;
                     //this.doc.setDrawColor(0, 0, 0);
@@ -586,10 +586,10 @@ function docProcessor(garmentProduct) {
                     };
                     if (boolArrayOfcoordinatesPassedForXcolumns) {
                         numStaticXToUseForOffset = xOffsetPerCell[j];
-                    }
+                    }/*
                     else {
                         numStaticXToUseForOffset = xOffsetPerCell;
-                    };
+                    };*/
                     //this.processTextUsingCurrentXandYPositionTable(strTextToGet, true, yOffsetPerLine, numMaxCharacterLength, numLineRatio);
 
                     if (j == 0) {
@@ -667,7 +667,9 @@ function docProcessor(garmentProduct) {
 
     };
     this.arrayOfArraysToProcess = [];
-    this.processColorwayDataTableResponseArray = function (arrayToProcess, yOffsetPerLine, numMaxCharacterLength) {
+    this.processColorwayDataTableResponseArray = function (objCurrentColorwayToProcess, yOffsetPerLine, numMaxCharacterLength,boolProcessForPdf) {
+        var arrayToProcess = objCurrentColorwayToProcess.array;
+        var strNameOfBom = objCurrentColorwayToProcess.name;
         var arrOfArraysToProcess = [];
         //var numOfColorwaysToAllow = 4;
         var numOfColorwaysToAllow;
@@ -684,38 +686,47 @@ function docProcessor(garmentProduct) {
         if (numIndexer < 1) {
             numIndexer = 1;
         };
-        var i = 0;
-        while (i < numIndexer) {
+        var i = numOfStaticColumnsAllow;
+        while (i < numTotalNumberOfColumns) {
             var arrOneColorwayTableArray = [];
             for (var j = 0; j < arrayToProcess.length; j++) {
                 var arrSub = arrayToProcess[j];
                 var arrStatics = arrSub.slice(0, numOfStaticColumnsAllow);
-                var numBeginForColorways = numOfStaticColumnsAllow + (i * numOfColorwaysToAllow);
+                var numBeginForColorways = i;//numOfStaticColumnsAllow //+ i + numOfColorwaysToAllow;
                 var numEndForColorways = numBeginForColorways + numOfColorwaysToAllow;
-                /*if (numEndForColorways > arrSub.length) {
-                    numEndForColorways = arrSub.length;
-                };*/
+                //if (numEndForColorways > arrSub.length) {
+                //    numEndForColorways = arrSub.length;
+                //};
                 var arrColorwayColumns = arrSub.slice(numBeginForColorways, numEndForColorways);
-                /*console.log("Static");
-                console.log(arrStatics);
-                console.log("Dynamic");
-                console.log(arrColorwayColumns);*/
                 try {
                     var arrComboArray = arrStatics.concat(arrColorwayColumns);
                 } catch (e) {
                     var arrComboArray = arrStatics;
                 };
-                console.log(arrComboArray);
+                //console.log(arrComboArray);
                 arrOneColorwayTableArray.push(arrComboArray);
             };
-            this.arrayOfArraysToProcess.push(arrOneColorwayTableArray);
-            i++;
-        };
-        console.log(this.arrayOfArraysToProcess);
+            //col columns = 0
+            var number = Number(strNameOfBom.substring(0, 3));
+            var objBomObjectWithArray = {
+                array: arrOneColorwayTableArray,
+                name: strNameOfBom,
+                numberOfBom: number
+            };
 
-        for (var k = 0; k < this.arrayOfArraysToProcess.length; k++) {
-                var arrToUse = this.arrayOfArraysToProcess[k];
-            //if ((numOfStaticColumnsAllow + numOfColorwaysToAllow) > xOffsetPerCell.length) {
+            //this.arrayOfArraysToProcess.push(arrOneColorwayTableArray);
+            this.arrayOfArraysToProcess.push(objBomObjectWithArray);
+
+            //i++;
+            i += numOfColorwaysToAllow;
+        };
+        if (boolProcessForPdf) {
+            this.arrayOfArraysToProcess.sort(function (a, b) {
+                return a.numberOfBom - b.numberOfBom;
+            });
+            for (var k = 0; k < this.arrayOfArraysToProcess.length; k++) {
+                var arrToUse = this.arrayOfArraysToProcess[k].array;
+                //if ((numOfStaticColumnsAllow + numOfColorwaysToAllow) > xOffsetPerCell.length) {
                 var numPageWidth = this.doc.internal.pageSize.width;
                 var numOfColumns = arrToUse[0].length;
                 var arrOfColumnWidths = [15, 20, 25, 30, 40];// need to add functionality to compress around the header
@@ -731,14 +742,24 @@ function docProcessor(garmentProduct) {
                     arrOfColumnWidths.push(numOfReaminingRoomPerColumn);
                     z++;
                 };
-            //};
-                this.processADataTableResponseArray(arrToUse, arrOfColumnWidths, yOffsetPerLine, numMaxCharacterLength);
-            //if(this.yPosition != this.yMarginReset){
+                //};
                 this.addPageAndReset();
-            //};
+                this.setLastFontSizeAndChangeToNewFontSize(8);
+                this.processTextUsingCurrentXandYPosition(this.arrayOfArraysToProcess[k].name);
+                this.returnToLastFontSize();
+                this.yPosition += (this.yMarginReset / 4);
+                this.processADataTableResponseArray(arrToUse, arrOfColumnWidths, yOffsetPerLine, numMaxCharacterLength);
+            };
         };
     };
-
+    this.lastFontSize = 8;
+    this.returnToLastFontSize = function () {
+        this.doc.setFontSize(this.lastFontSize);
+    };
+    this.setLastFontSizeAndChangeToNewFontSize = function (newFontSize) {
+        this.lastFontSize = this.doc.internal.getFontSize();
+        this.doc.setFontSize(newFontSize);
+    };
 
     this.addSizingTable = function () {
         if ($("#sizeTbl").length) {
@@ -746,8 +767,8 @@ function docProcessor(garmentProduct) {
             console.log(arrSizeTbl);
             //pageOneColumns.push(objContentSizeTbl);
             //pageOneColumnsSectionTwo.push(objContentSizeTbl);
-
-            this.processADataTableResponseArray(arrSizeTbl, 40, 10, 8);
+            var arrOfColumnWidths = [40,40,40];
+            this.processADataTableResponseArray(arrSizeTbl, arrOfColumnWidths, 10, 8);
 
         }
     };
@@ -826,7 +847,8 @@ function docProcessor(garmentProduct) {
             arrApprovedSupplierTbl = [[{ text: 'Supplier', style: 'tableHeader' }, { text: 'Mfg Flow', style: 'tableHeader' }, { text: 'Green Seal', style: 'tableHeader' }, { text: 'Red Seal', style: 'tableHeader' }, { text: 'Comments', style: 'tableHeader' }], ['', '', '', '', '']];
 
         };
-        this.processADataTableResponseArray(arrApprovedSupplierTbl, 20, 10, 15);
+        var arrOfColumnWidths = [20,20,20,20,20];
+        this.processADataTableResponseArray(arrApprovedSupplierTbl, arrOfColumnWidths, 10, 15);
     };
 
     this.addRevisionTable = function () {
@@ -863,9 +885,11 @@ function docProcessor(garmentProduct) {
                 arrOfColumnWidths.push(numOfReaminingRoomPerColumn);
                 z++;
             };
-            this.doc.setFontSize(8);
+            //this.doc.setFontSize(8);
+            this.setLastFontSizeAndChangeToNewFontSize(8);
             this.processTextUsingCurrentXandYPosition(strHeaderValue);
-            this.doc.setFontSize(6);
+            this.returnToLastFontSize();
+            //this.doc.setFontSize(6);
             this.yPosition += 20;
             //this.xPosition += this.xMarginReset;
             //have the function below if one of the params is an array and then process that differently
@@ -936,7 +960,7 @@ function docProcessor(garmentProduct) {
         var selector = '#markerLayoutImagesSubDiv img';
         this.processAnImageWithATitleInHeaderValue(selector);
     };
-
+    this.currentColorwayBom = '';
     this.addColorwaysDivTables = function () {
         var arrOfColorwayBoms = [];
         if ($('#colorwaysDiv table').length) {
@@ -953,19 +977,29 @@ function docProcessor(garmentProduct) {
             for (var i = 0; i < arrOfColorwayBoms.length; i++) {
                 var objCurrent = arrOfColorwayBoms[i];
                 if (i == 0) {
+                    //this.processTextUsingCurrentXandYPosition(objCurrent.name);
                     this.addPageAndReset();
                 };
-                this.doc.setFontSize(30);
+                /*this.doc.setFontSize(30);
                 if (objCurrent.name > 40) {
                     this.doc.setFontSize(20);
-                };
-                this.processTextUsingCurrentXandYPosition(objCurrent.name);
+                };*/
+                
                 this.doc.setFontSize(6);
                 this.yPosition += 10;
                 
 
                 //this.processADataTableResponseArray(objCurrent.array, 20, 10, 15);
-                this.processColorwayDataTableResponseArray(objCurrent.array, 7, 28);
+                //var bomName = objCurrent.name;
+                var var1 = 7;
+                var var2 = 28;
+                if (i == (arrOfColorwayBoms.length - 1)) {
+                    this.processColorwayDataTableResponseArray(objCurrent, var1, var2,true);
+                }
+                else {
+                    this.processColorwayDataTableResponseArray(objCurrent, var1, var2,false);
+                };
+               
                 //this.processADataTableResponseArray()
             };
 
@@ -1098,7 +1132,12 @@ function docProcessor(garmentProduct) {
         var curr_year = d.getFullYear();
         var dateForStuff = m_names[curr_month] + '-' + curr_date + '-' + curr_year;
         var numContentBreakSize = 25;
-        this.createPageOne();
+        try {
+            this.createPageOne();
+        } catch (e) {
+            console.log(e);
+        };
+        
         this.yPosition += numContentBreakSize;
 
         var numMidPointOfPageOne = this.yPosition;

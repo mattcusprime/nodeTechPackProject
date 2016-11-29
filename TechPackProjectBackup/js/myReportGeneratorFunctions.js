@@ -75,6 +75,10 @@ var cwayReportTableOptions = {
 	'responsive' : false,
 	'pageLength' : 100,
 	'dom': strDomString,
+	'columnDefs': [{
+	    'targets': [0, 1],
+	    'orderData': [0, 1]
+	}],
 	'buttons' : arrButtonsNoButtons
 };
 var colorwayBomTableOptions = {
@@ -240,7 +244,8 @@ function createRelatedProductsDiv(objCurrentGarmentProduct) {
 	var strSpecsDivString = appendBootStrapDivPage('relationships', 1);
 	var strTableString = '<h1>Product Relationships</h1><table class="table" id="tblRelationships"><tr><th>Relationship</th><th>Product</th></tr><tbody>';
 	if ( typeof (objCurrentGarmentProduct.colorwayProduct) != 'undefined') {
-		strTableString = strTableString + "<tr><td>Colorway Product</td><td>" + objCurrentGarmentProduct.colorwayProduct.name + "</td></td>";
+	    strTableString = strTableString + "<tr><td>Colorway Product</td><td>" + objCurrentGarmentProduct.colorwayProduct.name + "</td></td>";
+
 	};
 	if ( typeof (objCurrentGarmentProduct.patternProduct) != 'undefined') {
 		strTableString = strTableString + "<tr><td>Pattern Product</td><td>" + objCurrentGarmentProduct.patternProduct.name + "</td></td>";
