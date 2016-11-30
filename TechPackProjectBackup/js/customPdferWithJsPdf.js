@@ -158,7 +158,9 @@ function docProcessor(garmentProduct) {
             var strIterString = arrayOfCells[i];
             var objText = this.doc.getTextDimensions(strIterString);
             numTextHeight = objText.h;
-            var numOfTiers = Math.floor(strIterString.length / numLengthToCheck) + 1;
+            var arrOfSplitted = this.doc.splitTextToSize(strIterString,numLengthToCheck);
+            //var numOfTiers = Math.floor(strIterString.length / numLengthToCheck) + 1;
+            var numOfTiers = arrOfSplitted.length;
             if (numOfTiers > greatestHeight) {
                 greatestHeight = numOfTiers;
             };
@@ -177,7 +179,9 @@ function docProcessor(garmentProduct) {
             var strIterString = arrayOfCells[i];
             //var numTextWidth = this.doc.getTextWidth(strIterString);
             //numTextHeight = objText.h;
-            var numOfRows = Math.floor(strIterString.length / numWidthToCheck) + 1;
+            var arrOfSplitted = this.doc.splitTextToSize(strIterString,numWidthToCheck);
+            //var numOfRows = Math.floor(strIterString.length / numWidthToCheck) + 1;
+            var numOfRows = arrOfSplitted.length;
             if (numOfRows > greatestWidth) {
                 greatestWidth = numOfRows;
             };
@@ -216,8 +220,8 @@ function docProcessor(garmentProduct) {
             };
         }
     };
-
-    this.processTextUsingCurrentXandYPositionTable = function (funcText, yOffset, numMaxCharacters, numLineChangeRatio, xOffSetToUse, furthestY, boolDrawLastRightBorder,boolDrawFinalUnderLine) {
+    this.lastLineRanY = this.yMarginReset;
+    this.processTextUsingCurrentXandYPositionTable = function (funcText, yOffset, numMaxCharacters, numLineChangeRatio, xOffSetToUse, furthestY) {
         
         try {
             funcText = decodeURIComponent(funcText);
@@ -225,7 +229,7 @@ function docProcessor(garmentProduct) {
             console.log(e);
         };
         //regex to replace only double spaces or longer 
-        funcText = funcText.replace(/  +/g, ' ');
+        //funcText = funcText.replace(/  +/g, ' ');
         //regex to replace only double spaces or longer 
         var arrOfStrings = [];
         if (typeof (numMaxCharacters) == 'undefined') {
@@ -240,7 +244,7 @@ function docProcessor(garmentProduct) {
         var numBeginStringAt = 0;
         var numFunctTextLength = funcText.length;
         var numOfArguments = arguments.length;
-        var numOfLoopIterations = Math.floor(numFunctTextLength / numMaxCharacters) + 1;
+        //var numOfLoopIterations = Math.floor(numFunctTextLength / numMaxCharacters) + 1;
         var numFuncOffset = yOffset;
         //var numRunningfOffset = 0;
         //var numLineChangeRatio = 0.25
@@ -272,6 +276,7 @@ function docProcessor(garmentProduct) {
         //var initialLinePositionForY = this.furthestYPosition;
 
         var arrTextSplitted = this.doc.splitTextToSize(funcText, numMaxCharacters);
+        var numOfLoopIterations = arrTextSplitted.length;
         //console.log('arrTextsplitted \n');
         //console.log(arrTextSplitted);
 
@@ -318,21 +323,42 @@ function docProcessor(garmentProduct) {
         //var initialLineX2 = initialLineX - numXOffestBack
         //var initialLinePositionForY2 = this.yPosition + furthestY + numHeight;
         //var initialLinePositionForY2 = initialLinePositionForY + furthestY * (numOfLoopIterations + 1);
-        var initialLinePositionForY2 = initialLinePositionForY + (furthestY * (numOfLoopIterations + 1.2));
+        //var initialLinePositionForY2 = initialLinePositionForY + (furthestY * (numOfLoopIterations + 1.2));
+        //var initialLinePositionForY2 = initialLinePositionForY + (furthestY * numOfLoopIterations);
+        var initialLinePositionForY2 = initialLinePositionForY + furthestY;
         //var initialLinePositionForY2 = initialLinePositionForY - furthestY;
-        this.doc.setLineWidth(0.8);
+        this.doc.setLineWidth(0.6);
         //horizontal 1
-        this.doc.line(initialLineX, initialLinePositionForY, secondLineX, initialLinePositionForY);
-        //horizontal 2
-        if (boolDrawFinalUnderLine) {
-            this.doc.line(secondLineX, initialLinePositionForY2, secondLineX, initialLinePositionForY2);
+
+        //needed to go back
+        //this.doc.line(initialLineX, initialLinePositionForY, secondLineX, initialLinePositionForY);
+        //needed to go back
+
+        this.lastLineRan = {
+            x1:initialLineX,
+            x2:secondLineX,
+            y1:initialLinePositionForY,
+            y2:initialLinePositionForY,
+            ran:true
         };
-        this.doc.setLineWidth(0.15);
+        //this.doc.setLineWidth(0.15);
+        
+        //needed to go back
+        //this.doc.line(initialLineX, initialLinePositionForY, initialLineX, initialLinePositionForY2);
+        //this.doc.line(secondLineX, initialLinePositionForY, secondLineX, initialLinePositionForY2);
+        //needed to go back
+
+        
+        //horizontal 2
+        /*if (boolDrawFinalUnderLine) {
+            this.doc.line(secondLineX, initialLinePositionForY2, secondLineX, initialLinePositionForY2);
+        };*/
+       
         //vertical 1
-        this.doc.line(initialLineX, initialLinePositionForY, initialLineX, initialLinePositionForY2);
+        
         //this.doc.line(initialLineX, initialLinePositionForY2, initialLineX, this.furthestYPosition);
         //vertical 2
-        if (boolDrawLastRightBorder) {
+        /*if (boolDrawLastRightBorder) {
             var edgeX = this.doc.internal.pageSize;
             var numEdge = edgeX.width - this.xMarginReset;
             if (secondLineX > numEdge) {
@@ -342,7 +368,7 @@ function docProcessor(garmentProduct) {
                 this.doc.line(numEdge, initialLinePositionForY, numEdge, initialLinePositionForY2);
             };
             //this.doc.line(this.xMarginReset, initialLinePositionForY2, secondLineX, initialLinePositionForY2);
-        };
+        };*/
 
 
 
@@ -371,7 +397,7 @@ function docProcessor(garmentProduct) {
 
         funcText = decodeURIComponent(funcText);
         //regex to replace only double spaces or longer 
-        funcText = funcText.replace(/  +/g, ' ');
+        //funcText = funcText.replace(/  +/g, ' ');
         //this.doc.setFont("helvetica");
         this.doc.setFontType("bold");
         this.doc.setTextColor(0, 0, 0);
@@ -516,8 +542,8 @@ function docProcessor(garmentProduct) {
     this.footer = function () {
 		
     };
-    this.furthestYPosition = 0;
-    this.furthestXPosition = 0;
+    this.furthestYPosition = this.yMarginReset;
+    this.furthestXPosition = this.xMarginReset;
     this.previousFurthestXPosition = 0;
     this.previousFurthestYPosition = 0;
     this.resetPreviousPositions = function () {
@@ -531,7 +557,7 @@ function docProcessor(garmentProduct) {
     		//imgBase64DevImage
     		this.doc.addImage(imgBase64DevImage, 'PNG', 0, 0, this.doc.internal.pageSize.width, this.doc.internal.pageSize.height, 'fast');
     	};
-    	this.furthestYPosition = 0;
+    	this.furthestYPosition = this.yMarginReset;
         this.resetPreviousPositions();
         this.footer();
         this.doc.addPage();
@@ -643,7 +669,8 @@ function docProcessor(garmentProduct) {
         var R3 = 0;
         var G3 = 0;
         var B3 = 0;
-        var yOffsetPerLineForRectangle = yOffsetPerLine;
+        //var yOffsetPerLineForRectangle = yOffsetPerLine;
+        var numOffset = 0;
         var rowCounter = 0;
         var numPageHeight = this.doc.internal.pageSize.height;
         var numPageWidth = this.doc.internal.pageSize.width;
@@ -673,7 +700,8 @@ function docProcessor(garmentProduct) {
         };*/
         for (var i = 0; i < arrayToProcess.length; i++) {
             //var lastRowWasEvenOrOdd = 'even';
-            if ((this.yPosition + yOffsetPerLine) > numPageHeight) {
+            //if ((this.yPosition + yOffsetPerLine) > numPageHeight) {
+            if ((this.yPosition + numOffset) > numPageHeight) {
                 boolResetToNewPage = true;
                 this.addPageAndReset();
             };
@@ -741,6 +769,9 @@ function docProcessor(garmentProduct) {
                 //variables created to work with text height but maybe just the formula can work
                 var strLongestString = '';
                 var numInitialYPosition = this.yPosition;
+                var numInitialXPosition = this.xPosition;
+                var arrOfXes = [];
+                arrOfXes.push(numInitialXPosition);
                 //variables created to work with text height but maybe just the formula can work
                 for (var j = 0; j < arrNormalRow.length; j++) {
 
@@ -761,7 +792,7 @@ function docProcessor(garmentProduct) {
                     var numOfCharactersToFitInColumn = samplerString2.length - 1;
                     var numMinorOffset = 2;
                     numOfCharactersToFitInColumn -= numMinorOffset;
-                    strTextToGet = strTextToGet.replace(/\s\s+/g, ' ');
+                    //strTextToGet = strTextToGet.replace(/\s\s+/g, ' ');
                     function checkForSpaceAndCallMe(text, index) {
                         while (text[index] != ' ' && index < text.length - 1) {
                             index = index + 1;
@@ -796,7 +827,10 @@ function docProcessor(garmentProduct) {
                         };
                         //var numRectangleHeight = numOfWrapRows * (textHeight / 2);
                         var numRectangleHeight = numOfWrapRows * textHeight;
-                        this.currentRectangleHeight = numRectangleHeight;
+                        if(numRectangleHeight > this.currentRectangleHeight){
+                            this.currentRectangleHeight = numRectangleHeight;
+                        };
+                        
                         //var numRectangleHeight =
                         this.previousFurthestYPosition = this.furthestYPosition;
 
@@ -822,7 +856,6 @@ function docProcessor(garmentProduct) {
 
                     };
                     
-                    //this.processTextUsingCurrentXandYPositionTable(strTextToGet, yOffsetPerLine, numMaxCharacterLength, numLineRatio);
                     var boolCheckForLastUnderLine = false;
                     if ((this.yPosition + yOffsetPerLine) > numPageHeight || i == arrayToProcess.length - 1) {
                         boolCheckForLastUnderLine = true;
@@ -833,43 +866,88 @@ function docProcessor(garmentProduct) {
                     };
 
 
-                    this.processTextUsingCurrentXandYPositionTable(strTextToGet, yOffsetPerLine, numOfCharactersToFitInColumn, numLineRatio, numStaticXToUseForOffset, this.currentRectangleHeight, boolCheckForLastBorder, boolCheckForLastUnderLine);
-                    //this.processTextUsingCurrentXandYPositionTable()
+                    this.processTextUsingCurrentXandYPositionTable(strTextToGet, yOffsetPerLine, numOfCharactersToFitInColumn, numLineRatio, numStaticXToUseForOffset, this.currentRectangleHeight);
+                    
                     //draw!
                     
 
                     this.xPosition += numStaticXToUseForOffset;
+                    arrOfXes.push(this.xPosition);
                     if (j == arrNormalRow.length - 1) {
                         var numLongestCharacter = 0;
+                        //var longestString = '';
                         for (var k = 0; k < arrNormalRow.length; k++) {
                             if (numLongestCharacter < arrNormalRow[k].length) {
                                 numLongestCharacter = arrNormalRow[k].length;
+                                //longestString = arrNormalRow[k];
                             };
                         };
-                        var numHeightOfLargestCell = Math.floor(numLongestCharacter / numMaxCharacterLength) + 1;
+                        var arrOfText = this.doc.splitTextToSize(strLongestString,numMaxCharacterLength);
+                        //var numHeightOfLargestCell = Math.floor(numLongestCharacter / numMaxCharacterLength) + 1;
+                        var numHeightOfLargestCell = arrOfText.length;
                         var objText = this.doc.getTextDimensions(strLongestString);
-                        var numTextCreatedOffset = objText.h;
-                        var numOffset;
-                        
+                        //var numTextCreatedOffset = objText.h;
+                        var numTextCreatedOffset = this.doc.internal.getLineHeight();
+                        //var numOffset;
+                        numOffset = numHeightOfLargestCell * numTextCreatedOffset;
 
 
-                        if (numTextCreatedOffset > yOffsetPerLine) {
+                        /*if (numTextCreatedOffset > yOffsetPerLine) {
                             numOffset = numTextCreatedOffset * numHeightOfLargestCell;
                         }else if (strLongestString.length == 0) {
                             numOffset = yOffsetPerLine;
                         }else {
                             numOffset = yOffsetPerLine * numHeightOfLargestCell;
-                        };
+                        };*/
                         //var initialPosition = this.yPosition;
+                        if(numOffset == 0){
+                            //this.yPosition += yOffsetPerLine;
+                            numOffset = this.doc.internal.getLineHeight();
+                        };
                         this.yPosition += numOffset;
+                        for(var t = 0; t < arrOfXes.length;t++){
+                            var currentX =  arrOfXes[t];
+                            var next = t + 1;
+                            var nextX = arrOfXes[next];
+                            if(next < arrOfXes.length){
+                                var width = nextX - currentX;
+                                var height;
+
+                                if(this.furthestYPosition > this.yPosition){
+                                    height = numInitialRowiY - this.furthestYPosition;
+                                }else{
+                                    height = numInitialRowiY - this.yPosition;
+                                };
+                                //height = numInitialRowiY - this.yPosition;
+
+                                //doc.rect(x,y,w,h,style);
+                                //this.doc.rect(currentX,this.yPosition,width,height);
+
+                                //need to add height here to numInitialRow
+                                this.doc.rect(currentX - 3,numInitialRowiY + height + 3,width,height * -1);
+                                //this.doc.rect(currentX,this.furthestYPosition + height,width,height);
+
+                            }
+                            else{
+                                
+                            }
+
+                        };
+
+
                         //drawing things
                         //this.drawFullPageLineAtFurthestYposition();// this works
 
                         //this.drawRectFromPrevious();
 
                         //drawing things
+
+                        //this.doc.line(initialLineX, initialLinePositionForY, secondLineX, initialLinePositionForY);
+                        //this.doc.line(numInitialXPosition, this.yPosition, this.xPosition, this.yPosition);
+                        //this.doc.line(numInitialXPosition, numInitialYPosition, this.xPosition, numInitialYPosition);
                         numLastNumOffset = numOffset;
                         this.resetXbutSpecifyY(this.yPosition);
+                        
                     };
 
                 };
@@ -1150,7 +1228,7 @@ function docProcessor(garmentProduct) {
                 var arrOfColumnWidths = [65, 40, 20, 15, 35, 20, 20, 25, 20, 25];
 
                 //this.processADataTableResponseArray(objCurrent.array, 20, 10, 15);
-                this.processADataTableResponseArray(objCurrent.array, arrOfColumnWidths, 5, 35);
+                this.processADataTableResponseArray(objCurrent.array, arrOfColumnWidths, 7, 40);
                 
                     //this.processADataTableResponseArray()
                 } catch (e) {
@@ -1206,8 +1284,9 @@ function docProcessor(garmentProduct) {
 
                 //this.processADataTableResponseArray(objCurrent.array, 20, 10, 15);
                 //var bomName = objCurrent.name;
-                var var1 = this.tableLineHeight;
-                var var2 = 28;
+                //var var1 = this.tableLineHeight;
+                var var1 = 7;
+                var var2 = 45;
                 if (i == (arrOfColorwayBoms.length - 1)) {
                     //this.processColorwayDataTableResponseArray()
                     this.processColorwayDataTableResponseArray(objCurrent, var1, var2,true);
