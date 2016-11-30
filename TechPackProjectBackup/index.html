@@ -225,7 +225,6 @@
             //http://wsflexappdev2v/Windchill/servlet/IE/tasks/com/lcs/wc/measurements/FindMeasurements.xml?oid=VR%3Acom.lcs.wc.measurements.LCSMeasurements%3A2394285&instance=net.hbi.res.wsflexappdev1v.windchillAdapter
             //http://wsflexappdev2v/Windchill/servlet/IE/tasks/com/lcs/wc/construction/FindConstructionInfo.xml?oid=VR%3Acom.lcs.wc.construction.LCSConstructionInfo%3A2710813&instance=net.hbi.res.wsflexappdev1v.windchillAdapter
             //infoengines
-            //var strReportUrlPrefixStealer = strReportsXmlUrl.substring(0, strReportsXmlUrl.indexOf('Windchill/'));
             //begin code for type ahead in g prod form
             //use below for prd
             var url = location.href;
@@ -246,17 +245,11 @@
             var strLinkMidTag = '">';
             var strLinkCloseTag = '</a>';
             var gProdQueryURL;
-            // = strUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/invokeAction?oid=OR%3Awt.query.template.ReportTemplate%3A4711650&action=ProduceReport&u8=1'
             var returnArrays;
             var arrOfAttributeValueListIds = ['16699146', '16699175', '2377385', '2378941', '10661752', '2381876'/*Prod Only*/, '102771', '2381693'/*Prod Only*/, '368058', '100575', '368793'/*Maybe Dev Only.*/, '406136', '406161', '1333792', '17429704'];
-            //var arrOfAttributeValueListIds = ['2381876', '102771', '2381693', '17436676', '100575'];
             var strCurrentEnvironment = window.location.href;
             var numIndexOfWindChill = strCurrentEnvironment.indexOf('Windchill');
             strUrlPrefix = strCurrentEnvironment.substring(0, numIndexOfWindChill);
-            /*if (strCurrentEnvironment.indexOf('plmqa.hanes') != -1) {
-             arrOfAttributeValueListIds = ['2381876', '102771', '2381693', '17436676', '100575'];
-             strUrlPrefix = 'https://plmqa.hanes.com/';
-             };*/
             var objParsedObject = {};
             objParsedObject = $.parseParams(strCurrentEnvironment.split('?')[1] || '');
             console.log(objParsedObject);
@@ -264,84 +257,58 @@
                 originalNavBar = $('#navbar *').html();
                 $('#runNew,.clearThisComponentOnNewGarmentLoad,nav').hide();
                 $('#loadingInfo').parent().hide();
-                //getReportsFromXmlFunction(strReportsXmlUrl);
-                //document.getElementById('fileinput').addEventListener('change', readSingleFile, false);
-                $.prettyLoader();
-                //var urlChecker = location.href;
-                //console.log(urlChecker);
-                //window.open(strUrlPrefix);
+                //$.prettyLoader();
+                $.prettyLoader({
+                    animation_speed: 'slow', /* fast/normal/slow/integer */
+                    bind_to_ajax: true, /* true/false */
+                    delay: 200, /* false OR time in milliseconds (ms) */
+                    offset_top: 13, /* integer */
+                    offset_left: 10 /* integer */
+                });
                 getLogin(arrOfAttributeValueListIds, currentGarmentProduct, arrMasterReportIndexer);
-                /*applyTypeAheadToElement(gProdQueryURL, '#gProd', 'Garment_Product_Name');
-                 currentGarmentProduct.getMyValueLists(arrOfAttributeValueListIds, currentGarmentProduct);*/
                 $('#garmentProd').submit(function (e) {
                     e.preventDefault();
                     var nameToUse = $('#gProd').val();
                     if (arrGarmentProductsArrayForTypeAhead.indexOf(nameToUse) != -1) {
-
                         //http://wsflexwebprd1v.res.hbi.net/Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?
-                        //&oid=OR%3Awt.query.template.ReportTemplate%3A7360149&action=ExecuteReport
-
-
                         $('#garmentFormContainer').fadeOut();
                         $('.clearThisComponentOnNewGarmentLoad *').remove();
                         $('#runNew,.clearThisComponentOnNewGarmentLoad').fadeIn();
-                        //$('#runNew,.clearThisComponentOnNewGarmentLoad,nav,li').fadeIn();
                         localStorage.setItem('lastGarmentRan', nameToUse);
-                        //currentGarmentProduct.getSpecByName(strUrlPrefix, nameToUse, currentGarmentProduct.thenCallSpecs, returnArrays, currentGarmentProduct);
                         currentGarmentProduct.getSpecByNameButNotJustActiveSpec(strUrlPrefix, nameToUse, currentGarmentProduct.thenCallSpecs, returnArrays, currentGarmentProduct);
                         //replacing old version that just grabbed active spec and switching to version that will serve up
                         //all seasons and specs
                     }
-                        /* else{
-						 var arrOfPossibleOptions = [];
-						 for(var i = 0; i < arrGarmentProductsArrayForTypeAhead.length;i++){
-						 var strCurrentStringFromType = arrGarmentProductsArrayForTypeAhead[i];
-						 if (strCurrentStringFromType.indexOf(nameToUse) != -1) {
-						 arrOfPossibleOptions.push(strCurrentStringFromType);
-						 };
-
-						 };
-						 console.log(arrOfPossibleOptions);
-						 };*/
                     else {
                         $('#gProd').val('');
                         $('#gProd').focus();
                         $('#garmentHeader').append('<p class="clearThisComponentOnNewGarmentLoad" id="noGarment">' + nameToUse + ' is not in the list of valid choices for a garment product.  Please use the typeahead to select a valid option.</p>')
                         $('#noGarment').delay(2500).fadeOut();
                     }
-
                 });
                 $('#fileinput').on("change", function (e) {
                     readSingleFile(e, currentGarmentProduct);
                     $('#garmentFormContainer').fadeOut();
                     $('#runNew,.clearThisComponentOnNewGarmentLoad').fadeIn();
-
                 });
-                //invoke prettyloader
-
-                //invoke prettyloader
                 makeMeSCrollSlow();
                 checkStorageFor('lastGarmentRan', '#gProd');
                 $('#loadLastGarmentProduct').click(function () {
                     var strGarmentProdString = localStorage.getItem('garmentProductString');
                     if (typeof (strGarmentProdString) != 'undefined') {
                         currentGarmentProduct = JSON.parse(strGarmentProdString);
-                        //currentGarmentProduct.thenCallSpecs(returnArrays, currentGarmentProduct);
                         console.log(currentGarmentProduct);
                     };
                 });
                 $('#fromSaved').click(function () {
                     currentGarmentProduct.saveMe();
-
                 });
-
                 $('#garmentFormContainer,#runNew').hide();
                 $('#usr').focus();
                 if (typeof (localStorage.getItem('mattAppUser')) != 'undefined' && typeof (localStorage.getItem('mattAppPass')) != 'undefined') {
                     $('#usr').val(localStorage.getItem('mattAppUser'));
                     $('#pwd').val(localStorage.getItem('mattAppPass'));
                 };
-                //$('<div class="page"><div class="container"></div><p class=".col-md-4"></p><p class=".col-md-4">Nice isn\'t it!</p><p class=".col-md-4"></p></div>').confirm();
                 $('#exportToCsv').click(function () {
                     saveFile('#export_blocks', '#spreadReport');
                 });
@@ -350,9 +317,6 @@
         </script><!--killEndPoint-->
 
     </div>
-    <!----<button id="btnTestStuff">Use me to test things!</button>
-    <input type="text" size="50" id="offline">
-    <button id="loadLastGarmentProduct">Use me to load last Garment Prod!</button>-->
     <script>
         function makeMeScrollToDefinedTarget(strJquerySelectorTarget, numDelayTimer, offsetter) {
             var $target = $(strJquerySelectorTarget);
@@ -365,14 +329,12 @@
             $('html, body').stop().delay(numDelayTimer).animate({
                 'scrollTop': $target.offset().top + offsetter
             }, 900, 'swing', function () {
-                //window.location.hash = target;
 
             });
             if ($(strJquerySelectorTarget).find('table').length && $(strJquerySelectorTarget).find('img').length) {
                 alert('No Content was found for this item');
             };
         };
-
     </script>
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container" id="navTopDiv">
@@ -382,14 +344,11 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
-
                 </button>
                 <a id="topLeftNav" class="navbar-brand" href="#navTopDiv">Garment Spec Report Page</a>
-
             </div>
             <div id="navbar" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
-
                     <li>
                         <a href="javascript:makeMeScrollToDefinedTarget('#garmentHeader',50,-100);">Product Relationships</a>
                     </li>
@@ -426,9 +385,6 @@
                     <li id="approvedSuppliersLi">
                         <a href="javascript:makeMeScrollToDefinedTarget('#approvedSupplierDiv',50,-100);">Approved Suppliers</a>
                     </li>
-
-
-                    <!--<li><a href="javascript:convertImages();">Convert Images</a></li>-->
                     <li id="runNew">
                         <a href='javascript:runNewProduct(currentGarmentProduct);'>Run a New Product</a>
                     </li>
@@ -443,13 +399,7 @@
                     <li>
                         <a id="complianceReport" href="" target="_blank">Compliance Report</a>
                     </li>
-                    <!--<li><a href="javascript:pdfPage(currentGarmentProduct);">Post Spec</a></li>-->
-                    <!-- <li><a href='javascript:pdfFromHtml("specs");'>PDF</a></li>
-                    <li class="active"><a href="#">Top</a></li>
-                    <li><a href="#about">Help</a></li>
-                    <li><a href="#contact">Contact</a></li>-->
                 </ul>
-
             </div>
         </div>
     </nav>
@@ -461,7 +411,6 @@
     <br>
     <br>
     <br>
-
     <div class="container-fluid" id="garmentFormContainer">
         <div class="col-md-10 starter-template row">
             <form id="garmentProd">
@@ -469,7 +418,6 @@
                 <input class=".col-md-4" type="text" name="Product Name" size="50" id="gProd" placeholder="Enter Garment Product">
                 <input class=".col-md-4" type="submit">
                 <!--<input id="fileinput" type="file" class=".col-md-offset-4 .col-md-4 .col-md-offset-4 filestyle" data-classbutton="btn btn-primary" data-input="false" data-classicon="icon-plus" data-buttontext="Load Garment From File">-->
-
             </form>
         </div>
     </div>
@@ -478,7 +426,6 @@
     <br>
     <div class="page" id="max">
         <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="frontBackImages">
-
         </div>
     </div>
     <div class="page">
@@ -486,144 +433,90 @@
             <h3 class="col-md-offset-4 col-md-4">Acquiring Product List.</h3>
         </div>
     </div>
-
     <div class="page">
         <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="seasonSpecSelection">
-
         </div>
     </div>
     <div class="page">
         <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="generalAttributes">
-
         </div>
     </div>
-    
-    
-
     <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="garmentHeader">
-
     </div>
-
     <div class="page">
         <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="prodRevisionDiv">
-
         </div>
-        <!-- container -->
     </div>
     <div class="page">
         <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="sizeTableDiv">
-
         </div>
-        <!-- container -->
     </div>
-    <!-- /.container -->
-
     <div class="page">
         <div id="measurementDiv" class="container-fluid clearThisComponentOnNewGarmentLoad">
-
         </div>
-        <!-- container -->
     </div>
     <div class="page">
         <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="measurementImages">
-
         </div>
     </div>
-
     <div class="page">
         <div id="constructionDiv" class="container-fluid clearThisComponentOnNewGarmentLoad">
-
         </div>
-        <!-- container -->
     </div>
-
     <div class="page">
         <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="constructionDetailsImages">
-
         </div>
     </div>
-
     <div class="page">
         <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="placementImages">
-
         </div>
     </div>
     <div class="page">
         <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="markerLayoutImages">
-
         </div>
     </div>
-
-   
     <div class="page">
         <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="colorwaysListDiv">
-
         </div>
     </div>
-
     <div class="page">
         <div id="colorwaysDiv" class="container-fluid clearThisComponentOnNewGarmentLoad">
-
         </div>
-        <!-- container -->
     </div>
-
     <div class="page">
         <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="approvedSupplierDiv">
-
         </div>
-        <!-- container -->
     </div>
     <div class="page">
         <div id="routingBomDiv" class="container-fluid clearThisComponentOnNewGarmentLoad">
-
         </div>
-        <!-- container -->
     </div>
-
     <div class="page">
         <div id="sewBomDiv" class="container-fluid clearThisComponentOnNewGarmentLoad">
-
         </div>
-        <!-- container -->
     </div>
-
     <div class="page">
         <div id="sourceBomDiv" class="container-fluid clearThisComponentOnNewGarmentLoad">
-
         </div>
-        <!-- container -->
     </div>
-
     <div class="page">
         <div id="labelsDiv" class="container-fluid clearThisComponentOnNewGarmentLoad">
-
         </div>
-        <!-- container -->
     </div>
-
     <div class="page">
         <div id="blockWeightSpreadDiv" class="container-fluid clearThisComponentOnNewGarmentLoad">
-
         </div>
-        <!-- container -->
     </div>
-
     <div class="page">
         <div id="blockWeightTrimDiv" class="container-fluid clearThisComponentOnNewGarmentLoad">
-
         </div>
-        <!-- container -->
     </div>
-
     <div class="page">
         <div id="developmentImages" class="container-fluid clearThisComponentOnNewGarmentLoad">
-
         </div>
     </div>
     <div class="page">
         <div id="imagesDiv" class="container-fluid clearThisComponentOnNewGarmentLoad">
-
         </div>
     </div>
 </body>

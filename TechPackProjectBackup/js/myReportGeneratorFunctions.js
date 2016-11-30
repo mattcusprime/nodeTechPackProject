@@ -417,6 +417,7 @@ function applyTypeAheadToElement(strFunctionUrl, strJquerySelector, arrDataDocum
 			displayKey : 'value',
 			source : substringMatcher(arrGarmentProductsArrayForTypeAhead)
 		});
+		$('#loadingInfo').parent().fadeIn();
 		$(strJquerySelector).focus();
 	});
 
@@ -504,52 +505,30 @@ function getLogin(arrAttributeValueListArray, objCurrentGarmentProduct, arrRepor
 	var strInput2 = '<input id="pwd" placeholder="Password" type="password" name="password"></input>';
 	var strInput3 = '<button class="closer">Close Application</button>';
 	var strInput4 = strInput1 + strInput2;
-	// + strInput3;
 	var strReportsXmlSuffix = 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/invokeAction?oid=OR%3Awt.query.template.ReportTemplate%3A12143436&action=ProduceReport&u8=1'
 	var strCacheReportUrl;
-
 	var strUrlPrefixWithPass;
-
-	$(strInput4).confirm(function(e) {
-
+	$(strInput4).confirm(function (e) {
+	//$('document').ready(function () {
 		$('#loadingInfo').parent().fadeIn();
-
-		//e.preventDefault();
 		var strUser = $('#usr').val();
 		var strPwd = $('#pwd').val();
 		localStorage.setItem('mattAppUser', strUser);
 		localStorage.setItem('mattAppPass', strPwd);
-		//strUrlPrefixWithPass = 'https://' + strUser + ':' + strPwd + '@wsflexwebprd1v.res.hbi.net/'
-		//strUrlPrefixWithPass = 'https://' + strUser + ':' + strPwd + '@plmqa.hanes.com/'
-		//strUrlPrefixWithPass = 'https://wsflexwebprd1v.res.hbi.net/';
 		strUrlPrefixWithPass = 'http://' + strUser + ':' + strPwd + '@wsflexwebprd1v.res.hbi.net/'
-		//strUrlPrefixWithPass = 'https://@plmqa.hanes.com/';
 		var strCurrentEnvironment = window.location.href;
-		//if (strCurrentEnvironment.indexOf('wsflexappdev2v') != -1) {
-		//arrOfAttributeValueListIds = ['2381876', '102771', '2381693', '17436676', '100575'];
-		//strUrlPrefixWithPass = 'https://plmqa.hanes.com/';
-		//    strUrlPrefixWithPass = 'http://' + strUser + ':' + strPwd + '@wsflexappdev2v/';
-		//};
 		var strCurrentEnvironment = window.location.href;
 		var numIndexOfWindChill = strCurrentEnvironment.indexOf('Windchill');
 		strUrlPrefixWithPass = strCurrentEnvironment.substring(0, numIndexOfWindChill);
-
 		strReportsXmlUrl = strUrlPrefixWithPass + strReportsXmlSuffix;
-		//condition to use cached file using global objParsedObject
-		//var voteable = (age < 18) ? "Too young":"Old enough";
 		var numReportCheck = typeof (objParsedObject.report);
 		strCacheReportUrl = (numReportCheck != 'undefined') ? strReportsXmlUrl : 'cachedReports.xml';
 		if (window.location.href.indexOf('wsflexwebprd1v') != -1) {
 			strCacheReportUrl = 'prodCachedReports.xml';
 		};
-
-		//condition to use cached file
-		//$.get(strReportsXmlUrl, function (data)c { }).done(function (data) {
 		var strBase64 = btoa(strUser + ":" + strPwd);
 		$.ajax({
-			//url: strReportsXmlUrl,
 			url : strCacheReportUrl,
-			//headers:['Access-Control-Allow-Origin'],
 			crossDomain : true,
 			xhrFields : {
 				withCredentials : true
@@ -559,7 +538,6 @@ function getLogin(arrAttributeValueListArray, objCurrentGarmentProduct, arrRepor
 				xhr.setRequestHeader("Authorization", "Basic " + strBase64, 'Access-Control-Allow-Origin');
 			}
 		}).done(function(data) {
-
 			$('row', data).each(function() {
 				var strObjectId = $(this).find('report').attr('objectId');
 				var strReportName = $(this).find('report').text();
@@ -568,24 +546,20 @@ function getLogin(arrAttributeValueListArray, objCurrentGarmentProduct, arrRepor
 				if (arrReportsThatIRun.indexOf(objMasterReportObject[strReportName]) != -1) {
 					console.log(objMasterReportObject);
 				};
-
 			});
-
 		}).done(function() {
 			var gProdQueryUrlObjectId = getMyReportIdFromReportName('Garment Products For Typeahead');
 			gProdQueryURL = strUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/invokeAction?oid=OR%3Awt.query.template.ReportTemplate%3A' + gProdQueryUrlObjectId + '&action=ProduceReport&u8=1';
-			//condition to use cached file using global objParsedObject
-			//var voteable = (age < 18) ? "Too young":"Old enough";
 			var numGprodCheck = typeof (objParsedObject.product);
 			var prodQueryCachedUrl;
 			prodQueryCachedUrl = (numGprodCheck == 'undefined') ? gProdQueryURL : 'cachedGarmentProducts.xml';
-			//condition to use cached file
 			applyTypeAheadToElement(prodQueryCachedUrl, '#gProd', 'Garment_Product_Name');
+
 			currentGarmentProduct.getMyValueLists(strUrlPrefixWithPass, arrAttributeValueListArray, objCurrentGarmentProduct);
+
 			$('#loadingInfo').parent().fadeOut().delay(500);
 			$('#garmentFormContainer').fadeIn();
 		});
-
 	});
 };
 
@@ -598,16 +572,13 @@ function runNewProduct(wipeThisGarmentProductOut) {
 		};
 	};
 	$('#runNew,.clearThisComponentOnNewGarmentLoad,nav').fadeOut();
-	//$('#navbar').html(originalNavBar);
 	$('#garmentFormContainer').fadeIn();
 	$('#gProd').val('').focus();
 
 };
 /*
  Step 1 In your html file, add a Input tag block like below:
-
  <input id="export_file" type="file" nwsaveas style="display:none" nwworkingdir=""/>
-
  Step 2 Add a new function in your javascript file like below:
  */
 function saveFile(name, tableDataSourceElementId) {

@@ -170,6 +170,24 @@ function docProcessor(garmentProduct) {
         
     };
 
+    this.parseThroughAndSetGreatestWidthOfRow = function (arrayOfCells, numWidthToCheck) {
+        var greatestWidth = 1;
+        var numTextHeight = 0;
+        for (var i = 0; i < arrayOfCells.length; i++) {
+            var strIterString = arrayOfCells[i];
+            //var numTextWidth = this.doc.getTextWidth(strIterString);
+            //numTextHeight = objText.h;
+            var numOfRows = Math.floor(strIterString.length / numWidthToCheck) + 1;
+            if (numOfRows > greatestWidth) {
+                greatestWidth = numOfRows;
+            };
+
+        };
+        //var totalHeight;
+        //totalHeight = greatestHeight * numTextHeight;
+        return greatestWidth;
+
+    };
     this.processTextUsingCurrentXandYPosition = function (funcText, xDeviation, yDeviation) {
         try{
         switch (arguments.length) {
@@ -199,7 +217,7 @@ function docProcessor(garmentProduct) {
         }
     };
 
-    this.processTextUsingCurrentXandYPositionTable = function (funcText, yOffset, numModulusDivisor, numLineChangeRatio) {
+    this.processTextUsingCurrentXandYPositionTable = function (funcText, yOffset, numMaxCharacters, numLineChangeRatio,xOffSetToUse,furthestY) {
         
         try {
             funcText = decodeURIComponent(funcText);
@@ -210,19 +228,19 @@ function docProcessor(garmentProduct) {
         funcText = funcText.replace(/  +/g, ' ');
         //regex to replace only double spaces or longer 
         var arrOfStrings = [];
-        if (typeof (numModulusDivisor) == 'undefined') {
-            numModulusDivisor = 25;
+        if (typeof (numMaxCharacters) == 'undefined') {
+            numMaxCharacters = 25;
         };
         var samplerString = '';
         var numSampler = 0;
-        while (numSampler < numModulusDivisor) {
+        while (numSampler < numMaxCharacters) {
             samplerString += '1';
             numSampler++;
         };
         var numBeginStringAt = 0;
         var numFunctTextLength = funcText.length;
         var numOfArguments = arguments.length;
-        var numOfLoopIterations = Math.floor(numFunctTextLength / numModulusDivisor) + 1;
+        var numOfLoopIterations = Math.floor(numFunctTextLength / numMaxCharacters) + 1;
         var numFuncOffset = yOffset;
         //var numRunningfOffset = 0;
         //var numLineChangeRatio = 0.25
@@ -234,15 +252,19 @@ function docProcessor(garmentProduct) {
         var xOffest = 0;
         var numHeight = 0;
         var initialYposition = this.yPosition;
+        this.doc.line(this.xPosition, initialYposition + 2, this.xPosition + xOffSetToUse, initialYposition + 2);
         //new wrap method
 
         var numWidthOfText = this.doc.getTextWidth(funcText);
 
         //new wrap method
+        //this.doc.line(this.xPosition, this.yPosition, this.xPosition + this.doc.getTextWidth(strSnippet), this.yPosition);
+
         while (i < numOfLoopIterations) {
-            var strSnippet = funcText.substring(numBeginStringAt, numBeginStringAt + numModulusDivisor);
+            var strSnippet = funcText.substring(numBeginStringAt, numBeginStringAt + numMaxCharacters);
             this.doc.setTextColor(0, 0, 0);
             //this.doc.text(strSnippet, this.xPosition, this.yPosition - numHeight);
+            
             this.yPosition += numHeight / 2;
 
             if (this.yPosition > this.furthestYPosition) {
@@ -253,12 +275,37 @@ function docProcessor(garmentProduct) {
             };
             this.doc.setFontType("normal");
             this.doc.setTextColor(0, 0, 0);
+
+            
+
             this.doc.text(strSnippet, this.xPosition, this.yPosition);
             var objText = this.doc.getTextDimensions(strSnippet);
             numHeight = objText.h;
-            numBeginStringAt += numModulusDivisor;
+            var lineHeightToUse = this.doc.internal.getLineHeight();
+
+            
+            //this.doc.line(this.xPosition, initialYposition - lineHeightToUse, this.xPosition + xOffSetToUse, initialYposition - lineHeightToUse);
+            
+
+            numBeginStringAt += numMaxCharacters;
             i++;
         };
+
+        //this.doc.line(this.xPosition, this.yPosition, this.xPosition + this.doc.getTextWidth(strSnippet), this.yPosition);
+        
+        //this.doc.line(this.xPosition, initialYposition - furthestY, this.xPosition + xOffSetToUse, initialYposition - furthestY);
+        //horizontal 1
+        //this.doc.line(this.xPosition, initialYposition - lineHeightToUse, this.xPosition, initialYposition - lineHeightToUse + furthestY);
+        //vertical 1
+        //this.doc.line(this.xPosition + xOffSetToUse, initialYposition - lineHeightToUse, this.xPosition + xOffSetToUse, initialYposition - lineHeightToUse + furthestY);
+        //vertical 2
+        //need to pass furthest Y
+        //this.doc.line(this.xPosition, initialYposition + furthestY, this.xPosition + xOffSetToUse, initialYposition + furthestY);
+
+        //this.doc.line(this.xPosition, this.yPosition + 2, this.xPosition + xOffSetToUse, this.yPosition + 2);
+
+        //horizontal 2 This one is good for underneath each Text 
+        
         this.yPosition = initialYposition;
     };
 
@@ -501,6 +548,7 @@ function docProcessor(garmentProduct) {
     };
     this.lastRowWasEvenOrOdd = 'even';
     this.currentMaxWrapWidth = 0;
+    this.currentRectangleHeight = 0;
     this.processADataTableResponseArray = function (arrayToProcess, xOffsetPerCell, yOffsetPerLine, numMaxCharacterLength) {
         var R1 = 240;
         var G1 = 240;
@@ -562,7 +610,9 @@ function docProcessor(garmentProduct) {
             if (i == 0 || boolResetToNewPage) {
                 var arrHeaderRow = arrayToProcess[0];
                 boolResetToNewPage = false;
-                this.drawFullPageLineAtCurrentYposition();
+
+                //this.drawFullPageLineAtCurrentYposition();
+
                 for (var j = 0; j < arrHeaderRow.length; j++) {
                     numStaticXToUseForOffset = xOffsetPerCell[j];
                     var samplerString2 = '';
@@ -621,26 +671,50 @@ function docProcessor(garmentProduct) {
                     var numTextWidth = 0;
                     while (numTextWidth < numStaticXToUseForOffset) {
                         samplerString2 += '1';
-                        numTextWidth = this.doc.getTextWidth(samplerString2);
+                        numTextWidth = Math.floor(this.doc.getTextWidth(samplerString2));
                         //numSampler2++;
                     };
                     var numOfCharactersToFitInColumn = samplerString2.length - 1;
                     var numMinorOffset = 2;
                     numOfCharactersToFitInColumn -= numMinorOffset;
+                    strTextToGet = strTextToGet.replace(/\s\s+/g, ' ');
+                    function checkForSpaceAndCallMe(text, index) {
+                        while (text[index] != ' ' && index < text.length - 1) {
+                            index = index + 1;
+                        };
+                        return index;
+                    };
+                    numOfCharactersToFitInColumn = checkForSpaceAndCallMe(strTextToGet, numOfCharactersToFitInColumn);
+                    /*while (strTextToGet[numOfCharactersToFitInColumn] != ' ' && numOfCharactersToFitInColumn < strTextToGet.length) {
+                        numOfCharactersToFitInColumn++;
+
+                    }*/
+
+
                     //numMaxCharacterLength = numOfCharactersToFitInColumn;
                     if (j == 0) {
-                        var numOfWrapRows = this.parseThroughAndSetGreatestHeightOfRow(arrNormalRow, numMaxCharacterLength);
+                        //var numOfWrapRows = this.parseThroughAndSetGreatestHeightOfRow(arrNormalRow, numMaxCharacterLength);
+                        //parseThroughAndSetGreatestWidthOfRow
                         //var numOfWrapRows = 
                         //var numOfWrapRows = 
                         var objText = this.doc.getTextDimensions(encodeURIComponent(strTextToGet));
+                        var numOfWrapRows = this.parseThroughAndSetGreatestWidthOfRow(arrNormalRow, numOfCharactersToFitInColumn);
+                        var xPlaceHolderForDrawing = this.xPosition - 5;
+                        /*for (var q = 0; q < arrNormalRow.length; q++) {
+                            //this.doc.rect(x,y,width,height);
+                            this.doc.rect(xPlaceHolderForDrawing, this.yPosition - (this.doc.internal.getLineHeight() * numOfWrapRows), xOffsetPerCell[q], this.doc.internal.getLineHeight() * numOfWrapRows);
+                            xPlaceHolderForDrawing += xOffsetPerCell[q];
+                        };*/
                         //var textHeight = objText.h;
                         var textHeight = this.doc.internal.getLineHeight();
                         if (textHeight < 1 || typeof(textHeight) == 'undefined') {
                             textHeight = 1;
                         };
                         var numRectangleHeight = numOfWrapRows * (textHeight / 2);
+                        this.currentRectangleHeight = numRectangleHeight;
                         //var numRectangleHeight =
                         this.previousFurthestYPosition = this.furthestYPosition;
+
                         if ((this.yPosition + yOffsetPerLine) >= (this.yPosition + numRectangleHeight) || numOfWrapRows == 1) {
                             this.furthestYPosition = this.yPosition;// + yOffsetPerLine;
                         }
@@ -664,7 +738,8 @@ function docProcessor(garmentProduct) {
                     };
                     
                     //this.processTextUsingCurrentXandYPositionTable(strTextToGet, yOffsetPerLine, numMaxCharacterLength, numLineRatio);
-                    this.processTextUsingCurrentXandYPositionTable(strTextToGet, yOffsetPerLine, numOfCharactersToFitInColumn, numLineRatio);
+                    this.processTextUsingCurrentXandYPositionTable(strTextToGet, yOffsetPerLine, numOfCharactersToFitInColumn, numLineRatio, numStaticXToUseForOffset, this.currentRectangleHeight);
+                    //this.processTextUsingCurrentXandYPositionTable()
                     //draw!
                     
 
