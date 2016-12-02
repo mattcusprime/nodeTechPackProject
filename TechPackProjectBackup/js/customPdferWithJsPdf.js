@@ -67,8 +67,10 @@ function docProcessor(garmentProduct) {
     this.docDefinition.content = [];
     this.garment = garmentProduct;
     this.xMarginReset = 2.5;
-    this.yMarginReset = 35;
+    this.yMarginReset = 35 - 7.5;
+    //this.yMarginReset = 0;
     this.yFooterSize = 7.5;
+    this.topAndBottomMargins = this.yMarginReset - this.yFooterSize;
     this.xPosition = this.xMarginReset;
     this.yPosition = this.yMarginReset;
     this.amountAddedForExtraLineInText = 0;
@@ -158,7 +160,15 @@ function docProcessor(garmentProduct) {
             var strIterString = arrayOfCells[i];
             var objText = this.doc.getTextDimensions(strIterString);
             numTextHeight = objText.h;
-            var arrOfSplitted = this.doc.splitTextToSize(strIterString, numLengthToCheck);
+            var font = this.doc.internal.getFont();
+            var fontName = font.fontName;
+            var fontStyle = font.fontStyle;
+            var fontSize = this.doc.internal.getFontSize();
+            var arrOfSplitted = this.doc.splitTextToSize(strIterString, numLengthToCheck, {
+                'fontSize': fontSize,
+                'fontName': fontName,
+                'fontStyle': fontStyle
+            });
             //var numOfTiers = Math.floor(strIterString.length / numLengthToCheck) + 1;
             var numOfTiers = arrOfSplitted.length;
             if (numOfTiers > greatestHeight) {
@@ -179,7 +189,15 @@ function docProcessor(garmentProduct) {
             var strIterString = arrayOfCells[i];
             //var numTextWidth = this.doc.getTextWidth(strIterString);
             //numTextHeight = objText.h;
-            var arrOfSplitted = this.doc.splitTextToSize(strIterString, numWidthToCheck);
+            var font = this.doc.internal.getFont();
+            var fontName = font.fontName;
+            var fontStyle = font.fontStyle;
+            var fontSize = this.doc.internal.getFontSize();
+            var arrOfSplitted = this.doc.splitTextToSize(strIterString, numWidthToCheck, {
+                'fontSize': fontSize,
+                'fontName': fontName,
+                'fontStyle': fontStyle
+            });
             //var numOfRows = Math.floor(strIterString.length / numWidthToCheck) + 1;
             var numOfRows = arrOfSplitted.length;
             if (numOfRows > greatestWidth) {
@@ -221,16 +239,7 @@ function docProcessor(garmentProduct) {
         }
     };
     this.lastLineRanY = this.yMarginReset;
-    this.processTextUsingCurrentXandYPositionTable = function (funcText, yOffset, numMaxCharacters, numLineChangeRatio, xOffSetToUse, furthestY) {
-
-        try {
-            funcText = decodeURIComponent(funcText);
-        } catch (e) {
-            console.log(e);
-        };
-        //regex to replace only double spaces or longer 
-        //funcText = funcText.replace(/  +/g, ' ');
-        //regex to replace only double spaces or longer 
+    this.processTextUsingCurrentXandYPositionTable = function (funcText, numMaxCharacters) {
         var arrOfStrings = [];
         if (typeof (numMaxCharacters) == 'undefined') {
             numMaxCharacters = 25;
@@ -243,52 +252,42 @@ function docProcessor(garmentProduct) {
         };
         var numBeginStringAt = 0;
         var numFunctTextLength = funcText.length;
-        var numOfArguments = arguments.length;
-        //var numOfLoopIterations = Math.floor(numFunctTextLength / numMaxCharacters) + 1;
-        var numFuncOffset = yOffset;
-        //var numRunningfOffset = 0;
-        //var numLineChangeRatio = 0.25
-        if (typeof (numLineChangeRatio) == 'undefined') {
+        //var numOfArguments = arguments.length;
+        //var numFuncOffset = yOffset;
+        /*if (typeof (numLineChangeRatio) == 'undefined') {
             numLineChangeRatio = 0.25;
-        };
+        };*/
         var startingFontZize = this.doc.internal.getFontSize();
         var i = 0;
         var xOffest = 0;
         var numHeight = 0;
-        var initialYposition = this.yPosition;
+
         var objText3 = this.doc.getTextDimensions(strSnippet);
         var numHeight3 = objText3.h * 4;
         var initialLinePositionForY = initialYposition - numHeight3;
         var numMinorOffset = 1.5;
         var initialLineX = this.xPosition - 2;// - numMinorOffset;
-        //var secondLineX = this.xPosition + xOffSetToUse;// + numMinorOffset;
-        var secondLineX = initialLineX + xOffSetToUse;// + numMinorOffset;
-
-        //new wrap method
-
+        //var secondLineX = initialLineX + xOffSetToUse;// + numMinorOffset;
         var numWidthOfText = this.doc.getTextWidth(funcText);
-
-        //new wrap method
-        //this.doc.line(this.xPosition, this.yPosition, this.xPosition + this.doc.getTextWidth(strSnippet), this.yPosition);
-
-
-        //var initialLineX = this.furthestXPosition;
-        //var initialLinePositionForY = this.furthestYPosition;
-
-        var arrTextSplitted = this.doc.splitTextToSize(funcText, numMaxCharacters);
+        var font = this.doc.internal.getFont();
+        var fontName = font.fontName;
+        var fontStyle = font.fontStyle;
+        var fontSize = this.doc.internal.getFontSize();
+        var arrTextSplitted = this.doc.splitTextToSize(funcText, numMaxCharacters, {
+            'fontSize': fontSize,
+            'fontName': fontName,
+            'fontStyle': fontStyle
+        });
         var numOfLoopIterations = arrTextSplitted.length;
-        //console.log('arrTextsplitted \n');
-        //console.log(arrTextSplitted);
 
-        //while (i < numOfLoopIterations) {
+        var initialYposition = this.yPosition;
         for (var i = 0; i < arrTextSplitted.length; i++) {
-            //var strSnippet = funcText.substring(numBeginStringAt, numBeginStringAt + numMaxCharacters);
             var strSnippet = arrTextSplitted[i];
             this.doc.setTextColor(0, 0, 0);
-            //this.doc.text(strSnippet, this.xPosition, this.yPosition - numHeight);
-
-            this.yPosition += numHeight / 2;
-
+            //this.yPosition += numHeight / 2;
+            if (i > 0) {
+                this.yPosition += this.myLineHeight;
+            };
             if (this.yPosition > this.furthestYPosition) {
                 this.furthestYPosition = this.yPosition;
             };
@@ -297,135 +296,118 @@ function docProcessor(garmentProduct) {
             };
             this.doc.setFontType("normal");
             this.doc.setTextColor(0, 0, 0);
-
-
-
             this.doc.text(strSnippet, this.xPosition, this.yPosition);
-            var objText = this.doc.getTextDimensions(strSnippet);
-            //numHeight = objText.h;
+            /*var objText = this.doc.getTextDimensions(strSnippet);
             numHeight = this.doc.internal.getLineHeight();
             var lineHeightToUse = this.doc.internal.getLineHeight();
-
-
-            //this.doc.line(this.xPosition, initialYposition - lineHeightToUse, this.xPosition + xOffSetToUse, initialYposition - lineHeightToUse);
-
-
-            numBeginStringAt += numMaxCharacters;
+            numBeginStringAt += numMaxCharacters;*/
         };
-        //    i++;
-
-        //};
-
-        //var secondLineX = this.furthestXPosition;
-        //var initialLinePositionForY2 = this.furthestYPosition + furthestY;
-        var numXOffestBack = 0.5;
-        //this.doc.setLineWidth(0.25);
-        //var initialLineX2 = initialLineX - numXOffestBack
-        //var initialLinePositionForY2 = this.yPosition + furthestY + numHeight;
-        //var initialLinePositionForY2 = initialLinePositionForY + furthestY * (numOfLoopIterations + 1);
-        //var initialLinePositionForY2 = initialLinePositionForY + (furthestY * (numOfLoopIterations + 1.2));
-        //var initialLinePositionForY2 = initialLinePositionForY + (furthestY * numOfLoopIterations);
-        var initialLinePositionForY2 = initialLinePositionForY + furthestY;
-        //var initialLinePositionForY2 = initialLinePositionForY - furthestY;
-        this.doc.setLineWidth(0.6);
-        //horizontal 1
-
-        //needed to go back
-        //this.doc.line(initialLineX, initialLinePositionForY, secondLineX, initialLinePositionForY);
-        //needed to go back
-
-
-        //this.doc.setLineWidth(0.15);
-
-        //needed to go back
-        //this.doc.line(initialLineX, initialLinePositionForY, initialLineX, initialLinePositionForY2);
-        //this.doc.line(secondLineX, initialLinePositionForY, secondLineX, initialLinePositionForY2);
-        //needed to go back
-
-
-        //horizontal 2
-        /*if (boolDrawFinalUnderLine) {
-            this.doc.line(secondLineX, initialLinePositionForY2, secondLineX, initialLinePositionForY2);
-        };*/
-
-        //vertical 1
-
-        //this.doc.line(initialLineX, initialLinePositionForY2, initialLineX, this.furthestYPosition);
-        //vertical 2
-        /*if (boolDrawLastRightBorder) {
-            var edgeX = this.doc.internal.pageSize;
-            var numEdge = edgeX.width - this.xMarginReset;
-            if (secondLineX > numEdge) {
-                this.doc.line(secondLineX, initialLinePositionForY, secondLineX, initialLinePositionForY2);
-            }
-            else {
-                this.doc.line(numEdge, initialLinePositionForY, numEdge, initialLinePositionForY2);
-            };
-            //this.doc.line(this.xMarginReset, initialLinePositionForY2, secondLineX, initialLinePositionForY2);
-        };*/
-
-
-
-        //this.doc.line(this.xPosition, this.yPosition, this.xPosition + this.doc.getTextWidth(strSnippet), this.yPosition);
-
-        //this.doc.line(this.xPosition, initialYposition - furthestY, this.xPosition + xOffSetToUse, initialYposition - furthestY);
-        //horizontal 1
-        //this.doc.line(this.xPosition, initialYposition - lineHeightToUse, this.xPosition, initialYposition - lineHeightToUse + furthestY);
-        //vertical 1
-        //this.doc.line(this.xPosition + xOffSetToUse, initialYposition - lineHeightToUse, this.xPosition + xOffSetToUse, initialYposition - lineHeightToUse + furthestY);
-        //vertical 2
-        //need to pass furthest Y
-        //this.doc.line(this.xPosition, initialYposition + furthestY, this.xPosition + xOffSetToUse, initialYposition + furthestY);
-
-        //this.doc.line(this.xPosition, this.yPosition + 2, this.xPosition + xOffSetToUse, this.yPosition + 2);
-
-        //horizontal 2 This one is good for underneath each Text 
-
         this.yPosition = initialYposition;
+        /*var numXOffestBack = 0.5;
+        var initialLinePositionForY2 = initialLinePositionForY + furthestY;*/
+        //this.doc.setLineWidth(0.6);
+
+        var yOffsetToReturn = arrTextSplitted.length * this.myLineHeight;
+        return yOffsetToReturn
     };
 
-    this.processTextUsingCurrentXandYPositionTableForHeader = function (funcText, numMaxCharacters, numLineChangeRatio) {
-        funcText = decodeURIComponent(funcText);
-        this.doc.setFontType("bold");
-        this.doc.setTextColor(0, 0, 0);
-        var arrOfStrings = [];
-        if (typeof (numMaxCharacters) == 'undefined') {
-            numMaxCharacters = 25;
+    this.processTableText = function (funcText, numMaxCharacters, fontType, columnWidthForRectangle) {
+        var arrOfHeader = [];
+        if (funcText == '') {
+            while (arrOfHeader.length < numMaxCharacters.length) {
+                arrOfHeader.push('_');
+            };
+        }
+        else {
+            try {
+                var font = this.doc.internal.getFont();
+                var fontName = font.fontName;
+                var fontStyle = font.fontStyle;
+                var fontSize = this.doc.internal.getFontSize();
+                var arrOfHeader = this.doc.splitTextToSize(funcText, numMaxCharacters, {
+                    'fontSize': fontSize,
+                    'fontName': fontName,
+                    'fontStyle': fontStyle
+                });
+            } catch (e) {
+                while (arrOfHeader.length < numMaxCharacters.length) {
+                    arrOfHeader.push('_');
+                };
+                console.log(e);
+                console.log(funcText);
+            };
         };
-        var numBeginStringAt = 0;
-        var numFunctTextLength = funcText.length;
-        var numOfArguments = arguments.length;
-        var numOfLoopIterations = Math.floor(numFunctTextLength / numMaxCharacters) + 1;
-        //var numFuncOffset = yOffset;
-        if (typeof (numLineChangeRatio) == 'undefined') {
-            numLineChangeRatio = 0.25;
-        };
-        var startingFontZize = this.doc.internal.getFontSize(funcText, numMaxCharacters);
-        var xOffest = 0;
-        var arrOfHeader = this.doc.splitTextToSize(funcText, numMaxCharacters);
-        var numHeight = 0;
+        /*if (typeof (columnWidthForRectangle) != 'undefined' && typeof (optionalMaxRowSpecification) != 'undefined') {
+            var height = this.myLineHeight * optionalMaxRowSpecification;
+            //this.doc.rect(this.xPosition, this.yPosition, columnWidthForRectangle, height * -1);
+        };*/
+
+
+
         var initialYPosition = this.yPosition;
-
-
         for (var i = 0; i < arrOfHeader.length; i++) {
             var strSnippet = arrOfHeader[i];
             this.doc.setTextColor(0, 0, 0);
-            this.yPosition += numHeight / 2;
+            //this.yPosition += numHeight / 2;
+            if (i > 0) {
+                this.yPosition += this.myLineHeight;
+            };
+            if (this.yPosition > this.furthestYPosition) {
+                this.furthestYPosition = this.yPosition;
+            };
+            this.doc.setFontType(fontType);
+            this.doc.setTextColor(0, 0, 0);
+            this.doc.text(strSnippet, this.xPosition, this.yPosition);
+            /*var objText = this.doc.getTextDimensions(strSnippet);
+            numHeight = this.doc.internal.getLineHeight();*/
+        };
+        this.yPosition = initialYPosition;
+        var yOffsetToReturn = arrOfHeader.length * this.myLineHeight;
+        return yOffsetToReturn
+    };
+    this.processTextUsingCurrentXandYPositionTableForHeader = function (funcText, numMaxCharacters, fontType) {
+        //funcText = decodeURIComponent(funcText);
 
+        //var arrOfStrings = [];
+        /*if (typeof (numMaxCharacters) == 'undefined') {
+            numMaxCharacters = 25;
+        };*/
+        //var numFuncOffset = yOffset;
+        /*if (typeof (numLineChangeRatio) == 'undefined') {
+            numLineChangeRatio = 0.25;
+        };*/
+        var font = this.doc.internal.getFont();
+        var fontName = font.fontName;
+        var fontStyle = font.fontStyle;
+        var fontSize = this.doc.internal.getFontSize();
+        var arrOfHeader = this.doc.splitTextToSize(funcText, numMaxCharacters, {
+            'fontSize': fontSize,
+            'fontName': fontName,
+            'fontStyle': fontStyle
+        });
+        //var numHeight = 0;
+        var initialYPosition = this.yPosition;
+        for (var i = 0; i < arrOfHeader.length; i++) {
+            var strSnippet = arrOfHeader[i];
+            this.doc.setTextColor(0, 0, 0);
+            //this.yPosition += numHeight / 2;
+            if (i > 0) {
+                this.yPosition += this.myLineHeight;
+            };
             if (this.yPosition > this.furthestYPosition) {
                 this.furthestYPosition = this.yPosition;
             };
             if (this.xPosition > this.furthestXPosition) {
                 this.furthestXPosition = this.xPosition;
             };
-            this.doc.setFontType("normal");
+            this.doc.setFontType(fontType);
             this.doc.setTextColor(0, 0, 0);
             this.doc.text(strSnippet, this.xPosition, this.yPosition);
-            var objText = this.doc.getTextDimensions(strSnippet);
-            numHeight = this.doc.internal.getLineHeight();
+            /*var objText = this.doc.getTextDimensions(strSnippet);
+            numHeight = this.doc.internal.getLineHeight();*/
         };
         this.yPosition = initialYPosition;
-        var yOffsetToReturn = arrOfHeader.length * this.doc.internal.getLineHeight();
+        var yOffsetToReturn = arrOfHeader.length * this.myLineHeight;
         return yOffsetToReturn
     };
 
@@ -434,7 +416,11 @@ function docProcessor(garmentProduct) {
         this.doc.rect(0, this.yPosition - height, width, height, 'F');
     };
 
-
+    this.logoXposition = 0;
+    this.logoyposition = 0;
+    this.logoWidth = 35;
+    this.logoHeight = 35;
+    //this.headerSize = 
     this.header = function () {
         //date
         var m_names = new Array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
@@ -496,17 +482,22 @@ function docProcessor(garmentProduct) {
         this.previousFurthestXPosition = 0;
         this.previousFurthestYPosition = 0;
     };
-    this.addPageAndReset = function () {
+    this.addPageAndReset = function (sectionName) {
         if (!garmentProduct.isCurrentSpecAnActiveSpec && !garmentProduct.isCurrentSpecAnAvailableSpec) {
             //imgBase64DevImage
             this.doc.addImage(imgBase64DevImage, 'PNG', 0, 0, this.doc.internal.pageSize.width, this.doc.internal.pageSize.height, 'fast');
         };
         this.furthestYPosition = this.yMarginReset;
-        this.resetPreviousPositions();
+        //this.resetPreviousPositions();
+        if (typeof (sectionName) != 'undefined') {
+            var numPage = this.doc.internal.pages.length - 1;
+            this.doc.outline.add(this.node, sectionName, { pageNumber: numPage });
+        };
         this.footer();
+        this.pageNumber++;
         this.doc.addPage();
         this.fullReset();
-        this.header();
+        //this.header();
     };
     this.checkTextLength = function (string, limit, newFontSize) {
         if (string.length > limit) {
@@ -514,7 +505,7 @@ function docProcessor(garmentProduct) {
         };
     };
     this.createPageOne = function () {
-        this.header();
+        //this.header();
         var yOffsetPerLine = 10;
         var xOffsetToCenter = 145;
         var R1 = 240;
@@ -603,7 +594,8 @@ function docProcessor(garmentProduct) {
     this.lastRowWasEvenOrOdd = 'even';
     this.currentMaxWrapWidth = 0;
     this.currentRectangleHeight = 0;
-    this.processADataTableResponseArray = function (arrayToProcess, xOffsetPerCell, numMaxCharacterLength) {
+    this.myLineHeight = this.doc.internal.getLineHeight() / 3;
+    this.processADataTableResponseArray = function (arrayToProcess, xOffsetPerCell) {
         var R1 = 240;
         var G1 = 240;
         var B1 = 240;
@@ -613,174 +605,150 @@ function docProcessor(garmentProduct) {
         var R3 = 0;
         var G3 = 0;
         var B3 = 0;
-        var yOffsetPerLine = this.doc.internal.getLineHeight();
-        var numOffset = 0;
+        //var yOffsetPerLine = this.doc.internal.getLineHeight();
+        //var numOffset = 0;
         var rowCounter = 0;
         var numPageHeight = this.doc.internal.pageSize.height;
         var numPageWidth = this.doc.internal.pageSize.width;
         var numStaticXToUseForOffset;
-        var numLineRatio = 0.25;
+        //var numLineRatio = 0.25;
         var headerWidth = 0;
-        var boolResetToNewPage = false;
+        //var boolResetToNewPage = false;
+        //var strFontType = "bold";
         var numLastNumOffset = 0;
-        if (typeof (numMaxCharacterLength) == 'undefined') {
-            numMaxCharacterLength = 25;//setting default max character
-        };
-        var samplerString = '';
-        var numSampler = 0;
-        while (numSampler < numMaxCharacterLength) {
-            samplerString += '1';
-            numSampler++;
-        };
-        this.currentMaxWrapWidth = this.doc.getTextDimensions(samplerString);
+        var yOffsetPerLine;
         for (var i = 0; i < arrayToProcess.length; i++) {
-            if ((this.yPosition + numOffset) > numPageHeight) {
-                boolResetToNewPage = true;
-                this.addPageAndReset();
-            };
             var numInitialRowiY = this.yPosition;
-            if (i == 0 || boolResetToNewPage) {
-                var arrHeaderRow = arrayToProcess[0];
-                boolResetToNewPage = false;
-                for (var j = 0; j < arrHeaderRow.length; j++) {
-                    numStaticXToUseForOffset = xOffsetPerCell[j];
-                    var samplerString2 = '';
-                    var numSampler2 = 0;
-                    var numTextWidth = 0;
-                    while (numTextWidth < numStaticXToUseForOffset) {
-                        samplerString2 += '1';
-                        numTextWidth = this.doc.getTextWidth(samplerString2);
-                        //numSampler2++;
-                    };
-                    var numOfCharactersToFitInColumn = samplerString2.length - 1;
-                    var numMinorOffset = 2;
-                    numOfCharactersToFitInColumn -= numMinorOffset;
-                    var numCurrentFontSize = this.doc.internal.getFontSize();
-                    var strTextToGet = arrHeaderRow[j].text;
-                    var numGreaterCheck = this.processTextUsingCurrentXandYPositionTableForHeader(strTextToGet, numOfCharactersToFitInColumn, numLineRatio);
-                    if (numGreaterCheck > yOffsetPerLine) {
-                        yOffsetPerLine = numGreaterCheck;
-                    };
-                    this.xPosition += numStaticXToUseForOffset;
-                    if (j == arrHeaderRow.length - 1) {
-                        this.yPosition += yOffsetPerLine;
-                        yOffsetPerLine = this.doc.internal.getLineHeight();
-                        this.resetXbutSpecifyY(this.yPosition);
-                    };
-                };
+            var arrRow = arrayToProcess[i];
+            if ((this.yPosition + yOffsetPerLine) > numPageHeight) {
+                //boolResetToNewPage = true;
+                this.resetXbutSpecifyY(this.yPosition);
+                this.addPageAndReset();
+                this.resetXbutSpecifyY(this.yPosition);
+                arrRow = arrayToProcess[0];
+                i = i - 1;  //(pulls back a row so header can repeat without losing data
+            } else {
+
+            };
+            //boolResetToNewPage = false;
+            var numOfRowsWithinRow = -1;
+
+            var strLongestString;
+            var arrPlaceholder = Array.from(arrRow);
+            var strFirstCell = arrPlaceholder[0].text;
+            if (typeof (strFirstCell) == 'undefined') {
+                strLongestString = arrPlaceholder.sort(function (a, b) { return b.length - a.length; })[0];
             }
             else {
-                var arrNormalRow = arrayToProcess[i];
-                var strLongestString = '';
-                var numInitialYPosition = this.yPosition;
-                var numInitialXPosition = this.xPosition;
-                var arrOfXes = [];
-                arrOfXes.push(numInitialXPosition);
-                for (var j = 0; j < arrNormalRow.length; j++) {
-                    var strTextToGet = arrNormalRow[j];
-                    if (strLongestString.length < strTextToGet.length) {
-                        strLongestString = strTextToGet;
-                    };
-                    numStaticXToUseForOffset = xOffsetPerCell[j];
-                    var samplerString2 = '';
-                    var numSampler2 = 0;
-                    var numTextWidth = 0;
-                    while (numTextWidth < numStaticXToUseForOffset) {
-                        samplerString2 += '1';
-                        numTextWidth = Math.floor(this.doc.getTextWidth(samplerString2));
-                    };
-                    var numOfCharactersToFitInColumn = samplerString2.length - 1;
-                    var numMinorOffset = 2;
-                    numOfCharactersToFitInColumn -= numMinorOffset;
-                    function checkForSpaceAndCallMe(text, index) {
-                        while (text[index] != ' ' && index < text.length - 1) {
-                            index = index + 1;
-                        };
-                        return index;
-                    };
-                    numOfCharactersToFitInColumn = checkForSpaceAndCallMe(strTextToGet, numOfCharactersToFitInColumn);
-                    if (j == 0) {
-                        var objText = this.doc.getTextDimensions(encodeURIComponent(strTextToGet));
-                        var numOfWrapRows = this.parseThroughAndSetGreatestWidthOfRow(arrNormalRow, numOfCharactersToFitInColumn);
-                        var xPlaceHolderForDrawing = this.xPosition - 5;
-                        var textHeight = this.doc.internal.getLineHeight();
-                        if (textHeight < 1 || typeof (textHeight) == 'undefined') {
-                            textHeight = 1;
-                        };
-                        var numRectangleHeight = numOfWrapRows * textHeight;
-                        if (numRectangleHeight > this.currentRectangleHeight) {
-                            this.currentRectangleHeight = numRectangleHeight;
-                        };
-                        this.previousFurthestYPosition = this.furthestYPosition;
 
-                        if ((this.yPosition + yOffsetPerLine) >= (this.yPosition + numRectangleHeight) || numOfWrapRows == 1) {
-                            this.furthestYPosition = this.yPosition;// + yOffsetPerLine;
-                        }
-                        else {
-                            this.furthestYPosition = this.yPosition + numRectangleHeight;
-                        };
-                        this.doc.setDrawColor(0, 0, 0);
-                        if (this.lastRowWasEvenOrOdd == 'even') {
-                            this.doc.setFillColor(184, 209, 243);
-                            this.lastRowWasEvenOrOdd = 'odd';
-                        }
-                        else {
-                            this.doc.setFillColor(218, 229, 244);
-                            this.lastRowWasEvenOrOdd = 'even';
-                        };
-                    };
-                    var boolCheckForLastUnderLine = false;
-                    if ((this.yPosition + yOffsetPerLine) > numPageHeight || i == arrayToProcess.length - 1) {
-                        boolCheckForLastUnderLine = true;
-                    };
-                    var boolCheckForLastBorder = false;
-                    if (j == arrNormalRow.length - 1) {
-                        boolCheckForLastBorder = true;
-                    };
-                    var numGreaterCheck =  this.processTextUsingCurrentXandYPositionTable(strTextToGet, yOffsetPerLine, numOfCharactersToFitInColumn, numLineRatio, numStaticXToUseForOffset, this.currentRectangleHeight);
+                var arrOfTextInHeader = [];
+                for (var a = 0; a < arrPlaceholder.length; a++) {
+                    arrOfTextInHeader.push(arrPlaceholder[a].text);
+                };
+                strLongestString = arrOfTextInHeader.sort(function (a, b) { return b.length - a.length; })[0];
+            };
 
-                    this.xPosition += numStaticXToUseForOffset;
-                    arrOfXes.push(this.xPosition);
-                    if (j == arrNormalRow.length - 1) {
-                        var numLongestCharacter = 0;
-                        for (var k = 0; k < arrNormalRow.length; k++) {
-                            if (numLongestCharacter < arrNormalRow[k].length) {
-                                numLongestCharacter = arrNormalRow[k].length;
-                            };
-                        };
-                        var arrOfText = this.doc.splitTextToSize(strLongestString, numMaxCharacterLength);
-                        var numHeightOfLargestCell = arrOfText.length;
-                        var objText = this.doc.getTextDimensions(strLongestString);
-                        var numTextCreatedOffset = this.doc.internal.getLineHeight();
-                        numOffset = numHeightOfLargestCell * numTextCreatedOffset;
-                        if (numOffset == 0) {
-                            numOffset = this.doc.internal.getLineHeight();
-                        };
-                        this.yPosition += numOffset;
-                        for (var t = 0; t < arrOfXes.length; t++) {
-                            var currentX = arrOfXes[t];
-                            var next = t + 1;
-                            var nextX = arrOfXes[next];
-                            if (next < arrOfXes.length) {
-                                var width = nextX - currentX;
-                                var height;
-                                if (this.furthestYPosition > this.yPosition) {
-                                    height = numInitialRowiY - this.furthestYPosition;
-                                } else {
-                                    height = numInitialRowiY - this.yPosition;
-                                };
-                                this.doc.rect(currentX - 3, numInitialRowiY + height + 3, width, height * -1);
-                            }
-                            else {
+            var numLengthOfLongestString = strLongestString.length;
+            var numOfRowsForRectangle = -1;
+            for (var j = 0; j < arrRow.length; j++) {
+                if (j == 0) {
+                    yOffsetPerLine = this.myLineHeight;
+                };
+                numStaticXToUseForOffset = xOffsetPerCell[j];
+                var samplerString2 = '';
+                var numSampler2 = 0;
+                var numTextWidth = 0;
+                while (numTextWidth < numStaticXToUseForOffset) {
+                    samplerString2 += '1';
+                    numTextWidth = this.doc.getTextWidth(samplerString2);
+                    //numSampler2++;
+                };
 
-                            }
-                        };
-                        numLastNumOffset = numOffset;
-                        this.resetXbutSpecifyY(this.yPosition);
+                var numOfCharactersToFitInColumn = samplerString2.length - 1;
+                
+
+                /*var numMinorOffset = 2;
+                numOfCharactersToFitInColumn -= numMinorOffset;*/
+                var numCurrentFontSize = this.doc.internal.getFontSize();
+                var strTextToGet = arrRow[j].text;
+                if (typeof (strTextToGet) == 'undefined') {
+                    strTextToGet = arrRow[j];
+                };
+                strTextToGet = strTextToGet.replace(/(\r\n|\n|\r)/gm, "");
+                strTextToGet = strTextToGet.replace(/\s{2,}/g, ' ');
+                //var numGreaterCheck = this.processTableText(strTextToGet, numOfCharactersToFitInColumn, strFontType);
+                var strFontType;
+                if (arrRow == arrayToProcess[0]) {
+                    strFontType = "bold";
+                }
+                else {
+                    strFontType = "normal";
+                };
+                var font = this.doc.internal.getFont();
+                var fontName = font.fontName;
+                var fontStyle = font.fontStyle;
+                var fontSize = this.doc.internal.getFontSize();
+                var arrOfLargestCharacterInThisRow = this.doc.splitTextToSize(strLongestString, numStaticXToUseForOffset, {
+                    'fontSize': fontSize,
+                    'fontName': fontName,
+                    'fontStyle':fontStyle
+                });
+                if (arrOfLargestCharacterInThisRow.length > numOfRowsForRectangle) {
+                    numOfRowsForRectangle = arrOfLargestCharacterInThisRow.length;
+                };
+
+                var numGreaterCheck = this.processTableText(strTextToGet, numOfCharactersToFitInColumn, strFontType, numStaticXToUseForOffset);
+                if (numGreaterCheck > yOffsetPerLine) {
+                    yOffsetPerLine = numGreaterCheck;
+                };
+                this.xPosition += numStaticXToUseForOffset;
+                if (j == arrRow.length - 1) {
+                    this.yPosition += yOffsetPerLine;
+                    this.resetXbutSpecifyY(this.yPosition);
+                    //rectangle code goes here
+                    if (numOfRowsForRectangle < 1) {
+                        numOfRowsForRectangle = 1;
+                    }
+                    var rectangleHeight = numOfRowsForRectangle * yOffsetPerLine;
+                    if (arrRow == arrayToProcess[0]) {
+                        //header logic
+                        //this.drawARowRectangles(xOffsetPerCell, yOffsetPerLine);
+                        //this.resetXbutSpecifyY(this.yPosition);
+                        //header logic
+                    }
+                    else {
+                        //normal row logic
+
+                        //var numOfCells = yOffsetPerLine / this.myLineHeight;
+                        //var rectHeight = yOffsetPerLine * numOfCells;
+                        /*this.resetXbutSpecifyY(this.yPosition);
+                        this.drawARowRectangles(xOffsetPerCell, rectangleHeight);
+                        this.resetXbutSpecifyY(this.yPosition);*/
+                        //normal row logic
                     };
+
+                    //rectangle code goes here
+
                 };
             };
+            var rowHeight = numOfRowsForRectangle * this.myLineHeight;
+            this.resetXbutSpecifyY(this.yPosition);
+            this.drawARowRectangles(xOffsetPerCell, rowHeight, this.yPosition);
+            this.resetXbutSpecifyY(this.yPosition);
             rowCounter++;
+        };
+    };
+    this.drawARowRectangles = function (xOffsetArray, rowHeight, numRectangleYs) {
+        /*var numRectangleYs;
+        if (this.yPosition < this.yMarginReset) {
+            numRectangleYs = this.yMarginReset;
+        }
+        else {
+            numRectangleYs = this.yPosition;
+        };*/
+        for (var e = 0; e < xOffsetArray.length; e++) {
+            this.doc.rect(this.xPosition, numRectangleYs - rowHeight, xOffsetArray[e], rowHeight * -1);
+            this.xPosition += xOffsetArray[e];
         };
     };
     this.arrayOfArraysToProcess = [];
@@ -865,7 +833,7 @@ function docProcessor(garmentProduct) {
                 this.processTextUsingCurrentXandYPosition(this.arrayOfArraysToProcess[k].name);
                 this.returnToLastFontSize();
                 this.yPosition += (this.yMarginReset / 4);
-                this.processADataTableResponseArray(arrToUse, arrOfColumnWidths, numMaxCharacterLength);
+                this.processADataTableResponseArray(arrToUse, arrOfColumnWidths);
             };
         };
     };
@@ -878,17 +846,84 @@ function docProcessor(garmentProduct) {
         this.doc.setFontSize(newFontSize);
     };
 
+    this.reprocessUsingJsPdfTable = function (x, y, arrOfTable,configOptions,myWidths) {
+        var arrOne = arrOfTable[0];
+        var arrNewHeader = [];
+        for (var i = 0; i < arrOne.length; i++) {
+            var objHeader = {};
+            var MyText = arrOne[i].text;
+            arrNewHeader[i] = MyText;
+        };
+        arrOfTable.splice(0, 1);
+        var arrOfTransformedObjects = [];
+        for (var i = 0; i < arrOfTable.length; i++) {
+            var arrOfValues = arrOfTable[i];
+            var arrObjects = [];
+            var objNewObject = {};
+            for (var j = 0; j < arrNewHeader.length; j++) {
+                
+                /*objNewObject.key = arrNewHeader[j].replace(/\s/g, '_');
+                objNewObject.value = arrOfValues[j];*/
+                var strKey = arrNewHeader[j];//.replace(/\s/g, '_');
+                var strValue = arrOfValues[j];
+                //arrObjects.push(objNewObject);
+                objNewObject[strKey] = strValue;
+            };
+            //arrOfTransformedObjects.push(arrObjects);
+            arrOfTransformedObjects.push(objNewObject);
+        };
+        console.log('pause to check here')
+        /*var objTable = {};
+        objTable.data = arrOfTable;
+        this.doc.table(x, y, arrOfTable);*/
+        var jsPdfTableConfig = {};
+        jsPdfTableConfig.printHeaders = true;
+        jsPdfTableConfig.autoSize = true;
+        jsPdfTableConfig.margins = {
+            left:10, top:this.yMarginReset, bottom:this.yFooterSize, width:this.doc.internal.pageSize.width
+            };
+        //jsPdfTableConfig.fontSize = this.doc.internal.getFontSize();
+        jsPdfTableConfig.fontSize = 6;
+        var margin = 0.5;
+        this.doc.setDrawColor(0, 0, 0).setLineWidth(1 / 72).line(margin, margin, margin, 11 - margin).line(8.5 - margin, margin, 8.5 - margin, 11 - margin);
+        this.doc.table(x, y, arrOfTransformedObjects, arrNewHeader, jsPdfTableConfig);
+
+    };
+
     this.addSizingTable = function () {
+        if ($("#sizeTbl").length) {
+            //var arrSizeTbl = pdfThisTableV2('sizeTbl');
+            /*var arrOne = arrSizeTbl[0];
+            var arrTwo = [];
+            for (var i = 0; i < arrOne.length; i++) {
+                var MyText = arrOne[i].text;
+                arrTwo[i] = MyText;
+            };
+            arrSizeTbl[0] = arrTwo;*/
+            //this.doc.table(this.xPosition, this.yPosition, arrSizeTbl);
+
+            //pageOneColumns.push(objContentSizeTbl);
+            //pageOneColumnsSectionTwo.push(objContentSizeTbl);
+            var arrOfColumnWidths = [40, 40, 40];
+            //this.processADataTableResponseArray(arrSizeTbl, arrOfColumnWidths);
+            var arrSizeTbl = pdfThisTableV2('sizeTbl');
+            this.reprocessUsingJsPdfTable(this.xPosition, this.yPosition, arrSizeTbl, arrOfColumnWidths);
+
+        }
+    };
+
+    this.addSizingTable2 = function () {
         if ($("#sizeTbl").length) {
             var arrSizeTbl = pdfThisTableV2('sizeTbl');
             console.log(arrSizeTbl);
             //pageOneColumns.push(objContentSizeTbl);
             //pageOneColumnsSectionTwo.push(objContentSizeTbl);
             var arrOfColumnWidths = [40, 40, 40];
-            this.processADataTableResponseArray(arrSizeTbl, arrOfColumnWidths, 8);
+            this.processADataTableResponseArray(arrSizeTbl, arrOfColumnWidths);
 
         }
     };
+
 
     this.addSewBomTable = function () {
         if ($("#sewBomTable").length) {
@@ -912,10 +947,9 @@ function docProcessor(garmentProduct) {
             };
             this.doc.setFontSize(8);
             this.processTextUsingCurrentXandYPosition('Sew BOM');
-            this.yPosition += 20;
+            //this.yPosition += 20;
             this.doc.setFontSize(6);
-            this.processADataTableResponseArray(arrSewBomTbl, arrOfColumnWidths, 30);
-            //this.processADataTableResponseArray()
+            this.processADataTableResponseArray(arrSewBomTbl, arrOfColumnWidths);
 
         }
     };
@@ -930,9 +964,9 @@ function docProcessor(garmentProduct) {
             //pageOneColumnsSectionTwo.push(objContentSizeTbl);
             this.doc.setFontSize(8);
             this.processTextUsingCurrentXandYPosition('Sourced BOM');
-            this.yPosition += 20;
+            //this.yPosition += 20;
             this.doc.setFontSize(6);
-            this.processADataTableResponseArray(arrSourceBomTbl, arrOfColumnWidths, 35);
+            this.processADataTableResponseArray(arrSourceBomTbl, arrOfColumnWidths);
 
         }
     };
@@ -947,25 +981,28 @@ function docProcessor(garmentProduct) {
             var arrOfColumnWidths = [15, 40, 40, 40, 10, 40, 40];
             this.doc.setFontSize(8);
             this.processTextUsingCurrentXandYPosition('Routing ');
-            this.yPosition += 20;
+            //this.yPosition += 20;
             this.doc.setFontSize(6);
-            this.processADataTableResponseArray(arrRoutingTbl, arrOfColumnWidths, 35);
+            this.processADataTableResponseArray(arrRoutingTbl, arrOfColumnWidths);
 
         }
     };
 
     this.addApprovedSupplier = function () {
         var arrApprovedSupplierTbl = [];
+        var strEmpty = '__________'
         if ($("#approvedSupplierTbl").length) {
             arrApprovedSupplierTbl = pdfThisTableV2('approvedSupplierTbl');
 
         }
         else {
-            arrApprovedSupplierTbl = [[{ text: 'Supplier', style: 'tableHeader' }, { text: 'Mfg Flow', style: 'tableHeader' }, { text: 'Green Seal', style: 'tableHeader' }, { text: 'Red Seal', style: 'tableHeader' }, { text: 'Comments', style: 'tableHeader' }], ['', '', '', '', '']];
+            arrApprovedSupplierTbl = [[{ text: 'Supplier', style: 'tableHeader' }, { text: 'Mfg Flow', style: 'tableHeader' }, { text: 'Green Seal', style: 'tableHeader' }, { text: 'Red Seal', style: 'tableHeader' }, { text: 'Comments', style: 'tableHeader' }], [strEmpty, strEmpty, strEmpty, strEmpty, strEmpty]];
 
         };
         var arrOfColumnWidths = [20, 20, 20, 20, 35];
-        this.processADataTableResponseArray(arrApprovedSupplierTbl, arrOfColumnWidths, 15);
+        //this.processADataTableResponseArray(arrApprovedSupplierTbl, arrOfColumnWidths);
+        this.reprocessUsingJsPdfTable(this.xPosition, this.yPosition, arrApprovedSupplierTbl);
+
     };
 
     this.addRevisionTable = function () {
@@ -977,10 +1014,11 @@ function docProcessor(garmentProduct) {
             this.addPageAndReset();
             this.doc.setFontSize(8);
             this.processTextUsingCurrentXandYPosition('Product Revisions');
-            this.yPosition += 20;
+            //this.yPosition += 20;
             this.doc.setFontSize(6);
             var arrOfColumnWidths = [15, 35, 35, 35, 35, 75, 35, 35];
-            this.processADataTableResponseArray(arrRevisionAttributeData, arrOfColumnWidths, 60);
+            //this.processADataTableResponseArray(arrRevisionAttributeData, arrOfColumnWidths);
+            this.reprocessUsingJsPdfTable(this.xPosition, this.yPosition, arrRevisionAttributeData);
 
         };
     };
@@ -1007,12 +1045,11 @@ function docProcessor(garmentProduct) {
             this.processTextUsingCurrentXandYPosition(strHeaderValue);
             this.returnToLastFontSize();
             //this.doc.setFontSize(6);
-            this.yPosition += 20;
+            //this.yPosition += 20;
             //this.xPosition += this.xMarginReset;
             //have the function below if one of the params is an array and then process that differently
 
-            //this.processADataTableResponseArray(arrMeasurementTbl, 20, 10, 15);
-            this.processADataTableResponseArray(arrMeasurementTbl, arrOfColumnWidths, 35);
+            this.processADataTableResponseArray(arrMeasurementTbl, arrOfColumnWidths);
         };
     };
 
@@ -1033,7 +1070,6 @@ function docProcessor(garmentProduct) {
                 objConstruction.array = arrConstructionTbl;
                 objConstruction.name = strConstructionTableName;
                 arrOfConstructions.push(objConstruction);
-                //this.processADataTableResponseArray(arrConstructionTbl, 20, 10, 15);
             });
             for (var i = 0; i < arrOfConstructions.length; i++) {
                 try {
@@ -1046,15 +1082,11 @@ function docProcessor(garmentProduct) {
                     this.doc.setFontSize(8);
                     this.processTextUsingCurrentXandYPosition(objCurrent.name);
                     this.doc.setFontSize(6);
-                    this.yPosition += 10;
+                    //this.yPosition += 10;
                     var numPageWidth = this.doc.internal.pageSize.width;
                     var numOfColumns = objCurrent.array[0].length;
                     var arrOfColumnWidths = [65, 40, 20, 15, 35, 20, 20, 25, 20, 25];
-
-                    //this.processADataTableResponseArray(objCurrent.array, 20, 10, 15);
-                    this.processADataTableResponseArray(objCurrent.array, arrOfColumnWidths, 40);
-
-                    //this.processADataTableResponseArray()
+                    this.processADataTableResponseArray(objCurrent.array, arrOfColumnWidths);
                 } catch (e) {
                     console.log('error on this.addConstruction and error was\n' + e)
                 }
@@ -1106,7 +1138,6 @@ function docProcessor(garmentProduct) {
                 this.yPosition += 10;
 
 
-                //this.processADataTableResponseArray(objCurrent.array, 20, 10, 15);
                 //var bomName = objCurrent.name;
                 //var var1 = this.tableLineHeight;
                 var var1 = 7;
@@ -1119,7 +1150,6 @@ function docProcessor(garmentProduct) {
                     this.processColorwayDataTableResponseArray(objCurrent, var1, var2, false);
                 };
 
-                //this.processADataTableResponseArray()
             };
 
         };
@@ -1136,9 +1166,9 @@ function docProcessor(garmentProduct) {
             var arrOfColumnWidths = [45, 15, 35, 15, 35, 55, 20, 20, 20, 20, 20];
             this.doc.setFontSize(8);
             this.processTextUsingCurrentXandYPosition('Label BOM');
-            this.yPosition += 20;
+            //this.yPosition += 20;
             this.doc.setFontSize(6);
-            this.processADataTableResponseArray(arrRoutingTbl, arrOfColumnWidths, 30);
+            this.processADataTableResponseArray(arrRoutingTbl, arrOfColumnWidths);
 
         }
     };
@@ -1179,7 +1209,7 @@ function docProcessor(garmentProduct) {
             this.processTheTitleAndItsImage(decodedHeader, imageSrc, 10, 10, 400, 400);
         };*/
         var maxWidth = this.doc.internal.pageSize.width;
-        var maxHeight = this.doc.internal.pageSize.height - this.yMarginReset - this.yFooterSize;//this needs to be changed as the size of the header
+        var maxHeight = this.doc.internal.pageSize.height - this.topAndBottomMargins;//-- done this needs to be changed as the size of the header
         var numCenterX = maxWidth / 2;
         //var numCenterY = maxHeight / 2;
         if ($(selector).length) {
@@ -1241,7 +1271,10 @@ function docProcessor(garmentProduct) {
     this.addBlankRow = function () {
         //create manual blank row adding to avoid display issue occurring when entire row is blank in pdfing
     };
-
+    this.pageNumber = 0;
+    this.docBaselineTextSize = 6;
+    this.docBaselineTextHeaderSize = 6;
+    this.node = {};
     this.runAndSave = function () {
 
         var m_names = new Array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
@@ -1250,54 +1283,57 @@ function docProcessor(garmentProduct) {
         var curr_month = d.getMonth();
         var curr_year = d.getFullYear();
         var dateForStuff = m_names[curr_month] + '-' + curr_date + '-' + curr_year;
-        var numContentBreakSize = 25;
-        try {
+        //var numContentBreakSize = 25;
+        var numContentBreakSize = this.yMarginReset;
+        var margin = 0.5;
+        
+        this.node = this.doc.outline.add(null, this.garment.name, null);
+
+        /*try {
             this.createPageOne();
         } catch (e) {
             console.log(e);
         };
 
-        this.yPosition += numContentBreakSize;
+        this.yPosition += numContentBreakSize;*/
 
         var numMidPointOfPageOne = this.yPosition;
         var numMidPointXofPage = 140;
+
+        this.doc.setFontSize(this.docBaselineTextSize);
         this.resetXbutSpecifyY(this.yPosition);
+        this.doc.outline.add(this.node, 'General Attributes', { pageNumber: this.doc.internal.pages.length - 1});
         this.addSizingTable();
-        this.yPosition = numMidPointOfPageOne;
-        this.xPosition = numMidPointXofPage;
-        this.addPageAndReset();
+        this.addPageAndReset('Approved Supplies');
         this.addApprovedSupplier();
-        this.addPageAndReset();
+        this.addPageAndReset('Front Back Images');
         this.addFrontBackImages();
+        this.addPageAndReset('Revisions');
         this.addRevisionTable();
-        this.addPageAndReset();
+        /*this.addPageAndReset('Measurements');
         this.addMeasurements();//components all add their own pages, only first few pages always show
-        //this.addPageAndReset();
+        this.addPageAndReset('Measurement Images');
         this.addMeasurementImagesSubDivImg();
-        //this.addPageAndReset();
+        this.addPageAndReset('Construction');
         this.addConstruction();
-        //this.addPageAndReset();
+        this.addPageAndReset('Construction Details Images');
         this.addConstructionDetailsImagesSubDivImg();
-        //this.addPageAndReset();
+        this.addPageAndReset('Placement Images');
         this.addPlacementImagesSubDivImg();
-        //this.addPageAndReset();
+        this.addPageAndReset('Marker Layout Images');
         this.addMarkerLayoutImagesSubDivImg();
-        //this.addPageAndReset();
-
-        //newest sections
-
+        this.addPageAndReset('Sew BOM Images');
         this.addSewBomTable();
+        this.addPageAndReset('Source BOM Images');
         this.addSourceBomTable();
+        this.addPageAndReset('Routing');
         this.addRoutingTable();
+        this.addPageAndReset('Label BOM');
         this.addLabelBom();
-
-        //newest sections
+        this.addPageAndReset('Colorway Boms');
         this.addColorwaysDivTables();
-        /*this.addPageAndReset();
-        this.addLabelBom();*/
-
+        */
         this.doc.save(this.garment.name + '_' + dateForStuff + '.pdf');
-        //pdfMake.createPdf(this.docDefinition).download(this.garment.name + '  ' + dateForStuff + '.pdf');
     };
 
 };

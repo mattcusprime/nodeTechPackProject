@@ -192,7 +192,7 @@
      * @param {Object} [config.fontSize] Integer fontSize to use (optional)
      */
 
-    jsPDFAPI.table = function (x,y, data, headers, config) {
+    jsPDFAPI.table = function (x,y, data, headers, config,mattWidths) {
         if (!data) {
             throw 'No data for PDF table';
         }
@@ -205,6 +205,7 @@
             cln,
             columnMatrix = {},
             columnWidths = {},
+            mattColumnWidths = [],
             columnData,
             column,
             columnMinWidths = [],
@@ -264,12 +265,13 @@
                 header = headers[i];
                 headerNames.push(header.name);
                 headerPrompts.push(header.prompt);
-                columnWidths[header.name] = header.width *px2pt;
+                columnWidths[header.name] = header.width * px2pt;
             }
 
         } else {
             headerNames = headers;
-        }
+            mattColumnWidths = mattWidths;
+        };
 
         if (autoSize) {
             // Create a matrix of columns e.g., {column_title: [row1_Record, row2_Record]}
@@ -303,12 +305,15 @@
         }
 
         // -- Construct the table
+        columnWidths = mattColumnWidths;
 
+        //STTILLLL FIXING THIS
         if (printHeaders) {
             var lineHeight = this.calculateLineHeight(headerNames, columnWidths, headerPrompts.length?headerPrompts:headerNames);
 
             // Construct the header row
             for (i = 0, ln = headerNames.length; i < ln; i += 1) {
+
                 header = headerNames[i];
                 tableHeaderConfigs.push([x, y, columnWidths[header], lineHeight, String(headerPrompts.length ? headerPrompts[i] : header)]);
             }
@@ -324,11 +329,31 @@
         for (i = 0, ln = data.length; i < ln; i += 1) {
             var lineHeight;
             model = data[i];
-            lineHeight = this.calculateLineHeight(headerNames, columnWidths, model);
-
+            
+            var numLength = -1;
+            var strLongestValue = '';
+            for (var prop in model) {
+                // propertyName is what you want
+                // you can get the value like this: myObject[propertyName]
+                var strValue = model[prop];
+                var numValLength = strValue.length;
+                if (numValLength > numLength) {
+                    numLength = numValLength;
+                    strLongestValue = model[prop];
+                };
+            };
+            
+            
+            lineHeight = this.calculateLineHeightMatt(headerNames, columnWidths, strLongestValue);
             for (j = 0, jln = headerNames.length; j < jln; j += 1) {
                 header = headerNames[j];
-                this.cell(x, y, columnWidths[header], lineHeight, model[header], i + 2, header.align);
+                
+                //var arrOfSplits = this.doc.splitTextToSize(value, numLengthToCheck)
+                //this.cell(x, y, columnWidths[header], lineHeight, model[header], i + 2, header.align);
+                
+                this.cell(x, y, columnWidths[header], lineHeight, model[header], i + 2, 'right');
+
+
             }
         }
         this.lastCellPos = lastCellPos;
@@ -348,6 +373,18 @@
             header = headerNames[j];
             model[header] = this.splitTextToSize(String(model[header]), columnWidths[header] - padding);
             var h = this.internal.getLineHeight() * model[header].length + padding;
+            if (h > lineHeight)
+                lineHeight = h;
+        }
+        return lineHeight;
+    };
+
+    jsPDFAPI.calculateLineHeightMatt = function (headerNames, columnWidths, justStringVal) {
+        var header, lineHeight = 0;
+        for (var j = 0; j < headerNames.length; j++) {
+            header = headerNames[j];
+            justStringVal = this.splitTextToSize(justStringVal, columnWidths[header] - padding);
+            var h = this.internal.getLineHeight() * justStringVal.length + padding;
             if (h > lineHeight)
                 lineHeight = h;
         }
