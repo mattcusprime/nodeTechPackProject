@@ -833,7 +833,8 @@ function docProcessor(garmentProduct) {
                 this.processTextUsingCurrentXandYPosition(this.arrayOfArraysToProcess[k].name);
                 this.returnToLastFontSize();
                 this.yPosition += (this.yMarginReset / 4);
-                this.processADataTableResponseArray(arrToUse, arrOfColumnWidths);
+                //this.processADataTableResponseArray(arrToUse, arrOfColumnWidths);
+                this.reprocessUsingJsPdfTable(this.xPosition, this.yPosition, arrToUse, arrOfColumnWidths);
             };
         };
     };
@@ -846,13 +847,21 @@ function docProcessor(garmentProduct) {
         this.doc.setFontSize(newFontSize);
     };
 
-    this.reprocessUsingJsPdfTable = function (x, y, arrOfTable,configOptions,myWidths) {
+    this.reprocessUsingJsPdfTable = function (x, y, arrOfTable,myWidths) {
         var arrOne = arrOfTable[0];
         var arrNewHeader = [];
-        for (var i = 0; i < arrOne.length; i++) {
+       for (var i = 0; i < arrOne.length; i++) {
             var objHeader = {};
             var MyText = arrOne[i].text;
-            arrNewHeader[i] = MyText;
+			var myWidth = myWidths[i];
+			var header = {
+				name:MyText,
+				prompt:MyText,
+				width:myWidth
+			};
+			
+            //arrNewHeader[i] = MyText;
+			arrNewHeader[i] = header;
         };
         arrOfTable.splice(0, 1);
         var arrOfTransformedObjects = [];
@@ -864,7 +873,7 @@ function docProcessor(garmentProduct) {
                 
                 /*objNewObject.key = arrNewHeader[j].replace(/\s/g, '_');
                 objNewObject.value = arrOfValues[j];*/
-                var strKey = arrNewHeader[j];//.replace(/\s/g, '_');
+                var strKey = arrNewHeader[j].name;//.replace(/\s/g, '_');
                 var strValue = arrOfValues[j];
                 //arrObjects.push(objNewObject);
                 objNewObject[strKey] = strValue;
@@ -878,7 +887,7 @@ function docProcessor(garmentProduct) {
         this.doc.table(x, y, arrOfTable);*/
         var jsPdfTableConfig = {};
         jsPdfTableConfig.printHeaders = true;
-        jsPdfTableConfig.autoSize = true;
+        //jsPdfTableConfig.autoSize = true;
         jsPdfTableConfig.margins = {
             left:10, top:this.yMarginReset, bottom:this.yFooterSize, width:this.doc.internal.pageSize.width
             };
@@ -949,7 +958,8 @@ function docProcessor(garmentProduct) {
             this.processTextUsingCurrentXandYPosition('Sew BOM');
             //this.yPosition += 20;
             this.doc.setFontSize(6);
-            this.processADataTableResponseArray(arrSewBomTbl, arrOfColumnWidths);
+            //this.processADataTableResponseArray(arrSewBomTbl, arrOfColumnWidths);
+            this.reprocessUsingJsPdfTable(this.xPosition, this.yPosition, arrSewBomTbl, arrOfColumnWidths);
 
         }
     };
@@ -966,8 +976,8 @@ function docProcessor(garmentProduct) {
             this.processTextUsingCurrentXandYPosition('Sourced BOM');
             //this.yPosition += 20;
             this.doc.setFontSize(6);
-            this.processADataTableResponseArray(arrSourceBomTbl, arrOfColumnWidths);
-
+            //this.processADataTableResponseArray(arrSourceBomTbl, arrOfColumnWidths);
+            this.reprocessUsingJsPdfTable(this.xPosition, this.yPosition, arrSourceBomTbl, arrOfColumnWidths);
         }
     };
 
@@ -983,7 +993,8 @@ function docProcessor(garmentProduct) {
             this.processTextUsingCurrentXandYPosition('Routing ');
             //this.yPosition += 20;
             this.doc.setFontSize(6);
-            this.processADataTableResponseArray(arrRoutingTbl, arrOfColumnWidths);
+            //this.processADataTableResponseArray(arrRoutingTbl, arrOfColumnWidths);
+            this.reprocessUsingJsPdfTable(this.xPosition, this.yPosition, arrRoutingTbl, arrOfColumnWidths);
 
         }
     };
@@ -1001,7 +1012,7 @@ function docProcessor(garmentProduct) {
         };
         var arrOfColumnWidths = [20, 20, 20, 20, 35];
         //this.processADataTableResponseArray(arrApprovedSupplierTbl, arrOfColumnWidths);
-        this.reprocessUsingJsPdfTable(this.xPosition, this.yPosition, arrApprovedSupplierTbl);
+        this.reprocessUsingJsPdfTable(this.xPosition, this.yPosition, arrApprovedSupplierTbl, arrOfColumnWidths);
 
     };
 
@@ -1016,9 +1027,9 @@ function docProcessor(garmentProduct) {
             this.processTextUsingCurrentXandYPosition('Product Revisions');
             //this.yPosition += 20;
             this.doc.setFontSize(6);
-            var arrOfColumnWidths = [15, 35, 35, 35, 35, 75, 35, 35];
+            var arrOfColumnWidths = [15, 35, 35, 35, 35, 95, 35, 35];
             //this.processADataTableResponseArray(arrRevisionAttributeData, arrOfColumnWidths);
-            this.reprocessUsingJsPdfTable(this.xPosition, this.yPosition, arrRevisionAttributeData);
+            this.reprocessUsingJsPdfTable(this.xPosition, this.yPosition, arrRevisionAttributeData, arrOfColumnWidths);
 
         };
     };
@@ -1028,7 +1039,7 @@ function docProcessor(garmentProduct) {
             var strHeaderValue = $('#measurementDiv h1').text();
             var arrMeasurementTbl = pdfThisTableV2('measurements');
             var numOfSizeColumns = arrMeasurementTbl[0].length - 4;
-            var arrOfColumnWidths = [15, 45, 15, 20];
+            var arrOfColumnWidths = [15, 65, 15, 20];
             var numSumOfAllColumns = 0;
             for (var i = 0; i < arrOfColumnWidths.length; i++) {
                 numSumOfAllColumns += arrOfColumnWidths[i];
@@ -1049,7 +1060,8 @@ function docProcessor(garmentProduct) {
             //this.xPosition += this.xMarginReset;
             //have the function below if one of the params is an array and then process that differently
 
-            this.processADataTableResponseArray(arrMeasurementTbl, arrOfColumnWidths);
+            //this.processADataTableResponseArray(arrMeasurementTbl, arrOfColumnWidths);
+            this.reprocessUsingJsPdfTable(this.xPosition, this.yPosition, arrMeasurementTbl, arrOfColumnWidths);
         };
     };
 
@@ -1085,8 +1097,9 @@ function docProcessor(garmentProduct) {
                     //this.yPosition += 10;
                     var numPageWidth = this.doc.internal.pageSize.width;
                     var numOfColumns = objCurrent.array[0].length;
-                    var arrOfColumnWidths = [65, 40, 20, 15, 35, 20, 20, 25, 20, 25];
-                    this.processADataTableResponseArray(objCurrent.array, arrOfColumnWidths);
+                    var arrOfColumnWidths = [65, 40, 45, 25, 40, 30, 30, 25, 45, 35];
+                    //this.processADataTableResponseArray(objCurrent.array, arrOfColumnWidths);
+                    this.reprocessUsingJsPdfTable(this.xPosition, this.yPosition, objCurrent.array, arrOfColumnWidths);
                 } catch (e) {
                     console.log('error on this.addConstruction and error was\n' + e)
                 }
@@ -1159,7 +1172,7 @@ function docProcessor(garmentProduct) {
     this.addLabelBom = function () {
         if ($("#labelBom").length) {
             this.addPageAndReset();
-            var arrRoutingTbl = pdfThisTableV2('labelBom');
+            var arrLabelBom = pdfThisTableV2('labelBom');
             console.log(arrRoutingTbl);
             //pageOneColumns.push(objContentSizeTbl);
             //pageOneColumnsSectionTwo.push(objContentSizeTbl);
@@ -1168,7 +1181,8 @@ function docProcessor(garmentProduct) {
             this.processTextUsingCurrentXandYPosition('Label BOM');
             //this.yPosition += 20;
             this.doc.setFontSize(6);
-            this.processADataTableResponseArray(arrRoutingTbl, arrOfColumnWidths);
+            //this.processADataTableResponseArray(arrLabelBom, arrOfColumnWidths);
+            this.reprocessUsingJsPdfTable(this.xPosition, this.yPosition, arrLabelBom, arrOfColumnWidths);
 
         }
     };
@@ -1310,7 +1324,9 @@ function docProcessor(garmentProduct) {
         this.addFrontBackImages();
         this.addPageAndReset('Revisions');
         this.addRevisionTable();
-        /*this.addPageAndReset('Measurements');
+        //blocker was here
+
+        this.addPageAndReset('Measurements');
         this.addMeasurements();//components all add their own pages, only first few pages always show
         this.addPageAndReset('Measurement Images');
         this.addMeasurementImagesSubDivImg();
@@ -1332,7 +1348,8 @@ function docProcessor(garmentProduct) {
         this.addLabelBom();
         this.addPageAndReset('Colorway Boms');
         this.addColorwaysDivTables();
-        */
+
+        //blocker was here
         this.doc.save(this.garment.name + '_' + dateForStuff + '.pdf');
     };
 
