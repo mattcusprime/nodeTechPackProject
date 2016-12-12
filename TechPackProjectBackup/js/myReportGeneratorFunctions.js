@@ -68,7 +68,7 @@ var colorwayListTableOptions = {
 	'paging' : false,
 	'length' : 1000,
 	'dom' : strDomString,
-	'buttons' : arrButtonsNoButtons,
+	'buttons' : arrButtonsNoButtons
 
 };
 var cwayReportTableOptions = {
@@ -76,8 +76,8 @@ var cwayReportTableOptions = {
 	'pageLength' : 100,
 	'dom': strDomString,
 	'columnDefs': [{
-	    'targets': [0, 1],
-	    'orderData': [0, 1]
+	    'targets': [0, 1,2],
+	    'orderData': [0, 1,2]
 	}],
 	'buttons' : arrButtonsNoButtons
 };
@@ -91,7 +91,8 @@ var colorwayBomTableOptions = {
         'orderData': [0,1,2]
 	}],
 	'responsive' : false,
-	'buttons' : arrButtonsNoButtons
+	'buttons': arrButtonsNoButtons,
+    'colReorder':true
 
 };
 var spreadBomTableOptions = {

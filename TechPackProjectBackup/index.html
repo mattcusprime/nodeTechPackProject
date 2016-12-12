@@ -58,12 +58,15 @@
     <script src="DataTablesDownloadBuilder/Buttons-1.0.3/js/buttons.jqueryui.min.js"></script>
     <script src="DataTablesDownloadBuilder/Buttons-1.0.3/js/buttons.print.min.js"></script>
     <script src="DataTablesDownloadBuilder/DataTables-1.10.9/js/dataTables.bootstrap.min.js"></script>
+    <script src="DataTablesDownloadBuilder/ColReorder-1.2.0/js/dataTables.colReorder.min.js"></script>
+
     <!--<link href="DataTablesDownloadBuilder/Buttons-1.0.3/css/buttons.bootstrap.min.css" rel="stylesheet" />
     <link href="DataTablesDownloadBuilder/Buttons-1.0.3/css/buttons.dataTables.min.css" rel="stylesheet" />
     <link href="DataTablesDownloadBuilder/Buttons-1.0.3/css/buttons.foundation.min.css" rel="stylesheet" />
     <link href="DataTablesDownloadBuilder/Buttons-1.0.3/css/buttons.jqueryui.min.css" rel="stylesheet" />-->
     <link href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/buttons/1.2.1/css/buttons.dataTables.min.css" rel="stylesheet">
+    <link href="DataTablesDownloadBuilder/ColReorder-1.2.0/css/colReorder.dataTables.min.css" rel="stylesheet" />
 
     <!--DataTables-->
     <link href="css/jquery.prompt.css" rel="stylesheet" />
@@ -78,7 +81,7 @@
     <!--PrettyLoader-->
     <!--jsPdf precursors -->
     <script src="node_modules/rasterizehtml/dist/rasterizeHTML.allinone.js"></script>
-    jsPdf
+    <!--jsPdf-->
     <script src="jsPdf/jspdf.js"></script>
     <script src="jsPdf/plugins/addhtml.js"></script>
     <script src="jsPdf/plugins/addimage.js"></script>
@@ -413,7 +416,7 @@
                     <!--<li><a href='javascript:currentGarmentProduct.saveMe(currentGarmentProduct);'>Save Garment</a></li>-->
                     <li>
                         <!--<a href="javascript:pdfSpec(currentGarmentProduct)">PDF Garment Spec</a>-->
-                        <a href="javascript:pdfPage(currentGarmentProduct)">PDF Garment Spec</a>
+                        <a href="javascript:pdfGarmetProductFromDocProcessor(currentGarmentProduct)">PDF Garment Spec</a>
                     </li>
                     <li>
                         <a href="http://wsflexwebprd1v.res.hbi.net/Windchill/wtcore/jsp/report/adhocReportCriteria.jsp?oid=OR%3Awt.query.template.ReportTemplate%3A23394008&u8=1" target="_blank">Block Weights</a>
