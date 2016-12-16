@@ -208,7 +208,8 @@ var revisionTableTableOptions = {
 		"searchable" : false
 	}],
 	"pageLength" : 10,
-	'buttons' : arrButtonsNoButtons
+	'buttons': arrButtonsNoButtons,
+	'colReorder': true
 };
 var reportsTableOptions = {
 
@@ -250,14 +251,15 @@ function createRelatedProductsDiv(objCurrentGarmentProduct) {
 	};
 	if ( typeof (objCurrentGarmentProduct.patternProduct) != 'undefined') {
 		strTableString = strTableString + "<tr><td>Pattern Product</td><td>" + objCurrentGarmentProduct.patternProduct.name + "</td></td>";
-		$('#topLeftNav').html('Season (' + objCurrentGarmentProduct.activeSeason + ') Spec (' + objCurrentGarmentProduct.activeSpecName + ') <br>Garment (' + objCurrentGarmentProduct.name + ') Pattern (' + objCurrentGarmentProduct.patternProduct.name + ')');
+		$('#topLeftNav').html('Season (' + objCurrentGarmentProduct.activeSeason + ') Spec (' + objCurrentGarmentProduct.activeSpecName + ') <br>Garment (' + objCurrentGarmentProduct.name + ') <br>Pattern (' + objCurrentGarmentProduct.patternProduct.name + ')');
 		//$('#garmentFormContainer').fadeIn();
-		$('nav,li').fadeIn();
+		$('nav,li,#topLeftNav').fadeIn();
 		//$('#runNew,.clearThisComponentOnNewGarmentLoad,nav,li').fadeIn();
 	} else {
 	    $('#topLeftNav').html('Season (' + objCurrentGarmentProduct.activeSeason + ') Spec (' + objCurrentGarmentProduct.activeSpecName + ') <br>Garment (' + objCurrentGarmentProduct.name + ')');
+
 		//$('#garmentFormContainer').fadeIn();
-		$('nav,li').fadeIn();
+		$('nav,li,#topLeftNav').fadeIn();
 		//$('#runNew,.clearThisComponentOnNewGarmentLoad,nav,li').fadeIn();
 	};
 	if ( typeof (objCurrentGarmentProduct.labelProduct) != 'undefined') {
@@ -540,8 +542,8 @@ function getLogin(arrAttributeValueListArray, objCurrentGarmentProduct, arrRepor
 			}
 		}).done(function(data) {
 			$('row', data).each(function() {
-				var strObjectId = $(this).find('report').attr('objectId');
-				var strReportName = $(this).find('report').text();
+			    var strObjectId = $(this).find('report').attr('objectId').trim();
+				var strReportName = $(this).find('report').text().replace(/(\r\n|\n|\r)/gm, "").trim();
 				arrReportsArray.push(strObjectId, strReportName);
 				objMasterReportObject[strReportName] = strObjectId;
 				if (arrReportsThatIRun.indexOf(objMasterReportObject[strReportName]) != -1) {
@@ -572,8 +574,10 @@ function runNewProduct(wipeThisGarmentProductOut) {
 			};
 		};
 	};
-	$('#runNew,.clearThisComponentOnNewGarmentLoad,nav').fadeOut();
+	$('#runNew,.clearThisComponentOnNewGarmentLoad,nav,#topLeftNav').fadeOut();
+	//$('#topLeftNav *').remove();
 	$('#garmentFormContainer').fadeIn();
+	
 	$('#gProd').val('').focus();
 
 };
@@ -614,9 +618,10 @@ function getMyReportIdFromReportName(reportName) {
 	/*var numIndexOfReportName = arrMasterReportIndexer.indexOf(reportName);
 	 var numIndexOfId = numIndexOfReportName - 1;
 	 var strObjectIdOfReport = arrMasterReportIndexer[numIndexOfId];*/
-	strObjectIdOfReport = objMasterReportObject[reportName];
+    strObjectIdOfReport = objMasterReportObject[reportName];
+    
 	if ( typeof (strObjectIdOfReport) == 'undefined') {
-		console.log(strObjectIdOfReport + ' report not found.');
+	    console.log(reportName + ' report not found.');
 	};
 	return strObjectIdOfReport;
 };

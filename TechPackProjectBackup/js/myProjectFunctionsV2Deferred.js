@@ -699,7 +699,10 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
     //var garmentProdSpecGarmentAndPatternComponentsDOCUMENTSV3NoPatternObjectId = getMyReportIdFromReportName('garmentProdSpecGarmentAndPatternComponentsDOCUMENTSV3NoPattern');
     var garmentProdSpecGarmentAndPatternComponentsDOCUMENTSV3NoPatternObjectId = '32783911';
     var garmentProdSpecGarmentAndPatternComponentsDOCUMENTSV3NoPatternUrl = strUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?u8&action=ExecuteReport&specId=' + objSelfReference.activeSpecId + '&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A' + garmentProdSpecGarmentAndPatternComponentsDOCUMENTSV3NoPatternObjectId + '&xsl1=&format=formatDelegate&delegateName=XML&jrb=wt.query.template.reportTemplateRB&sortByIndex=6&sortOrder=asc';
-
+    var mesResaveId = '37521907';
+    var measResave2Url = strUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?u8&action=ExecuteReport&gSpecId=' + objSelfReference.activeSpecId + '&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A' + mesResaveId + '&xsl1=&format=formatDelegate&delegateName=XML&jrb=wt.query.template.reportTemplateRB&sortByIndex=6&sortOrder=asc';
+    var conResaveId = '37539860 ';
+    var con2Url = strUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?u8&action=ExecuteReport&gSpecId=' + objSelfReference.activeSpecId + '&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A' + conResaveId + '&xsl1=&format=formatDelegate&delegateName=XML&jrb=wt.query.template.reportTemplateRB&sortByIndex=6&sortOrder=asc';
     //first pass here gets all product relationships
     //changes in relationship names or type names would need to be later reflected here in the naming structure
     //using actual text names in place of flex path type ids allows us to easier alternate between instances of PLM
@@ -708,10 +711,12 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
         var linkedProductType = $(this).find('linkedProductType').text();
         var objLinkedProduct = {};
         numObjectId = $(this).find('garmentProductName').first().attr('objectId');
-        objLinkedProduct.name = $(this).find('linkedProductName').text();
+        //objLinkedProduct.name = $(this).find('linkedProductName').text();
+        objLinkedProduct.name = $(this).find('linkedProductNameFromAtt_').text();
         objLinkedProduct.objectId = $(this).find('linkedProductName').attr('objectId');
         objLinkedProduct.branchId = $(this).find('linkedProductName').attr('branchId');
         objLinkedProduct.patternNo = $(this).find('Pattern_No').text();
+        objLinkedProduct.cwaySequence = $(this).find('cwaySequence').text();
         if (index == 0) {
             objSelfReference.generalAttributes = [];
             objSelfReference.generalNums = [];
@@ -746,6 +751,9 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
 
         if (linkedProductType == "BASIC CUT & SEW - COLORWAY") {
             objLinkedProduct.type = "Colorway Product";
+            if (objLinkedProduct.name.indexOf(objLinkedProduct.cwaySequence) == -1) {
+                objLinkedProduct.name = objLinkedProduct.cwaySequence + ' ' + objLinkedProduct.name;
+            };
             objColorwayProduct = objLinkedProduct;
             objSelfReference.colorwayProduct = objColorwayProduct;
         } else if (linkedProductType == "BASIC CUT & SEW - PATTERN") {
@@ -1132,51 +1140,136 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
      async : true
 
      });*/
-    $.ajax({
-        url: strMeasTaskUrl,
-        type: 'get',
-        data: {
-            oid: 'VR:com.lcs.wc.measurements.LCSMeasurements:' + objSelfReference.measurement.branchId,
-            instance: strInstance,
-
-        },
-        async: true
-
-    }).done(function (data) {
-        try {
-            objSelfReference.getMyMeasurement(strHostUrlPrefix, objSelfReference.measurement.branchId, data, objSelfReference);
-            createComponentTable('measurementDiv', 'measurements', objSelfReference.measurementTableString, measurementTableOptions, true);
-            if ($.fn.DataTable.isDataTable('#measurements')) {
-                var table = $('#measurements').DataTable();
-                for (var i = 0; i < table.columns().length; i++) {
-                    console.log(table.columns(i).cells().data());
-                };
-
-            }
-
-            $('#measurementDiv').append('<button class="btn btn-danger" id="deleteSelectedMeasurementRows">Delete Selected Measurement Rows</button>')
-            $('#measurements tbody').on('click', 'tr', function () {
-                if ($(this).hasClass('selected')) {
-                    $(this).removeClass('selected');
-                } else {
-                    $(this).addClass('selected');
+    if (typeof (objSelfReference.measurement.branchId) == 'undefined') {
+        $.get(measResave2Url, function (objMeasurementData) { }).done(function (objMeasurementData) {
+            var objMeasurementComp = {};
+            $('row', objMeasurementData).each(function (index) {
+                if (index == 0) {
+                    objSelfReference.baseSize = $(this).find('baseSize').text();
+                    objSelfReference.sizeRun = $(this).find('sizeRun').text();
+                
+                    var name = $(this).find('Measurements_Name').text();
+                    objMeasurementComp = {};
+                    objMeasurementComp.name = name;
+                    objMeasurementComp.componentType = 'Measurement';
+                    objMeasurementComp.ownerType = 'Garment';
+                    objMeasurementComp.fileName = "";
+                    objMeasurementComp.imageUrl = "<img src='' />";
+                    objMeasurementComp.branchId = $(this).find('branchIdForTaskCall').text();
                 };
             });
-            $('#deleteSelectedMeasurementRows').click(function () {
-                $('#measurements').each(function () {
-                    var strAttr = $(this).attr('id');
-                    var table = $('#' + strAttr).DataTable();
-                    var rows = table.rows('.selected').remove().draw();
+            objSelfReference.measurement = objMeasurementComp;
+            var strMeasTaskUrl = strHostUrlPrefix + 'Windchill/servlet/IE/tasks/com/lcs/wc/measurements/FindMeasurements.xml';
+            var strInstance = 'net.hbi.res.wsflexappdev1v.windchillAdapter';
+            var strCurrentEnvironment = window.location.href;
+            if (strCurrentEnvironment.indexOf('plmqa.hanes') != -1) {
+                strInstance = 'net.hbi.res.wsflexappqa1v.windchillAdapter';
+            };
+            if (strCurrentEnvironment.indexOf('wsflexwebprd1v') != -1) {
+                strInstance = 'net.hbi.res.wsflexappprd1v.windchill';
+            };
+            $.ajax({
+                url: strMeasTaskUrl,
+                type: 'get',
+                data: {
+                    oid: 'VR:com.lcs.wc.measurements.LCSMeasurements:' + objSelfReference.measurement.branchId,
+                    instance: strInstance,
 
+                },
+                async: true
+
+            }).done(function (data) {
+                try {
+                    objSelfReference.getMyMeasurement(strHostUrlPrefix, objSelfReference.measurement.branchId, data, objSelfReference);
+                    createComponentTable('measurementDiv', 'measurements', objSelfReference.measurementTableString, measurementTableOptions, true);
+                    if ($.fn.DataTable.isDataTable('#measurements')) {
+                        var table = $('#measurements').DataTable();
+                        for (var i = 0; i < table.columns().length; i++) {
+                            console.log(table.columns(i).cells().data());
+                        };
+
+                    }
+
+                    $('#measurementDiv').append('<button class="btn btn-danger" id="deleteSelectedMeasurementRows">Delete Selected Measurement Rows</button>')
+                    $('#measurements tbody').on('click', 'tr', function () {
+                        if ($(this).hasClass('selected')) {
+                            $(this).removeClass('selected');
+                        } else {
+                            $(this).addClass('selected');
+                        };
+                    });
+                    $('#deleteSelectedMeasurementRows').click(function () {
+                        $('#measurements').each(function () {
+                            var strAttr = $(this).attr('id');
+                            var table = $('#' + strAttr).DataTable();
+                            var rows = table.rows('.selected').remove().draw();
+
+                        });
+                    });
+
+                } catch (e) {
+                    console.log(e);
+                    console.log("measurement not found");
+                    //$('#measurementsLi').fadeOut();
+
+
+                };
+            });
+
+
+        });
+    }
+    else {
+        $.ajax({
+            url: strMeasTaskUrl,
+            type: 'get',
+            data: {
+                oid: 'VR:com.lcs.wc.measurements.LCSMeasurements:' + objSelfReference.measurement.branchId,
+                instance: strInstance,
+
+            },
+            async: true
+
+        }).done(function (data) {
+            try {
+                objSelfReference.getMyMeasurement(strHostUrlPrefix, objSelfReference.measurement.branchId, data, objSelfReference);
+                createComponentTable('measurementDiv', 'measurements', objSelfReference.measurementTableString, measurementTableOptions, true);
+                if ($.fn.DataTable.isDataTable('#measurements')) {
+                    var table = $('#measurements').DataTable();
+                    for (var i = 0; i < table.columns().length; i++) {
+                        console.log(table.columns(i).cells().data());
+                    };
+
+                }
+
+                $('#measurementDiv').append('<button class="btn btn-danger" id="deleteSelectedMeasurementRows">Delete Selected Measurement Rows</button>')
+                $('#measurements tbody').on('click', 'tr', function () {
+                    if ($(this).hasClass('selected')) {
+                        $(this).removeClass('selected');
+                    } else {
+                        $(this).addClass('selected');
+                    };
                 });
-            });
+                $('#deleteSelectedMeasurementRows').click(function () {
+                    $('#measurements').each(function () {
+                        var strAttr = $(this).attr('id');
+                        var table = $('#' + strAttr).DataTable();
+                        var rows = table.rows('.selected').remove().draw();
 
-        } catch (e) {
-            console.log(e);
-            console.log("measurement not found");
-            $('#measurementsLi').fadeOut();
-        };
-    });
+                    });
+                });
+
+            } catch (e) {
+                console.log(e);
+                console.log("measurement not found");
+                //$('#measurementsLi').fadeOut();
+
+
+            };
+        });
+    };
+
+
     var arrOfConstructions = [];
     var objConstructionComp = {};
 
@@ -1191,56 +1284,135 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
         objConstructionComp.branchId = $(this).find('branchIdForTask').text();
         arrOfConstructions.push(objConstructionComp);
     });
-    objSelfReference.construction = objConstructionComp;
-    objSelfReference.arrayOfConstructions = arrOfConstructions;
-    var conStrTaskUrl = strHostUrlPrefix + 'Windchill/servlet/IE/tasks/com/lcs/wc/construction/FindConstructionInfo.xml';
+    
+    if (arrOfConstructions.length == 0) {
+        $.get(con2Url, function (objConstructionData) { }).done(function (objConstructionData) {
+            var arrOfConstructions = [];
+            var objConstructionComp = {};
+
+            $('row', objConstructionData).each(function () {
+                var name = $(this).find('Construction_Info_Name').text();
+                objConstructionComp = {};
+                objConstructionComp.name = name;
+                objConstructionComp.componentType = 'Construction';
+                objConstructionComp.ownerType = 'Pattern';
+                objConstructionComp.fileName = "";
+                objConstructionComp.imageUrl = "<img src='' />";
+                objConstructionComp.branchId = $(this).find('branchIdForTask').text();
+                arrOfConstructions.push(objConstructionComp);
+            });
 
 
-    var strInstance = 'net.hbi.res.wsflexappdev1v.windchillAdapter';
-    var strCurrentEnvironment = window.location.href;
-    if (strCurrentEnvironment.indexOf('plmqa.hanes') != -1) {
-        strInstance = 'net.hbi.res.wsflexappqa1v.windchillAdapter';
-    };
-    if (strCurrentEnvironment.indexOf('wsflexwebprd1v') != -1) {
-        strInstance = 'net.hbi.res.wsflexappprd1v.windchill';
-    };
-    var numNumberOfConstructions = 0;
-    var arrOfDeffereds = [];
-    for (var i = 0; i < objSelfReference.arrayOfConstructions.length; i++) {
-        var objCurrentConstruction = objSelfReference.arrayOfConstructions[i];
+            objSelfReference.construction = objConstructionComp;
+            objSelfReference.arrayOfConstructions = arrOfConstructions;
+            var conStrTaskUrl = strHostUrlPrefix + 'Windchill/servlet/IE/tasks/com/lcs/wc/construction/FindConstructionInfo.xml';
 
-        var objDeferred = $.ajax({
-            url: conStrTaskUrl,
-            type: 'get',
-            data: {
-                oid: 'VR:com.lcs.wc.construction.LCSConstructionInfo:' + objCurrentConstruction.branchId,
 
-                instance: strInstance
-            }
+            var strInstance = 'net.hbi.res.wsflexappdev1v.windchillAdapter';
+            var strCurrentEnvironment = window.location.href;
+            if (strCurrentEnvironment.indexOf('plmqa.hanes') != -1) {
+                strInstance = 'net.hbi.res.wsflexappqa1v.windchillAdapter';
+            };
+            if (strCurrentEnvironment.indexOf('wsflexwebprd1v') != -1) {
+                strInstance = 'net.hbi.res.wsflexappprd1v.windchill';
+            };
+            var numNumberOfConstructions = 0;
+            var arrOfDeffereds = [];
+            for (var i = 0; i < objSelfReference.arrayOfConstructions.length; i++) {
+                var objCurrentConstruction = objSelfReference.arrayOfConstructions[i];
+
+                var objDeferred = $.ajax({
+                    url: conStrTaskUrl,
+                    type: 'get',
+                    data: {
+                        oid: 'VR:com.lcs.wc.construction.LCSConstructionInfo:' + objCurrentConstruction.branchId,
+
+                        instance: strInstance
+                    }
+
+                });
+                arrOfDeffereds.push(objDeferred);
+
+            };
+            //var numNumberOfConstructions = 0;
+            $.when.apply($, arrOfDeffereds).done(function (responseData) {
+                //arrConstructionDetailDataContainer = arrOfDeffereds[0];
+                for (var i = 0; i < arguments.length; i++) {
+                    try {
+                        objSelfReference.getMyConstruction(strHostUrlPrefix, objSelfReference.arrayOfConstructions[i].branchId, arguments[i], objSelfReference, 'constructionBranchId' + objSelfReference.arrayOfConstructions[i].branchId, objSelfReference.arrayOfConstructions[i].name);
+
+                        createComponentTable('constructionDiv', 'constructionBranchId' + objSelfReference.arrayOfConstructions[i].branchId, objSelfReference.arrayOfConstructions[i].tableString, constructionTableOptions, true);
+
+
+                    } catch (e) {
+                        console.log(e);
+                    };
+                };
+            }).done(function () {
+                if (!$('table.construction').length) {
+                    //$('#constructionsLi').fadeOut();
+                };
+            });
+
+
 
         });
-        arrOfDeffereds.push(objDeferred);
-
-    };
-    //var numNumberOfConstructions = 0;
-    $.when.apply($, arrOfDeffereds).done(function (responseData) {
-        //arrConstructionDetailDataContainer = arrOfDeffereds[0];
-        for (var i = 0; i < arguments.length; i++) {
-            try {
-                objSelfReference.getMyConstruction(strHostUrlPrefix, objSelfReference.arrayOfConstructions[i].branchId, arguments[i], objSelfReference, 'constructionBranchId' + objSelfReference.arrayOfConstructions[i].branchId, objSelfReference.arrayOfConstructions[i].name);
-
-                createComponentTable('constructionDiv', 'constructionBranchId' + objSelfReference.arrayOfConstructions[i].branchId, objSelfReference.arrayOfConstructions[i].tableString, constructionTableOptions, true);
+    }
+    else {
 
 
-            } catch (e) {
-                console.log(e);
+        objSelfReference.construction = objConstructionComp;
+        objSelfReference.arrayOfConstructions = arrOfConstructions;
+        var conStrTaskUrl = strHostUrlPrefix + 'Windchill/servlet/IE/tasks/com/lcs/wc/construction/FindConstructionInfo.xml';
+
+
+        var strInstance = 'net.hbi.res.wsflexappdev1v.windchillAdapter';
+        var strCurrentEnvironment = window.location.href;
+        if (strCurrentEnvironment.indexOf('plmqa.hanes') != -1) {
+            strInstance = 'net.hbi.res.wsflexappqa1v.windchillAdapter';
+        };
+        if (strCurrentEnvironment.indexOf('wsflexwebprd1v') != -1) {
+            strInstance = 'net.hbi.res.wsflexappprd1v.windchill';
+        };
+        var numNumberOfConstructions = 0;
+        var arrOfDeffereds = [];
+        for (var i = 0; i < objSelfReference.arrayOfConstructions.length; i++) {
+            var objCurrentConstruction = objSelfReference.arrayOfConstructions[i];
+
+            var objDeferred = $.ajax({
+                url: conStrTaskUrl,
+                type: 'get',
+                data: {
+                    oid: 'VR:com.lcs.wc.construction.LCSConstructionInfo:' + objCurrentConstruction.branchId,
+
+                    instance: strInstance
+                }
+
+            });
+            arrOfDeffereds.push(objDeferred);
+
+        };
+        //var numNumberOfConstructions = 0;
+        $.when.apply($, arrOfDeffereds).done(function (responseData) {
+            //arrConstructionDetailDataContainer = arrOfDeffereds[0];
+            for (var i = 0; i < arguments.length; i++) {
+                try {
+                    objSelfReference.getMyConstruction(strHostUrlPrefix, objSelfReference.arrayOfConstructions[i].branchId, arguments[i], objSelfReference, 'constructionBranchId' + objSelfReference.arrayOfConstructions[i].branchId, objSelfReference.arrayOfConstructions[i].name);
+
+                    createComponentTable('constructionDiv', 'constructionBranchId' + objSelfReference.arrayOfConstructions[i].branchId, objSelfReference.arrayOfConstructions[i].tableString, constructionTableOptions, true);
+
+
+                } catch (e) {
+                    console.log(e);
+                };
             };
-        };
-    }).done(function () {
-        if (!$('table.construction').length) {
-            $('#constructionsLi').fadeOut();
-        };
-    });
+        }).done(function () {
+            if (!$('table.construction').length) {
+                //$('#constructionsLi').fadeOut();
+            };
+        });
+    };
+
     /*var objDefferedConstruction = $.ajax({
      url : conStrTaskUrl,
      type : 'get',
@@ -1470,10 +1642,10 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
             objSelfReference.approvedSupplierTableString = strApprovedSupplierTableString;
             $('#approvedSupplierDiv').append(objSelfReference.approvedSupplierTableString);
             $('#approvedSupplierTbl').DataTable(approvedSupplierTableOptions);
-            $('#approvedSuppliersLi').show();
+            //$('#approvedSuppliersLi').show();
         } else {
             //$('#approvedSupplierDiv').append('<p>Approved Supplier table was not found.</p>')
-            $('#approvedSuppliersLi').hide();
+            //$('#approvedSuppliersLi').hide();
         };
     });
 
@@ -1483,26 +1655,26 @@ function checkForColorwayAndLabelProductsToRemoveBoms(objGarmentProductTocheck) 
     if (typeof (objGarmentProductTocheck.colorwayProduct) != 'undefined') {
     }
     else {
-        $('#colorwayBomLi').fadeOut();
+        //$('#colorwayBomLi').fadeOut();
     }
 
     if (typeof (objGarmentProductTocheck.labelProduct) != 'undefined') {
     }
     else {
-        $('#labelBomLi').fadeOut();
+        //$('#labelBomLi').fadeOut();
     };
     if (objGarmentProductTocheck.garmentSewBoms.length > 0) {
     }
     else {
-        $('#sewBomLi').fadeOut();
+        //$('#sewBomLi').fadeOut();
     }
     if (objGarmentProductTocheck.patternSewBoms.length > 0) {
     } else {
-        $('#sewBomLi').fadeOut();
+        //$('#sewBomLi').fadeOut();
     };
     if (objGarmentProductTocheck.garmentSourceBoms.length != 0) {
     } else {
-        $('#sourcedBomLi').fadeOut();
+        //$('#sourcedBomLi').fadeOut();
     };
 
 };
@@ -2508,7 +2680,7 @@ function cwayProductBomsToTable(objSelfReference) {
         });
     });
     if (typeof (objSelfReference.colorwayProduct.boms) != 'undefined') {
-        var strHeaderString = '<button id="bomRemover" class="btn-primary">Remove Highlighted Boms</button><table class="display" id="cwayGroupingNew"><thead><tr><th>Select BOM</th><th>BOM</th><th>Colorway</th></tr></thead><tbody>';
+        var strHeaderString = '<button id="bomRemover" class="btn-danger">Remove Highlighted Boms</button><table class="display" id="cwayGroupingNew"><thead><tr><th>Select BOM</th><th>BOM</th><th>Colorway</th></tr></thead><tbody>';
             var strEndTableString = '</tbody></table>';
             var strTableString = strHeaderString;
             for (var i = 0; i < objSelfReference.colorwayProduct.boms.length; i++) {
@@ -3593,7 +3765,13 @@ garmentProduct.prototype.getMoas = function (strUrlPrefix, objSelfReference, obj
                 $('#prodRevisionDiv').append(objSelfReference.RevisionAttributeTableString);
                 //sizeTbl
                 $('#sizeTbl').DataTable(sizeTableOptions);
-                $('#revisionAttributeTbl').DataTable(revisionTableTableOptions);
+                var table = $('#revisionAttributeTbl').DataTable(revisionTableTableOptions);
+                table.colReorder.order([12, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13]);
+                table.column(10).data().sort();
+                //table.colReorder = false;
+
+                //var aFart = 1;
+                //var aFart = 2;
 
             });
 
