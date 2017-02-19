@@ -339,8 +339,15 @@
                 getLogin(arrOfAttributeValueListIds, currentGarmentProduct, arrMasterReportIndexer);
                 $('#garmentProd').submit(function (e) {
                     e.preventDefault();
+                    //.remove();
+                    $('#noGarment,#suggestionContainer').fadeOut('slow',
+                        function () {
+                            $('#noGarment,#suggestionContainer').remove();
+                        }
+                        )
                     var nameToUse = $('#gProd').val();
                     if (arrGarmentProductsArrayForTypeAhead.indexOf(nameToUse) != -1) {
+                        $('#noGarment,#suggestionContainer').fadeOut();
                         //http://wsflexwebprd1v.res.hbi.net/Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?
                         $('#garmentFormContainer').fadeOut();
                         $('.clearThisComponentOnNewGarmentLoad *').remove();
@@ -351,10 +358,62 @@
                         //all seasons and specs
                     }
                     else {
+
+                        var boolIsUserValueInGarment = false;
+                        var boolHasAnyNeverBeenFound = true;
+                        var strSuggestionButtons = '';
+                        var strClassStringForScreens = 'col-xs-offset-2 col-sm-offset-2 col-md-offset-2 col-lg-offset-2 col-xl-offset-2 col-xs-8 col-sm-8 col-md-8 col-lg-8 col-xl-8';
+                        for (var z = 0; z < arrGarmentProductsArrayForTypeAhead.length; z++) {
+                            var strCurrentGarmentInArray = arrGarmentProductsArrayForTypeAhead[z];
+                            boolIsUserValueInGarment = strCurrentGarmentInArray.includes(nameToUse);
+                            if (boolIsUserValueInGarment) {
+
+                                if (boolHasAnyNeverBeenFound) {
+                                    if ($('#suggestionContainer').length) {
+
+                                    } else {
+                                        $('#garmentProd').append('<div id="suggestionContainer" class="container-fluid col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12"><h5 id="suggestExplain">The following garments contained the value you input.  You can simply click one to use it as your option</h5></div>');
+                                    };
+                                };
+
+                                //$('#suggestionContainer').append('<button class="suggestion btn-default col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">' + strCurrentGarmentInArray + '</button>');
+                                strSuggestionButtons += '<button class="suggestion btn-default' + strClassStringForScreens + '" style="opacity:0">' + strCurrentGarmentInArray + '</button>';
+                                boolHasAnyBeenFound = false;
+                            };
+                        };
+                        if ($('#suggestionContainer .suggestion').length) {
+                            
+                        } else {
+                            $('#suggestionContainer').append(strSuggestionButtons);
+                            $('#suggestionContainer *').animate({
+                                opacity: 1
+                            }, 400);
+                            $('#suggestionContainer .suggestion').first().focus();
+                            $('#gProd').typeahead('close');
+                        };
                         $('#gProd').val('');
                         $('#gProd').focus();
-                        $('#garmentHeader').append('<p class="clearThisComponentOnNewGarmentLoad" id="noGarment">' + nameToUse + ' is not in the list of valid choices for a garment product.  Please use the typeahead to select a valid option.</p>')
-                        $('#noGarment').delay(2500).fadeOut();
+                        if ($('#noGarment').length) {
+
+
+                        } else {
+                            if ($('.suggestion').length) {
+                                $('.suggestion').click(function () {
+                                    var strSuggestionText = $(this).text();
+                                    nameToUse = strSuggestionText;
+
+                                    //http://wsflexwebprd1v.res.hbi.net/Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?
+                                    $('#garmentFormContainer').fadeOut();
+                                    $('.clearThisComponentOnNewGarmentLoad *').remove();
+                                    $('#runNew,.clearThisComponentOnNewGarmentLoad').fadeIn();
+                                    localStorage.setItem('lastGarmentRan', nameToUse);
+                                    currentGarmentProduct.getSpecByNameButNotJustActiveSpec(strUrlPrefix, nameToUse, currentGarmentProduct.thenCallSpecs, returnArrays, currentGarmentProduct);
+                                })
+                            } else {
+                                $('#garmentProd').prepend('<p class="clearThisComponentOnNewGarmentLoad" id="noGarment">' + nameToUse + ' is a valid garment product.  Please use the typeahead to select a valid option.</p>')
+                            }
+                        };
+                        //$('#noGarment').delay(2500).fadeOut();
                     }
                 });
                 $('#fileinput').on("change", function (e) {
@@ -426,7 +485,7 @@
                 </button>
                 <a id="topLeftNav2" class="navbar-brand" href="#navTopDiv">Garment Spec Report Page</a>
             </div>
-           
+
             <div id="navbar" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
                     <!--<li>
@@ -436,10 +495,10 @@
                     <a href="javascript:makeMeScrollToDefinedTarget('#imagesDiv',50,-100);">Documents</a>
                     </li>-->
                     <!--<li id="constructionsLi">
-                        
+
                     </li>
                     <li id="measurementsLi">
-                       
+
                     </li>-->
                     <!--<li id="labelBomLi">
                         <a href="javascript:makeMeScrollToDefinedTarget('#labelsDiv',50,-100);">Label BOM</a>
@@ -465,7 +524,7 @@
                     <li id="approvedSuppliersLi">
                         <a href="javascript:makeMeScrollToDefinedTarget('#approvedSupplierDiv',50,-100);">Approved Suppliers</a>
                     </li>-->
-                   
+
                     <li>
                         <div class="dropdown">
                             <button class="dropbtn">Product Details</button>
@@ -480,7 +539,7 @@
                     </li>
                     <li>
                         <div class="dropdown">
-                            <button class="dropbtn">Pattern related</button>
+                            <button class="dropbtn">Pattern Related</button>
                             <div class="dropdown-content">
                                 <a href="javascript:makeMeScrollToDefinedTarget('#constructionDiv',50, -100);">Constructions</a>
                                 <a href="javascript:makeMeScrollToDefinedTarget('#measurementDiv',50,-100);">Measurements</a>
@@ -508,7 +567,7 @@
                             </div>
                         </div>
                     </li>
-                 
+
                     <li>
                         <div class="dropdown">
                             <button class="dropbtn">Image Sections</button>
@@ -531,11 +590,11 @@
                             </div>
                         </div>
                     </li>
-                     <!--<li id="runNew">
-                      
+                    <!--<li id="runNew">
+
                     </li>
                     <li>
-                      
+
                     </li>-->
                 </ul>
             </div>
@@ -543,7 +602,7 @@
     </nav>
     <br>
     <br>
-    
+
     <div class="container-fluid" id="garmentFormContainer">
         <div class="col-md-10 starter-template row">
             <form id="garmentProd">
@@ -559,11 +618,11 @@
     </div>
     <br>
     <br>
-   
+
     <div class="page" id="max">
-       
+
         <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="frontBackImages">
-           
+
         </div>
     </div>
     <div class="page">
@@ -576,7 +635,7 @@
         </div>
     </div>
     <div class="page">
-        
+
         <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="generalAttributes">
         </div>
     </div>
@@ -621,7 +680,7 @@
         </div>
     </div>
 
-   
+
     <div class="page">
         <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="colorwaysListDiv">
         </div>

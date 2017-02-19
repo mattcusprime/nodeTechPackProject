@@ -42,7 +42,7 @@ var measurementTableOptions = {
 	'responsive' : false,
 	'paging' : true
 };
-var sewBomTableOptions = {
+/*var sewBomTableOptions = {
 
 	"columnDefs" : [{
 		"targets" : [0, 1, 2, 3, 4, 5,7,8,11,13,14,15,16,18,19,20],
@@ -51,13 +51,13 @@ var sewBomTableOptions = {
 	}],
 	'buttons' : arrButtonsNoButtons,
 
-};
+};*/
 
-/*var sewBomTableOptions = {
+var sewBomTableOptions = {
 
     'buttons': arrButtonsNoButtons,
 
-};*/
+};
 var sourceBomTableOptions = {
 
 	'buttons' : arrButtonsNoButtons,

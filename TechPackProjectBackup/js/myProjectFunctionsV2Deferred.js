@@ -81,11 +81,14 @@ function garmentProduct(strName, arrAttributes, arrSpecs, arrSources, objColorwa
     this.sortingArray = ['sizeXXS', '1', 'sizeXS', '2', 'sizeS', '3', 'sizeM', '4', 'sizeL', '5', 'sizeXL', '6', 'size2X', '7', 'size3X', '8', 'size4X', '9', 'size5X', '10', 'size6X', '11', 'size3M', '1', 'size6M', '2', 'size9M', '3', 'size12M', '4', 'size18M', '5', 'size24M', '6', 'size2T', '7', 'size3T', '8', 'size4T', '9', 'size5T', '10', 'size2', '1', 'size4', '2', 'size5', '3', 'size6', '4', 'size7', '5', 'size8', '6', 'size9', '7', 'size10', '8', 'size11', '9', 'size12', '10', 'size13', '11', 'size14', '12', 'size16', '13', 'size18', '14', 'size20', '15', 'size22', '16', 'size24', '17', 'size26', '18', 'size28', '19', 'size30', '20', 'size32', '21', 'size34', '22', 'size36', '23', 'size38', '24', 'size40', '25', 'size42', '26', 'size44', '27', 'size46', '28', 'size48', '29', 'size50', '30', 'size52', '31', 'size54', '32', 'size56', '33', 'size58', '34', 'size60', '35', 'size62', '36', 'sizeS/M', '1', 'sizeL/`', '2', 'size16W', '1', 'size20W', '2', 'size24W', '3', 'size28W', '4', 'size32W', '5', 'size36W', '6'];
 
 };
-
-//var fs = require('fs.extra');
-//var execFile = require('child_process').execFile, child;
-//var wkhtmltopdf = require('wkhtmltopdf');
-//var gui = require('nw.gui');
+try{
+    var fs = require('fs.extra');
+    var execFile = require('child_process').execFile, child;
+    var wkhtmltopdf = require('wkhtmltopdf');
+    var gui = require('nw.gui');
+}catch(e){
+    console.log('Node is not defined');
+}
 //Node webkit functionalities
 var arrDataArray = [];
 // global var for ajax calls
@@ -156,7 +159,7 @@ garmentProduct.prototype.getMyConstruction = function (strHostUrlPrefix, numCons
             objCurrentRow.topStitchDisplay = objCurrentElement.text();
         } else if (objCurrentElement.is("seamType")) {
             objCurrentRow.seamType = objCurrentElement.text();
-        } else if (objCurrentElement.is("seamTypeDisplay")) {
+        } else if (objCurrentElement.is("seamTypeDisplay")) {       
             objCurrentRow.seamTypeDisplay = objCurrentElement.text();
             arrCurrentConstruction.push(objCurrentRow)
             objCurrentRow = {};
@@ -1450,209 +1453,443 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
         if (objBomComponent.flexType == 'Garment Routing Table') {
             $('#revi')
             objSelfReference.getAndProcessMyRoutingBOM(objBomComponent, objSelfReference);
+        }else if(objBomComponent.flexType == "Pattern Product Sew BOM"){
+            objSelfReference.hasAPatternSewBom = true;
+            objSelfReference.patternSewBranch = objBomComponent.branchId;
+        }else if(objBomComponent.flexType == "Garment Sew" && objBomComponent.name.indexOf('Source') == -1){
+            objSelfReference.hasAGarmentSewBom = true;
+            //garmentProduct.prototype.getAndProcessMySewAndSourceBom
+            objSelfReference.garmentSewBranch = objBomComponent.branchId;
+        }else if(objBomComponent.flexType == "Garment Sew" && objBomComponent.name.indexOf('Source') != -1){
+            objSelfReference.hasAGarmentSourceBom = true;
+            objSelfReference.bomSourceBranch = objBomComponent.branchId;
         };
 
     });
-    objSelfReference.boms = arrBoms;
-    //console.log("Garment Data " + objGarmentSewBomData + " Pattern Data " + objPatternSewBomDataWithUsage);
+    if(objSelfReference.hasAGarmentSourceBom){
+        var objSourcedObject = {};
+         $.ajax({
+            url: 'http://wsflexwebprd1v/Windchill/servlet/IE/tasks/com/lcs/wc/flexbom/FindFlexBOM.xml',
+            type: 'get',
+            data: {
+                instance: 'net.hbi.res.wsflexappprd1v.windchill',
+                skuMode: 'ALL_SKUS',
+                //sizeMode: 'ALL_SIZE1',
+                partId: 'VR:com.lcs.wc.flexbom.FlexBOMPart:' + objSelfReference.bomSourceBranch
 
-    //objSelfReference.garmentSewBoms = objGarmentSewBomData;
-    //objSelfReference.patternSewBoms = objPatternSewBomDataWithUsage;
-    //put this back later when the objects are actually constructed through parsing
-    var arrGarmentSewRows = rowParser('row', objGarmentSewBomData);
+            }
+        }).done(function(sourcedData){
+            var wcCollectionSource = $(sourcedData).first();
+            var arrOfSourceInstances = $(wcCollectionSource).find('branchId').parent();
+            objSelfReference.sourceBomTableString = '<h1>Sourced BOM</h1><table class="display" id="sourceBomTable" ><thead><th>Garment Use</th><th>Material</th><th>Minor Category</th><th>Description</th><th>Usage UOM</th></thead><tbody>';
+            
+             $(arrOfSourceInstances).each(function () {
+                    var objGarmentSourceRow = {};
+                    objGarmentSourceRow.garmentUseId = $(this).find('hbiGarmentUse').text();
+                    objGarmentSourceRow.Garment_Use = $(this).find('hbiGarmentUseDisplay').text();
+                    objGarmentSourceRow.minorCategory = $(this).find('hbiMinorCategory').text();
+                    objGarmentSourceRow.description = $(this).find('hbiItemDescription').text();
+                    objGarmentSourceRow.materialName = $(this).find('materialName').text();
+                    objGarmentSourceRow.uom = $(this).find('hbiUsageUOM').text();
+                    objGarmentSourceRow = fillUndefinedPropertiesWithSpaces(objGarmentSourceRow);
+                    objSelfReference.sourceBomTableString += '<tr>';
+                    var strTdBegin = '<td>';
+                    var strTdEnd = '</td>';
+                    objSelfReference.sourceBomTableString += strTdBegin + objGarmentSourceRow.Garment_Use + strTdEnd + strTdBegin + objGarmentSourceRow.materialName + strTdEnd + strTdBegin + objGarmentSourceRow.minorCategory.toUpperCase() + strTdEnd + strTdBegin + objGarmentSourceRow.description + strTdEnd + strTdBegin + objGarmentSourceRow.uom.toUpperCase();
+                    objSelfReference.sourceBomTableString += '</tr>';
 
-    var arrGarmentSourceRows = [];
-    //var strGarmentSewBomString = convertRowArrayIntoHtmlTable(arrGarmentSewRows);
-    var arrPatternSewRows = rowParser('row', objPatternSewBomDataWithUsage);
-    //var strPatternSewBomString = convertRowArrayIntoHtmlTable(arrPatternSewRows);
-    var arrOfUniqueSizes = [];
-    for (var i = 0; i < arrGarmentSewRows.length; i++) {
-        var objGarmentSewRow = {};
+             });
+             objSelfReference.sourceBomTableString += '</tbody></table>';
+              $('#sourceBomDiv').append(objSelfReference.sourceBomTableString);
+              $('#sourceBomTable').DataTable(sourceBomTableOptions);
 
-        objGarmentSewRow = arrGarmentSewRows[i];
-        for (var j = 0; j < arrPatternSewRows.length; j++) {
-            var objPatternSewRow = {};
-            objPatternSewRow = arrPatternSewRows[j];
-            if (objGarmentSewRow.garmentUseId == objPatternSewRow.garmentUseId) {
-                //give the garment sew object the pattern branch here to use in the next loop
-                //console.log("MATCH");
-                objGarmentSewRow.patternBranch = objPatternSewRow.branchId;
-            };
+        });
 
-        };
-        objGarmentSewRow.sizeData = [];
-        if (objGarmentSewRow.sewOrSource == 'sew' && arrPatternSewRows.length != 0) {
+    };
 
 
 
-            for (var k = 0; k < arrPatternSewRows.length; k++) {
+
+
+
+
+
+    if(objSelfReference.hasAGarmentSewBom && objSelfReference.hasAPatternSewBom){
+        //garmentProduct.prototype.getAndProcessMySewAndSourceBom
+        var objSewBomObject = {};
+        $.ajax({
+            url: 'http://wsflexwebprd1v/Windchill/servlet/IE/tasks/com/lcs/wc/flexbom/FindFlexBOM.xml',
+            type: 'get',
+            data: {
+                instance: 'net.hbi.res.wsflexappprd1v.windchill',
+                skuMode: 'ALL_SKUS',
+                sizeMode: 'ALL_SIZE1',
+                partId: 'VR:com.lcs.wc.flexbom.FlexBOMPart:' + objSelfReference.patternSewBranch
+
+            }
+        }).done(function(patternData){
+            var wcCollectionPattern = $(patternData).first();
+            var arrOfPatternInstances= $(wcCollectionPattern).find('branchId').parent();
+            objSelfReference.patternSewData2 = [];
+            objSelfReference.sewSizes = [];
+            $(arrOfPatternInstances).each(function () {
                 var objPatternSewRow = {};
-                objPatternSewRow = arrPatternSewRows[k];
-                if (objGarmentSewRow.patternBranch == objPatternSewRow.branchId && objGarmentSewRow.accessorySize == objPatternSewRow.accessorySize) {
-                    objSizeData = {};
-                    if (objPatternSewRow.garmentUseId == '0' && objPatternSewRow.usagePerDozen != '0') {
-                        objSizeData.size = objPatternSewRow.size;
-                        if (arrOfUniqueSizes.indexOf(objSizeData.size) == -1) {
-                            arrOfUniqueSizes.push(objSizeData.size);
+                objPatternSewRow.garmentUseId = $(this).find('hbiGarmentUse').text();
+                objPatternSewRow.garmentUseDisplay = $(this).find('hbiGarmentUseDisplay').text();
+                objPatternSewRow.uom = $(this).find('hbiUOM').text();
+                objPatternSewRow = fillUndefinedPropertiesWithSpaces(objPatternSewRow);
+                objPatternSewRow.sizes = [];
+                objPatternSewRow.sizeData = [];
+                var arrOfVariationData = $(this).find('*[NAME]');
+
+                for(var i = 0;i < arrOfVariationData.length;i++){
+                    //var arrVariationDetails = $(this).attr('NAME')
+                    var name = $(arrOfVariationData[i]).attr('NAME');
+                    var strVariationLevelValue = $(arrOfVariationData[i]).first().text();
+                    arrVariationDetails = name.split('$');
+                    var strField = arrVariationDetails[0];
+                    var strVariationType = arrVariationDetails[1];
+                    var strVariationName = arrVariationDetails[2];
+                    
+
+                    if(objSelfReference.sewSizes.indexOf(strVariationName) == -1){
+                        var strSizeLookUp = 'size' + strVariationName;
+                        var numIndexOfLookup = objSelfReference.sortingArray.indexOf(strSizeLookUp);
+                        //objSelfReference.sewSizes.push(strVariationName);
+                        objSelfReference.sewSizes[numIndexOfLookup] = strVariationName;
+                    };
+                    var objVariationObject = {
+                        VariationType:strVariationType,
+                        VariationName:strVariationName,
+                        VariationFieldName:strField,
+                        VariationLevelValue:strVariationLevelValue
+                    };
+                    objVariationObject = fillUndefinedPropertiesWithSpaces(objVariationObject);
+                    objPatternSewRow.sizeData.push(objVariationObject);
+                };
+                objPatternSewRow = fillUndefinedPropertiesWithSpaces(objPatternSewRow);
+                objSelfReference.patternSewData2.push(objPatternSewRow);
+                
+
+            });
+            //objSelfReference.patternSewData2 = patterndata;
+            //objSelfReference.patternSewData = patterndata;
+
+            $.ajax({
+                url: 'http://wsflexwebprd1v/Windchill/servlet/IE/tasks/com/lcs/wc/flexbom/FindFlexBOM.xml',
+                type: 'get',
+                data: {
+                    instance: 'net.hbi.res.wsflexappprd1v.windchill',
+                    skuMode: 'ALL_SKUS',
+                    sizeMode: 'ALL_SIZE1',
+                    partId: 'VR:com.lcs.wc.flexbom.FlexBOMPart:' + objSelfReference.garmentSewBranch
+
+                }
+            }).done(function(garmentData){
+                var wcCollectionGarment = $(garmentData).first();
+                var arrOfGarmentInstances= $(wcCollectionGarment).find('branchId').parent();
+                objSelfReference.garmentSewData2 = [];
+                $(arrOfGarmentInstances).each(function () {
+                    var objGarmentSewRow = {};
+                    objGarmentSewRow.garmentUseId = $(this).find('hbiGarmentUse').text();
+                    objGarmentSewRow.Garment_Use = $(this).find('hbiGarmentUseDisplay').text();
+                    objGarmentSewRow.minorCategory = $(this).find('hbiMinorCategory').text();
+                    objGarmentSewRow.description = $(this).find('hbiItemDescription').text();
+                    objGarmentSewRow.materialName = $(this).find('materialName').text();
+                    objGarmentSewRow.uom = $(this).find('hbiUsageUOM').text();
+                    objGarmentSewRow = fillUndefinedPropertiesWithSpaces(objGarmentSewRow);
+                    
+                    //objGarmentSewRow.dimensions = [];
+                    for(var i = 0;i < objSelfReference.patternSewData2.length;i++){
+                        var arrPatternVariationRow = objSelfReference.patternSewData2[i].sizeData;
+                        var strCurrentPatternBranch = objSelfReference.patternSewData2[i].garmentUseId;
+                        var strCurrentPatternUom = objSelfReference.patternSewData2[i].uom;
+                        for(var j = 0;j < arrPatternVariationRow.length;j++){
+                            var objPatternRowToCompare = arrPatternVariationRow[j];
+                            if(strCurrentPatternBranch == objGarmentSewRow.garmentUseId && strCurrentPatternUom == objGarmentSewRow.uom){
+                                var strSizeName = objPatternRowToCompare.VariationName;
+                                var objDimensionDataObject = {};
+                                objDimensionDataObject.dimension = strSizeName;
+                                objDimensionDataObject.dimensionType = objPatternRowToCompare.VariationType;
+                                objDimensionDataObject.attribute =  objPatternRowToCompare.VariationFieldName;
+                                objDimensionDataObject.value = objPatternRowToCompare.VariationLevelValue;
+                                //objGarmentSewRow[strSizeName] = objPatternRowToCompare.VariationLevelValue;
+                                //objGarmentSewRow.dimensions.push(objDimensionDataObject);
+                                //Just going to do this as raw dimensions for usages for now
+                                objGarmentSewRow[strSizeName] = objPatternRowToCompare.VariationLevelValue;
+                               
+
+
+                               
+
+                            };
+                             for(var k = 0;k < objSelfReference.sewSizes.length;k++){
+                                    var strCurrentSize = objSelfReference.sewSizes[k];
+                                    if(typeof(strCurrentSize) != 'undefined' && typeof(objGarmentSewRow[strCurrentSize]) == 'undefined'){
+                                        objGarmentSewRow[strCurrentSize] = ' ';
+                                    };
+
+                                };
+
+
                         };
+                        if(strCurrentPatternBranch == objGarmentSewRow.garmentUseId && strCurrentPatternUom == objGarmentSewRow.uom){
+                             objGarmentSewRow = fillUndefinedPropertiesWithSpaces(objGarmentSewRow);
+                            objSelfReference.garmentSewData2.push(objGarmentSewRow);
+                        };
+                    }
+                    //
+                    //objSelfReference.garmentSewData2.push(objGarmentSewRow);
+                    
+                });
+
+            }).done(function(){
+
+                objSelfReference.sewBomTableString = '<h1>Sew BOMs</h1><table class="display" id="sewBomTable" ><thead><th>Garment Use</th><th>Material</th><th>Minor Category</th><th>Description</th><th>Usage UOM</th>';
+                for(var k = 0;k < objSelfReference.sewSizes.length;k++){
+                    var strCurrentSize = objSelfReference.sewSizes[k];
+                    if(typeof(strCurrentSize) != 'undefined'){
+                        objSelfReference.sewBomTableString += '<th>' + strCurrentSize + '</th>'
+                    };
+
+                };
+                objSelfReference.sewBomTableString += '</thead><tbody>';
+                var arrManualProperties = ["materialName","description","minorCategory","Garment_Use","uom","garmentUseId",'dimensions'];
+                for(var k = 0;k < objSelfReference.garmentSewData2.length;k++){
+
+                    var objToParse = objSelfReference.garmentSewData2[k];
+                    var arrOfProperties = Object.keys(objToParse);
+                    var strTdBegin = '<td>';
+                    var strTdEnd = '</td>';
+                    objSelfReference.sewBomTableString += '<tr>';
+                    objSelfReference.sewBomTableString += strTdBegin + objToParse.Garment_Use + strTdEnd + strTdBegin + objToParse.materialName + strTdEnd + strTdBegin + objToParse.minorCategory.toUpperCase() + strTdEnd + strTdBegin + objToParse.description + strTdEnd + strTdBegin + objToParse.uom.toUpperCase() + strTdEnd;
+                    for(var q = 0;q < arrOfProperties.length;q++){
+                        var strValue = arrOfProperties[q];
+                        var value = objToParse[strValue];
+                        if(arrManualProperties.indexOf(strValue) == -1){
+                            objSelfReference.sewBomTableString += strTdBegin + value + strTdEnd;
+                        };
+
+                    };
+
+                    objSelfReference.sewBomTableString += '</tr>';
+
+                };
+                objSelfReference.sewBomTableString += '</tbody></table>';
+                $('#sewBomDiv').append(objSelfReference.sewBomTableString);
+                $('#sewBomTable').DataTable(sewBomTableOptions);
+            });
+
+        });
+    };
+
+
+//};
+
+
+objSelfReference.boms = arrBoms;
+//console.log("Garment Data " + objGarmentSewBomData + " Pattern Data " + objPatternSewBomDataWithUsage);
+
+//objSelfReference.garmentSewBoms = objGarmentSewBomData;
+//objSelfReference.patternSewBoms = objPatternSewBomDataWithUsage;
+//put this back later when the objects are actually constructed through parsing
+var arrGarmentSewRows = rowParser('row', objGarmentSewBomData);
+
+var arrGarmentSourceRows = [];
+//var strGarmentSewBomString = convertRowArrayIntoHtmlTable(arrGarmentSewRows);
+var arrPatternSewRows = rowParser('row', objPatternSewBomDataWithUsage);
+//var strPatternSewBomString = convertRowArrayIntoHtmlTable(arrPatternSewRows);
+var arrOfUniqueSizes = [];
+/*
+for (var i = 0; i < arrGarmentSewRows.length; i++) {
+    var objGarmentSewRow = {};
+
+    objGarmentSewRow = arrGarmentSewRows[i];
+    for (var j = 0; j < arrPatternSewRows.length; j++) {
+        var objPatternSewRow = {};
+        objPatternSewRow = arrPatternSewRows[j];
+        if (objGarmentSewRow.garmentUseId == objPatternSewRow.garmentUseId) {
+            //give the garment sew object the pattern branch here to use in the next loop
+            //console.log("MATCH");
+            objGarmentSewRow.patternBranch = objPatternSewRow.branchId;
+        };
+
+    };
+    objGarmentSewRow.sizeData = [];
+    if (objGarmentSewRow.sewOrSource == 'sew' && arrPatternSewRows.length != 0) {
+
+
+
+        for (var k = 0; k < arrPatternSewRows.length; k++) {
+            var objPatternSewRow = {};
+            objPatternSewRow = arrPatternSewRows[k];
+            if (objGarmentSewRow.patternBranch == objPatternSewRow.branchId && objGarmentSewRow.accessorySize == objPatternSewRow.accessorySize) {
+                objSizeData = {};
+                if (objPatternSewRow.garmentUseId == '0' && objPatternSewRow.usagePerDozen != '0') {
+                    objSizeData.size = objPatternSewRow.size;
+                    if (arrOfUniqueSizes.indexOf(objSizeData.size) == -1) {
+                        arrOfUniqueSizes.push(objSizeData.size);
                     };
                 };
             };
-            for (var k = 0; k < arrPatternSewRows.length; k++) {
-                var objPatternSewRow = {};
-                objPatternSewRow = arrPatternSewRows[k];
-                if (objGarmentSewRow.patternBranch == objPatternSewRow.branchId && objGarmentSewRow.accessorySize == objPatternSewRow.accessorySize) {
-                    //give the garment sew object the pattern usages based on the branch
-                    objSizeData = {};
-                    if (objPatternSewRow.garmentUseId == '0' && objPatternSewRow.usagePerDozen != '0') {
+        };
+        for (var k = 0; k < arrPatternSewRows.length; k++) {
+            var objPatternSewRow = {};
+            objPatternSewRow = arrPatternSewRows[k];
+            if (objGarmentSewRow.patternBranch == objPatternSewRow.branchId && objGarmentSewRow.accessorySize == objPatternSewRow.accessorySize) {
+                //give the garment sew object the pattern usages based on the branch
+                objSizeData = {};
+                if (objPatternSewRow.garmentUseId == '0' && objPatternSewRow.usagePerDozen != '0') {
 
-                        objSizeData.size = objPatternSewRow.size;
-                        objSizeData.usagePerDozen = objPatternSewRow.usagePerDozen
-                        var strSize = 'size' + objSizeData.size;
-                        var numLookUpPosition = objSelfReference.sortingArray.indexOf(strSize);
-                        var numIndexToGrabSortPosition = numLookUpPosition + 1;
-                        var numActualIndexPosition = objSelfReference.sortingArray[numIndexToGrabSortPosition];
-                        //objSizeData.sortPosition = numActualIndexPosition;
-                        objSizeData.sortPosition = numLookUpPosition;
-                        objGarmentSewRow.sizeData.push(objSizeData);
-                    } else if (objPatternSewRow.garmentUseId != '0' && objPatternSewRow.usagePerDozen != '0') {
-                        objSizeData.size = "ALL";
-                        objSizeData.usagePerDozen = objPatternSewRow.usagePerDozen
-                        var strSize = 'size' + objSizeData.size;
-                        var numLookUpPosition = objSelfReference.sortingArray.indexOf(strSize);
-                        var numIndexToGrabSortPosition = numLookUpPosition + 1;
-                        var numActualIndexPosition = objSelfReference.sortingArray[numIndexToGrabSortPosition];
-                        objSizeData.sortPosition = 0;
-                        objGarmentSewRow.sizeData.push(objSizeData);
-                    }
-                    ;
-
+                    objSizeData.size = objPatternSewRow.size;
+                    objSizeData.usagePerDozen = objPatternSewRow.usagePerDozen
+                    var strSize = 'size' + objSizeData.size;
+                    var numLookUpPosition = objSelfReference.sortingArray.indexOf(strSize);
+                    var numIndexToGrabSortPosition = numLookUpPosition + 1;
+                    var numActualIndexPosition = objSelfReference.sortingArray[numIndexToGrabSortPosition];
+                    //objSizeData.sortPosition = numActualIndexPosition;
+                    objSizeData.sortPosition = numLookUpPosition;
+                    objGarmentSewRow.sizeData.push(objSizeData);
+                } else if (objPatternSewRow.garmentUseId != '0' && objPatternSewRow.usagePerDozen != '0') {
+                    objSizeData.size = "ALL";
+                    objSizeData.usagePerDozen = objPatternSewRow.usagePerDozen
+                    var strSize = 'size' + objSizeData.size;
+                    var numLookUpPosition = objSelfReference.sortingArray.indexOf(strSize);
+                    var numIndexToGrabSortPosition = numLookUpPosition + 1;
+                    var numActualIndexPosition = objSelfReference.sortingArray[numIndexToGrabSortPosition];
+                    objSizeData.sortPosition = 0;
+                    objGarmentSewRow.sizeData.push(objSizeData);
                 }
+                ;
 
-            };
-
-        } else if (objGarmentSewRow.sewOrSource == 'source') {
-            var objSourceRow = {};
-            objSourceRow.Garment_Use = objGarmentSewRow.Garment_Use
-            objSourceRow.Material = objGarmentSewRow.Material
-            objSourceRow.Description = objGarmentSewRow.Description
-            objSourceRow.Minor_Category = objGarmentSewRow.Minor_Category
-            for (var property in objSourceRow) {
-                if (objSourceRow.hasOwnProperty(property)) {
-                    if (typeof (objSourceRow[property]) == 'undefined') {
-                        objSourceRow[property] = ' ';
-                    }
-                };
             }
 
-            arrGarmentSourceRows.push(objSourceRow);
-
-        }
-        ;
-
-        function objCompareBySortPosition(a, b) {
-            if (a.sortPosition < b.sortPosition)
-                return -1;
-            if (a.sortPosition > b.sortPosition)
-                return 1;
-            return 0;
         };
 
-        objGarmentSewRow.sizeData.sort(objCompareBySortPosition);
-        if (typeof (objGarmentSewRow.patternBranch) == 'undefined') {
-            objGarmentSewRow.patternBranch = ' ';
-        };
-        if (objGarmentSewRow.sizeData.length == 0) {
-            for (var y = 0; y < arrOfUniqueSizes.length; y++) {
-                var strSize = arrOfUniqueSizes[y];
-                var newObjForSize = {};
-                newObjForSize.size = strSize;
-                newObjForSize.usagePerDozen = " ";
-                var strSize2 = 'size' + objSizeData.size;
-                var numLookUpPosition = objSelfReference.sortingArray.indexOf(strSize2);
-                newObjForSize.sortPosition = numLookUpPosition;
-                objGarmentSewRow.sizeData.push(newObjForSize);
-
+    } else if (objGarmentSewRow.sewOrSource == 'source') {
+        var objSourceRow = {};
+        objSourceRow.Garment_Use = objGarmentSewRow.Garment_Use
+        objSourceRow.Material = objGarmentSewRow.Material
+        objSourceRow.Description = objGarmentSewRow.Description
+        objSourceRow.Minor_Category = objGarmentSewRow.Minor_Category
+        for (var property in objSourceRow) {
+            if (objSourceRow.hasOwnProperty(property)) {
+                if (typeof (objSourceRow[property]) == 'undefined') {
+                    objSourceRow[property] = ' ';
+                }
             };
-        };
+        }
 
+        arrGarmentSourceRows.push(objSourceRow);
 
-
-
-
-        arrGarmentSewRows[i] = objGarmentSewRow;
-
-    };
-
-    //console.log('Garment Sew Bom String ' + strGarmentSewBomString, 'Pattern Sew Bom String ' + strPatternSewBomString);
-    for (var r = 0; r < arrGarmentSewRows.length; r++) {
-        var objSewSourceChecker = arrGarmentSewRows[r];
-        var strSewOrSource = objSewSourceChecker.sewOrSource;
-        if (strSewOrSource != 'sew') {
-            arrGarmentSewRows.splice(r, 1);
-            r = -1;
-        };
-
-    };
-    objSelfReference.garmentSewBoms = arrGarmentSewRows;
-    objSelfReference.garmentSourceBoms = arrGarmentSourceRows;
-    objSelfReference.patternSewBoms = arrPatternSewRows;
-    if (objSelfReference.garmentSewBoms.length > 0) {
-        objSelfReference.sewBomTableString = convertRowArrayIntoHtmlTable(objSelfReference.garmentSewBoms, 'size', 'usagePerDozen', 'sewBomTable', '<h1>Sew BOMs</h1>');
     }
-    else {
-        //$('#sewBomLi').fadeOut();
-    }
-    if (objSelfReference.garmentSourceBoms.length > 0) {
-        objSelfReference.sourceBomTableString = convertRowArrayIntoHtmlTable(objSelfReference.garmentSourceBoms, '', '', 'sourceBomTable', '<h1>Sourced BOMs</h1>');
+    ;
+
+    function objCompareBySortPosition(a, b) {
+        if (a.sortPosition < b.sortPosition)
+            return -1;
+        if (a.sortPosition > b.sortPosition)
+            return 1;
+        return 0;
     };
-    //if (typeof (objSelfReference.patternSewBoms) != 'undefined') {
-    /*if (objSelfReference.patternSewBoms.length > 0) {
-        $('#sewBomDiv').append(objSelfReference.sewBomTableString);
-    } else {
-        //$('#sewBomLi').fadeOut();
-    };*/
-    if (objSelfReference.garmentSourceBoms.length != 0) {
-        $('#sourceBomDiv').append(objSelfReference.sourceBomTableString);
-        $('#sourceBomTable').DataTable(sourceBomTableOptions);
-    } else {
-        //$('#sourcedBomLi').fadeOut();
+
+    objGarmentSewRow.sizeData.sort(objCompareBySortPosition);
+    if (typeof (objGarmentSewRow.patternBranch) == 'undefined') {
+        objGarmentSewRow.patternBranch = ' ';
     };
-    //sourceBomDivgarmentSewBoms
-    if (objSelfReference.patternSewBoms.length > 0 && objSelfReference.garmentSewBoms.length > 0) {
-        $('#sewBomDiv').append(objSelfReference.sewBomTableString);
-        $('#sewBomTable').DataTable(sewBomTableOptions);
-    };
-    var arrConstructionDetailDataContainer;
-    var arrMeasurementDetailDataContainer;
-    var strApprovedSupplierUrlObjectId = getMyReportIdFromReportName('garmentProdSpecsGarmentAndPatternComponentsApprovedSuppliers');
-    var strApprovedSupplierUrl = strUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?u8&action=ExecuteReport&specId=' + objSelfReference.activeSpecId + '&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A' + strApprovedSupplierUrlObjectId + '&xsl1=&format=formatDelegate&delegateName=XML&jrb=wt.query.template.reportTemplateRB&sortByIndex=6&sortOrder=asc';
-    var arrApprovedSupplierArray = [];
-    var strApprovedSupplierTableString = '';
+    if (objGarmentSewRow.sizeData.length == 0) {
+        for (var y = 0; y < arrOfUniqueSizes.length; y++) {
+            var strSize = arrOfUniqueSizes[y];
+            var newObjForSize = {};
+            newObjForSize.size = strSize;
+            newObjForSize.usagePerDozen = " ";
+            var strSize2 = 'size' + objSizeData.size;
+            var numLookUpPosition = objSelfReference.sortingArray.indexOf(strSize2);
+            newObjForSize.sortPosition = numLookUpPosition;
+            objGarmentSewRow.sizeData.push(newObjForSize);
 
-
-
-
-    $.get(strApprovedSupplierUrl, function (data) {
-    }).done(function (data) {
-        arrApprovedSupplierArray = rowParser('row', data);
-        if (typeof (arrApprovedSupplierArray) != 'undefined' && arrApprovedSupplierArray.length != 0) {
-            strApprovedSupplierTableString = convertRowArrayIntoHtmlTable(arrApprovedSupplierArray, '', '', 'approvedSupplierTbl', '<h1>Approved Suppliers</h1>');
-            objSelfReference.approvedSuppliers = arrApprovedSupplierArray;
-            objSelfReference.approvedSupplierTableString = strApprovedSupplierTableString;
-            $('#approvedSupplierDiv').append(objSelfReference.approvedSupplierTableString);
-            $('#approvedSupplierTbl').DataTable(approvedSupplierTableOptions);
-            //$('#approvedSuppliersLi').show();
-        } else {
-            //$('#approvedSupplierDiv').append('<p>Approved Supplier table was not found.</p>')
-            //$('#approvedSuppliersLi').hide();
         };
-    });
+    };
+
+
+
+
+
+    arrGarmentSewRows[i] = objGarmentSewRow;
+
+};
+
+//console.log('Garment Sew Bom String ' + strGarmentSewBomString, 'Pattern Sew Bom String ' + strPatternSewBomString);
+for (var r = 0; r < arrGarmentSewRows.length; r++) {
+    var objSewSourceChecker = arrGarmentSewRows[r];
+    var strSewOrSource = objSewSourceChecker.sewOrSource;
+    if (strSewOrSource != 'sew') {
+        arrGarmentSewRows.splice(r, 1);
+        r = -1;
+    };
+
+};
+objSelfReference.garmentSewBoms = arrGarmentSewRows;
+objSelfReference.garmentSourceBoms = arrGarmentSourceRows;
+objSelfReference.patternSewBoms = arrPatternSewRows;
+if (objSelfReference.garmentSewBoms.length > 0) {
+    objSelfReference.sewBomTableString = convertRowArrayIntoHtmlTable(objSelfReference.garmentSewBoms, 'size', 'usagePerDozen', 'sewBomTable', '<h1>Sew BOMs</h1>');
+}
+else {
+    //$('#sewBomLi').fadeOut();
+}
+if (objSelfReference.garmentSourceBoms.length > 0) {
+    objSelfReference.sourceBomTableString = convertRowArrayIntoHtmlTable(objSelfReference.garmentSourceBoms, '', '', 'sourceBomTable', '<h1>Sourced BOMs</h1>');
+}*/
+//if (typeof (objSelfReference.patternSewBoms) != 'undefined') {
+/*if (objSelfReference.patternSewBoms.length > 0) {
+    $('#sewBomDiv').append(objSelfReference.sewBomTableString);
+} else {
+    //$('#sewBomLi').fadeOut();
+};*/
+
+/*if (objSelfReference.garmentSourceBoms.length != 0) {
+    $('#sourceBomDiv').append(objSelfReference.sourceBomTableString);
+    $('#sourceBomTable').DataTable(sourceBomTableOptions);
+} else {
+    //$('#sourcedBomLi').fadeOut();
+};*/
+
+//sourceBomDivgarmentSewBoms
+/*if (objSelfReference.patternSewBoms.length > 0 && objSelfReference.garmentSewBoms.length > 0) {
+    $('#sewBomDiv').append(objSelfReference.sewBomTableString);
+    $('#sewBomTable').DataTable(sewBomTableOptions);
+};*/
+var arrConstructionDetailDataContainer;
+var arrMeasurementDetailDataContainer;
+var strApprovedSupplierUrlObjectId = getMyReportIdFromReportName('garmentProdSpecsGarmentAndPatternComponentsApprovedSuppliers');
+var strApprovedSupplierUrl = strUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?u8&action=ExecuteReport&specId=' + objSelfReference.activeSpecId + '&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A' + strApprovedSupplierUrlObjectId + '&xsl1=&format=formatDelegate&delegateName=XML&jrb=wt.query.template.reportTemplateRB&sortByIndex=6&sortOrder=asc';
+var arrApprovedSupplierArray = [];
+var strApprovedSupplierTableString = '';
+
+
+
+
+$.get(strApprovedSupplierUrl, function (data) {
+}).done(function (data) {
+    arrApprovedSupplierArray = rowParser('row', data);
+    if (typeof (arrApprovedSupplierArray) != 'undefined' && arrApprovedSupplierArray.length != 0) {
+        strApprovedSupplierTableString = convertRowArrayIntoHtmlTable(arrApprovedSupplierArray, '', '', 'approvedSupplierTbl', '<h1>Approved Suppliers</h1>');
+        objSelfReference.approvedSuppliers = arrApprovedSupplierArray;
+        objSelfReference.approvedSupplierTableString = strApprovedSupplierTableString;
+        $('#approvedSupplierDiv').append(objSelfReference.approvedSupplierTableString);
+        $('#approvedSupplierTbl').DataTable(approvedSupplierTableOptions);
+        //$('#approvedSuppliersLi').show();
+    } else {
+        //$('#approvedSupplierDiv').append('<p>Approved Supplier table was not found.</p>')
+        //$('#approvedSuppliersLi').hide();
+    };
+});
 
 };
 
 function checkForColorwayAndLabelProductsToRemoveBoms(objGarmentProductTocheck) {
-    if (typeof (objGarmentProductTocheck.colorwayProduct) != 'undefined') {
+    /*if (typeof (objGarmentProductTocheck.colorwayProduct) != 'undefined') {
     }
     else {
         //$('#colorwayBomLi').fadeOut();
@@ -1675,7 +1912,7 @@ function checkForColorwayAndLabelProductsToRemoveBoms(objGarmentProductTocheck) 
     if (objGarmentProductTocheck.garmentSourceBoms.length != 0) {
     } else {
         //$('#sourcedBomLi').fadeOut();
-    };
+    };*/
 
 };
 
@@ -1691,6 +1928,7 @@ garmentProduct.prototype.getAndProcessMyRoutingBOM = function (objRoutingBom, ob
             instance: 'net.hbi.res.wsflexappprd1v.windchill',
             skuMode: 'ALL_SKUS',
             partId: strFullBranchParameter
+            
 
         }
     }).done(function (data) {
@@ -1732,6 +1970,12 @@ garmentProduct.prototype.getAndProcessMyRoutingBOM = function (objRoutingBom, ob
     });
 
 };
+
+garmentProduct.prototype.getAndProcessMySewAndSourceBom = function(patternSewBom,garmentSewBom){
+
+
+};
+
 
 /**
  * @method of @class GarmentProduct, this method runs a sequence of ajax calls to get all necessary data sets for running @method getSpecComponentsForActiveSpec, then it sequentially calls them
@@ -2681,119 +2925,119 @@ function cwayProductBomsToTable(objSelfReference) {
     });
     if (typeof (objSelfReference.colorwayProduct.boms) != 'undefined') {
         var strHeaderString = '<button id="bomRemover" class="btn-danger">Remove Highlighted Boms</button><table class="display" id="cwayGroupingNew"><thead><tr><th>Select BOM</th><th>BOM</th><th>Colorway</th></tr></thead><tbody>';
-            var strEndTableString = '</tbody></table>';
-            var strTableString = strHeaderString;
-            for (var i = 0; i < objSelfReference.colorwayProduct.boms.length; i++) {
-                var objCurrentBom = objSelfReference.colorwayProduct.boms[i];
-                for (var j = 0; j < objCurrentBom.colorways.length; j++) {
-                    var objCurrentCway = objCurrentBom.colorways[j];
-                    var strBeginCell = '<td>';
-                    var strEndCell = '</td>';
-                    var strBeginRow = '<tr>';
-                    var strEndRow = '</tr>';
-                    var strSelectCellCway = '<a href="#" class="selectColorwayRow">Select Colorway</a>';
-                    var strSelectCellBom = '<a href="#" class="selectBomRow">Select BOM</a>';
-                    var strBomId = objCurrentBom.partId;
-                    var strBomName = objCurrentBom.name;
-                    //strBomName = strBomName.replace(/:/g, "").replace(/\//g, "_").replace(/&/g, "_");
-                    var strBomNameForId = strBomName + '_bompartId_' + strBomId;
-                    var strEncodedBomName = strBomNameForId.replace(/\s/g, "_").replace(/:/g, "").replace(/\//g, "_").replace(/&/g, "_");
-                    var strLinkBegin = '<a href="#" class="groupingLink" bPartId="' + strEncodedBomName + '" bName="' + strBomName + '">';
-                    var strLinkEnd = '</a>';
+        var strEndTableString = '</tbody></table>';
+        var strTableString = strHeaderString;
+        for (var i = 0; i < objSelfReference.colorwayProduct.boms.length; i++) {
+            var objCurrentBom = objSelfReference.colorwayProduct.boms[i];
+            for (var j = 0; j < objCurrentBom.colorways.length; j++) {
+                var objCurrentCway = objCurrentBom.colorways[j];
+                var strBeginCell = '<td>';
+                var strEndCell = '</td>';
+                var strBeginRow = '<tr>';
+                var strEndRow = '</tr>';
+                var strSelectCellCway = '<a href="#" class="selectColorwayRow">Select Colorway</a>';
+                var strSelectCellBom = '<a href="#" class="selectBomRow">Select BOM</a>';
+                var strBomId = objCurrentBom.partId;
+                var strBomName = objCurrentBom.name;
+                //strBomName = strBomName.replace(/:/g, "").replace(/\//g, "_").replace(/&/g, "_");
+                var strBomNameForId = strBomName + '_bompartId_' + strBomId;
+                var strEncodedBomName = strBomNameForId.replace(/\s/g, "_").replace(/:/g, "").replace(/\//g, "_").replace(/&/g, "_");
+                var strLinkBegin = '<a href="#" class="groupingLink" bPartId="' + strEncodedBomName + '" bName="' + strBomName + '">';
+                var strLinkEnd = '</a>';
                     
-                    strTableString += strBeginRow + strBeginCell + strSelectCellBom + strEndCell + strBeginCell + strLinkBegin + objCurrentBom.name + strLinkEnd + strEndCell + strBeginCell + objCurrentCway.colorwayName + strEndCell + strEndRow;
-                }
-            };
-            strTableString += strEndTableString;
-            //$('#cwayGrouing').remove();
-            $('#colorwaysListDiv').append(strTableString);
-            $('#cwayGroupingNew').DataTable(cwayReportTableOptions);
-            $('.groupingLink').click(function (e) {
-                e.preventDefault();
-                var strBname = $(this).attr('bPartId');//.substring(0,3);
-                //var target = this.hash;
-                var $target;
-                $('#colorwaysDiv h2').each(function () {
-                    var strCompare = $(this).attr('bomChild');
-                    //var strCompare = $(this).text();
-                    if (strBname == strCompare) {
-                        console.log('yes');
-                        $target = $(this);
-                        $('html, body').stop().animate({
-                            'scrollTop': $target.offset().top - 200
-                        }, 1100, 'swing', function () {
-                            window.location.hash = target;
-                        });
-                    } else {
-                        console.log('no');
-                    };
-                });
-            });
-            $('#bomRemover').click(function () {
-                var arrOfBomsToRemove = [];
-                $('#cwayGroupingNew tr').each(function () {
-                    if ($(this).hasClass('selected')) {
-                        var idToGet = $(this).find('.groupingLink').attr('bPartId');
-                        if (arrOfBomsToRemove.indexOf(idToGet) == -1) {
-                            arrOfBomsToRemove.push(idToGet);
-                            
-                        };
-                        $(this).remove();
-                    }
-                    else {
-
-                    };
-                    for (var i = 0; i < arrOfBomsToRemove.length; i++) {
-                        var strRemovalStringBoms = '#' + arrOfBomsToRemove[i] + '_wrapper';
-                        $(strRemovalStringBoms).remove();
-                        $('#colorwaysDiv h2').each(function () {
-                            var strCompare = $(this).attr('bomChild');
-                            if (strCompare == arrOfBomsToRemove[i]) {
-                                $(this).remove();
-                            };
-                        });
-
-                    };
-
-                });
-            });
-            /*$('.selectColorwayRow').click(function (e) {
-                e.preventDefault();
-                if ($(this).parent().parent().hasClass('selected')) {
-                    $(this).parent().parent().removeClass('selected');
+                strTableString += strBeginRow + strBeginCell + strSelectCellBom + strEndCell + strBeginCell + strLinkBegin + objCurrentBom.name + strLinkEnd + strEndCell + strBeginCell + objCurrentCway.colorwayName + strEndCell + strEndRow;
+            }
+        };
+        strTableString += strEndTableString;
+        //$('#cwayGrouing').remove();
+        $('#colorwaysListDiv').append(strTableString);
+        $('#cwayGroupingNew').DataTable(cwayReportTableOptions);
+        $('.groupingLink').click(function (e) {
+            e.preventDefault();
+            var strBname = $(this).attr('bPartId');//.substring(0,3);
+            //var target = this.hash;
+            var $target;
+            $('#colorwaysDiv h2').each(function () {
+                var strCompare = $(this).attr('bomChild');
+                //var strCompare = $(this).text();
+                if (strBname == strCompare) {
+                    console.log('yes');
+                    $target = $(this);
+                    $('html, body').stop().animate({
+                        'scrollTop': $target.offset().top - 200
+                    }, 1100, 'swing', function () {
+                        window.location.hash = target;
+                    });
                 } else {
-                    $(this).parent().parent().addClass('selected');
+                    console.log('no');
                 };
-                
-            });*/
-            $('.selectBomRow').click(function (e) {
-                e.preventDefault();
-                var idToUse = $(this).parent().parent().find('.groupingLink').attr('bPartId');
-                $('#cwayGroupingNew tr').each(function () {
-                    var idToCompare = $(this).find('.groupingLink').attr('bPartId');
-                    if (idToUse == idToCompare) {
-                        if ($(this).hasClass('selected')) {
-                            $(this).removeClass('selected');
-                        } else {
-                            $(this).addClass('selected');
-                        };
-                    };
-
-                });
-                /*if ($(this).parent().parent().hasClass('selected')) {
-                    $(this).parent().parent().removeClass('selected');
-                } else {
-                    $(this).parent().parent().addClass('selected');
-                };*/
-
             });
-            /*$('#cwayGroupingNew tbody').not('.groupingLink').on('click', 'tr', function () {
+        });
+        $('#bomRemover').click(function () {
+            var arrOfBomsToRemove = [];
+            $('#cwayGroupingNew tr').each(function () {
                 if ($(this).hasClass('selected')) {
-                    $(this).removeClass('selected');
-                } else {
-                    $(this).addClass('selected');
+                    var idToGet = $(this).find('.groupingLink').attr('bPartId');
+                    if (arrOfBomsToRemove.indexOf(idToGet) == -1) {
+                        arrOfBomsToRemove.push(idToGet);
+                            
+                    };
+                    $(this).remove();
+                }
+                else {
+
                 };
-            });*/
+                for (var i = 0; i < arrOfBomsToRemove.length; i++) {
+                    var strRemovalStringBoms = '#' + arrOfBomsToRemove[i] + '_wrapper';
+                    $(strRemovalStringBoms).remove();
+                    $('#colorwaysDiv h2').each(function () {
+                        var strCompare = $(this).attr('bomChild');
+                        if (strCompare == arrOfBomsToRemove[i]) {
+                            $(this).remove();
+                        };
+                    });
+
+                };
+
+            });
+        });
+        /*$('.selectColorwayRow').click(function (e) {
+            e.preventDefault();
+            if ($(this).parent().parent().hasClass('selected')) {
+                $(this).parent().parent().removeClass('selected');
+            } else {
+                $(this).parent().parent().addClass('selected');
+            };
+            
+        });*/
+        $('.selectBomRow').click(function (e) {
+            e.preventDefault();
+            var idToUse = $(this).parent().parent().find('.groupingLink').attr('bPartId');
+            $('#cwayGroupingNew tr').each(function () {
+                var idToCompare = $(this).find('.groupingLink').attr('bPartId');
+                if (idToUse == idToCompare) {
+                    if ($(this).hasClass('selected')) {
+                        $(this).removeClass('selected');
+                    } else {
+                        $(this).addClass('selected');
+                    };
+                };
+
+            });
+            /*if ($(this).parent().parent().hasClass('selected')) {
+                $(this).parent().parent().removeClass('selected');
+            } else {
+                $(this).parent().parent().addClass('selected');
+            };*/
+
+        });
+        /*$('#cwayGroupingNew tbody').not('.groupingLink').on('click', 'tr', function () {
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+            } else {
+                $(this).addClass('selected');
+            };
+        });*/
 
     };
 
@@ -4193,4 +4437,17 @@ function callNextDocument(arrayOfDocuments, currentIndex) {
 
 function isNumber(n) {
     return /^-?[\d.]+(?:e-?\d+)?$/.test(n);
+}
+
+function fillUndefinedPropertiesWithSpaces(objectToClean){
+    var arrOfProperties = Object.keys(objectToClean);
+    for(var i = 0;i < arrOfProperties.length;i++){
+        var presentPropName = arrOfProperties[i];
+        var presentPropValue = objectToClean[presentPropName];
+        if(typeof(presentPropValue) == 'undefined'){
+            objectToClean[presentPropName] = ' ';
+        };
+    }
+    return objectToClean
+
 }
