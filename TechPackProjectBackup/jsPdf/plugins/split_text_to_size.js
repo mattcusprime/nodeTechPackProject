@@ -243,7 +243,7 @@ table or other default width is not available.
 @param options {Object} Optional flags needed for chopper to do the right thing.
 @returns {Array} with strings chopped to size.
 */
-API.splitTextToSize = function(text, maxlen, options) {
+API.splitTextToSize = function (text, maxlen, options) {
 	'use strict'
 
 	if (!options) {
