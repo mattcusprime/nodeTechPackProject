@@ -81,11 +81,14 @@ function garmentProduct(strName, arrAttributes, arrSpecs, arrSources, objColorwa
     this.sortingArray = ['sizeXXS', '1', 'sizeXS', '2', 'sizeS', '3', 'sizeM', '4', 'sizeL', '5', 'sizeXL', '6', 'size2X', '7', 'size3X', '8', 'size4X', '9', 'size5X', '10', 'size6X', '11', 'size3M', '1', 'size6M', '2', 'size9M', '3', 'size12M', '4', 'size18M', '5', 'size24M', '6', 'size2T', '7', 'size3T', '8', 'size4T', '9', 'size5T', '10', 'size2', '1', 'size4', '2', 'size5', '3', 'size6', '4', 'size7', '5', 'size8', '6', 'size9', '7', 'size10', '8', 'size11', '9', 'size12', '10', 'size13', '11', 'size14', '12', 'size16', '13', 'size18', '14', 'size20', '15', 'size22', '16', 'size24', '17', 'size26', '18', 'size28', '19', 'size30', '20', 'size32', '21', 'size34', '22', 'size36', '23', 'size38', '24', 'size40', '25', 'size42', '26', 'size44', '27', 'size46', '28', 'size48', '29', 'size50', '30', 'size52', '31', 'size54', '32', 'size56', '33', 'size58', '34', 'size60', '35', 'size62', '36', 'sizeS/M', '1', 'sizeL/`', '2', 'size16W', '1', 'size20W', '2', 'size24W', '3', 'size28W', '4', 'size32W', '5', 'size36W', '6'];
 
 };
-
-//var fs = require('fs.extra');
-//var execFile = require('child_process').execFile, child;
-//var wkhtmltopdf = require('wkhtmltopdf');
-//var gui = require('nw.gui');
+try{
+    var fs = require('fs.extra');
+    var execFile = require('child_process').execFile, child;
+    var wkhtmltopdf = require('wkhtmltopdf');
+    var gui = require('nw.gui');
+}catch(e){
+    console.log('Node is not defined');
+}
 //Node webkit functionalities
 var arrDataArray = [];
 // global var for ajax calls
@@ -156,7 +159,7 @@ garmentProduct.prototype.getMyConstruction = function (strHostUrlPrefix, numCons
             objCurrentRow.topStitchDisplay = objCurrentElement.text();
         } else if (objCurrentElement.is("seamType")) {
             objCurrentRow.seamType = objCurrentElement.text();
-        } else if (objCurrentElement.is("seamTypeDisplay")) {
+        } else if (objCurrentElement.is("seamTypeDisplay")) {       
             objCurrentRow.seamTypeDisplay = objCurrentElement.text();
             arrCurrentConstruction.push(objCurrentRow)
             objCurrentRow = {};
@@ -2067,14 +2070,14 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
     // later will need to add here a few documents that we want to exclude intentionally
     // like front back images that come from pattern products
     var sortOrder = 0;
-    if (typeof (objSelfReference.construction.name) != 'undefined') {
+    /*if (typeof (objSelfReference.construction.name) != 'undefined') {
         reportTable.row.add([sortOrder, '<a href="#" id="getConstructionReport">Construction</a>', objSelfReference.construction.name]);
         sortOrder++;
     };
     if (typeof (objSelfReference.measurement.name) != 'undefined') {
         reportTable.row.add([sortOrder, '<a href="#" id="getMeasurementReport">Measurements</a>', objSelfReference.measurement.name]);
         sortOrder++;
-    };
+    };*/
     if (typeof (objSelfReference.boms != 'undefined' || objSelfReference.boms.length != 0)) {
         var arrBoms = objSelfReference.boms;
         var boolHaveGarmentCut = false;

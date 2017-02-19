@@ -2067,14 +2067,14 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
     // later will need to add here a few documents that we want to exclude intentionally
     // like front back images that come from pattern products
     var sortOrder = 0;
-    if (typeof (objSelfReference.construction.name) != 'undefined') {
+    /*if (typeof (objSelfReference.construction.name) != 'undefined') {
         reportTable.row.add([sortOrder, '<a href="#" id="getConstructionReport">Construction</a>', objSelfReference.construction.name]);
         sortOrder++;
     };
     if (typeof (objSelfReference.measurement.name) != 'undefined') {
         reportTable.row.add([sortOrder, '<a href="#" id="getMeasurementReport">Measurements</a>', objSelfReference.measurement.name]);
         sortOrder++;
-    };
+    };*/
     if (typeof (objSelfReference.boms != 'undefined' || objSelfReference.boms.length != 0)) {
         var arrBoms = objSelfReference.boms;
         var boolHaveGarmentCut = false;
