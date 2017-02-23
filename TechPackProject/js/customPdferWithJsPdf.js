@@ -1,4 +1,6 @@
-﻿function gcd_two_numbers(x, y) {
+﻿var frontImage = {};
+var backImage = {};
+function gcd_two_numbers(x, y) {
     x = Math.abs(x);
     y = Math.abs(y);
     while (y) {
@@ -288,14 +290,16 @@ function docProcessor(garmentProduct) {
     //yMarginReset = 0;
     var yFooterSize = 7.5;
     var topAndBottomMargins = yMarginReset + yFooterSize;
-    this.xPosition = xMarginReset;
-    this.yPosition = yMarginReset;
+    //this.xPosition = xMarginReset;
+    //this.yPosition = yMarginReset;
+    this.xPosition = 2.5;
+    this.yPosition = 6;
     var header = function () {
         //this.header = function () {
         //date
-        var xMarginReset = 2.5;
+        var funcxMarginReset = 2.5;
         var xMarginResetInitial = 2.5;
-        var yMarginReset = 6;
+        var funcyMarginReset = 6;
         var m_names = new Array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
         var d = new Date();
         var curr_date = d.getDate();
@@ -313,64 +317,64 @@ function docProcessor(garmentProduct) {
         var strConfidentialityStatement = 'Confidential: Not to be copied or distributed without the permission of Hanesbrands, Inc.';
         var numTextWidthOfConfidential = jsPdfDoc.getTextWidth(strConfidentialityStatement);
         var numConfidentialityXPosition = (jsPdfDoc.internal.pageSize.width / 3)// - numTextWidthOfConfidential;
-        //var numCurrentX = xMarginReset;
+        //var numCurrentX = funcxMarginReset;
 
-        //this.xPosition = xMarginReset;
-        //this.yPosition = yMarginReset;
+        //this.xPosition = funcxMarginReset;
+        //this.yPosition = funcyMarginReset;
 
         jsPdfDoc.setTextColor(0, 0, 0);
         //jsPdfDoc.setFontSize(numHeaderFontSize);
-        jsPdfDoc.addImage(hanesImageDataUri, 'PNG', xMarginReset, 0, numLogoWidth, 10, 'logo', 'fast');
-        xMarginReset += numLogoWidth;
+        jsPdfDoc.addImage(hanesImageDataUri, 'PNG', funcxMarginReset, 0, numLogoWidth, 10, 'logo', 'fast');
+        funcxMarginReset += numLogoWidth;
         if (frontImage) {
-            xMarginReset += numSpacer;
+            funcxMarginReset += numSpacer;
             var objDimensionForImagesFront = getImageDimensions(frontImage.width, frontImage.height, numFrontBackWidth, 25)
             try{
-                jsPdfDoc.addImage(frontImage.src, 'PNG', xMarginReset, 0, objDimensionForImagesFront.width, objDimensionForImagesFront.height, 0, 'fast');
+                jsPdfDoc.addImage(frontImage.src, 'PNG', funcxMarginReset, 0, objDimensionForImagesFront.width, objDimensionForImagesFront.height, 0, 'fast');
             } catch (e) {
                 console.log(e);
             }
-            //jsPdfDoc.addImage(frontImage.src, 'PNG', xMarginReset, 0, numFrontBackWidth, 25, 'front', 'fast');
-            xMarginReset += numFrontBackWidth;
+            //jsPdfDoc.addImage(frontImage.src, 'PNG', funcxMarginReset, 0, numFrontBackWidth, 25, 'front', 'fast');
+            funcxMarginReset += numFrontBackWidth;
         };
         /*if (backImage) {
-            xMarginReset += numSpacer;
-            jsPdfDoc.addImage(backImage, 'PNG', xMarginReset, 0, numFrontBackWidth, 25, 'back', 'fast');
-            xMarginReset += numFrontBackWidth;
+            funcxMarginReset += numSpacer;
+            jsPdfDoc.addImage(backImage, 'PNG', funcxMarginReset, 0, numFrontBackWidth, 25, 'back', 'fast');
+            funcxMarginReset += numFrontBackWidth;
         };*/
-        xMarginReset += numSpacer;
+        funcxMarginReset += numSpacer;
         jsPdfDoc.setDrawColor(0, 0, 0);
-        //jsPdfDoc.setLineWidth(1.5);yMarginReset
-        jsPdfDoc.text(xMarginReset, yMarginReset, "Product Name:" + garment.name);
-        var numPatternSpecX = jsPdfDoc.getTextWidth("Product Name:" + garment.name) + xMarginReset + 4;
-        var numPatternSpecY = yMarginReset;
+        //jsPdfDoc.setLineWidth(1.5);funcyMarginReset
+        jsPdfDoc.text(funcxMarginReset, funcyMarginReset, "Product Name:" + garment.name);
+        var numPatternSpecX = jsPdfDoc.getTextWidth("Product Name:" + garment.name) + funcxMarginReset + 4;
+        var numPatternSpecY = funcyMarginReset;
         if (jsPdfDoc.getTextWidth("Source:" + garment.activeSource) > jsPdfDoc.getTextWidth("Product Name:" + garment.name)) {
-            numPatternSpecX = jsPdfDoc.getTextWidth(jsPdfDoc.getTextWidth("Source:" + garment.activeSource) + xMarginReset + 4);
+            numPatternSpecX = jsPdfDoc.getTextWidth(jsPdfDoc.getTextWidth("Source:" + garment.activeSource) + funcxMarginReset + 4);
         };
         if (jsPdfDoc.getTextWidth("Spec:" + garment.activeSpecName) > jsPdfDoc.getTextWidth("Product Name:" + garment.name)) {
-            numPatternSpecX = jsPdfDoc.getTextWidth("Spec:" + garment.activeSpecName) + xMarginReset + 4;
+            numPatternSpecX = jsPdfDoc.getTextWidth("Spec:" + garment.activeSpecName) + funcxMarginReset + 4;
         };
-        jsPdfDoc.text(numPatternSpecX, yMarginReset, "Pattern Spec:" + garment.patternSpec);
-        jsPdfDoc.line(xMarginReset, yMarginReset + 1, numLineLength + numLineLength, yMarginReset + 1);
-        yMarginReset += numHeaderYoffset;
-        jsPdfDoc.text(xMarginReset, yMarginReset, "Source:" + garment.activeSource);
-        jsPdfDoc.line(xMarginReset, yMarginReset + 1, numLineLength + numLineLength, yMarginReset + 1);
-        yMarginReset += numHeaderYoffset;
-        jsPdfDoc.text(xMarginReset, yMarginReset, "Spec:" + garment.activeSpecName);
+        jsPdfDoc.text(numPatternSpecX, funcyMarginReset, "Pattern Spec:" + garment.patternSpec);
+        jsPdfDoc.line(funcxMarginReset, funcyMarginReset + 1, numLineLength + numLineLength, funcyMarginReset + 1);
+        funcyMarginReset += numHeaderYoffset;
+        jsPdfDoc.text(funcxMarginReset, funcyMarginReset, "Source:" + garment.activeSource);
+        jsPdfDoc.line(funcxMarginReset, funcyMarginReset + 1, numLineLength + numLineLength, funcyMarginReset + 1);
+        funcyMarginReset += numHeaderYoffset;
+        jsPdfDoc.text(funcxMarginReset, funcyMarginReset, "Spec:" + garment.activeSpecName);
        
-        jsPdfDoc.line(xMarginReset, yMarginReset + 1, numLineLength + numLineLength, yMarginReset + 1);
-        yMarginReset += numHeaderYoffset;
-        //jsPdfDoc.text(xMarginReset, yMarginReset, garment.patternSpec);
-        jsPdfDoc.line(xMarginReset, yMarginReset + 1, numLineLength + numLineLength, yMarginReset + 1);
-        jsPdfDoc.line(numPatternSpecX - 2, 0, numPatternSpecX - 2, yMarginReset + 1);
-        jsPdfDoc.text(xMarginReset, yMarginReset, dateForStuff);
-        yMarginReset += numHeaderYoffset;
-        yMarginReset += jsPdfDoc.internal.getLineHeight() * 2;
-        topAndBottomMargins = yMarginReset + yFooterSize;
+        jsPdfDoc.line(funcxMarginReset, funcyMarginReset + 1, numLineLength + numLineLength, funcyMarginReset + 1);
+        funcyMarginReset += numHeaderYoffset;
+        //jsPdfDoc.text(funcxMarginReset, funcyMarginReset, garment.patternSpec);
+        jsPdfDoc.line(funcxMarginReset, funcyMarginReset + 1, numLineLength + numLineLength, funcyMarginReset + 1);
+        jsPdfDoc.line(numPatternSpecX - 2, 0, numPatternSpecX - 2, funcyMarginReset + 1);
+        jsPdfDoc.text(funcxMarginReset, funcyMarginReset, dateForStuff);
+        funcyMarginReset += numHeaderYoffset;
+        funcyMarginReset += jsPdfDoc.internal.getLineHeight() * 2;
+        topAndBottomMargins = funcyMarginReset + yFooterSize;
 
         
-        //yMarginReset = xMarginReset;
-        //this.headerSize = yMarginReset;
+        //funcyMarginReset = funcxMarginReset;
+        //this.headerSize = funcyMarginReset;
         //jsPdfDoc.setLineWidth(0.5);
 
         //jsPdfDoc.line(0, numFooterLinePosition, jsPdfDoc.internal.pageSize.width, numFooterLinePosition);
@@ -383,7 +387,7 @@ function docProcessor(garmentProduct) {
             //imgBase64DevImagego
             jsPdfDoc.addImage(developmentImage, 'PNG', 0, 0, jsPdfDoc.internal.pageSize.width, jsPdfDoc.internal.pageSize.height, 'fast');
         };
-        var positions = [xMarginResetInitial, yMarginReset, 'undefined', jsPdfDoc.internal.getLineHeight(), 1];
+        var positions = [xMarginResetInitial, funcyMarginReset, 'undefined', jsPdfDoc.internal.getLineHeight(), 1];
         return positions;
 
     };
@@ -409,7 +413,7 @@ function docProcessor(garmentProduct) {
         }
         return objAtt
     };
-    this.addFrontBackImages = function () {
+    this.addFrontBackImages = function (checkIfReset) {
         var arrOfImages = [];
         var arrOfHeights = [];
         var arrOfWidth = [];
@@ -422,11 +426,13 @@ function docProcessor(garmentProduct) {
             arrOfImages.push(strBaseSrcString);
             //jsPdfDoc.addPageAndReset();
         });
-        this.addPageAndReset('Front Back Images');
+        if(checkIfReset){
+            this.addPageAndReset('Front Back Images');
+        };
         for (var i = 0; i < arrOfImages.length; i++) {
             //var numImageWidth = 150 - xMarginReset;
-            var numImageWidth = 140;
-            var numImageHeight = 140;
+            var numImageWidth = 120;
+            var numImageHeight = 120;
             var numXIncrement = (maxWidth - (numImageWidth * 2)) / 2;
             var numNewX = (numImageWidth * i) + numXIncrement;
             var objImageDimensionData = getImageDimensions(arrOfWidth[i], arrOfHeights[i], numImageWidth, numImageHeight);
@@ -443,7 +449,8 @@ function docProcessor(garmentProduct) {
     this.nameAlert = function () {
         alert(garment.name);
     };
-    var frontImage = {};
+
+    
     if ($("#frontBackImages img").length) {
        // frontImage.src = $('#frontSketch img.frontImage').attr('src');
         $('#frontSketch img.frontImage').each(function () {
@@ -458,7 +465,7 @@ function docProcessor(garmentProduct) {
     else {
         frontImage = false;
     };
-    var backImage = {};
+    
     if ($("#frontBackImages img").length) {
         $('#frontSketch img.backImage').each(function () {
             var src = $(this).attr('src');
@@ -478,6 +485,7 @@ function docProcessor(garmentProduct) {
     else {
         this.approvedSuppliers = false;
     };
+    
     this.setXandYpositions = function (x, y) {
         this.xPosition = x;
         this.yPosition = y;
@@ -811,7 +819,8 @@ function docProcessor(garmentProduct) {
         if (typeof (numOfMoves) == 'undefined') {
             numOfMoves = 1;
         };
-        var amountTomove = numOfMoves * jsPdfDoc.internal.getLineHeight();
+        //var amountTomove = numOfMoves * jsPdfDoc.internal.getLineHeight();
+        var amountTomove = numOfMoves * 6.05375;
         this.yPosition += amountTomove;
     };
     this.colors = {
@@ -829,11 +838,14 @@ function docProcessor(garmentProduct) {
         jsPdfDoc.setFillColor(arrRgb);
     };
     this.createPageOne = function () {
-        var positions = header();
+        /*var positions = header();
         this.yPosition = positions[1];
-        this.xPosition = positions[0];
-        this.addSizingTable();
-        this.addApprovedSupplier();
+        this.xPosition = positions[0];*/
+        this.yPosition = 32.1075;
+        this.xPosition = 2.5;
+
+        /*this.addSizingTable();
+        this.addApprovedSupplier();*/
 
         var strApsCorp = encodeURIComponent('APS Corp Division : ' + this.pageOneAttributes.APS_Corp_Division);
         var strConstructionMethodCode = encodeURIComponent('Construction Method Code : ' + this.pageOneAttributes.Construction_Method_Code);
@@ -854,8 +866,10 @@ function docProcessor(garmentProduct) {
         var heightOfLinesPlusOffset = (numLineHeight + numOffset) * numOfLines;
         var numInitialLeftOfGrid = xMarginReset - 1;
         var numInitialRightOfGrid = jsPdfDoc.internal.pageSize.width - (xMarginReset * 2) + 2;
-        this.moveOneLineDown(this.numSizingTableRows + 3);
-        var initialPageOneY = this.yPosition;
+        
+        //this.moveOneLineDown(this.numSizingTableRows + 3);
+        
+        var initialPageOneY = 32.1075;
         jsPdfDoc.rect(numInitialLeftOfGrid, this.yPosition - numLineHeight, numInitialRightOfGrid, heightOfLines);
         //this.processTextUsingCurrentXandYPosition(strApsCorp, 0, -3);
         this.processTextUsingCurrentXandYPosition(strHbiDivision);
@@ -890,11 +904,23 @@ function docProcessor(garmentProduct) {
         this.moveOneLineDown();
         //this.processTextUsingCurrentXandYPosition(strTechDesigner, 0, -3);
         this.processTextUsingCurrentXandYPosition(strImperfectStyle);
+
+
         //this.moveOneLineDown();
+
         this.xPosition = xMarginReset;
-        //this.moveOneLineDown();
-        this.yPosition = heightOfLinesPlusOffset + yMarginReset;
-        jsPdfDoc.outline.add(this.node, 'General Attributes', { pageNumber: 0 });
+        this.yPosition = 70;
+        //this.moveOneLineDown(3);
+        jsPdfDoc.outline.add(this.node, 'General Attributes', { pageNumber: 1 });
+        this.addFrontBackImages(false);
+        //this.addSizingTable();
+        //this.addApprovedSupplier();
+        //this.addPageAndReset();
+        //this.yPosition = heightOfLinesPlusOffset + yMarginReset;
+
+
+        
+        
        
     };
 
@@ -1193,14 +1219,14 @@ function docProcessor(garmentProduct) {
             var objHeader = {};
             var MyText = arrOne[i].text;
             var myWidth = myWidths[i];
-            var header = {
+            var headerForTable = {
                 name: MyText,
                 prompt: MyText,
                 width: myWidth
             };
 
             //arrNewHeader[i] = MyText;
-            arrNewHeader[i] = header;
+            arrNewHeader[i] = headerForTable;
         };
         arrOfTable.splice(0, 1);
         var arrOfTransformedObjects = [];
@@ -1259,9 +1285,21 @@ function docProcessor(garmentProduct) {
             var arrOfColumnWidths = [40, 40, 40];
             var arrSizeTbl = pdfThisTableV2('sizeTbl');
             this.numSizingTableRows = arrSizeTbl.length;
-            var numMidpointY = 70;
-            //this.reprocessUsingJsPdfTable(this.xPosition, numMidpointY, arrSizeTbl, arrOfColumnWidths);
-            this.reprocessUsingJsPdfTable(this.xPosition, this.yPosition, arrSizeTbl, arrOfColumnWidths);
+            var numMidpointY = 42;
+            if(arrSizeTbl.length > 1){
+            this.reprocessUsingJsPdfTable(this.xPosition, numMidpointY, arrSizeTbl, arrOfColumnWidths);
+            }else{
+                 var arrHeaderArray =[{style:'tableHeader',text:'Garment Size'},{style:'tableHeader',text:'Size Code'},{style:'tableHeader',text:'X Size'}];
+                 var arrBlankSingleRow = ['----','----','----'];
+                 arrSizeTbl = [];
+                 arrSizeTbl[0] = arrHeaderArray;
+                 arrSizeTbl[1] = arrBlankSingleRow;
+                 this.reprocessUsingJsPdfTable(this.xPosition, numMidpointY, arrSizeTbl, arrOfColumnWidths);
+                 /*jsPdfDoc.setFontSize(18);
+                this.processTextUsingCurrentXandYPosition('Sizing Table \n - No data available in table.');
+                jsPdfDoc.setFontSize(6);*/
+            };
+            //this.reprocessUsingJsPdfTable(this.xPosition, this.yPosition, arrSizeTbl, arrOfColumnWidths);
             //this.reprocessUsingJsPdfTable(this.xPosition, jsPdfDoc.internal.pageSize.height / 3, arrSizeTbl, arrOfColumnWidths);
 
         }
@@ -1302,7 +1340,7 @@ function docProcessor(garmentProduct) {
             this.addPageAndReset('Source BOM');
             var arrSourceBomTbl = pdfThisTableV2('sourceBomTable');
             console.log(arrSourceBomTbl);
-            var arrOfColumnWidths = [55/*Garment Use*/, /*Material*/65, /*Description*/105, /*Minor Category*/45];
+            var arrOfColumnWidths = [55/*Garment Use*/, /*Material*/65, /*Minor Category*/45, /*Description*/105,/*UOM*/45];
             //pageOneColumns.push(objContentSizeTbl);
             //pageOneColumnsSectionTwo.push(objContentSizeTbl);
             jsPdfDoc.setFontSize(numGlobalFontSize);
@@ -1346,9 +1384,9 @@ function docProcessor(garmentProduct) {
         var arrOfColumnWidths = [30, 30, 30, 30, 35];
         //this.processADataTableResponseArray(arrApprovedSupplierTbl, arrOfColumnWidths);
         //var numMidpointY = jsPdfDoc.internal.pageSize.height / 3;
-        var numMidpointY = 70;
-        //this.reprocessUsingJsPdfTable(this.xPosition + (jsPdfDoc.internal.pageSize.width / 2) - 2, numMidpointY, arrApprovedSupplierTbl, arrOfColumnWidths);
-        this.reprocessUsingJsPdfTable(this.xPosition + (jsPdfDoc.internal.pageSize.width / 2) - 2, this.yPosition, arrApprovedSupplierTbl, arrOfColumnWidths);
+        var numMidpointY = 42;
+        this.reprocessUsingJsPdfTable(this.xPosition + (jsPdfDoc.internal.pageSize.width / 2) - 2, numMidpointY, arrApprovedSupplierTbl, arrOfColumnWidths);
+        //this.reprocessUsingJsPdfTable(this.xPosition + (jsPdfDoc.internal.pageSize.width / 2) - 2, this.yPosition, arrApprovedSupplierTbl, arrOfColumnWidths);
         //this.reprocessUsingJsPdfTable(this.xPosition + (jsPdfDoc.internal.pageSize.width / 2) - 2, jsPdfDoc.internal.pageSize.height /3, arrApprovedSupplierTbl, arrOfColumnWidths);
 
     };
@@ -1360,13 +1398,32 @@ function docProcessor(garmentProduct) {
             //reducing revision table to just first most recently sorted rows
             arrRevisionAttributeData = arrRevisionAttributeData.splice(0, 11);
             this.addPageAndReset('Revision Table');
-            jsPdfDoc.setFontSize(8);
-            this.processTextUsingCurrentXandYPosition('Product Revisions');
-            //this.yPosition += 20;
-            jsPdfDoc.setFontSize(6);
             var arrOfColumnWidths = [35,15, 20, 20, 20, 35, 205, 35];
+            if(arrRevisionAttributeData.length > 1){
+               
+
+                jsPdfDoc.setFontSize(8);
+                this.processTextUsingCurrentXandYPosition('Product Revisions');
+                jsPdfDoc.setFontSize(6);
+           
             //this.processADataTableResponseArray(arrRevisionAttributeData, arrOfColumnWidths);
             this.reprocessUsingJsPdfTable(this.xPosition, this.yPosition, arrRevisionAttributeData, arrOfColumnWidths);
+            }else{
+                var arrHeaderArray =[{style:'tableHeader',text:"Product Type"},{style:'tableHeader',text:'Spec'},{style:'tableHeader',text:"Rev one"},{style:'tableHeader',text:"Rev two"},{style:'tableHeader',text:"Rev three"},{style:'tableHeader',text:"Last Edited By"},{style:'tableHeader',text:"Comments"},{style:'tableHeader',text:"Last Modified"}];
+
+                var arrBlankSingleRow = ['----','----','----','----','----','----','----','----','----'];
+                arrRevisionAttributeData = [];
+                arrRevisionAttributeData[0] = arrHeaderArray;
+                arrRevisionAttributeData[1] = arrBlankSingleRow;
+                this.reprocessUsingJsPdfTable(this.xPosition, this.yPosition, arrRevisionAttributeData, arrOfColumnWidths);
+
+                /*jsPdfDoc.setFontSize(18);
+                this.processTextUsingCurrentXandYPosition('Product Revisions \n - No data available in table.');
+                jsPdfDoc.setFontSize(6);*/
+
+
+            }
+
 
         };
     };
@@ -1374,8 +1431,9 @@ function docProcessor(garmentProduct) {
     this.addMeasurements = function () {
         if ($("#measurements").length) {
 
-            this.addPageAndReset('Measurements');
+            
             var strHeaderValue = $('#measurementDiv h1').text();
+            this.addPageAndReset(strHeaderValue);
             var arrMeasurementTbl = pdfThisTableV2('measurements');
             var numOfSizeColumns = arrMeasurementTbl[0].length - 4;
             var arrOfColumnWidths = [15, 65, 15, 20];
@@ -1450,7 +1508,7 @@ function docProcessor(garmentProduct) {
     };
 
     this.addConstructionDetailsImagesSubDivImg = function () {
-        var selector = '#constructionDetailsImagesSubDiv img';
+        var selector = '#constructionImagesSubDiv img';
         this.processAnImageWithATitleInHeaderValue(selector);
     };
 
@@ -1599,7 +1657,12 @@ function docProcessor(garmentProduct) {
                     numX = 0;
                 };*/
                 //this.addPageAndReset(objCurrent.decodedHeader);
-                jsPdfDoc.outline.add(this.node, objCurrent.decodedHeader, { pageNumber: pageNumber });
+                var strOutlineString = objCurrent.decodedHeader;
+                var numIndexOf_ = strOutlineString.indexOf('_');
+                strOutlineString = strOutlineString.substring(0, numIndexOf_);
+
+                //jsPdfDoc.outline.add(this.node, objCurrent.decodedHeader, { pageNumber: pageNumber });
+                jsPdfDoc.outline.add(this.node, strOutlineString, { pageNumber: pageNumber });
                 this.processTheTitleAndItsImage(objCurrent.decodedHeader, objCurrent.imageSrc, numX, this.yPosition - yFooterSize, objCurrent.width, objCurrent.height);
                 
             };
@@ -1625,13 +1688,16 @@ function docProcessor(garmentProduct) {
         jsPdfDoc.setFontSize(numGlobalFontSize)
         this.node = jsPdfDoc.outline.add(null, garment.name, null);
 
+        //jsPdfDoc.setHeaderFunction(header);
+        
         try {
+            header();
             this.createPageOne();
         } catch (e) {
             console.log(e);
         };
-        var numMidPointOfPageOne = this.yPosition;
-        var numMidPointXofPage = 140;
+        //var numMidPointOfPageOne = this.yPosition;
+        //var numMidPointXofPage = 140;
         //jsPdfDoc.setFontSize(jsPdfDocBaselineTextSize);
         this.resetXbutSpecifyY(this.yPosition);
         //jsPdfDoc.outline.add(this.node, 'General Attributes', { pageNumber: 0 });
@@ -1639,12 +1705,13 @@ function docProcessor(garmentProduct) {
         /*var dooper = function () {
             this.header();
         };*/
+
         jsPdfDoc.setHeaderFunction(header);
-        //this.addSizingTable();
-        //this.addPageAndReset('Approved Supplies');
-        //this.addApprovedSupplier();
+        this.addPageAndReset('Sizing Table and Approved Suppliers');
+        this.addSizingTable();
+        this.addApprovedSupplier();
         //this.addPageAndReset('Front Back Images');
-        this.addFrontBackImages();
+        //this.addFrontBackImages(false);
         //this.addPageAndReset('Revisions');
         this.addRevisionTable();
         //blocker was here
@@ -1678,17 +1745,21 @@ function docProcessor(garmentProduct) {
             jsPdfDoc.addImage(developmentImage, 'PNG', 0, 0, jsPdfDoc.internal.pageSize.width, jsPdfDoc.internal.pageSize.height, 'fast');
         };*/
         //blocker was here
+        $("#spin").hide();
         jsPdfDoc.save(garment.name + '_' + dateForStuff + '.pdf');
+        
     };
 
 };
 
 
-function pdfGarmetProductFromDocProcessor(aGarmentProduct) {
-    var processor = new docProcessor(aGarmentProduct);
-    processor.runAndSave();
-    //processor.nameAlert();
-    console.log(processor);
-
+function pdfGarmentProductFromDocProcessor(aGarmentProduct) {
+    $('#spin').show();
+    setTimeout(function(){
+        var processor = new docProcessor(aGarmentProduct);
+        processor.runAndSave();
+        //processor.nameAlert();
+        //console.log(processor);
+    },150);
 
 };

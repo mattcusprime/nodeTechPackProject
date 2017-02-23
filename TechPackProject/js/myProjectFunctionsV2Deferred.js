@@ -169,6 +169,12 @@ garmentProduct.prototype.getMyConstruction = function (strHostUrlPrefix, numCons
     // and so on for each element that we want to capture
     objSelfReference.constructionDetail = arrCurrentConstruction;
     if (objSelfReference.constructionDetail.length > 0) {
+        if($('#conMiniHeader').length){
+
+        }
+        else{
+            $('#constructionDiv').prepend('<h2 id="conMiniHeader">Constructions</h2>');
+        };
         var strTableHeaderString = '<thead><tr><th>Sorting Number</th><th>Sewing Operation</th><th>Stitch Type / Description</th><th>Gauge Width</th><th>SPI</th><th>Seam/Trimoff Allowance</th><th>Garment Use</th><th>Needle Thread</th><th>Needle Visibility</th><th>Looper Thread</th><th>Looper Visbility</th><th>Comments</th></tr></thead>';
         var strTableBodyString = '<tbody>';
         for (var j = 0; j < objSelfReference.constructionDetail.length; j++) {
@@ -315,7 +321,7 @@ garmentProduct.prototype.getMyMeasurement = function (strHostUrlPrefix, numMeasu
         strTableBodyString += '</tr>';
     };
     strTableBodyString += '</tbody>';
-    objSelfReference.measurementTableString = '<h1>Measurements ' + objSelfReference.measurement.name + '</h1><table id="measurements" class="display responsive col-md-12 compact cell-border">' + strTableHeaderString + strTableBodyString + '</table>';
+    objSelfReference.measurementTableString = '<h2>Measurements</h2><h1>'/*Measurements*/ + objSelfReference.measurement.name + '</h1><table id="measurements" class="display responsive col-md-12 compact cell-border">' + strTableHeaderString + strTableBodyString + '</table>';
 
 };
 /**
@@ -689,7 +695,7 @@ garmentProduct.prototype.getSpecByNameButNotJustActiveSpec = function (strHostUr
  * @param {Object} objProdLinkData defferred object that is passed to this function to work around the asynchronous nature of the ajax calls.  It contains all data pertaining to the object between 'obj' and 'Data' in its name
  * @param {Object} objSelfReference takes the same garmentProduct which is calling the method.  This is used to work around scope limitations and is generally performed
  */
-garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPrefix, objDocumentData, objConstructionData, objMeasurementData, objBomData, objProdLinkData, objGarmentSewBomData, objPatternSewBomDataWithUsage, objSelfReference) {
+garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPrefix, objDocumentData, objConstructionData, objMeasurementData, objBomData, objProdLinkData, /*objGarmentSewBomData, objPatternSewBomDataWithUsage,*/ objSelfReference) {
     var arrDocuments = [];
     var arrBoms = [];
     var arrTableDataArray = [];
@@ -703,9 +709,10 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
     var garmentProdSpecGarmentAndPatternComponentsDOCUMENTSV3NoPatternObjectId = '32783911';
     var garmentProdSpecGarmentAndPatternComponentsDOCUMENTSV3NoPatternUrl = strUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?u8&action=ExecuteReport&specId=' + objSelfReference.activeSpecId + '&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A' + garmentProdSpecGarmentAndPatternComponentsDOCUMENTSV3NoPatternObjectId + '&xsl1=&format=formatDelegate&delegateName=XML&jrb=wt.query.template.reportTemplateRB&sortByIndex=6&sortOrder=asc';
     var mesResaveId = '37521907';
-    var measResave2Url = strUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?u8&action=ExecuteReport&gSpecId=' + objSelfReference.activeSpecId + '&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A' + mesResaveId + '&xsl1=&format=formatDelegate&delegateName=XML&jrb=wt.query.template.reportTemplateRB&sortByIndex=6&sortOrder=asc';
+    var measResave2Url = strUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?action=ExecuteReport&gSpecId=' + objSelfReference.activeSpecId + '&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A' + mesResaveId + '&xsl1=&format=formatDelegate&delegateName=XML&jrb=wt.query.template.reportTemplateRB&sortByIndex=6&sortOrder=asc';
     var conResaveId = '37539860 ';
-    var con2Url = strUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?u8&action=ExecuteReport&gSpecId=' + objSelfReference.activeSpecId + '&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A' + conResaveId + '&xsl1=&format=formatDelegate&delegateName=XML&jrb=wt.query.template.reportTemplateRB&sortByIndex=6&sortOrder=asc';
+    var con2Url = strUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?&action=ExecuteReport&gSpecId=' + objSelfReference.activeSpecId + '&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A' + conResaveId + '&xsl1=&format=formatDelegate&delegateName=XML&jrb=wt.query.template.reportTemplateRB&sortByIndex=6&sortOrder=asc';
+    var arrOfDocumentIndexes = [];
     //first pass here gets all product relationships
     //changes in relationship names or type names would need to be later reflected here in the naming structure
     //using actual text names in place of flex path type ids allows us to easier alternate between instances of PLM
@@ -715,7 +722,7 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
         var objLinkedProduct = {};
         numObjectId = $(this).find('garmentProductName').first().attr('objectId');
         //objLinkedProduct.name = $(this).find('linkedProductName').text();
-        objLinkedProduct.name = $(this).find('linkedProductNameFromAtt_').text();
+        objLinkedProduct.name = $(this).find('linkedProductNameAtt').text();
         objLinkedProduct.objectId = $(this).find('linkedProductName').attr('objectId');
         objLinkedProduct.branchId = $(this).find('linkedProductName').attr('branchId');
         objLinkedProduct.patternNo = $(this).find('Pattern_No').text();
@@ -754,6 +761,9 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
 
         if (linkedProductType == "BASIC CUT & SEW - COLORWAY") {
             objLinkedProduct.type = "Colorway Product";
+
+
+
             if (objLinkedProduct.name.indexOf(objLinkedProduct.cwaySequence) == -1) {
                 objLinkedProduct.name = objLinkedProduct.cwaySequence + ' ' + objLinkedProduct.name;
             };
@@ -843,141 +853,23 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
     if (offLineTurnOff != 1) {
         var numOfDocumentRows = $('row', objDocumentData).length;
         $('row', objDocumentData).each(function (index) {
-            //var boolCheckForPng = false;
-            var strFileNameString = $(this).find('Application_Data').text();
-            var numCheckForPng = strFileNameString.indexOf('png');
-            if (numCheckForPng == -1) {
+                var objRow = $(this);
+                var objDocument = standardRowProcessorForDocuments(objRow);
+                if(objDocument){
+                    if(arrOfDocumentIndexes.indexOf(objDocument.myFullId) == -1){
+                        arrOfDocumentIndexes.push(objDocument.myFullId);
+                        arrDocuments.push(objDocument);
+                    }else{
 
-            } else {
-
-                //https://plmqa.hanes.com/Windchill/rfa/jsp/image/ImageViewer.jsp?imageUrl=&appDataOid=OR:wt.content.ApplicationData:2394231&contentHolderOid=OR:com.lcs.wc.document.LCSDocument:2394226
-                //var strImgViewerPrefix1 = 'https://plmqa.hanes.com/Windchill/rfa/jsp/image/ImageViewer.jsp?imageUrl=&appDataOid=OR:wt.content.ApplicationData:';
-                var strImgViewerPrefix1 = 'http://wsflexappdev2v/Windchill/rfa/jsp/image/ImageViewer.jsp?imageUrl=&appDataOid=OR:wt.content.ApplicationData:';
-                var strImgViewerPrefix2 = '&contentHolderOid=OR:com.lcs.wc.document.LCSDocument:';
-                //var strImgViewerPrefix3 = "file://res.hbi.net/dfs/BrandedApparel/Activewear/FlexApp/Prod/";
-                //var strImgViewerPrefix3 = "file:\\\\res.hbi.net\\dfs/BrandedApparel\\Activewear\\FlexApp\\QA\\Prod\\";
-                var strImgViewerPrefix3 = "https://res.hbi.net/dfs/BrandedApparel/Activewear/FlexApp/QA/Prod/";
-                //var strImgViewerPrefix3 = "//res.hbi.net/dfs/BrandedApparel/Activewear/FlexApp/QA/Prod/";
-
-                if (location.protocol == 'file') {
-                    //var strImgViewerPrefix3 = "http://res.hbi.net/dfs/BrandedApparel/Activewear/FlexApp/Prod/";
-                } else {
+                    };
                 };
-
-                var name = $(this).find('Document_Master_Name').text();
-                var strpSpecId = $(this).find('patternSpecId').text();
-                var strgSpecId = $(this).find('garmentSpecId').text();
-                var strCompSpecId = $(this).find('comRefSpecId').text();
-                var strApplicationDataPartOneOfLink = $(this).find('documentNotMasterDocumentOid').text();
-                var strDocumentIdPartTwoOfLink = $(this).find('DocumentIdPartTwoOfLink').text();
-                var strMyFullId = strDocumentIdPartTwoOfLink + "_" + strApplicationDataPartOneOfLink;
-                if (window.location.href.indexOf('webprd1') != -1) {
-                    strImgViewerPrefix1 = 'http://wsflexwebprd1v/Windchill/rfa/jsp/image/ImageViewer.jsp?imageUrl=&appDataOid=OR:wt.content.ApplicationData:';
-                };
-                strImgViewerPrefix1 = strImgViewerPrefix1 + strDocumentIdPartTwoOfLink + '&contentHolderOid=OR:com.lcs.wc.document.LCSDocument:' + strApplicationDataPartOneOfLink;
-
-                if ($(this).is('row:first')) {
-                    var objGSpec = {};
-                    var objPSpec = {};
-                    objGSpec.currentGarmentSpecId = $(this).find('garmentSpecId').text();
-                    objPSpec.currentGarmentSpecId = $(this).find('patternSpecId').text();
-                    objGSpec.name = $(this).find('gSpecName').text();
-                    objPSpec.name = $(this).find('pSpecName').text();
-                };
-                objComponent = {};
-                objComponent.name = name;
-                objComponent.myFullId = strMyFullId;
-
-                objComponent.componentType = 'Document';
-                objComponent.masterId = $(this).find('Document_Master').attr('objectId');
-                objComponent.documentType = $(this).find('Component_Type').text();
-                objComponent.fileName = $(this).find('fileName').text();
-                objComponent.vaultFileName = $(this).find('fileNameOnVault').text();
-                objComponent.pageType = $(this).find('pageType').text();
-                objComponent.pageLayout = $(this).find('pageLayout').text();
-                objComponent.pageDescription = $(this).find('pageDescription').text();
-                objComponent.number = $(this).find('number').text();
-                objComponent.ownerId = $(this).find('ownerId').text();
-                objComponent.specMasterReferenceId = $(this).find('specMasterReferenceId').text();
-                objComponent.garmentSpecMasterId = $(this).find('garmentSpecMasterId').text();
-                objComponent.patternSpecMasterId = $(this).find('patternSpecMasterId').text();
-                objComponent.description = $(this).find('Description').text();
-                /*if (objComponent.description.indexOf('IMAGE1') != -1) {
-                    objComponent.cell = 1;
-                } else if (objComponent.description.indexOf('IMAGE2') != -1) {
-                    objComponent.cell = 2;
-                } else {
-                    objComponent.cell = -1;
-                };*/
-                objComponent.cell = Number(objComponent.description.substring(6, 5));
-                if (objComponent.garmentSpecMasterId == objComponent.specMasterReferenceId) {
-                    objComponent.ownerType = 'Garment';
-                } else if (objComponent.patternSpecMasterId == objComponent.specMasterReferenceId) {
-                    objComponent.ownerType = 'Pattern';
-                }
-                ;
-
-                objComponent.fullVaultUrl = strImgViewerPrefix3 + objComponent.vaultFileName + '.png';
-                //objComponent.fullVaultUrl = strImgViewerPrefix1;
-
-                objComponent.seqeuence = $(this).find('Unique_Sequence_Number').text();
-                //objComponent.imgSrcUrl = objComponent.seqeuence + " " + objComponent.fileName;
-                objComponent.imgSrcUrl = strImgViewerPrefix1;
-                objComponent.dataUri = 'initial value';
-                objComponent.description = $(this).find('Description').text();
-                var strStartPointSubString = objComponent.description.substring(11, objComponent.description.length);
-                var numLengthStartPoint = strStartPointSubString.search('x') + 1;
-                var numNumCharsOfWidth = numLengthStartPoint - 1;
-                var numWidth = Number(strStartPointSubString.substring(0, numNumCharsOfWidth));
-                var numLength = Number(strStartPointSubString.substring(numLengthStartPoint, strStartPointSubString.length));
-                objComponent.width = numWidth;
-                objComponent.height = numLength;
-
-                objComponent.roleDocumentLink = $(this).find('roleDocumentLink').text();
-                var roleB = $(this).find('roleBObjectRef_key_id').text();
-
-                //objComponent.image = '<div class="item" <h2>' + objComponent.name + '-' + objComponent.fileName + '</h2></br><img width="' + objComponent.width + '" height="' + objComponent.length + '" class="img-responsive hideImg" src="' + strImgViewerPrefix3 + objComponent.vaultFileName + '" /></div>';
-                //changing the imgviewer prefix variable here alters protocol and where the file is being grabbed from
-                objComponent.image = '<div class="item" <h2>' + objComponent.name + '-' + objComponent.fileName + '</h2></br><iframe width="100%" height="1200" class="img-responsive hideImg" src="' + strImgViewerPrefix1 + '"></iframe></div>';
-
-                //objComponent.image = '<div class="item" <h2>' + objComponent.name + '-' + objComponent.fileName + '</h2></br><img width="' + objComponent.width + '" height="' + objComponent.length + '" class="sponsive hideImg" src="' + objComponent.fullVaultUrl +  '" /></div>';
-                if (objComponent.pageType == 'frontSketch' && objComponent.cell == 1) {
-                    objComponent.frontBack = 'frontImage';
-
-                }
-                else if (objComponent.pageType == 'frontSketch' && objComponent.cell == 2) {
-                    objComponent.frontBack = 'backImage';
-
-                } else {
-                    objComponent.frontBack = 'neither';
-                };
-
-                if (objComponent.ownerType == 'Pattern' && objComponent.pageType == 'frontSketch') {
-
-                } else {
-                    arrDocuments.push(objComponent);
-                };
-
-                if (index == numOfDocumentRows - 1) {
-
-                };
-            };
         });
-    };
-    function objCompareByName(a, b) {
-        if (a.name < b.name)
-            return -1;
-        if (a.name > b.name)
-            return 1;
-        return 0;
+
+
+
     };
     arrDocuments.sort(objCompareByName);
     objSelfReference.documents = arrDocuments;
-    /*
-    var strApprovedSupplierUrlObjectId = getMyReportIdFromReportName('garmentProdSpecsGarmentAndPatternComponentsApprovedSuppliers');
-    var strApprovedSupplierUrl = strUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?u8&action=ExecuteReport&specId=' + objSelfReference.activeSpecId + '&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A' + strApprovedSupplierUrlObjectId + '&xsl1=&format=formatDelegate&delegateName=XML&jrb=wt.query.template.reportTemplateRB&sortByIndex=6&sortOrder=asc';
-    */
-
     if (objSelfReference.documents == 0 && typeof (objSelfReference.patternProduct) == 'undefined') {
 
         $.ajax({
@@ -990,113 +882,17 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
             }
         }).done(function (objDocumentData) {
             $('row', objDocumentData).each(function (index) {
-                //var boolCheckForPng = false;
-                var strFileNameString = $(this).find('Application_Data').text();
-                var numCheckForPng = strFileNameString.indexOf('png');
-                if (numCheckForPng == -1) {
-
-                } else {
-
-                    //https://plmqa.hanes.com/Windchill/rfa/jsp/image/ImageViewer.jsp?imageUrl=&appDataOid=OR:wt.content.ApplicationData:2394231&contentHolderOid=OR:com.lcs.wc.document.LCSDocument:2394226
-                    //var strImgViewerPrefix1 = 'https://plmqa.hanes.com/Windchill/rfa/jsp/image/ImageViewer.jsp?imageUrl=&appDataOid=OR:wt.content.ApplicationData:';
-                    var strImgViewerPrefix1 = 'http://wsflexappdev2v/Windchill/rfa/jsp/image/ImageViewer.jsp?imageUrl=&appDataOid=OR:wt.content.ApplicationData:';
-                    var strImgViewerPrefix2 = '&contentHolderOid=OR:com.lcs.wc.document.LCSDocument:';
-                    //var strImgViewerPrefix3 = "file://res.hbi.net/dfs/BrandedApparel/Activewear/FlexApp/Prod/";
-                    //var strImgViewerPrefix3 = "file:\\\\res.hbi.net\\dfs/BrandedApparel\\Activewear\\FlexApp\\QA\\Prod\\";
-                    var strImgViewerPrefix3 = "https://res.hbi.net/dfs/BrandedApparel/Activewear/FlexApp/QA/Prod/";
-                    //var strImgViewerPrefix3 = "//res.hbi.net/dfs/BrandedApparel/Activewear/FlexApp/QA/Prod/";
-
-                    if (location.protocol == 'file') {
-                        //var strImgViewerPrefix3 = "http://res.hbi.net/dfs/BrandedApparel/Activewear/FlexApp/Prod/";
-                    } else {
-                    };
-
-                    var name = $(this).find('Document_Master_Name').text();
-                    var strpSpecId = $(this).find('patternSpecId').text();
-                    var strgSpecId = $(this).find('garmentSpecId').text();
-                    var strCompSpecId = $(this).find('comRefSpecId').text();
-                    var strApplicationDataPartOneOfLink = $(this).find('documentNotMasterDocumentOid').text();
-                    var strDocumentIdPartTwoOfLink = $(this).find('DocumentIdPartTwoOfLink').text();
-                    var strMyFullId = strDocumentIdPartTwoOfLink + "_" + strApplicationDataPartOneOfLink;
-                    if (window.location.href.indexOf('webprd1') != -1) {
-                        strImgViewerPrefix1 = 'http://wsflexwebprd1v/Windchill/rfa/jsp/image/ImageViewer.jsp?imageUrl=&appDataOid=OR:wt.content.ApplicationData:';
-                    };
-                    strImgViewerPrefix1 = strImgViewerPrefix1 + strDocumentIdPartTwoOfLink + '&contentHolderOid=OR:com.lcs.wc.document.LCSDocument:' + strApplicationDataPartOneOfLink;
-
-                    if ($(this).is('row:first')) {
-                        var objGSpec = {};
-                        var objPSpec = {};
-                        objGSpec.currentGarmentSpecId = $(this).find('garmentSpecId').text();
-                        objPSpec.currentGarmentSpecId = $(this).find('patternSpecId').text();
-                        objGSpec.name = $(this).find('gSpecName').text();
-                        objPSpec.name = $(this).find('pSpecName').text();
-                    };
-                    objComponent = {};
-                    objComponent.name = name;
-                    objComponent.myFullId = strMyFullId;
-
-                    objComponent.componentType = 'Document';
-                    objComponent.masterId = $(this).find('Document_Master').attr('objectId');
-                    objComponent.documentType = $(this).find('Component_Type').text();
-                    objComponent.fileName = $(this).find('fileName').text();
-                    objComponent.vaultFileName = $(this).find('fileNameOnVault').text();
-                    objComponent.pageType = $(this).find('pageType').text();
-                    objComponent.pageLayout = $(this).find('pageLayout').text();
-                    objComponent.pageDescription = $(this).find('pageDescription').text();
-                    objComponent.number = $(this).find('number').text();
-                    objComponent.ownerId = $(this).find('ownerId').text();
-                    objComponent.specMasterReferenceId = $(this).find('specMasterReferenceId').text();
-                    objComponent.garmentSpecMasterId = $(this).find('garmentSpecMasterId').text();
-                    objComponent.patternSpecMasterId = $(this).find('patternSpecMasterId').text();
-                    if (objComponent.garmentSpecMasterId == objComponent.specMasterReferenceId) {
-                        objComponent.ownerType = 'Garment';
-                    } else if (objComponent.patternSpecMasterId == objComponent.specMasterReferenceId) {
-                        objComponent.ownerType = 'Pattern';
-                    }
-                    ;
-
-                    objComponent.fullVaultUrl = strImgViewerPrefix3 + objComponent.vaultFileName + '.png';
-                    //objComponent.fullVaultUrl = strImgViewerPrefix1;
-
-                    objComponent.seqeuence = $(this).find('Unique_Sequence_Number').text();
-                    //objComponent.imgSrcUrl = objComponent.seqeuence + " " + objComponent.fileName;
-                    objComponent.imgSrcUrl = strImgViewerPrefix1;
-                    objComponent.dataUri = 'initial value';
-                    objComponent.description = $(this).find('Description').text();
-                    var strStartPointSubString = objComponent.description.substring(11, objComponent.description.length);
-                    var numLengthStartPoint = strStartPointSubString.search('x') + 1;
-                    var numNumCharsOfWidth = numLengthStartPoint - 1;
-                    var numWidth = strStartPointSubString.substring(0, numNumCharsOfWidth);
-                    var numLength = strStartPointSubString.substring(numLengthStartPoint, strStartPointSubString.length);
-                    objComponent.width = numWidth;
-                    objComponent.height = numLength;
-                    objComponent.roleDocumentLink = $(this).find('roleDocumentLink').text();
-                    var roleB = $(this).find('roleBObjectRef_key_id').text();
-
-                    //objComponent.image = '<div class="item" <h2>' + objComponent.name + '-' + objComponent.fileName + '</h2></br><img width="' + objComponent.width + '" height="' + objComponent.length + '" class="img-responsive hideImg" src="' + strImgViewerPrefix3 + objComponent.vaultFileName + '" /></div>';
-                    //changing the imgviewer prefix variable here alters protocol and where the file is being grabbed from
-                    objComponent.image = '<div class="item" <h2>' + objComponent.name + '-' + objComponent.fileName + '</h2></br><iframe width="100%" height="1200" class="img-responsive hideImg" src="' + strImgViewerPrefix1 + '"></iframe></div>';
-
-                    //objComponent.image = '<div class="item" <h2>' + objComponent.name + '-' + objComponent.fileName + '</h2></br><img width="' + objComponent.width + '" height="' + objComponent.length + '" class="sponsive hideImg" src="' + objComponent.fullVaultUrl +  '" /></div>';
-
-                    if (objComponent.ownerType == 'Pattern' && objComponent.pageType == 'frontSketch') {
-
-                    } else {
-                        arrDocuments.push(objComponent);
-                    };
-
-                    if (index == numOfDocumentRows - 1) {
+                var objRow = $(this);
+                var objDocument = standardRowProcessorForDocuments(objRow);
+                if(objDocument){
+                    if(arrOfDocumentIndexes.indexOf(objDocument.myFullId) == -1){
+                        arrOfDocumentIndexes.push(objDocument.myFullId);
+                        arrDocuments.push(objDocument);
+                    }else{
 
                     };
                 };
             });
-            function objCompareByName(a, b) {
-                if (a.name < b.name)
-                    return -1;
-                if (a.name > b.name)
-                    return 1;
-                return 0;
-            };
             arrDocuments.sort(objCompareByName);
             objSelfReference.documents = arrDocuments;
             objSelfReference.getAndProcessDocuments(objSelfReference);
@@ -1104,6 +900,8 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
 
 
     };
+
+    
     //var initialIndexer = 0;
     //callNextDocument(objSelfReference.documents, 0);
 
@@ -1184,7 +982,9 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
             }).done(function (data) {
                 try {
                     objSelfReference.getMyMeasurement(strHostUrlPrefix, objSelfReference.measurement.branchId, data, objSelfReference);
+                    var numHeaderCount = $(objSelfReference.measurementTableString,'th').length;
                     createComponentTable('measurementDiv', 'measurements', objSelfReference.measurementTableString, measurementTableOptions, true);
+                    
                     if ($.fn.DataTable.isDataTable('#measurements')) {
                         var table = $('#measurements').DataTable();
                         for (var i = 0; i < table.columns().length; i++) {
@@ -1236,6 +1036,22 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
         }).done(function (data) {
             try {
                 objSelfReference.getMyMeasurement(strHostUrlPrefix, objSelfReference.measurement.branchId, data, objSelfReference);
+                var numHeaderCount = $(objSelfReference.measurementTableString).find('th').length;
+                //var numHeaderCount = $(objSelfReference.measurementTableString,'th').length;
+                var numOfHiddenHeaders = measurementTableOptions.columnDefs[0].targets.length;
+                var numVisibleHeaders = numHeaderCount - numOfHiddenHeaders;
+                var i = 0;
+                var arrSecondTargetSet = [];
+                while (i < numHeaderCount){
+                    arrSecondTargetSet.push(i);
+                    i++;
+                };
+                var objSecondColumnDefs = {
+                    'sortable':false,
+                    "searchable" : false,
+                    'targets': arrSecondTargetSet
+                };
+                measurementTableOptions.columnDefs.push(objSecondColumnDefs);
                 createComponentTable('measurementDiv', 'measurements', objSelfReference.measurementTableString, measurementTableOptions, true);
                 if ($.fn.DataTable.isDataTable('#measurements')) {
                     var table = $('#measurements').DataTable();
@@ -1395,9 +1211,7 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
             arrOfDeffereds.push(objDeferred);
 
         };
-        //var numNumberOfConstructions = 0;
         $.when.apply($, arrOfDeffereds).done(function (responseData) {
-            //arrConstructionDetailDataContainer = arrOfDeffereds[0];
             for (var i = 0; i < arguments.length; i++) {
                 try {
                     objSelfReference.getMyConstruction(strHostUrlPrefix, objSelfReference.arrayOfConstructions[i].branchId, arguments[i], objSelfReference, 'constructionBranchId' + objSelfReference.arrayOfConstructions[i].branchId, objSelfReference.arrayOfConstructions[i].name);
@@ -1415,451 +1229,31 @@ garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPr
             };
         });
     };
-
-    /*var objDefferedConstruction = $.ajax({
-     url : conStrTaskUrl,
-     type : 'get',
-     data : {
-     oid : 'VR:com.lcs.wc.construction.LCSConstructionInfo:' + objSelfReference.construction.branchId,
- 
-     instance : strInstance
-     },
-     async : true
-
-     });*/
-    $('row', objBomData).each(function () {
-        var name = $(this).find('com_lcs_wc_flexbom_FlexBOMPart_Name').text();
-        var strpBomSpecId = $(this).find('pSpecId').text();
-        var strgBomSpecId = $(this).find('gSpecId').text();
-        var strBomCompSpecId = $(this).find('comRefSpecId').text();
-        var strFlexBomType = $(this).find('Flex_Type_Type_Name').text();
-        objBomComponent = {};
-        objBomComponent.name = name;
-        objBomComponent.branchId = $(this).find('Branch_Identifier').text();
-        objBomComponent.fileName = "";
-        objBomComponent.componentType = 'BOM';
-        objBomComponent.imageUrl = "<img src='' />";
-        objBomComponent.flexType = strFlexBomType;
-        var regPprod = new RegExp("Pattern");
-        var regGprod = new RegExp("Garment");
-        if (regPprod.test(strFlexBomType)) {
-            objBomComponent.ownerType = 'Pattern';
-        } else if (regGprod.test(strFlexBomType)) {
-            objBomComponent.ownerType = 'Garment';
-        }
-        ;
-        arrTableDataArray.push(objBomComponent);
-        arrBoms.push(objBomComponent);
-        if (objBomComponent.flexType == 'Garment Routing Table') {
-            $('#revi')
-            objSelfReference.getAndProcessMyRoutingBOM(objBomComponent, objSelfReference);
-        }else if(objBomComponent.flexType == "Pattern Product Sew BOM"){
-            objSelfReference.hasAPatternSewBom = true;
-            objSelfReference.patternSewBranch = objBomComponent.branchId;
-        }else if(objBomComponent.flexType == "Garment Sew" && objBomComponent.name.indexOf('Source') == -1){
-            objSelfReference.hasAGarmentSewBom = true;
-            //garmentProduct.prototype.getAndProcessMySewAndSourceBom
-            objSelfReference.garmentSewBranch = objBomComponent.branchId;
-        }else if(objBomComponent.flexType == "Garment Sew" && objBomComponent.name.indexOf('Source') != -1){
-            objSelfReference.hasAGarmentSourceBom = true;
-            objSelfReference.bomSourceBranch = objBomComponent.branchId;
-        };
-
-    });
-    if(objSelfReference.hasAGarmentSourceBom){
-        var objSourcedObject = {};
-         $.ajax({
-            url: 'http://wsflexwebprd1v/Windchill/servlet/IE/tasks/com/lcs/wc/flexbom/FindFlexBOM.xml',
-            type: 'get',
-            data: {
-                instance: 'net.hbi.res.wsflexappprd1v.windchill',
-                skuMode: 'ALL_SKUS',
-                //sizeMode: 'ALL_SIZE1',
-                partId: 'VR:com.lcs.wc.flexbom.FlexBOMPart:' + objSelfReference.bomSourceBranch
-
-            }
-        }).done(function(sourcedData){
-            var wcCollectionSource = $(sourcedData).first();
-            var arrOfSourceInstances = $(wcCollectionSource).find('branchId').parent();
-            objSelfReference.sourceBomTableString = '<h1>Sourced BOM</h1><table class="display" id="sourceBomTable" ><thead><th>Garment Use</th><th>Material</th><th>Minor Category</th><th>Description</th><th>Usage UOM</th></thead><tbody>';
-            
-             $(arrOfSourceInstances).each(function () {
-                    var objGarmentSourceRow = {};
-                    objGarmentSourceRow.garmentUseId = $(this).find('hbiGarmentUse').text();
-                    objGarmentSourceRow.Garment_Use = $(this).find('hbiGarmentUseDisplay').text();
-                    objGarmentSourceRow.minorCategory = $(this).find('hbiMinorCategory').text();
-                    objGarmentSourceRow.description = $(this).find('hbiItemDescription').text();
-                    objGarmentSourceRow.materialName = $(this).find('materialName').text();
-                    objGarmentSourceRow.uom = $(this).find('hbiUsageUOM').text();
-                    objGarmentSourceRow = fillUndefinedPropertiesWithSpaces(objGarmentSourceRow);
-                    objSelfReference.sourceBomTableString += '<tr>';
-                    var strTdBegin = '<td>';
-                    var strTdEnd = '</td>';
-                    objSelfReference.sourceBomTableString += strTdBegin + objGarmentSourceRow.Garment_Use + strTdEnd + strTdBegin + objGarmentSourceRow.materialName + strTdEnd + strTdBegin + objGarmentSourceRow.minorCategory.toUpperCase() + strTdEnd + strTdBegin + objGarmentSourceRow.description + strTdEnd + strTdBegin + objGarmentSourceRow.uom.toUpperCase();
-                    objSelfReference.sourceBomTableString += '</tr>';
-
-             });
-             objSelfReference.sourceBomTableString += '</tbody></table>';
-              $('#sourceBomDiv').append(objSelfReference.sourceBomTableString);
-              $('#sourceBomTable').DataTable(sourceBomTableOptions);
-
-        });
-
-    };
-
-
-
-
-
-
-
-
-    if(objSelfReference.hasAGarmentSewBom && objSelfReference.hasAPatternSewBom){
-        //garmentProduct.prototype.getAndProcessMySewAndSourceBom
-        var objSewBomObject = {};
+    if($('row', objBomData).length > 0){
+        objSelfReference.boms = standardRowProcessorForBoms(objBomData,objSelfReference);
+    }else{
         $.ajax({
-            url: 'http://wsflexwebprd1v/Windchill/servlet/IE/tasks/com/lcs/wc/flexbom/FindFlexBOM.xml',
-            type: 'get',
-            data: {
-                instance: 'net.hbi.res.wsflexappprd1v.windchill',
-                skuMode: 'ALL_SKUS',
-                sizeMode: 'ALL_SIZE1',
-                partId: 'VR:com.lcs.wc.flexbom.FlexBOMPart:' + objSelfReference.patternSewBranch
-
-            }
-        }).done(function(patternData){
-            var wcCollectionPattern = $(patternData).first();
-            var arrOfPatternInstances= $(wcCollectionPattern).find('branchId').parent();
-            objSelfReference.patternSewData2 = [];
-            objSelfReference.sewSizes = [];
-            $(arrOfPatternInstances).each(function () {
-                var objPatternSewRow = {};
-                objPatternSewRow.garmentUseId = $(this).find('hbiGarmentUse').text();
-                objPatternSewRow.garmentUseDisplay = $(this).find('hbiGarmentUseDisplay').text();
-                objPatternSewRow.uom = $(this).find('hbiUOM').text();
-                objPatternSewRow = fillUndefinedPropertiesWithSpaces(objPatternSewRow);
-                objPatternSewRow.sizes = [];
-                objPatternSewRow.sizeData = [];
-                var arrOfVariationData = $(this).find('*[NAME]');
-
-                for(var i = 0;i < arrOfVariationData.length;i++){
-                    //var arrVariationDetails = $(this).attr('NAME')
-                    var name = $(arrOfVariationData[i]).attr('NAME');
-                    var strVariationLevelValue = $(arrOfVariationData[i]).first().text();
-                    arrVariationDetails = name.split('$');
-                    var strField = arrVariationDetails[0];
-                    var strVariationType = arrVariationDetails[1];
-                    var strVariationName = arrVariationDetails[2];
-                    
-
-                    if(objSelfReference.sewSizes.indexOf(strVariationName) == -1){
-                        var strSizeLookUp = 'size' + strVariationName;
-                        var numIndexOfLookup = objSelfReference.sortingArray.indexOf(strSizeLookUp);
-                        //objSelfReference.sewSizes.push(strVariationName);
-                        objSelfReference.sewSizes[numIndexOfLookup] = strVariationName;
-                    };
-                    var objVariationObject = {
-                        VariationType:strVariationType,
-                        VariationName:strVariationName,
-                        VariationFieldName:strField,
-                        VariationLevelValue:strVariationLevelValue
-                    };
-                    objVariationObject = fillUndefinedPropertiesWithSpaces(objVariationObject);
-                    objPatternSewRow.sizeData.push(objVariationObject);
-                };
-                objPatternSewRow = fillUndefinedPropertiesWithSpaces(objPatternSewRow);
-                objSelfReference.patternSewData2.push(objPatternSewRow);
-                
-
-            });
-            //objSelfReference.patternSewData2 = patterndata;
-            //objSelfReference.patternSewData = patterndata;
-
-            $.ajax({
-                url: 'http://wsflexwebprd1v/Windchill/servlet/IE/tasks/com/lcs/wc/flexbom/FindFlexBOM.xml',
+                url: 'http://wsflexwebprd1v/Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction',
                 type: 'get',
                 data: {
-                    instance: 'net.hbi.res.wsflexappprd1v.windchill',
-                    skuMode: 'ALL_SKUS',
-                    sizeMode: 'ALL_SIZE1',
-                    partId: 'VR:com.lcs.wc.flexbom.FlexBOMPart:' + objSelfReference.garmentSewBranch
+                    oid:'OR:wt.query.template.ReportTemplate:44169912',
+                    action: 'ExecuteReport',
+                    gSpecId: objSelfReference.activeSpecId,
+                    garmentProductName: objSelfReference.name,
+                    jrb: 'wt.query.template.reportTemplateRB',
+                    delegateName:'XML'
 
                 }
-            }).done(function(garmentData){
-                var wcCollectionGarment = $(garmentData).first();
-                var arrOfGarmentInstances= $(wcCollectionGarment).find('branchId').parent();
-                objSelfReference.garmentSewData2 = [];
-                $(arrOfGarmentInstances).each(function () {
-                    var objGarmentSewRow = {};
-                    objGarmentSewRow.garmentUseId = $(this).find('hbiGarmentUse').text();
-                    objGarmentSewRow.Garment_Use = $(this).find('hbiGarmentUseDisplay').text();
-                    objGarmentSewRow.minorCategory = $(this).find('hbiMinorCategory').text();
-                    objGarmentSewRow.description = $(this).find('hbiItemDescription').text();
-                    objGarmentSewRow.materialName = $(this).find('materialName').text();
-                    objGarmentSewRow.uom = $(this).find('hbiUsageUOM').text();
-                    objGarmentSewRow = fillUndefinedPropertiesWithSpaces(objGarmentSewRow);
-                    
-                    //objGarmentSewRow.dimensions = [];
-                    for(var i = 0;i < objSelfReference.patternSewData2.length;i++){
-                        var arrPatternVariationRow = objSelfReference.patternSewData2[i].sizeData;
-                        var strCurrentPatternBranch = objSelfReference.patternSewData2[i].garmentUseId;
-                        var strCurrentPatternUom = objSelfReference.patternSewData2[i].uom;
-                        for(var j = 0;j < arrPatternVariationRow.length;j++){
-                            var objPatternRowToCompare = arrPatternVariationRow[j];
-                            if(strCurrentPatternBranch == objGarmentSewRow.garmentUseId && strCurrentPatternUom == objGarmentSewRow.uom){
-                                var strSizeName = objPatternRowToCompare.VariationName;
-                                var objDimensionDataObject = {};
-                                objDimensionDataObject.dimension = strSizeName;
-                                objDimensionDataObject.dimensionType = objPatternRowToCompare.VariationType;
-                                objDimensionDataObject.attribute =  objPatternRowToCompare.VariationFieldName;
-                                objDimensionDataObject.value = objPatternRowToCompare.VariationLevelValue;
-                                //objGarmentSewRow[strSizeName] = objPatternRowToCompare.VariationLevelValue;
-                                //objGarmentSewRow.dimensions.push(objDimensionDataObject);
-                                //Just going to do this as raw dimensions for usages for now
-                                objGarmentSewRow[strSizeName] = objPatternRowToCompare.VariationLevelValue;
-                               
-
-
-                               
-
-                            };
-                             for(var k = 0;k < objSelfReference.sewSizes.length;k++){
-                                    var strCurrentSize = objSelfReference.sewSizes[k];
-                                    if(typeof(strCurrentSize) != 'undefined' && typeof(objGarmentSewRow[strCurrentSize]) == 'undefined'){
-                                        objGarmentSewRow[strCurrentSize] = ' ';
-                                    };
-
-                                };
-
-
-                        };
-                        if(strCurrentPatternBranch == objGarmentSewRow.garmentUseId && strCurrentPatternUom == objGarmentSewRow.uom){
-                             objGarmentSewRow = fillUndefinedPropertiesWithSpaces(objGarmentSewRow);
-                            objSelfReference.garmentSewData2.push(objGarmentSewRow);
-                        };
-                    }
-                    //
-                    //objSelfReference.garmentSewData2.push(objGarmentSewRow);
-                    
-                });
-
-            }).done(function(){
-
-                objSelfReference.sewBomTableString = '<h1>Sew BOMs</h1><table class="display" id="sewBomTable" ><thead><th>Garment Use</th><th>Material</th><th>Minor Category</th><th>Description</th><th>Usage UOM</th>';
-                for(var k = 0;k < objSelfReference.sewSizes.length;k++){
-                    var strCurrentSize = objSelfReference.sewSizes[k];
-                    if(typeof(strCurrentSize) != 'undefined'){
-                        objSelfReference.sewBomTableString += '<th>' + strCurrentSize + '</th>'
-                    };
-
-                };
-                objSelfReference.sewBomTableString += '</thead><tbody>';
-                var arrManualProperties = ["materialName","description","minorCategory","Garment_Use","uom","garmentUseId",'dimensions'];
-                for(var k = 0;k < objSelfReference.garmentSewData2.length;k++){
-
-                    var objToParse = objSelfReference.garmentSewData2[k];
-                    var arrOfProperties = Object.keys(objToParse);
-                    var strTdBegin = '<td>';
-                    var strTdEnd = '</td>';
-                    objSelfReference.sewBomTableString += '<tr>';
-                    objSelfReference.sewBomTableString += strTdBegin + objToParse.Garment_Use + strTdEnd + strTdBegin + objToParse.materialName + strTdEnd + strTdBegin + objToParse.minorCategory.toUpperCase() + strTdEnd + strTdBegin + objToParse.description + strTdEnd + strTdBegin + objToParse.uom.toUpperCase() + strTdEnd;
-                    for(var q = 0;q < arrOfProperties.length;q++){
-                        var strValue = arrOfProperties[q];
-                        var value = objToParse[strValue];
-                        if(arrManualProperties.indexOf(strValue) == -1){
-                            objSelfReference.sewBomTableString += strTdBegin + value + strTdEnd;
-                        };
-
-                    };
-
-                    objSelfReference.sewBomTableString += '</tr>';
-
-                };
-                objSelfReference.sewBomTableString += '</tbody></table>';
-                $('#sewBomDiv').append(objSelfReference.sewBomTableString);
-                $('#sewBomTable').DataTable(sewBomTableOptions);
+            }).done(function(data){
+                objSelfReference.boms = standardRowProcessorForBoms(data,objSelfReference);
             });
 
-        });
     };
-
-
+   
 //};
-
-
-objSelfReference.boms = arrBoms;
-//console.log("Garment Data " + objGarmentSewBomData + " Pattern Data " + objPatternSewBomDataWithUsage);
-
-//objSelfReference.garmentSewBoms = objGarmentSewBomData;
-//objSelfReference.patternSewBoms = objPatternSewBomDataWithUsage;
-//put this back later when the objects are actually constructed through parsing
-var arrGarmentSewRows = rowParser('row', objGarmentSewBomData);
-
+//objSelfReference.boms = arrBoms;
 var arrGarmentSourceRows = [];
-//var strGarmentSewBomString = convertRowArrayIntoHtmlTable(arrGarmentSewRows);
-var arrPatternSewRows = rowParser('row', objPatternSewBomDataWithUsage);
-//var strPatternSewBomString = convertRowArrayIntoHtmlTable(arrPatternSewRows);
 var arrOfUniqueSizes = [];
-/*
-for (var i = 0; i < arrGarmentSewRows.length; i++) {
-    var objGarmentSewRow = {};
-
-    objGarmentSewRow = arrGarmentSewRows[i];
-    for (var j = 0; j < arrPatternSewRows.length; j++) {
-        var objPatternSewRow = {};
-        objPatternSewRow = arrPatternSewRows[j];
-        if (objGarmentSewRow.garmentUseId == objPatternSewRow.garmentUseId) {
-            //give the garment sew object the pattern branch here to use in the next loop
-            //console.log("MATCH");
-            objGarmentSewRow.patternBranch = objPatternSewRow.branchId;
-        };
-
-    };
-    objGarmentSewRow.sizeData = [];
-    if (objGarmentSewRow.sewOrSource == 'sew' && arrPatternSewRows.length != 0) {
-
-
-
-        for (var k = 0; k < arrPatternSewRows.length; k++) {
-            var objPatternSewRow = {};
-            objPatternSewRow = arrPatternSewRows[k];
-            if (objGarmentSewRow.patternBranch == objPatternSewRow.branchId && objGarmentSewRow.accessorySize == objPatternSewRow.accessorySize) {
-                objSizeData = {};
-                if (objPatternSewRow.garmentUseId == '0' && objPatternSewRow.usagePerDozen != '0') {
-                    objSizeData.size = objPatternSewRow.size;
-                    if (arrOfUniqueSizes.indexOf(objSizeData.size) == -1) {
-                        arrOfUniqueSizes.push(objSizeData.size);
-                    };
-                };
-            };
-        };
-        for (var k = 0; k < arrPatternSewRows.length; k++) {
-            var objPatternSewRow = {};
-            objPatternSewRow = arrPatternSewRows[k];
-            if (objGarmentSewRow.patternBranch == objPatternSewRow.branchId && objGarmentSewRow.accessorySize == objPatternSewRow.accessorySize) {
-                //give the garment sew object the pattern usages based on the branch
-                objSizeData = {};
-                if (objPatternSewRow.garmentUseId == '0' && objPatternSewRow.usagePerDozen != '0') {
-
-                    objSizeData.size = objPatternSewRow.size;
-                    objSizeData.usagePerDozen = objPatternSewRow.usagePerDozen
-                    var strSize = 'size' + objSizeData.size;
-                    var numLookUpPosition = objSelfReference.sortingArray.indexOf(strSize);
-                    var numIndexToGrabSortPosition = numLookUpPosition + 1;
-                    var numActualIndexPosition = objSelfReference.sortingArray[numIndexToGrabSortPosition];
-                    //objSizeData.sortPosition = numActualIndexPosition;
-                    objSizeData.sortPosition = numLookUpPosition;
-                    objGarmentSewRow.sizeData.push(objSizeData);
-                } else if (objPatternSewRow.garmentUseId != '0' && objPatternSewRow.usagePerDozen != '0') {
-                    objSizeData.size = "ALL";
-                    objSizeData.usagePerDozen = objPatternSewRow.usagePerDozen
-                    var strSize = 'size' + objSizeData.size;
-                    var numLookUpPosition = objSelfReference.sortingArray.indexOf(strSize);
-                    var numIndexToGrabSortPosition = numLookUpPosition + 1;
-                    var numActualIndexPosition = objSelfReference.sortingArray[numIndexToGrabSortPosition];
-                    objSizeData.sortPosition = 0;
-                    objGarmentSewRow.sizeData.push(objSizeData);
-                }
-                ;
-
-            }
-
-        };
-
-    } else if (objGarmentSewRow.sewOrSource == 'source') {
-        var objSourceRow = {};
-        objSourceRow.Garment_Use = objGarmentSewRow.Garment_Use
-        objSourceRow.Material = objGarmentSewRow.Material
-        objSourceRow.Description = objGarmentSewRow.Description
-        objSourceRow.Minor_Category = objGarmentSewRow.Minor_Category
-        for (var property in objSourceRow) {
-            if (objSourceRow.hasOwnProperty(property)) {
-                if (typeof (objSourceRow[property]) == 'undefined') {
-                    objSourceRow[property] = ' ';
-                }
-            };
-        }
-
-        arrGarmentSourceRows.push(objSourceRow);
-
-    }
-    ;
-
-    function objCompareBySortPosition(a, b) {
-        if (a.sortPosition < b.sortPosition)
-            return -1;
-        if (a.sortPosition > b.sortPosition)
-            return 1;
-        return 0;
-    };
-
-    objGarmentSewRow.sizeData.sort(objCompareBySortPosition);
-    if (typeof (objGarmentSewRow.patternBranch) == 'undefined') {
-        objGarmentSewRow.patternBranch = ' ';
-    };
-    if (objGarmentSewRow.sizeData.length == 0) {
-        for (var y = 0; y < arrOfUniqueSizes.length; y++) {
-            var strSize = arrOfUniqueSizes[y];
-            var newObjForSize = {};
-            newObjForSize.size = strSize;
-            newObjForSize.usagePerDozen = " ";
-            var strSize2 = 'size' + objSizeData.size;
-            var numLookUpPosition = objSelfReference.sortingArray.indexOf(strSize2);
-            newObjForSize.sortPosition = numLookUpPosition;
-            objGarmentSewRow.sizeData.push(newObjForSize);
-
-        };
-    };
-
-
-
-
-
-    arrGarmentSewRows[i] = objGarmentSewRow;
-
-};
-
-//console.log('Garment Sew Bom String ' + strGarmentSewBomString, 'Pattern Sew Bom String ' + strPatternSewBomString);
-for (var r = 0; r < arrGarmentSewRows.length; r++) {
-    var objSewSourceChecker = arrGarmentSewRows[r];
-    var strSewOrSource = objSewSourceChecker.sewOrSource;
-    if (strSewOrSource != 'sew') {
-        arrGarmentSewRows.splice(r, 1);
-        r = -1;
-    };
-
-};
-objSelfReference.garmentSewBoms = arrGarmentSewRows;
-objSelfReference.garmentSourceBoms = arrGarmentSourceRows;
-objSelfReference.patternSewBoms = arrPatternSewRows;
-if (objSelfReference.garmentSewBoms.length > 0) {
-    objSelfReference.sewBomTableString = convertRowArrayIntoHtmlTable(objSelfReference.garmentSewBoms, 'size', 'usagePerDozen', 'sewBomTable', '<h1>Sew BOMs</h1>');
-}
-else {
-    //$('#sewBomLi').fadeOut();
-}
-if (objSelfReference.garmentSourceBoms.length > 0) {
-    objSelfReference.sourceBomTableString = convertRowArrayIntoHtmlTable(objSelfReference.garmentSourceBoms, '', '', 'sourceBomTable', '<h1>Sourced BOMs</h1>');
-}*/
-//if (typeof (objSelfReference.patternSewBoms) != 'undefined') {
-/*if (objSelfReference.patternSewBoms.length > 0) {
-    $('#sewBomDiv').append(objSelfReference.sewBomTableString);
-} else {
-    //$('#sewBomLi').fadeOut();
-};*/
-
-/*if (objSelfReference.garmentSourceBoms.length != 0) {
-    $('#sourceBomDiv').append(objSelfReference.sourceBomTableString);
-    $('#sourceBomTable').DataTable(sourceBomTableOptions);
-} else {
-    //$('#sourcedBomLi').fadeOut();
-};*/
-
-//sourceBomDivgarmentSewBoms
-/*if (objSelfReference.patternSewBoms.length > 0 && objSelfReference.garmentSewBoms.length > 0) {
-    $('#sewBomDiv').append(objSelfReference.sewBomTableString);
-    $('#sewBomTable').DataTable(sewBomTableOptions);
-};*/
 var arrConstructionDetailDataContainer;
 var arrMeasurementDetailDataContainer;
 var strApprovedSupplierUrlObjectId = getMyReportIdFromReportName('garmentProdSpecsGarmentAndPatternComponentsApprovedSuppliers');
@@ -1873,6 +1267,18 @@ var strApprovedSupplierTableString = '';
 $.get(strApprovedSupplierUrl, function (data) {
 }).done(function (data) {
     arrApprovedSupplierArray = rowParser('row', data);
+    for(var i = 0; i < arrApprovedSupplierArray.length;i++){
+        var objThisApprovedSupplier = arrApprovedSupplierArray[i];
+        var dateRedSeal = objThisApprovedSupplier.Red_Seal;
+        var dateGreenSeal = objThisApprovedSupplier.Green_Seal;
+        //var momentRed = moment(dateRedSeal);
+        //var momentGreen = moment(dateGreenSeal);
+        objThisApprovedSupplier.Green_Seal = objThisApprovedSupplier.Green_Seal.substring(0,10);
+        objThisApprovedSupplier.Red_Seal= objThisApprovedSupplier.Red_Seal.substring(0,10);
+        arrApprovedSupplierArray[i] = objThisApprovedSupplier;
+    };
+
+
     if (typeof (arrApprovedSupplierArray) != 'undefined' && arrApprovedSupplierArray.length != 0) {
         strApprovedSupplierTableString = convertRowArrayIntoHtmlTable(arrApprovedSupplierArray, '', '', 'approvedSupplierTbl', '<h1>Approved Suppliers</h1>');
         objSelfReference.approvedSuppliers = arrApprovedSupplierArray;
@@ -1881,38 +1287,18 @@ $.get(strApprovedSupplierUrl, function (data) {
         $('#approvedSupplierTbl').DataTable(approvedSupplierTableOptions);
         //$('#approvedSuppliersLi').show();
     } else {
+       objSelfReference.approvedSupplierTableString = '<h1>Approved Suppliers</h1><table class="display"  id="approvedSupplierTbl" ><thead><th>Supplier</th><th>Mfg Flow</th><th>Green Seal</th><th>Red Seal</th><th>Comments</th></thead><tbody><tr><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td></tr></tbody></table>'
+        $('#approvedSupplierDiv').append(objSelfReference.approvedSupplierTableString);
+        $('#approvedSupplierTbl').DataTable(approvedSupplierTableOptions);
         //$('#approvedSupplierDiv').append('<p>Approved Supplier table was not found.</p>')
         //$('#approvedSuppliersLi').hide();
     };
 });
-
+    
 };
 
 function checkForColorwayAndLabelProductsToRemoveBoms(objGarmentProductTocheck) {
-    /*if (typeof (objGarmentProductTocheck.colorwayProduct) != 'undefined') {
-    }
-    else {
-        //$('#colorwayBomLi').fadeOut();
-    }
-
-    if (typeof (objGarmentProductTocheck.labelProduct) != 'undefined') {
-    }
-    else {
-        //$('#labelBomLi').fadeOut();
-    };
-    if (objGarmentProductTocheck.garmentSewBoms.length > 0) {
-    }
-    else {
-        //$('#sewBomLi').fadeOut();
-    }
-    if (objGarmentProductTocheck.patternSewBoms.length > 0) {
-    } else {
-        //$('#sewBomLi').fadeOut();
-    };
-    if (objGarmentProductTocheck.garmentSourceBoms.length != 0) {
-    } else {
-        //$('#sourcedBomLi').fadeOut();
-    };*/
+    
 
 };
 
@@ -1965,7 +1351,7 @@ garmentProduct.prototype.getAndProcessMyRoutingBOM = function (objRoutingBom, ob
         strTableString += '</tbody></table>';
         objSelfReference.routingRows = arrOfRoutingRows;
         $('#routingBomDiv').append(strTableString);
-        $('#routing').DataTable();
+        $('#routing').DataTable(routingBomTableOptions);
         console.log(arrOfRoutingRows);
     });
 
@@ -1984,6 +1370,16 @@ garmentProduct.prototype.getAndProcessMySewAndSourceBom = function(patternSewBom
  * @param {Object} objSelfReference takes the same garmentProduct which is calling the method.  This is used to work around scope limitations and is generally performed
  */
 garmentProduct.prototype.getAllMyDataForMyActiveSpec = function (strHostUrlPrefix, strSpecId, objSelfReference) {
+    $('#spin').show();
+    function doSomething() {
+        if($.active == 0){
+            $('#spin').hide();
+            clearInterval(IntervalId);
+        };
+    }
+    var IntervalId = setInterval(doSomething, 200); // Time in milliseconds
+
+
     if (typeof (strSpecId) == 'undefined')// How can I stop working of function here?
     {
         console.log('no spec id, cannot obtain components.')
@@ -2020,14 +1416,14 @@ garmentProduct.prototype.getAllMyDataForMyActiveSpec = function (strHostUrlPrefi
         url: strGetColorwayPatternUrl,
         type: 'get'
     });
-    var arrGarSewBomData = $.ajax({
+    /*var arrGarSewBomData = $.ajax({
         url: strGarmentSewAndSourceBomUrls,
         type: 'get'
     });
     var arrPatSewBomData = $.ajax({
         url: strPatternSewAndBomUsageUrl,
         type: 'get'
-    });
+    });*/
 
     var objDocData = {};
     var objConData = {};
@@ -2036,16 +1432,16 @@ garmentProduct.prototype.getAllMyDataForMyActiveSpec = function (strHostUrlPrefi
     var objProdLinkData = {};
     var obGarSewBomData = {};
     var objPatSewBomData = {};
-    $.when(arrDocumentData, arrConstructionData, arrMeasData, arrBomData, arrProdLinkData, arrGarSewBomData, arrPatSewBomData).done(function (arrDocumentData, arrConstructionData, arrMeasData, arrBomData, arrProdLinkData, arrGarSewBomData, arrPatSewBomData) {
+    $.when(arrDocumentData, arrConstructionData, arrMeasData, arrBomData, arrProdLinkData/*, arrGarSewBomData, arrPatSewBomData*/).done(function (arrDocumentData, arrConstructionData, arrMeasData, arrBomData, arrProdLinkData/*, arrGarSewBomData, arrPatSewBomData*/) {
         objDocData = arrDocumentData[0];
         objConData = arrConstructionData[0];
         objMeasData = arrMeasData[0];
         objBomData = arrBomData[0];
         objProdLinkData = arrProdLinkData[0];
-        obGarSewBomData = arrGarSewBomData[0];
-        objPatSewBomData = arrPatSewBomData[0];
+        /*obGarSewBomData = arrGarSewBomData[0];
+        objPatSewBomData = arrPatSewBomData[0];*/
         //console.log(objDocData, objConData, objMeasData, objBomData, arrProdLinkData);
-        objSelfReference.getSpecComponentsForActiveSpec(strHostUrlPrefix, objDocData, objConData, objMeasData, objBomData, objProdLinkData, obGarSewBomData, objPatSewBomData, objSelfReference);
+        objSelfReference.getSpecComponentsForActiveSpec(strHostUrlPrefix, objDocData, objConData, objMeasData, objBomData, objProdLinkData, /*obGarSewBomData, objPatSewBomData,*/ objSelfReference);
         console.log(objSelfReference);
         objSelfReference.generateAvailableReportsList(objSelfReference);
         //saveGarmentProd(objSelfReference);
@@ -2176,7 +1572,7 @@ garmentProduct.prototype.getAndProcessDocuments = function (objSelfReference) {
                                 if ($("#frontSketch").length) {
 
                                 } else {
-                                    $('#frontBackImages').append('<div id="frontSketch" class="col-md-6 col-sm-6 col-lg-6 col-xs-6"></div>');
+                                    $('#frontBackImages').append('<div id="frontSketch" class="col-md-6 col-sm-6 col-lg-6 col-xs-6"><div id="frontSketchFront"></div><div id="frontSketchBack"></div></div>');
                                     if (typeof (currentGarmentProduct.generalAttributes) == 'undefined' || !currentGarmentProduct.generalAttributes.length) {
 
                                     } else {
@@ -2226,10 +1622,19 @@ garmentProduct.prototype.getAndProcessDocuments = function (objSelfReference) {
                                         }
                                     };
 
-                                }
-                                targetParent.find('h3').remove();
-                                target.addClass('img-rounded');
-                                target.detach().prependTo('#frontSketch');
+                                };
+                                if(target.hasClass('backImage')){
+                                    targetParent.find('h3').remove();
+                                    target.addClass('img-Thumbnail img-responsive');
+                                    //target.addClass('img-responsive');
+                                    target.detach().prependTo('#frontSketchBack');
+                                };
+                                 if(target.hasClass('frontImage')){
+                                    targetParent.find('h3').remove();
+                                    target.addClass('img-Thumbnail img-responsive');
+                                    //target.addClass('img-responsive');
+                                    target.detach().prependTo('#frontSketchFront');
+                                };
 
                             } else if (target.hasClass('measurements')) {
                                 //console.log('dat Meas!');
@@ -2261,12 +1666,13 @@ garmentProduct.prototype.getAndProcessDocuments = function (objSelfReference) {
                                 target.addClass('img-rounded');
                                 targetParent.detach().appendTo('#placementImagesSubDiv');
 
-                            } else if (target.hasClass('constructionDetails')) {
+                            //} else if (target.hasClass('constructionDetails')) {
+                            } else if (target.hasClass('construction')) {
                                 //console.log('dat Meas!');
-                                if ($("#constructionDetailsImagesSubDiv").length) {
+                                if ($("#constructionImagesSubDiv").length) {
 
                                 } else {
-                                    $('#constructionDetailsImages').append('<div id="constructionDetailsImagesSubDiv" class="col-md-12"><h1 class="col-md-12">Construction Detail Images</h1></div>');
+                                    $('#constructionDetailsImages').append('<div id="constructionImagesSubDiv" class="col-md-12"><h1 class="col-md-12">Construction Detail Images</h1></div>');
                                 };
                                 target.addClass('img-rounded');
                                 targetParent.detach().appendTo('#constructionImagesSubDiv');
@@ -2408,7 +1814,8 @@ garmentProduct.prototype.getMyValueLists = function (strUrlPrefix, arrListIds, o
         }
     };
     var strFullUrl = strUrl1 + strInStringForQuery + strUrl2;
-    $.get(strFullUrl, function (data) {
+    var strFullurl2 = 'http://wsflexwebprd1v/Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction';
+    /*$.get(strFullUrl, function (data) {
     }).done(function (data) {
         $('row', data).each(function () {
             objSelfReference.displayValues.push($(this).find('Display').text());
@@ -2416,7 +1823,29 @@ garmentProduct.prototype.getMyValueLists = function (strUrlPrefix, arrListIds, o
 
         });
         //console.log(objSelfReference.displayValues, objSelfReference.displayKeys);
+    });*/
+     $.ajax({
+        url: strFullurl2,
+        type: 'GET',
+        data: {
+            //oid: strColors,
+            attValueListId: arrListIds.toString(),
+            oid: 'OR:wt.query.template.ReportTemplate:10596321',
+            format: 'formatDelegate',
+            delegateName: 'XML',
+            action: 'ExecuteReport'
+        },
+        xhrFields : {
+            withCredentials : true
+        }
+    }).done(function (data) {
+        $('row', data).each(function () {
+            objSelfReference.displayValues.push($(this).find('Display').text());
+            objSelfReference.displayKeys.push($(this).find('Value_Key').text());
+        });
     });
+
+
 
 };
 
@@ -3860,44 +3289,68 @@ garmentProduct.prototype.getMoas = function (strUrlPrefix, objSelfReference, obj
     }).done(function (data) {
         var arrMoaData = rowParser('row', data);
         objSelfReference.moaArray = arrMoaData;
-
+        var arrOfRevIds = [];
+        var arrOfUserIds = [];
         for (var i = 0; i < objSelfReference.moaArray.length; i++) {
             var objThisLoopObject = objSelfReference.moaArray[i];
             if (objThisLoopObject.Rev_one != '0') {
                 strRevisionIdsToget += ',' + objThisLoopObject.Rev_one;
+                arrOfRevIds.push(objThisLoopObject.Rev_one);
             };
             if (objThisLoopObject.Rev_two != '0') {
                 strRevisionIdsToget += ',' + objThisLoopObject.Rev_two;
+                arrOfRevIds.push(objThisLoopObject.Rev_two);
             };
             if (objThisLoopObject.Rev_three != '0') {
                 strRevisionIdsToget += ',' + objThisLoopObject.Rev_three;
+                arrOfRevIds.push(objThisLoopObject.Rev_three);
             };
             if (objThisLoopObject.Last_Edited_By != '0' && typeof (objThisLoopObject.Last_Edited_By) != 'undefined') {
                 strUserIdsToGet += ',' + objThisLoopObject.Last_Edited_By;
+                arrOfUserIds.push(objThisLoopObject.Last_Edited_By);
             };
 
             objThisLoopObject.Spec = objThisLoopObject.Spec.replace(/hbi/g, "");
             if (objThisLoopObject.Last_Modified.length > 10) {
                 objThisLoopObject.Last_Modified = objThisLoopObject.Last_Modified.substring(0, 10);
             };
-            if (objThisLoopObject.Product_Type.indexOf('1157890') != -1) {
+            if (objThisLoopObject.Product_Type.includes('1157890')) {
                 objThisLoopObject.Product_Type = "Garment";
-            } else if (objThisLoopObject.Product_Type.indexOf('2377400') != -1) {
+            } else if (objThisLoopObject.Product_Type.includes('2377400')) {
                 objThisLoopObject.Product_Type = "Pattern";
             }
             ;
 
         };
-        strRevisionIdsToget = strRevisionIdsToget.substring(1, strRevisionIdsToget.length);
+        /*strRevisionIdsToget = strRevisionIdsToget.substring(1, strRevisionIdsToget.length);
         strRevisionIdsToget = strRevisionIdsToget.replace(/[,]/g, "%2C");
         strUserIdsToGet = strUserIdsToGet.substring(1, strUserIdsToGet.length);
         strUserIdsToGet = strUserIdsToGet.replace(/[,]/g, "%2C");
-        strUserIdsToGet = strUserIdsToGet.replace(/Nan/g, "");
+        strUserIdsToGet = strUserIdsToGet.replace(/Nan/g, "");*/
+        strRevisionIdsToget = arrOfRevIds.toString();
+        strUserIdsToGet = arrOfUserIds.toString();
 
         var strUrlToCallForRevisionDisplays = strUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?revisionIds=' + strRevisionIdsToget + '&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A12131345&action=ExecuteReport';
         //http://wsflexwebprd1v.res.hbi.net/Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?revisionIds=1966368%2C4704613&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A12131345&action=ExecuteReport
-        $.get(strUrlToCallForRevisionDisplays, function (data2) {
-        }).done(function (data2) {
+        /*$.get(strUrlToCallForRevisionDisplays, function (data2) {
+    }).*/
+    
+    /*$.ajax({
+        type: "POST",
+        url: strUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction',
+        //url: 'http://localhost:3000', //?garmentName=' + fileName,
+        //http://localhost/
+        //'&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A12131345&
+        data: {
+            revisionIds:strRevisionIdsToget,
+            formatDelegate:'',
+            delegateName:'XML',
+            oid:'OR:Awt.query.template.ReportTemplate:12131345'
+
+        }
+    }).*/
+    $.get(strUrlToCallForRevisionDisplays, function (data2) {
+    }).done(function (data2) {
             var arrMoaDataWithDisplays = rowParser('row', data2);
             for (var i = 0; i < objSelfReference.moaArray.length; i++) {
                 for (var j = 0; j < arrMoaDataWithDisplays.length; j++) {
@@ -4008,10 +3461,12 @@ garmentProduct.prototype.getMoas = function (strUrlPrefix, objSelfReference, obj
                 $('#sizeTableDiv').append(objSelfReference.SizeTableString);
                 $('#prodRevisionDiv').append(objSelfReference.RevisionAttributeTableString);
                 //sizeTbl
-                $('#sizeTbl').DataTable(sizeTableOptions);
+                var sizeTable = $('#sizeTbl').DataTable(sizeTableOptions);
+                sizeTable.order( [[ 4, 'asc' ]] ).draw(false);
                 var table = $('#revisionAttributeTbl').DataTable(revisionTableTableOptions);
                 table.colReorder.order([12, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13]);
-                table.column(10).data().sort();
+                //table.column(11).data().sort();
+                table.order( [[ 11, 'desc' ]] ).draw(false);
                 //table.colReorder = false;
 
                 //var aFart = 1;
@@ -4451,3 +3906,401 @@ function fillUndefinedPropertiesWithSpaces(objectToClean){
     return objectToClean
 
 }
+/**
+ * @param {row} dataRow takes a row of data containing the data for the object
+ * @returns {objComponent} returns a document object
+*/
+function standardRowProcessorForDocuments(dataRow){
+                var strFileNameString = $(dataRow).find('Application_Data').text();
+                var numCheckForPng = strFileNameString.indexOf('png');
+                var objComponent = {};
+                if (numCheckForPng == -1) {
+                    return false;
+                } else {
+                    var strImgViewerPrefix1 = 'http://wsflexappdev2v/Windchill/rfa/jsp/image/ImageViewer.jsp?imageUrl=&appDataOid=OR:wt.content.ApplicationData:';
+                    var strImgViewerPrefix2 = '&contentHolderOid=OR:com.lcs.wc.document.LCSDocument:';
+                    var strImgViewerPrefix3 = "https://res.hbi.net/dfs/BrandedApparel/Activewear/FlexApp/QA/Prod/";
+                    var name = $(dataRow).find('Document_Master_Name').text();
+                    var strpSpecId = $(dataRow).find('patternSpecId').text();
+                    var strgSpecId = $(dataRow).find('garmentSpecId').text();
+                    var strCompSpecId = $(dataRow).find('comRefSpecId').text();
+                    var strApplicationDataPartOneOfLink = $(dataRow).find('documentNotMasterDocumentOid').text();
+                    var strDocumentIdPartTwoOfLink = $(dataRow).find('DocumentIdPartTwoOfLink').text();
+                    var strMyFullId = strDocumentIdPartTwoOfLink + "_" + strApplicationDataPartOneOfLink;
+                    if (window.location.href.indexOf('webprd1') != -1) {
+                        strImgViewerPrefix1 = 'http://wsflexwebprd1v/Windchill/rfa/jsp/image/ImageViewer.jsp?imageUrl=&appDataOid=OR:wt.content.ApplicationData:';
+                    };
+                    strImgViewerPrefix1 = strImgViewerPrefix1 + strDocumentIdPartTwoOfLink + '&contentHolderOid=OR:com.lcs.wc.document.LCSDocument:' + strApplicationDataPartOneOfLink;
+
+                    if ($(dataRow).is('row:first')) {
+                        var objGSpec = {};
+                        var objPSpec = {};
+                        objGSpec.currentGarmentSpecId = $(dataRow).find('garmentSpecId').text();
+                        objPSpec.currentGarmentSpecId = $(dataRow).find('patternSpecId').text();
+                        objGSpec.name = $(dataRow).find('gSpecName').text();
+                        objPSpec.name = $(dataRow).find('pSpecName').text();
+                    };
+                    //objComponent = {};
+                    objComponent.name = name;
+                    objComponent.name = decodeURIComponent(objComponent.name);
+                    objComponent.myFullId = strMyFullId;
+
+                    objComponent.componentType = 'Document';
+                    objComponent.masterId = $(dataRow).find('Document_Master').attr('objectId');
+                    objComponent.documentType = $(dataRow).find('Component_Type').text();
+                    objComponent.fileName = $(dataRow).find('fileName').text();
+                    /*
+                    May be a fix for image issue.
+                    objComponent.fileName = decodeURIComponent(objComponent.fileName);
+                    
+                    */
+                    objComponent.vaultFileName = $(dataRow).find('fileNameOnVault').text();
+                    objComponent.pageType = $(dataRow).find('pageType').text();
+                    objComponent.pageLayout = $(dataRow).find('pageLayout').text();
+                    objComponent.pageDescription = $(dataRow).find('pageDescription').text();
+                    objComponent.number = $(dataRow).find('number').text();
+                    objComponent.ownerId = $(dataRow).find('ownerId').text();
+                    objComponent.specMasterReferenceId = $(dataRow).find('specMasterReferenceId').text();
+                    objComponent.garmentSpecMasterId = $(dataRow).find('garmentSpecMasterId').text();
+                    objComponent.patternSpecMasterId = $(dataRow).find('patternSpecMasterId').text();
+                    if (objComponent.garmentSpecMasterId == objComponent.specMasterReferenceId) {
+                        objComponent.ownerType = 'Garment';
+                    } else if (objComponent.patternSpecMasterId == objComponent.specMasterReferenceId) {
+                        objComponent.ownerType = 'Pattern';
+                    };
+
+                    objComponent.fullVaultUrl = strImgViewerPrefix3 + objComponent.vaultFileName + '.png';
+                    //objComponent.fullVaultUrl = strImgViewerPrefix1;
+
+                    objComponent.seqeuence = $(dataRow).find('Unique_Sequence_Number').text();
+                    //objComponent.imgSrcUrl = objComponent.seqeuence + " " + objComponent.fileName;
+                    objComponent.imgSrcUrl = strImgViewerPrefix1;
+                    objComponent.dataUri = 'initial value';
+                    objComponent.description = $(dataRow).find('Description').text();
+                    var strStartPointSubString = objComponent.description.substring(11, objComponent.description.length);
+                    var numLengthStartPoint = strStartPointSubString.search('x') + 1;
+                    var numNumCharsOfWidth = numLengthStartPoint - 1;
+                    var numWidth = strStartPointSubString.substring(0, numNumCharsOfWidth);
+                    var numLength = strStartPointSubString.substring(numLengthStartPoint, strStartPointSubString.length);
+                    objComponent.width = numWidth;
+                    objComponent.height = numLength;
+                    objComponent.roleDocumentLink = $(dataRow).find('roleDocumentLink').text();
+                    var roleB = $(dataRow).find('roleBObjectRef_key_id').text();
+
+                    //objComponent.image = '<div class="item" <h2>' + objComponent.name + '-' + objComponent.fileName + '</h2></br><img width="' + objComponent.width + '" height="' + objComponent.length + '" class="img-responsive hideImg" src="' + strImgViewerPrefix3 + objComponent.vaultFileName + '" /></div>';
+                    //changing the imgviewer prefix variable here alters protocol and where the file is being grabbed from
+                    objComponent.image = '<div class="item" <h2>' + objComponent.name + '-' + objComponent.fileName + '</h2></br><iframe width="100%" height="1200" class="img-responsive hideImg" src="' + strImgViewerPrefix1 + '"></iframe></div>';
+
+                    //objComponent.image = '<div class="item" <h2>' + objComponent.name + '-' + objComponent.fileName + '</h2></br><img width="' + objComponent.width + '" height="' + objComponent.length + '" class="sponsive hideImg" src="' + objComponent.fullVaultUrl +  '" /></div>';
+                    objComponent.cell = Number(objComponent.description.substring(6, 5));
+                    if (objComponent.garmentSpecMasterId == objComponent.specMasterReferenceId) {
+                        objComponent.ownerType = 'Garment';
+                    } else if (objComponent.patternSpecMasterId == objComponent.specMasterReferenceId) {
+                        objComponent.ownerType = 'Pattern';
+                    };
+                    
+                    
+                    if (objComponent.pageType == 'frontSketch' && objComponent.cell == 1) {
+                        objComponent.frontBack = 'frontImage';
+
+                    }
+                    else if (objComponent.pageType == 'frontSketch' && objComponent.cell == 2) {
+                        objComponent.frontBack = 'backImage';
+
+                    } else {
+                        objComponent.frontBack = 'neither';
+                    };
+
+                    if (objComponent.ownerType == 'Pattern' && objComponent.pageType == 'frontSketch') {
+                         return false;
+                    } else {
+                        //arrDocuments.push(objComponent);
+                         return objComponent;
+                    };
+
+                    if (index == numOfDocumentRows - 1) {
+
+                    };
+                    
+                };
+               
+};
+
+function standardRowProcessorForBoms(bomData,objSelfReference){
+    var arrBoms = [];
+    $('row', bomData).each(function () {
+        var dataRow = $(this);
+        var objBomComponent = {};
+        var name = $(this).find('com_lcs_wc_flexbom_FlexBOMPart_Name').text();
+        var strpBomSpecId = $(this).find('pSpecId').text();
+        var strgBomSpecId = $(this).find('gSpecId').text();
+        var strBomCompSpecId = $(this).find('comRefSpecId').text();
+        var strFlexBomType = $(this).find('Flex_Type_Type_Name').text();
+        var strFlexTypePath = $(this).find('com_lcs_wc_flexbom_FlexBOMPart_Flex_Type_Id_Path').text();
+        var strSewOrSource = $(this).find('sewOrSource').text();
+        var boolIsItSourcedBom = false;
+        var boolIsItOldSourcedBomSetupForSew = false;
+        var boolIsItNewSewBom = false;
+        if(strFlexTypePath.includes('16700041')){
+            boolIsItSourcedBom = true;
+            if(strSewOrSource.includes('sew')){
+                boolIsItOldSourcedBomSetupForSew = true;
+            }else{
+                boolIsItOldSourcedBomSetupForSew = false;
+            };
+        }else if(strFlexTypePath.includes('2374344')){
+            boolIsItNewSewBom = true;
+            
+        };
+
+        objBomComponent = {};
+        objBomComponent.name = name;
+        objBomComponent.branchId = $(this).find('Branch_Identifier').text();
+        objBomComponent.fileName = "";
+        objBomComponent.componentType = 'BOM';
+        objBomComponent.imageUrl = "<img src='' />";
+        objBomComponent.flexType = strFlexBomType;
+        objBomComponent.flexTypePath = strFlexTypePath;
+
+        var regPprod = new RegExp("Pattern");
+        var regGprod = new RegExp("Garment");
+        if (regPprod.test(strFlexBomType)) {
+            objBomComponent.ownerType = 'Pattern';
+        } else if (regGprod.test(strFlexBomType)) {
+            objBomComponent.ownerType = 'Garment';
+        }
+        ;
+        //arrTableDataArray.push(objBomComponent);
+        arrBoms.push(objBomComponent);
+        if (objBomComponent.flexType == 'Garment Routing Table') {
+            //$('#revi')
+            objSelfReference.getAndProcessMyRoutingBOM(objBomComponent, objSelfReference);
+        }else if(objBomComponent.flexTypePath.includes('2374607')){
+            objSelfReference.hasAPatternSewBom = true;
+            objSelfReference.patternSewBranch = objBomComponent.branchId;
+        }else if(objBomComponent.flexTypePath.includes('2374344') && strSewOrSource.indexOf('source') == -1){
+            objSelfReference.hasAGarmentSewBom = true;  
+            objSelfReference.garmentSewBranch = objBomComponent.branchId;
+        //}else if(objBomComponent.flexType == "Garment Sew" && objBomComponent.name.indexOf('Source') != -1){
+        //}else if((objBomComponent.flexType == "Garment Sew" && objBomComponent.name.indexOf('Source')) != -1 || (objBomComponent.flexType == "Garment Sourced")){            
+        }else if(objBomComponent.flexTypePath.includes('16700041') || (objBomComponent.flexTypePath.includes('2374344') && strSewOrSource.indexOf('sew') == -1)  ){
+            objSelfReference.hasAGarmentSourceBom = true;
+            objSelfReference.bomSourceBranch = objBomComponent.branchId;
+        };
+
+    });
+     if(objSelfReference.hasAGarmentSourceBom){
+        var objSourcedObject = {};
+         $.ajax({
+            url: 'http://wsflexwebprd1v/Windchill/servlet/IE/tasks/com/lcs/wc/flexbom/FindFlexBOM.xml',
+            type: 'get',
+            data: {
+                instance: 'net.hbi.res.wsflexappprd1v.windchill',
+                skuMode: 'ALL_SKUS',
+                //sizeMode: 'ALL_SIZE1',
+                partId: 'VR:com.lcs.wc.flexbom.FlexBOMPart:' + objSelfReference.bomSourceBranch
+
+            }
+        }).done(function(sourcedData){
+            var wcCollectionSource = $(sourcedData).first();
+            var arrOfSourceInstances = $(wcCollectionSource).find('branchId').parent();
+            objSelfReference.sourceBomTableString = '<h1>Sourced BOM</h1><table class="display" id="sourceBomTable" ><thead><th>Garment Use</th><th>Material</th><th>Minor Category</th><th>Description</th><th>Usage UOM</th></thead><tbody>';
+             $(arrOfSourceInstances).each(function () {
+                    var objGarmentSourceRow = {};
+                    objGarmentSourceRow.garmentUseId = $(this).find('hbiGarmentUse').text();
+                    objGarmentSourceRow.Garment_Use = $(this).find('hbiGarmentUseDisplay').text();
+                    objGarmentSourceRow.minorCategory = $(this).find('hbiMinorCategory').text();
+                    objGarmentSourceRow.description = $(this).find('hbiItemDescription').text();
+                    objGarmentSourceRow.materialName = $(this).find('materialName').text();
+                    objGarmentSourceRow.uom = $(this).find('hbiUsageUOM').text();
+                    objGarmentSourceRow = fillUndefinedPropertiesWithSpaces(objGarmentSourceRow);
+                    objSelfReference.sourceBomTableString += '<tr>';
+                    var strTdBegin = '<td>';
+                    var strTdEnd = '</td>';
+                    objSelfReference.sourceBomTableString += strTdBegin + objGarmentSourceRow.Garment_Use + strTdEnd + strTdBegin + objGarmentSourceRow.materialName + strTdEnd + strTdBegin + objGarmentSourceRow.minorCategory.toUpperCase() + strTdEnd + strTdBegin + objGarmentSourceRow.description + strTdEnd + strTdBegin + objGarmentSourceRow.uom.toUpperCase();
+                    objSelfReference.sourceBomTableString += '</tr>';
+             });
+             objSelfReference.sourceBomTableString += '</tbody></table>';
+              $('#sourceBomDiv').append(objSelfReference.sourceBomTableString);
+              $('#sourceBomTable').DataTable(sourceBomTableOptions);
+        });
+
+    };
+    if(objSelfReference.hasAGarmentSewBom && objSelfReference.hasAPatternSewBom){
+        var objSewBomObject = {};
+        $.ajax({
+            url: 'http://wsflexwebprd1v/Windchill/servlet/IE/tasks/com/lcs/wc/flexbom/FindFlexBOM.xml',
+            type: 'get',
+            data: {
+                instance: 'net.hbi.res.wsflexappprd1v.windchill',
+                skuMode: 'ALL_SKUS',
+                sizeMode: 'ALL_SIZE1',
+                partId: 'VR:com.lcs.wc.flexbom.FlexBOMPart:' + objSelfReference.patternSewBranch
+
+            }
+        }).done(function(patternData){
+            var wcCollectionPattern = $(patternData).first();
+            var arrOfPatternInstances= $(wcCollectionPattern).find('branchId').parent();
+            var arrOfFlatSize = [];
+            objSelfReference.patternSewData2 = [];
+            objSelfReference.sewSizes = [];
+            $(arrOfPatternInstances).each(function () {
+                var objPatternSewRow = {};
+                objPatternSewRow.garmentUseId = $(this).find('hbiGarmentUse').text();
+                objPatternSewRow.garmentUseDisplay = $(this).find('hbiGarmentUseDisplay').text();
+                objPatternSewRow.uom = $(this).find('hbiUOM').text();
+                objPatternSewRow = fillUndefinedPropertiesWithSpaces(objPatternSewRow);
+                objPatternSewRow.sizes = [];
+                objPatternSewRow.sizeData = [];
+                var arrOfVariationData = $(this).find('*[NAME]');
+
+                for(var i = 0;i < arrOfVariationData.length;i++){
+                    var name = $(arrOfVariationData[i]).attr('NAME');
+                    var strVariationLevelValue = $(arrOfVariationData[i]).first().text();
+                    arrVariationDetails = name.split('$');
+                    var strField = arrVariationDetails[0];
+                    var strVariationType = arrVariationDetails[1];
+                    var strVariationName = arrVariationDetails[2];
+                    var strSizeLookUp = 'size' + strVariationName;
+                    var numIndexOfLookup = objSelfReference.sortingArray.indexOf(strSizeLookUp);
+                    var objSizeObject = {};
+                    objSizeObject.sortingIndex = numIndexOfLookup;
+                    objSizeObject.sizeName = strVariationName;
+                    
+                    if(arrOfFlatSize.indexOf(strVariationName) == -1){
+                        //objSelfReference.sewSizes[numIndexOfLookup] = strVariationName;
+                        objSelfReference.sewSizes.push(objSizeObject);
+                        arrOfFlatSize.push(strVariationName);
+                    };
+                    var objVariationObject = {
+                        VariationType:strVariationType,
+                        VariationName:strVariationName,
+                        VariationFieldName:strField,
+                        VariationLevelValue:strVariationLevelValue
+                    };
+                    objVariationObject = fillUndefinedPropertiesWithSpaces(objVariationObject);
+                    objPatternSewRow.sizeData.push(objVariationObject);
+                };
+                //objPatternSewRow = fillUndefinedPropertiesWithSpaces(objPatternSewRow);
+                objSelfReference.sewSizes.sort(objCompareBysortingIndex);
+                objSelfReference.patternSewData2.push(objPatternSewRow);
+
+            });
+            $.ajax({
+                url: 'http://wsflexwebprd1v/Windchill/servlet/IE/tasks/com/lcs/wc/flexbom/FindFlexBOM.xml',
+                type: 'get',
+                data: {
+                    instance: 'net.hbi.res.wsflexappprd1v.windchill',
+                    skuMode: 'ALL_SKUS',
+                    sizeMode: 'ALL_SIZE1',
+                    partId: 'VR:com.lcs.wc.flexbom.FlexBOMPart:' + objSelfReference.garmentSewBranch
+
+                }
+            }).done(function(garmentData){
+                var wcCollectionGarment = $(garmentData).first();
+                var arrOfGarmentInstances= $(wcCollectionGarment).find('branchId').parent();
+                objSelfReference.garmentSewData2 = [];
+                $(arrOfGarmentInstances).each(function () {
+                    var objGarmentSewRow = {};
+                    for(var r = 0;r < objSelfReference.sewSizes.length;r++){
+                        var objCurrent = objSelfReference.sewSizes[r];
+                        var strCurrent = objCurrent.sizeName;
+                        objGarmentSewRow[strCurrent] = '';
+                    };
+                    objGarmentSewRow.garmentUseId = $(this).find('hbiGarmentUse').text();
+                    objGarmentSewRow.Garment_Use = $(this).find('hbiGarmentUseDisplay').text();
+                    objGarmentSewRow.minorCategory = $(this).find('hbiMinorCategory').text();
+                    objGarmentSewRow.description = $(this).find('hbiItemDescription').text();
+                    objGarmentSewRow.materialName = $(this).find('materialName').text();
+                    objGarmentSewRow.uom = $(this).find('hbiUsageUOM').text();
+                    objGarmentSewRow = fillUndefinedPropertiesWithSpaces(objGarmentSewRow);
+                    //objGarmentSewRow.dimensions = [];
+                    for(var i = 0;i < objSelfReference.patternSewData2.length;i++){
+                        var arrPatternVariationRow = objSelfReference.patternSewData2[i].sizeData;
+                        var strCurrentPatternBranch = objSelfReference.patternSewData2[i].garmentUseId;
+                        var strCurrentPatternUom = objSelfReference.patternSewData2[i].uom;
+                        for(var j = 0;j < arrPatternVariationRow.length;j++){
+                            var objPatternRowToCompare = arrPatternVariationRow[j];
+                            if(strCurrentPatternBranch == objGarmentSewRow.garmentUseId && strCurrentPatternUom == objGarmentSewRow.uom){
+                                var strSizeName = objPatternRowToCompare.VariationName;
+                                var objDimensionDataObject = {};
+                                objDimensionDataObject.dimension = strSizeName;
+                                objDimensionDataObject.dimensionType = objPatternRowToCompare.VariationType;
+                                objDimensionDataObject.attribute =  objPatternRowToCompare.VariationFieldName;
+                                objDimensionDataObject.value = objPatternRowToCompare.VariationLevelValue;
+                                objGarmentSewRow[strSizeName] = objPatternRowToCompare.VariationLevelValue;
+                            };
+                        };
+
+                        
+                        if(strCurrentPatternBranch == objGarmentSewRow.garmentUseId && strCurrentPatternUom == objGarmentSewRow.uom){
+                            //objGarmentSewRow = fillUndefinedPropertiesWithSpaces(objGarmentSewRow);
+                            objSelfReference.garmentSewData2.push(objGarmentSewRow);
+                        };
+                    }
+                    
+                });
+
+            }).done(function(){
+
+                objSelfReference.sewBomTableString = '<h1>Sew BOMs</h1><table class="display" id="sewBomTable" ><thead><th>Garment Use</th><th>Material</th><th>Minor Category</th><th>Description</th><th>Usage UOM</th>';
+                for(var k = 0;k < objSelfReference.sewSizes.length;k++){
+                    //var strCurrentSize = objSelfReference.sewSizes[k];
+                    var objCurrentSize = objSelfReference.sewSizes[k];
+                    var strCurrentSize = objCurrentSize.sizeName;
+                    if(typeof(strCurrentSize) != 'undefined'){
+                        objSelfReference.sewBomTableString += '<th class="size' + encodeURIComponent(strCurrentSize) + '" >' + strCurrentSize + '</th>'
+                    };
+
+                };
+                objSelfReference.sewBomTableString += '</thead><tbody>';
+                var arrManualProperties = ["materialName","description","minorCategory","Garment_Use","uom","garmentUseId",'dimensions'];
+                for(var k = 0;k < objSelfReference.garmentSewData2.length;k++){
+
+                    var objToParse = objSelfReference.garmentSewData2[k];
+                    var arrOfProperties = Object.keys(objToParse);
+                    var strTdBegin = '<td>';
+                    var strTdEnd = '</td>';
+                    objSelfReference.sewBomTableString += '<tr>';
+                    objSelfReference.sewBomTableString += strTdBegin + objToParse.Garment_Use + strTdEnd + strTdBegin + objToParse.materialName + strTdEnd + strTdBegin + objToParse.minorCategory.toUpperCase() + strTdEnd + strTdBegin + objToParse.description + strTdEnd + strTdBegin + objToParse.uom.toUpperCase() + strTdEnd;
+                    for(var q = 0;q < arrOfProperties.length;q++){
+                        var strValue = arrOfProperties[q];
+                        var value = objToParse[strValue];
+                        if(arrManualProperties.indexOf(strValue) == -1){
+                            objSelfReference.sewBomTableString += strTdBegin + value + strTdEnd;
+                        };
+
+                    };
+
+                    objSelfReference.sewBomTableString += '</tr>';
+
+                };
+                objSelfReference.sewBomTableString += '</tbody></table>';
+                $('#sewBomDiv').append(objSelfReference.sewBomTableString);
+                $('#sewBomTable').DataTable(sewBomTableOptions);
+                return arrBoms;
+            });
+
+        });
+    };
+
+};
+
+
+
+function objCompareByName(a, b) {
+        if (a.name < b.name)
+            return -1;
+        if (a.name > b.name)
+            return 1;
+        return 0;
+    };
+
+
+function objCompareBysortingIndex(a, b) {
+        if (a.sortingIndex < b.sortingIndex)
+            return -1;
+        if (a.sortingIndex > b.sortingIndex)
+            return 1;
+        return 0;
+    };

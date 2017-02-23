@@ -1,56 +1,36 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="Garment Spec Report">
     <meta name="author" content="Matthew English">
     <title></title>
-    <!-- Bootstrap core CSS -->
-    <link href="bootstrap-3.3.4-dist/css/bootstrap.min.css" rel="stylesheet" />
-    <!-- Custom styles for this template -->
+    <!--New CDNs, now replacing with local versions
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>-->
+    <!--Local versions-->
+    <link href="Jquery_Bootstrap/3.3.6_bootstrap.min.css" rel="stylesheet" />
+    <link href="Jquery_Bootstrap/3.3.6_bootstrap-theme.min.css" rel="stylesheet" />
+    <script src="Jquery_Bootstrap/2.2.4_jquery.min.js"></script>
+    <script src="Jquery_Bootstrap/3.3.6_bootstrap.min.js"></script>
+    <!--Local versions-->
     <link href="css/starter-template.css" rel="stylesheet">
     <link href="css/carousel.css" rel="stylesheet" />
     <link href="DataTables-1.10.7/media/css/jquery.dataTables_themeroller.css" rel="stylesheet" />
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="js/jquery-2.1.3.js"></script>
-    <script src="js/d3.v3.min.js"></script>
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="js/ie10-viewport-bug-workaround.js"></script>
     <script src="typeAhead/typeAheadBundle.js"></script>
-    <!--
-    <link href="DataTables-1.10.7/extensions/Bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="DataTables-1.10.7/extensions/Bootstrap-3.3.5/css/bootstrap-theme.min.css" rel="stylesheet" />
-    <script src="DataTables-1.10.7/extensions/Bootstrap-3.3.5/js/bootstrap.min.js"></script>
-
-    DataTables
-    <script src="DataTables-1.10.7/media/js/jquery.dataTables.js"></script>
-
-    <script src="DataTables-1.10.7/extensions/ColVis/js/dataTables.colVis.js"></script>
-    <script src="DataTables-1.10.7/extensions/TableTools/js/dataTables.tableTools.js"></script>
-    <script src="DataTables-1.10.7/extensions/FixedHeader/js/dataTables.fixedHeader.js"></script>
-    <script src="DataTables-1.10.7/extensions/Responsive/js/dataTables.responsive.js"></script>
-    <link href="DataTables-1.10.7/extensions/FixedHeader/css/dataTables.fixedHeader.css" rel="stylesheet" />
-    <link href="DataTables-1.10.7/extensions/Responsive/css/dataTables.responsive.css" rel="stylesheet" />
-    <link href="DataTables-1.10.7/media/css/jquery.dataTables.css" rel="stylesheet" />
-    <link href="DataTables-1.10.7/extensions/TableTools/css/dataTables.tableTools.css" rel="stylesheet" />
-    <link href="DataTables-1.10.7/extensions/ColVis/css/dataTables.colVis.css" rel="stylesheet" />
-    <link href="DataTables-1.10.7/Plugins/integration/bootstrap/3/dataTables.bootstrap.css" rel="stylesheet" />
-    -->
     <link rel="stylesheet" type="text/css" href="css/print.css" media="print" />
     <script src="DataTablesDownloadBuilder/DataTables-1.10.9/js/jquery.dataTables.min.js"></script>
     <script src="DataTablesDownloadBuilder/DataTables-1.10.9/js/dataTables.bootstrap.min.js"></script>
     <script src="DataTablesDownloadBuilder/JSZip-2.5.0/jszip.min.js"></script>
-
-    <!--<script src="DataTablesDownloadBuilder/pdfmake-0.1.18/build/pdfmake.min.js"></script>-->
     <script src="DataTablesDownloadBuilder/pdfmake-0.1.18/build/pdfmake.min.js"></script>
     <script src="DataTablesDownloadBuilder/pdfmake-0.1.18/build/vfs_fonts.js"></script>
     <script src="DataTablesDownloadBuilder/Buttons-1.0.3/js/dataTables.buttons.min.js"></script>
-    <!--NEED TO ALWAYS PUT THE CORE MIN LIBRARY BEFORE THE EXTENSIONS-->
     <script src="DataTablesDownloadBuilder/Buttons-1.0.3/js/buttons.bootstrap.min.js"></script>
     <script src="DataTablesDownloadBuilder/Buttons-1.0.3/js/buttons.colVis.min.js"></script>
     <script src="DataTablesDownloadBuilder/Buttons-1.0.3/js/buttons.foundation.min.js"></script>
@@ -59,36 +39,17 @@
     <script src="DataTablesDownloadBuilder/Buttons-1.0.3/js/buttons.print.min.js"></script>
     <script src="DataTablesDownloadBuilder/DataTables-1.10.9/js/dataTables.bootstrap.min.js"></script>
     <script src="DataTablesDownloadBuilder/ColReorder-1.2.0/js/dataTables.colReorder.min.js"></script>
-
-    <!--<link href="DataTablesDownloadBuilder/Buttons-1.0.3/css/buttons.bootstrap.min.css" rel="stylesheet" />
-    <link href="DataTablesDownloadBuilder/Buttons-1.0.3/css/buttons.dataTables.min.css" rel="stylesheet" />
-    <link href="DataTablesDownloadBuilder/Buttons-1.0.3/css/buttons.foundation.min.css" rel="stylesheet" />
-    <link href="DataTablesDownloadBuilder/Buttons-1.0.3/css/buttons.jqueryui.min.css" rel="stylesheet" />-->
     <link href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/buttons/1.2.1/css/buttons.dataTables.min.css" rel="stylesheet">
     <link href="DataTablesDownloadBuilder/ColReorder-1.2.0/css/colReorder.dataTables.min.css" rel="stylesheet" />
-
-    <!--DataTables-->
-    <link href="css/jquery.prompt.css" rel="stylesheet" />
-
-    <!--PrettyLoader-->
-    <link href="prettyLoader.css" rel="stylesheet" />
-    <!--PrettyLoader-->
-    <!--PrettyLoader-->
-
     <script src="js/jquery.browser.js"></script>
-    <script src="js/jquery.prettyLoader.js"></script>
-    <!--PrettyLoader-->
-    <!--jsPdf precursors -->
     <script src="node_modules/rasterizehtml/dist/rasterizeHTML.allinone.js"></script>
-    <!--jsPdf-->
     <script src="jsPdf/jspdf.js"></script>
     <script src="jsPdf/plugins/addhtml.js"></script>
     <script src="jsPdf/plugins/addimage.js"></script>
     <script src="jsPdf/plugins/annotations.js"></script>
     <script src="jsPdf/plugins/autoprint.js"></script>
     <script src="jsPdf/plugins/canvas.js"></script>
-    <!-- <script src="jsPdf/plugins/cell.js"></script>-->
     <script src="jsPdf/plugins/cellMattV2.js"></script>
     <script src="jsPdf/plugins/context2d.js"></script>
     <script src="jsPdf/plugins/from_html.js"></script>
@@ -105,39 +66,10 @@
     <script src="jsPdf/libs/FileSaver.js/FileSaver.js"></script>
     <script src="jsPdf/libs/Blob.js/Blob.js"></script>
     <script src="jsPdf/libs/adler32cs.js/adler32cs.js"></script>
-
-    <!-- <script src="jsPdf_Newest/jspdf.js"></script>
-     <script src="jsPdf_Newest/plugins/addhtml.js"></script>
-     <script src="jsPdf_Newest/plugins/addimage.js"></script>
-     <script src="jsPdf_Newest/plugins/annotations.js"></script>
-     <script src="jsPdf_Newest/plugins/autoprint.js"></script>
-     <script src="jsPdf_Newest/plugins/canvas.js"></script>
-     <script src="jsPdf_Newest/plugins/cell.js"></script>
-     <script src="jsPdf_Newest/plugins/context2d.js"></script>
-     <script src="jsPdf_Newest/plugins/from_html.js"></script>
-     <script src="jsPdf_Newest/plugins/javascript.js"></script>
-     <script src="jsPdf_Newest/plugins/outline.js"></script>
-     <script src="jsPdf_Newest/plugins/png_support.js"></script>
-     <script src="jsPdf_Newest/plugins/prevent_scale_to_fit.js"></script>
-     <script src="jsPdf_Newest/plugins/split_text_to_size.js"></script>
-     <script src="jsPdf_Newest/plugins/standard_fonts_metrics.js"></script>
-     <script src="jsPdf_Newest/plugins/svg.js"></script>
-     <script src="jsPdf_Newest/plugins/total_pages.js"></script>
-     <script src="jsPdf_Newest/plugins/xmp_metadata.js"></script>
-     <script src="jsPdf_Newest/libs/png_support/png.js"></script>
-     <script src="jsPdf_Newest/libs/png_support/zlib.js"></script>
-     <script src="jsPdf_Newest/libs/deflate.js"></script>-->
-    <!--libs-->
-    <!--jspdf-->
     <script src="js/jquery.prompt.js"></script>
     <script src="js/imagesloaded.pkgd.min.js"></script>
-    <!--My Scripts begin here-->
-    <!--end construction of prototype of Garment Product Class-->
-    <!--Svg items
-    <link href="jquery.svg.package-1.5.0/jquery.svg.css" rel="stylesheet" />
-    <script src="jquery.svg.package-1.5.0/jquery.svg.js"></script>
-    <script src="jquery.svg.package-1.5.0/jquery.svgdom.js"></script>-->
-    <!--Svg items-->
+    <script src="js/jquery.babypaunch.spinner.min.js"></script>
+     <!--<script src="js/monent.js"></script>-->
     <style>
         .page {
             page-break-after: always;
@@ -159,13 +91,11 @@
             border: none;
             cursor: pointer;
         }
-
         /* The container <div> - needed to position the dropdown content */
         .dropdown {
             position: relative;
             display: inline-block;
         }
-
         /* Dropdown Content (Hidden by Default) */
         .dropdown-content {
             display: none;
@@ -174,7 +104,6 @@
             min-width: 160px;
             box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
         }
-
             /* Links inside the dropdown */
             .dropdown-content a {
                 color: black;
@@ -182,40 +111,46 @@
                 text-decoration: none;
                 display: block;
             }
-
                 /* Change color of dropdown links on hover */
                 .dropdown-content a:hover {
                     background-color: #f1f1f1;
                 }
-
         /* Show the dropdown menu on hover */
         .dropdown:hover .dropdown-content {
             display: block;
         }
-
         /* Change the background color of the dropdown button when the dropdown content is shown */
         .dropdown:hover .dropbtn {
             background-color: #ffffff;
         }
+
+        .img-responsive {
+            max-height: max-content;
+            max-width: max-content;
+        }
+
+        hr {
+            border: none;
+            height: 2px;
+            color: #333;
+            background-color: #333;
+        }
+
+        ;
     </style>
 
 </head>
 <body>
     <div id="scriptsToIgnore">
-        <!--killBeginPoint-->
-        <!--Beginning of HBI custom scripts-->
+
+        <!--ALL THE MATT SCRIPTS ARE HERE.  BEWARE!!!-->
         <script src="js/myReportGeneratorFunctions.js"></script>
         <script class="dontPostScript" src="js/myProjectFunctionsV2Deferred.js"></script>
         <script class="dontPostScript" src="js/nwJsFunctions.js"></script>
-
-        <!--<script src="js/customPdfer.js"></script>-->
         <script src="js/customPdferWithJsPdf.js"></script>
+        <!--ALL THE MATT SCRIPTS ARE HERE.  BEWARE!!!-->
 
-        <!--End of HBI custom scripts-->
         <script class="dontPostScript">
-            /**
-             * $.parseParams - parse query string paramaters into an object.
-             */
             (function ($) {
                 var re = /([^&=]+)=?([^&]*)/g;
                 var decodeRE = /\+/g;
@@ -236,16 +171,8 @@
                     return params;
                 };
             })(jQuery);
-
-            //report id creator, only hard coded required url, import the rest and
-            //this should read them 'ReportsXml' report.
-            //later to get the report id we will get the indexOf the Name and then the id value should be at
-            //one position less in the array.
-
             var arrMasterReportIndexer = [];
             var objMasterReportObject = {};
-            //report names to avoid constant id lookups and to use with environment changes
-
             var garmentProdSpecsAndSuchAttributeValueListCall = 'garmentProdSpecsAndSuchAttributeValueListCall';
             var GarmentProdtoGarmentSpecs = 'Garment Prod to Garment Specs';
             var garmentProdSpecGarmentAndPatternComponentsDOCUMENTSV3 = 'garmentProdSpecGarmentAndPatternComponentsDOCUMENTSV3';
@@ -266,6 +193,7 @@
             var garmentProdSpecGarmentAllBomMaterials = 'garmentProdSpecGarmentAllBomMaterials';
             var garmentProdSpecBomsOfColorwayProduct = 'garmentProdSpecBomsOfColorwayProduct';
             var materialColorsByMaterialColorIds = 'materialColorsByMaterialColorIds';
+            var garmentProdSpecGarmentAndPatternComponentsWEachConnectionBOMsNoPattern = 'garmentProdSpecGarmentAndPatternComponentsWEachConnectionBOMsNoPattern'
             var colorsByColorId = 'colorsByColorId';
             var measResave2 = 'measResave2';
             var arrReportsThatIRun = [];
@@ -290,14 +218,8 @@
             arrReportsThatIRun.push(colorsByColorId);
             arrReportsThatIRun.push(garmentProdSpecGarmentAndPatternComponentsDOCUMENTSV3NoPattern);
             arrReportsThatIRun.push(measResave2);
-            //report names to avoid constant id lookups and to use with environment changes
-            //only required URL above
-            //infoengines
-            //http://wsflexappdev2v/Windchill/servlet/IE/tasks/com/lcs/wc/measurements/FindMeasurements.xml?oid=VR%3Acom.lcs.wc.measurements.LCSMeasurements%3A2394285&instance=net.hbi.res.wsflexappdev1v.windchillAdapter
-            //http://wsflexappdev2v/Windchill/servlet/IE/tasks/com/lcs/wc/construction/FindConstructionInfo.xml?oid=VR%3Acom.lcs.wc.construction.LCSConstructionInfo%3A2710813&instance=net.hbi.res.wsflexappdev1v.windchillAdapter
-            //infoengines
-            //begin code for type ahead in g prod form
-            //use below for prd
+            arrReportsThatIRun.push(garmentProdSpecGarmentAndPatternComponentsWEachConnectionBOMsNoPattern);
+
             var url = location.href;
             if (url.indexOf('TechPackProjectBackup') != -1) {
                 $('title').text('Dev verson TPAPP')
@@ -317,7 +239,7 @@
             var strLinkCloseTag = '</a>';
             var gProdQueryURL;
             var returnArrays;
-            var arrOfAttributeValueListIds = ['16699146', '16699175', '2377385', '2378941', '10661752', '2381876'/*Prod Only*/, '102771', '2381693'/*Prod Only*/, '368058', '100575', '368793'/*Maybe Dev Only.*/, '406136', '406161', '1333792', '17429704'];
+            var arrOfAttributeValueListIds = ['16699146', '16699175', '2377385', '2378941', '10661752', '2381876'/*Prod Only*/, '102771', '2381693'/*Prod Only*/, '368058', '100575', '368793'/*Maybe Dev Only.*/, '406136', '406161', '1333792', '17429704', '16699200'];
             var strCurrentEnvironment = window.location.href;
             var numIndexOfWindChill = strCurrentEnvironment.indexOf('Windchill');
             strUrlPrefix = strCurrentEnvironment.substring(0, numIndexOfWindChill);
@@ -325,40 +247,37 @@
             objParsedObject = $.parseParams(strCurrentEnvironment.split('?')[1] || '');
             console.log(objParsedObject);
             $('document').ready(function () {
+                $("#spin").spinner();
                 originalNavBar = $('#navbar *').html();
-                $('#runNew,.clearThisComponentOnNewGarmentLoad,nav').hide();
+                $('#runNew,.clearThisComponentOnNewGarmentLoad,nav,hr').hide();
+                //$('#runNew,.clearThisComponentOnNewGarmentLoad,hr').hide();
                 $('#loadingInfo').parent().hide();
-                //$.prettyLoader();
-                $.prettyLoader({
-                    animation_speed: 'slow', /* fast/normal/slow/integer */
-                    bind_to_ajax: true, /* true/false */
-                    delay: 200, /* false OR time in milliseconds (ms) */
-                    offset_top: 13, /* integer */
-                    offset_left: 10 /* integer */
-                });
                 getLogin(arrOfAttributeValueListIds, currentGarmentProduct, arrMasterReportIndexer);
                 $('#garmentProd').submit(function (e) {
                     e.preventDefault();
-                    //.remove();
                     $('#noGarment,#suggestionContainer').fadeOut('slow',
                         function () {
                             $('#noGarment,#suggestionContainer').remove();
                         }
                         )
                     var nameToUse = $('#gProd').val();
-                    if (arrGarmentProductsArrayForTypeAhead.indexOf(nameToUse) != -1) {
+                    if (arrGarmentProductsArrayForTypeAhead.indexOf(nameToUse) != -1 && !($('#spin').is(":visible"))) {
+                        $("#spin").show();
+                        function doSomething() {
+                            if ($.active == 0) {
+                                $('#spin').hide();
+                                clearInterval(IntervalId);
+                            };
+                        }
+                        var IntervalId = setInterval(doSomething, 100); // Time in milliseconds
                         $('#noGarment,#suggestionContainer').fadeOut();
-                        //http://wsflexwebprd1v.res.hbi.net/Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?
                         $('#garmentFormContainer').fadeOut();
                         $('.clearThisComponentOnNewGarmentLoad *').remove();
                         $('#runNew,.clearThisComponentOnNewGarmentLoad').fadeIn();
                         localStorage.setItem('lastGarmentRan', nameToUse);
                         currentGarmentProduct.getSpecByNameButNotJustActiveSpec(strUrlPrefix, nameToUse, currentGarmentProduct.thenCallSpecs, returnArrays, currentGarmentProduct);
-                        //replacing old version that just grabbed active spec and switching to version that will serve up
-                        //all seasons and specs
                     }
                     else {
-
                         var boolIsUserValueInGarment = false;
                         var boolHasAnyNeverBeenFound = true;
                         var strSuggestionButtons = '';
@@ -367,22 +286,18 @@
                             var strCurrentGarmentInArray = arrGarmentProductsArrayForTypeAhead[z];
                             boolIsUserValueInGarment = strCurrentGarmentInArray.includes(nameToUse);
                             if (boolIsUserValueInGarment) {
-
                                 if (boolHasAnyNeverBeenFound) {
                                     if ($('#suggestionContainer').length) {
-
                                     } else {
                                         $('#garmentProd').append('<div id="suggestionContainer" class="container-fluid col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12"><h5 id="suggestExplain">The following garments contained the value you input.  You can simply click one to use it as your option</h5></div>');
                                     };
                                 };
-
-                                //$('#suggestionContainer').append('<button class="suggestion btn-default col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">' + strCurrentGarmentInArray + '</button>');
                                 strSuggestionButtons += '<button class="suggestion btn-default' + strClassStringForScreens + '" style="opacity:0">' + strCurrentGarmentInArray + '</button>';
                                 boolHasAnyBeenFound = false;
                             };
                         };
                         if ($('#suggestionContainer .suggestion').length) {
-                            
+
                         } else {
                             $('#suggestionContainer').append(strSuggestionButtons);
                             $('#suggestionContainer *').animate({
@@ -394,26 +309,31 @@
                         $('#gProd').val('');
                         $('#gProd').focus();
                         if ($('#noGarment').length) {
-
-
                         } else {
                             if ($('.suggestion').length) {
                                 $('.suggestion').click(function () {
-                                    var strSuggestionText = $(this).text();
-                                    nameToUse = strSuggestionText;
-
-                                    //http://wsflexwebprd1v.res.hbi.net/Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?
-                                    $('#garmentFormContainer').fadeOut();
-                                    $('.clearThisComponentOnNewGarmentLoad *').remove();
-                                    $('#runNew,.clearThisComponentOnNewGarmentLoad').fadeIn();
-                                    localStorage.setItem('lastGarmentRan', nameToUse);
-                                    currentGarmentProduct.getSpecByNameButNotJustActiveSpec(strUrlPrefix, nameToUse, currentGarmentProduct.thenCallSpecs, returnArrays, currentGarmentProduct);
+                                    if (!($('#spin').is(":visible"))) {
+                                        $("#spin").show();
+                                        function doSomething() {
+                                            if ($.active == 0) {
+                                                $('#spin').hide();
+                                                clearInterval(IntervalId);
+                                            };
+                                        }
+                                        var IntervalId = setInterval(doSomething, 100); // Time in milliseconds
+                                        var strSuggestionText = $(this).text();
+                                        nameToUse = strSuggestionText;
+                                        $('#garmentFormContainer').fadeOut();
+                                        $('.clearThisComponentOnNewGarmentLoad *').remove();
+                                        $('#runNew,.clearThisComponentOnNewGarmentLoad').fadeIn();
+                                        localStorage.setItem('lastGarmentRan', nameToUse);
+                                        currentGarmentProduct.getSpecByNameButNotJustActiveSpec(strUrlPrefix, nameToUse, currentGarmentProduct.thenCallSpecs, returnArrays, currentGarmentProduct);
+                                    };
                                 })
                             } else {
                                 $('#garmentProd').prepend('<p class="clearThisComponentOnNewGarmentLoad" id="noGarment">' + nameToUse + ' is a valid garment product.  Please use the typeahead to select a valid option.</p>')
                             }
                         };
-                        //$('#noGarment').delay(2500).fadeOut();
                     }
                 });
                 $('#fileinput').on("change", function (e) {
@@ -442,10 +362,22 @@
                 $('#exportToCsv').click(function () {
                     saveFile('#export_blocks', '#spreadReport');
                 });
+                $('#pdfGarmentSpec').click(function (e) {
+                    e.preventDefault();
+                    if ($('#spin').is(":visible")) {
+                        console.log('spinner not fired as it is already showing');
+                    } else {
+                        $('#spin').show();
+
+                        setTimeout(function () {
+                            var processor = new docProcessor(currentGarmentProduct);
+                            processor.runAndSave();
+                        }, 150);
+                    };
+                });
+
             });
-
         </script><!--killEndPoint-->
-
     </div>
     <script>
         function makeMeScrollToDefinedTarget(strJquerySelectorTarget, numDelayTimer, offsetter) {
@@ -475,7 +407,7 @@
         };
     </script>
     <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container" id="navTopDiv">
+        <div class="container-fluid" id="navTopDiv">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                     <span class="sr-only">Toggle navigation</span>
@@ -488,51 +420,15 @@
 
             <div id="navbar" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
-                    <!--<li>
-                        <a href="javascript:makeMeScrollToDefinedTarget('#garmentHeader',50,-100);">Product Relationships</a>
-                    </li>
-                    <li>
-                    <a href="javascript:makeMeScrollToDefinedTarget('#imagesDiv',50,-100);">Documents</a>
-                    </li>-->
-                    <!--<li id="constructionsLi">
-
-                    </li>
-                    <li id="measurementsLi">
-
-                    </li>-->
-                    <!--<li id="labelBomLi">
-                        <a href="javascript:makeMeScrollToDefinedTarget('#labelsDiv',50,-100);">Label BOM</a>
-                    </li>
-                    <li id="routingBomLi">
-                        <a href="javascript:makeMeScrollToDefinedTarget('#routingBomDiv',0,-100);">Routing</a>
-                    </li>
-                    <li id="sewBomLi">
-                        <a href="javascript:makeMeScrollToDefinedTarget('#sewBomDiv',50,-100);">Sew BOM</a>
-                    </li>
-                    <li id="sourcedBomLi">
-                        <a href="javascript:makeMeScrollToDefinedTarget('#sourceBomDiv',50,-100);">Sourced BOM</a>
-                    </li>
-                    <li id="colorwayBomLi">
-                        <a href="javascript:makeMeScrollToDefinedTarget('#cwayGroupingNew',50,-150);">Colorway BOMs</a>
-                    </li>
-                    <li>
-                        <a href="javascript:makeMeScrollToDefinedTarget('#sizeTableDiv',50,-100);">Sizing</a>
-                    </li>
-                    <li id="revisionsLi">
-                        <a href="javascript:makeMeScrollToDefinedTarget('#prodRevisionDiv',50,-100);">Product Revisions</a>
-                    </li>
-                    <li id="approvedSuppliersLi">
-                        <a href="javascript:makeMeScrollToDefinedTarget('#approvedSupplierDiv',50,-100);">Approved Suppliers</a>
-                    </li>-->
-
                     <li>
                         <div class="dropdown">
                             <button class="dropbtn">Product Details</button>
                             <div class="dropdown-content">
+                                <a href="javascript:makeMeScrollToDefinedTarget('#gattributeHolder',50,-100);">General Attributes</a>
                                 <a href="javascript:makeMeScrollToDefinedTarget('#garmentHeader',50,-100);">Product Relationships</a>
-                                <a href="javascript:makeMeScrollToDefinedTarget('#prodRevisionDiv',50,-100);">Product Revisions</a>
                                 <a href="javascript:makeMeScrollToDefinedTarget('#sizeTableDiv',50,-100);">Sizing</a>
                                 <a href="javascript:makeMeScrollToDefinedTarget('#approvedSupplierDiv',50,-100);">Approved Suppliers</a>
+                                <a href="javascript:makeMeScrollToDefinedTarget('#prodRevisionDiv',50,-100);">Product Revisions</a>
                                 <a href="javascript:makeMeScrollToDefinedTarget('#routingBomDiv',0,-100);">Routing</a>
                             </div>
                         </div>
@@ -541,8 +437,8 @@
                         <div class="dropdown">
                             <button class="dropbtn">Pattern Related</button>
                             <div class="dropdown-content">
-                                <a href="javascript:makeMeScrollToDefinedTarget('#constructionDiv',50, -100);">Constructions</a>
                                 <a href="javascript:makeMeScrollToDefinedTarget('#measurementDiv',50,-100);">Measurements</a>
+                                <a href="javascript:makeMeScrollToDefinedTarget('#constructionDiv',50, -100);">Constructions</a>
 
                             </div>
                         </div>
@@ -586,22 +482,14 @@
                             <button class="dropbtn">Run/Publish</button>
                             <div class="dropdown-content">
                                 <a href='javascript:runNewProduct(currentGarmentProduct);'>Run a New Product</a>
-                                <a href="javascript:pdfGarmetProductFromDocProcessor(currentGarmentProduct)">PDF Garment Spec</a>
+                                <a id='pdfGarmentSpec' href="javascript:return false;">PDF Garment Spec</a>
                             </div>
                         </div>
                     </li>
-                    <!--<li id="runNew">
-
-                    </li>
-                    <li>
-
-                    </li>-->
                 </ul>
             </div>
         </div>
     </nav>
-    <br>
-    <br>
 
     <div class="container-fluid" id="garmentFormContainer">
         <div class="col-md-10 starter-template row">
@@ -609,20 +497,22 @@
 
                 <input class=".col-md-4" type="text" name="Product Name" size="50" id="gProd" placeholder="Enter Garment Product">
                 <input class=".col-md-4" type="submit">
-                <!--<input id="fileinput" type="file" class=".col-md-offset-4 .col-md-4 .col-md-offset-4 filestyle" data-classbutton="btn btn-primary" data-input="false" data-classicon="icon-plus" data-buttontext="Load Garment From File">-->
             </form>
         </div>
     </div>
     <div class="container-fluid">
         <h4 id="topLeftNav" class="col-md-offset-4 col-md-8 col-lg-offset-4 col-lg-8 col-xs-offset-4 col-xs-8 col-sm-offset-4 col-sm-8"></h4>
     </div>
-    <br>
-    <br>
+
+    <div class="page">
+        <hr>
+        <blockquote class="blockquote clearThisComponentOnNewGarmentLoad" id="seasonSpecHeadersDiv"></blockquote>
+
+    </div>
 
     <div class="page" id="max">
-
-        <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="frontBackImages">
-
+        <br> <br><br><hr>
+        <div class="container clearThisComponentOnNewGarmentLoad" id="frontBackImages">
         </div>
     </div>
     <div class="page">
@@ -635,7 +525,6 @@
         </div>
     </div>
     <div class="page">
-
         <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="generalAttributes">
         </div>
     </div>
@@ -653,8 +542,6 @@
     </div>
     <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="garmentHeader">
     </div>
-
-
     <div class="page">
         <div id="measurementDiv" class="container-fluid clearThisComponentOnNewGarmentLoad">
         </div>
@@ -679,8 +566,6 @@
         <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="markerLayoutImages">
         </div>
     </div>
-
-
     <div class="page">
         <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="colorwaysListDiv">
         </div>
@@ -705,7 +590,6 @@
         <div id="sourceBomDiv" class="container-fluid clearThisComponentOnNewGarmentLoad">
         </div>
     </div>
-
     <div class="page">
         <div id="blockWeightSpreadDiv" class="container-fluid clearThisComponentOnNewGarmentLoad">
         </div>
@@ -722,5 +606,6 @@
         <div id="imagesDiv" class="container-fluid clearThisComponentOnNewGarmentLoad">
         </div>
     </div>
+    <div id="spin"></div>
 </body>
 </html>
