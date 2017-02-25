@@ -1340,7 +1340,7 @@ function docProcessor(garmentProduct) {
             this.addPageAndReset('Source BOM');
             var arrSourceBomTbl = pdfThisTableV2('sourceBomTable');
             console.log(arrSourceBomTbl);
-            var arrOfColumnWidths = [55/*Garment Use*/, /*Material*/65, /*Minor Category*/45, /*Description*/105,/*UOM*/45];
+            var arrOfColumnWidths = [35/*Section*/, 55/*Garment Use*/, /*Material*/65, /*Minor Category*/45, /*Description*/105,/*UOM*/45];
             //pageOneColumns.push(objContentSizeTbl);
             //pageOneColumnsSectionTwo.push(objContentSizeTbl);
             jsPdfDoc.setFontSize(numGlobalFontSize);

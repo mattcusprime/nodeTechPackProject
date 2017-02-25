@@ -5,39 +5,39 @@
 /// <reference path="../DataTables-1.10.1/media/js/jquery.dataTables.js" />
 /**
  * @class  garmentProduct
- * @param {String} strName Defines the name of the Garment Product itself
- * @param {Array} arrAttributes Defines the set of attributes that would need to be pulled from the Garment Product itself for headers etc or just for general display but for which no linkage is created
- * @param {Array} arrSpecs an array of the specs that are in the garment product
- * @param {Array} arrSources an array of the Sources that are in the garment product
- * @param {Object} objColorwayProduct The linked Colorway Product Object.  Later a corresponding Class May be Created
- * @param {Object} objPatternProduct The linked Pattern Product Object.  Later a corresponding Class May be Created
- * @param {Object} objLabelProduct The linked Label 639Product Object.  Later a corresponding Class May be Created
- * @param {Object} objSellingProduct The linked Selling Product Object.  Later a corresponding Class May be Created
- * @param {Array} arrBoms an array of the BOMs that are in the garment product, these will and should be paired down to only be those coming from the active spec
- * @param {Array} arrSeasonSourceSpecCombos an array of viable combinations of season/source/spec
- * @param {Array} arrDocuments an array of the doucments that are in the garment product
- * @param {Object} objMeasurement an object containing the branch id and objectId of the LCSMeasurement class, does not contain the individual POMs etc et at this point in this object
- * @param {Object} objConstruction an object containing the branch id and objectId of the LCSConstruction class, does not contain the individual POMs etc et at this point in this object
- * @param {String} strObjectId a string denoting the objecId of the LCSProduct that is the garment product
- * @param {Object} objGSpec an object container for the active garment spec
- * @param {Object} objPSpec an object container for the active pattern spec
- * @param {Array} arrBase64Documents not sure yet if will be used
- * @param {Array} arrConstructionInfo not sure yet if will be used
- * @param {Object} objconstructionDetail container for the individual poms of objConstruction
- * @param {Object} objMeasurementDetail container for the individual poms of objMeasurement
- * @param {String} strSpecId a string denoting the objectId of the LCSFlexSpecification which is the active spec
- * @param {String} strSpecName a string denoting the name of the LCSFlexSpecification which is the active spec
- * @param {String} strActiveSeasonName a string denoting the name of the current season
- * @param {String} strMeasTableString a string representing the whole table of the measurements
- * @param {String} strBaseSize a string representing the base/sample size of the product measurements
- * @param {String} strSizeRun a string representing the whole size definition delimited by ~*~
- * @param {Array} arrDisplayKeys keys for att value lists with matching index positions in arrDisplay values
- * @param {Array} arrDisplayValues see arrDisplayKeys
- * @param {Array} arrBlockWeightsSpread
- * @param {String} strBlockWeightsSpreadTableString
- * @param {Array} arrBlockWeightsTrim
- * @param {Array} arrColorways
- * @param {Array} arrColorwayData
+ * @property {String} strName Defines the name of the Garment Product itself
+ * @property {Array} arrAttributes Defines the set of attributes that would need to be pulled from the Garment Product itself for headers etc or just for general display but for which no linkage is created
+ * @property {Array} arrSpecs an array of the specs that are in the garment product
+ * @property {Array} arrSources an array of the Sources that are in the garment product
+ * @property {Object} objColorwayProduct The linked Colorway Product Object.  Later a corresponding Class May be Created
+ * @property {Object} objPatternProduct The linked Pattern Product Object.  Later a corresponding Class May be Created
+ * @property {Object} objLabelProduct The linked Label 639Product Object.  Later a corresponding Class May be Created
+ * @property {Object} objSellingProduct The linked Selling Product Object.  Later a corresponding Class May be Created
+ * @property {Array} arrBoms an array of the BOMs that are in the garment product, these will and should be paired down to only be those coming from the active spec
+ * @property {Array} arrSeasonSourceSpecCombos an array of viable combinations of season/source/spec
+ * @property {Array} arrDocuments an array of the doucments that are in the garment product
+ * @property {Object} objMeasurement an object containing the branch id and objectId of the LCSMeasurement class, does not contain the individual POMs etc et at this point in this object
+ * @property {Object} objConstruction an object containing the branch id and objectId of the LCSConstruction class, does not contain the individual POMs etc et at this point in this object
+ * @property {String} strObjectId a string denoting the objecId of the LCSProduct that is the garment product
+ * @property {Object} objGSpec an object container for the active garment spec
+ * @property {Object} objPSpec an object container for the active pattern spec
+ * @property {Array} arrBase64Documents not sure yet if will be used
+ * @property {Array} arrConstructionInfo not sure yet if will be used
+ * @property {Object} objconstructionDetail container for the individual poms of objConstruction
+ * @property {Object} objMeasurementDetail container for the individual poms of objMeasurement
+ * @property {String} strSpecId a string denoting the objectId of the LCSFlexSpecification which is the active spec
+ * @property {String} strSpecName a string denoting the name of the LCSFlexSpecification which is the active spec
+ * @property {String} strActiveSeasonName a string denoting the name of the current season
+ * @property {String} strMeasTableString a string representing the whole table of the measurements
+ * @property {String} strBaseSize a string representing the base/sample size of the product measurements
+ * @property {String} strSizeRun a string representing the whole size definition delimited by ~*~
+ * @property {Array} arrDisplayKeys keys for att value lists with matching index positions in arrDisplay values
+ * @property {Array} arrDisplayValues see arrDisplayKeys
+ * @property {Array} arrBlockWeightsSpread
+ * @property {String} strBlockWeightsSpreadTableString
+ * @property {Array} arrBlockWeightsTrim
+ * @property {Array} arrColorways
+ * @property {Array} arrColorwayData
  *
  */
 function garmentProduct(strName, arrAttributes, arrSpecs, arrSources, objColorwayProduct, objPatternProduct, objLabelProduct, objSellingProduct, arrBoms, arrSeasonSourceSpecCombos, arrDocuments, objMeasurement, objConstruction, strObjectId, objGSpec, objPSpec, arrBase64Documents, arrConstructionInfo, objconstructionDetail, objMeasurementDetail, strSpecId, strSpecName, strActiveSeasonName, strMeasTableString, strConstructionTableString, strBaseSize, strSizeRun, arrDisplayKeys, arrDisplayValues, strBlockWeightsSpreadTableString, arrBlockWeightsSpread, arrBlockWeightsTrim, arrColorways, strTrimSpreadTableString) {
@@ -95,10 +95,11 @@ var arrDataArray = [];
 var numIndexerForArray = 0;
 var arrWhenDeferredArray = [];
 /**
- * @method of @class GarmentProduct
+ * @memberof garmentProduct
  * @param {String} strHostUrlPrefix string denoting the initial characters of the url for the domain in which the construction sits.  All string prior to Windchill.
  * @param {Number} numConstructionBranchId takes the branch id from objConstruction (preferrably) and then turn later constructionDetail of the garmentProduct which runs this to contain all the POMs etc.
- *
+ * @param {xmlDocumentObject} constructionData responseData from an ajax Call for construction.  
+ * @param {garmentProduct} objSelfReference Allows the passing of the garmentProduct presently being processed to be passed  from one function scope to another
  */
 garmentProduct.prototype.getMyConstruction = function (strHostUrlPrefix, numConstructionBranchId, constructionData, objSelfReference, idToPass, headerValue) {
     var objCurrentRow = {};
@@ -215,10 +216,11 @@ garmentProduct.prototype.getMyConstruction = function (strHostUrlPrefix, numCons
 /**
  * @comment Still need to add logic here to deal with size variation and variable columns as a result; this is currently ran within @method getSpecComponentsForActiveSpec
  * @comment SIZE LOGIC NOW DEALT WITH
- * @method of @class GarmentProduct
+ * @memberof garmentProduct
  * @param {String} strHostUrlPrefix string denoting the initial characters of the url for the domain in which the measurement sits.  All string prior to Windchill.
  * @param {Number} numMeasurementBranchId takes the branch id from objMeasurement (preferrably) and then turns measurementDetail of the garmentProduct which runs this to contain all the POMs etc.
- *
+ * @param {xmlDocumentObject} measurementData responseData from an ajax Call for measurement.  
+ * @param {garmentProduct} objSelfReference Allows the passing of the garmentProduct presently being processed to be passed  from one function scope to another
  */
 garmentProduct.prototype.getMyMeasurement = function (strHostUrlPrefix, numMeasurementBranchId, measurementData, objSelfReference) {
 
@@ -238,6 +240,17 @@ garmentProduct.prototype.getMyMeasurement = function (strHostUrlPrefix, numMeasu
         objRow.point2 = $(this).find('point2 ').text();
         objRow.plusTolerance = $(this).find('plusTolerance').first().text();
         objRow.minusTolerance = $(this).find('minusTolerance').first().text();
+        /**
+         * This block removes 99.999999 values from super high tolerance
+         */
+        var numVersionOfTolerance;
+        numVersionOfTolerance = Number(objRow.plusTolerance);
+        if(numVersionOfTolerance > 90) objRow.plusTolerance = ' ';
+        numVersionOfTolerance = Number(objRow.minusTolerance);
+        if(numVersionOfTolerance > 90) objRow.minusTolerance = ' ';
+        /**
+         * ends here
+         */
         objRow.IDA2A2 = $(this).find('IDA2A2').text();
         objRow.pointsOfMeasureType = $(this).find('pointsOfMeasureType').text();
         objRow.effectSequence = $(this).find('effectSequence ').text();
@@ -326,12 +339,13 @@ garmentProduct.prototype.getMyMeasurement = function (strHostUrlPrefix, numMeasu
 };
 /**
  * @comment this is currently ran within @method getSpecComponentsForActiveSpec
- * @method of @class GarmentProduct, this method returns the active spec and identifies it on the objSelfReference garment and alters that property.
+ * @memberof garmentProduct
+ * @comment  this method returns the active spec and identifies it on the objSelfReference garment and alters that property.
  * @param {String} strHostUrlPrefix string denoting the initial characters of the url for the domain in which the measurement sits.  All string prior to Windchill.
  * @param {String} strGarmentName uses the name of the garmentProduct that is calling this method
  * @param {Function} funCallback passes a function to callback after the modification of the garmentProduct being passed to this function
  * @param {Object} objForCallback provides a container for the callback function to operate on to pass into the objSelfReference object.  This is used to work around scope limitations.
- * @param {Object} objSelfReference takes the same garmentProduct which is calling the method.  This is used to work around scope limitations and is generally performed
+ * @param {garmentProduct} objSelfReference takes the same garmentProduct which is calling the method.  This is used to work around scope limitations and is generally performed
  * without further developer input but rather in other methods within the class so that no further code is necessary.
  *
  */
@@ -433,12 +447,13 @@ garmentProduct.prototype.getSpecByName = function (strHostUrlPrefix, strGarmentN
 
 /**
  * @comment this is currently ran within @method getSpecComponentsForActiveSpec
- * @method of @class GarmentProduct, this method returns the active spec and identifies it on the objSelfReference garment and alters that property.
+ * @memberof garmentProduct
+ * @comment this method returns the active spec and identifies it on the objSelfReference garment and alters that property.
  * @param {String} strHostUrlPrefix string denoting the initial characters of the url for the domain in which the measurement sits.  All string prior to Windchill.
  * @param {String} strGarmentName uses the name of the garmentProduct that is calling this method
  * @param {Function} funCallback passes a function to callback after the modification of the garmentProduct being passed to this function
  * @param {Object} objForCallback provides a container for the callback function to operate on to pass into the objSelfReference object.  This is used to work around scope limitations.
- * @param {Object} objSelfReference takes the same garmentProduct which is calling the method.  This is used to work around scope limitations and is generally performed
+ * @param {garmentProduct} objSelfReference takes the same garmentProduct which is calling the method.  This is used to work around scope limitations and is generally performed
  * without further developer input but rather in other methods within the class so that no further code is necessary.
  *
  */
@@ -684,16 +699,16 @@ garmentProduct.prototype.getSpecByNameButNotJustActiveSpec = function (strHostUr
 
     });
 };
-
 /**
- * @method of @class GarmentProduct, this method gets all spec components for the active spec of the garment for which is passed.  It is run as a deffered call nested within the @method getAllMyDataForMyActiveSpec within @class garmentProduct
+ * @memberof garmentProduct
+ * @comment this method gets all spec components for the active spec of the garment for which is passed.  It is run as a deffered call nested within the @method getAllMyDataForMyActiveSpec within @class garmentProduct
  * @param {String} strHostUrlPrefix string denoting the initial characters of the url for the domain in which the measurement sits.  All string prior to Windchill.
  * @param {Object} objDocumentData defferred object that is passed to this function to work around the asynchronous nature of the ajax calls.  It contains all data pertaining to the object between 'obj' and 'Data' in its name
  * @param {Object} objConstructionData defferred object that is passed to this function to work around the asynchronous nature of the ajax calls.  It contains all data pertaining to the object between 'obj' and 'Data' in its name
  * @param {Object} objMeasurementData defferred object that is passed to this function to work around the asynchronous nature of the ajax calls.  It contains all data pertaining to the object between 'obj' and 'Data' in its name
  * @param {Object} objBomData defferred object that is passed to this function to work around the asynchronous nature of the ajax calls.  It contains all data pertaining to the object between 'obj' and 'Data' in its name
  * @param {Object} objProdLinkData defferred object that is passed to this function to work around the asynchronous nature of the ajax calls.  It contains all data pertaining to the object between 'obj' and 'Data' in its name
- * @param {Object} objSelfReference takes the same garmentProduct which is calling the method.  This is used to work around scope limitations and is generally performed
+ * @param {garmentProduct} objSelfReference takes the same garmentProduct which is calling the method.  This is used to work around scope limitations and is generally performed
  */
 garmentProduct.prototype.getSpecComponentsForActiveSpec = function (strHostUrlPrefix, objDocumentData, objConstructionData, objMeasurementData, objBomData, objProdLinkData, /*objGarmentSewBomData, objPatternSewBomDataWithUsage,*/ objSelfReference) {
     var arrDocuments = [];
@@ -1301,7 +1316,11 @@ function checkForColorwayAndLabelProductsToRemoveBoms(objGarmentProductTocheck) 
     
 
 };
-
+/**
+ * @memberof garmentProduct
+ * @param {xmlDocumentObject} objRoutingBom xml docuement content containing data for routing bom
+ * @param {garmentProduct} objSelfReference takes the same garmentProduct which is calling the method.  This is used to work around scope limitations and is generally performed
+ * */
 garmentProduct.prototype.getAndProcessMyRoutingBOM = function (objRoutingBom, objSelfReference) {
     console.log('routing bom is');
     console.log(objRoutingBom);
@@ -1363,11 +1382,13 @@ garmentProduct.prototype.getAndProcessMySewAndSourceBom = function(patternSewBom
 };
 
 
+
 /**
- * @method of @class GarmentProduct, this method runs a sequence of ajax calls to get all necessary data sets for running @method getSpecComponentsForActiveSpec, then it sequentially calls them
+ * @memberof garmentProduct
+ * @comment this method runs a sequence of ajax calls to get all necessary data sets for running @method getSpecComponentsForActiveSpec, then it sequentially calls them
  * @param {String} strHostUrlPrefix string denoting the initial characters of the url for the domain in which the measurement sits.  All string prior to Windchill.
  * @param {Object} strSpecId objectId of active LCSFlexSpecification
- * @param {Object} objSelfReference takes the same garmentProduct which is calling the method.  This is used to work around scope limitations and is generally performed
+ * @param {garmentProduct} objSelfReference takes the same garmentProduct which is calling the method.  This is used to work around scope limitations and is generally performed
  */
 garmentProduct.prototype.getAllMyDataForMyActiveSpec = function (strHostUrlPrefix, strSpecId, objSelfReference) {
     $('#spin').show();
@@ -1469,9 +1490,10 @@ garmentProduct.prototype.thenCallSpecs = function (objectForCallback, objSelfRef
 
 };
 /**
- * @method of @class GarmentProduct, this method runs to determine, based on available spec components in the objSelfReference, what are the available report sets that
+ * @memberof garmentProduct
+ * @comment this method runs to determine, based on available spec components in the objSelfReference, what are the available report sets that
  * could be used.  Currently it is only invoked as a callback.
- * @param {Object} objSelfReference takes the same garmentProduct which is calling the method.  This is used to work around scope limitations and is generally performed
+ * @param {garmentProduct} objSelfReference takes the same garmentProduct which is calling the method.  This is used to work around scope limitations and is generally performed
  */
 garmentProduct.prototype.getAndProcessDocuments = function (objSelfReference) {
     try {
@@ -1709,7 +1731,11 @@ garmentProduct.prototype.getAndProcessDocuments = function (objSelfReference) {
         console.log(e);
     };
 };
-
+/**
+ * @memberof garmentProduct
+ * @comment  this method runs as a callback to generate available chunks of the report 
+ * @param {garmentProduct} objSelfReference takes the same garmentProduct which is calling the method.  This is used to work around scope limitations and is generally performed
+ */
 garmentProduct.prototype.generateAvailableReportsList = function (objSelfReference) {
     $('#reportsHeader *').remove();
     $('#reportsHeader').append('<table cellpadding="0" cellspacing="0" border="0" class="display compact cell-border" id="reports"><thead><th>Sort Order</th><th>Report</th><th>Name</th></thead><tbody></tbody></table>');
@@ -1797,7 +1823,12 @@ garmentProduct.prototype.generateAvailableReportsList = function (objSelfReferen
 /*
  needs comments
  */
-
+/**
+ * @memberof garmentProduct 
+ * @comment used to obtain the display values for different attribute value lists from PLM
+ * @comment  this method runs as a callback to generate available chunks of the report 
+ * @param {garmentProduct} objSelfReference takes the same garmentProduct which is calling the method.  This is used to work around scope limitations and is generally performed
+ */
 garmentProduct.prototype.getMyValueLists = function (strUrlPrefix, arrListIds, objSelfReference) {
     //http://wsflexwebprd1v.res.hbi.net/Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?attValueListId=2381876%2C102771%2C2381693&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A10596321&action=ExecuteReport
     var strUrl1 = strUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?attValueListId=';
@@ -1848,7 +1879,13 @@ garmentProduct.prototype.getMyValueLists = function (strUrlPrefix, arrListIds, o
 
 
 };
-
+/**
+ * @memberof garmentProduct 
+ * @comment used to obtain spread blockweights spread, this method is DEPRECATED
+ * @comment  this method runs as a callback to generate available chunks of the report 
+ * @param {string} strUrlPrefix present base domain
+ * @param {garmentProduct} objSelfReference takes the same garmentProduct which is calling the method.  This is used to work around scope limitations and is generally performed
+ */
 garmentProduct.prototype.getMyBlockWeightsSpread = function (strUrlPrefix, objSelfReference) {
     //http://wsflexwebprd1v.res.hbi.net/Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?Garment+Product+Season=Garment%20%20BIW&Product+Name=10188%20Boys%20Knit%20Brief%20ExpWB%20B252&Spec+Name=002&format=formatDelegate&delegateName=XML&xsl1=&xsl2=&oid=OR%3Awt.query.template.ReportTemplate%3A3009695&action=ExecuteReport
     $('#blockWeightSpreadDiv *').remove();
@@ -1951,7 +1988,13 @@ garmentProduct.prototype.getMyBlockWeightsSpread = function (strUrlPrefix, objSe
         };
     };
 };
-
+/**
+ * @memberof garmentProduct 
+ * @comment used to obtain spread blockweights trim, this method is DEPRECATED
+ * @comment  this method runs as a callback to generate available chunks of the report 
+ * @param {string} strUrlPrefix present base domain
+ * @param {garmentProduct} objSelfReference takes the same garmentProduct which is calling the method.  This is used to work around scope limitations and is generally performed
+ */
 garmentProduct.prototype.getBlockWeightsTrim = function updateTrim(strUrlPrefix, objSelfReference) {
     var sortingArray = ['sizeXXS', '1', 'sizeXS', '2', 'sizeS', '3', 'sizeM', '4', 'sizeL', '5', 'sizeXL', '6', 'size2X', '7', 'size3X', '8', 'size4X', '9', 'size5X', '10', 'size6X', '11', 'size3M', '1', 'size6M', '2', 'size9M', '3', 'size12M', '4', 'size18M', '5', 'size24M', '6', 'size2T', '7', 'size3T', '8', 'size4T', '9', 'size5T', '10', 'size2', '1', 'size4', '2', 'size5', '3', 'size6', '4', 'size7', '5', 'size8', '6', 'size9', '7', 'size10', '8', 'size11', '9', 'size12', '10', 'size13', '11', 'size14', '12', 'size16', '13', 'size18', '14', 'size20', '15', 'size22', '16', 'size24', '17', 'size26', '18', 'size28', '19', 'size30', '20', 'size32', '21', 'size34', '22', 'size36', '23', 'size38', '24', 'size40', '25', 'size42', '26', 'size44', '27', 'size46', '28', 'size48', '29', 'size50', '30', 'size52', '31', 'size54', '32', 'size56', '33', 'size58', '34', 'size60', '35', 'size62', '36', 'sizeS/M', '1', 'sizeL/XL', '2', 'size16W', '1', 'size20W', '2', 'size24W', '3', 'size28W', '4', 'size32W', '5', 'size36W', '6'];
     sortingArray = objSelfReference.sortingArray;
@@ -2042,7 +2085,12 @@ garmentProduct.prototype.getBlockWeightsTrim = function updateTrim(strUrlPrefix,
         };
     };
 };
-
+/**
+ * @memberof garmentProduct 
+ * @comment used to obtain save garment file as a local json object
+ * @comment  this method runs as a callback to generate available chunks of the report 
+ * @param {garmentProduct} objSelfReference takes the same garmentProduct which is calling the method.  This is used to work around scope limitations and is generally performed
+ */
 garmentProduct.prototype.saveMe = function (objSelfReference) {
     var garmentProductString = JSON.stringify(objSelfReference);
     fs.writeFile(objSelfReference.name + '.json', garmentProductString, function (err) {
@@ -2052,6 +2100,10 @@ garmentProduct.prototype.saveMe = function (objSelfReference) {
     });
 };
 var numOfProcessingFunctionsThatHaveRun = 0;
+/**
+ * Gets information specifc to certain material colors in the system that may not already be obtained on the BOM.  It takes the garment product as an input, scans its colorway boms and gets the relevant colors
+ * @param {garmentProduct} objSelfReference
+ */
 function processMaterialColors(objSelfReference) {
     var strBeginUrl = strUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction'
     var strOidPrefix = 'OR:wt.query.template.ReportTemplate:';
@@ -2101,7 +2153,10 @@ function processMaterialColors(objSelfReference) {
         };
     });
 };
-
+/**
+ * Gets information specifc to certain colors in the system that may not already be obtained on the BOM.  It takes the garment product as an input, scans its colorway boms and gets the relevant colors
+ * @param {garmentProduct} objSelfReference
+ */
 function processColors(objSelfReference) {
     var strBeginUrl = strUrlPrefix + 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction'
     var strOidPrefix = 'OR:wt.query.template.ReportTemplate:';
@@ -2353,8 +2408,8 @@ function cwayProductBomsToTable(objSelfReference) {
         });
     });
     if (typeof (objSelfReference.colorwayProduct.boms) != 'undefined') {
-        var strHeaderString = '<button id="bomRemover" class="btn-danger">Remove Highlighted Boms</button><table class="display" id="cwayGroupingNew"><thead><tr><th>Select BOM</th><th>BOM</th><th>Colorway</th></tr></thead><tbody>';
-        var strEndTableString = '</tbody></table>';
+        var strHeaderString = 'Remove Highlighted Boms</button><table class="display" id="cwayGroupingNew"><thead><tr><th>Select BOM</th><th>Colorway Group</th><th>Colorway</th></tr></thead><tbody>';
+        var strEndTableString = '</tbody></table><button id="bomRemover" class="btn-danger">Remove Highlighted BOMs</button>';
         var strTableString = strHeaderString;
         for (var i = 0; i < objSelfReference.colorwayProduct.boms.length; i++) {
             var objCurrentBom = objSelfReference.colorwayProduct.boms[i];
@@ -4104,9 +4159,14 @@ function standardRowProcessorForBoms(bomData,objSelfReference){
         }).done(function(sourcedData){
             var wcCollectionSource = $(sourcedData).first();
             var arrOfSourceInstances = $(wcCollectionSource).find('branchId').parent();
-            objSelfReference.sourceBomTableString = '<h1>Sourced BOM</h1><table class="display" id="sourceBomTable" ><thead><th>Garment Use</th><th>Material</th><th>Minor Category</th><th>Description</th><th>Usage UOM</th></thead><tbody>';
+            objSelfReference.sourceBomTableString = '<h1>Sourced BOM</h1><table class="display" id="sourceBomTable" ><thead><th>Sortung Number</th><th>Section</th><th>Garment Use</th><th>Material</th><th>Minor Category</th><th>Description</th><th>Usage UOM</th></thead><tbody>';
              $(arrOfSourceInstances).each(function () {
                     var objGarmentSourceRow = {};
+                    objGarmentSourceRow.sortingNumber = $(this).find('sortingNumber').text();
+                    objGarmentSourceRow.section = $(this).find('section').text();
+                    var firstLetter = objGarmentSourceRow.section.substring(0,1).toUpperCase();
+                    var restOfWord = objGarmentSourceRow.section.substring(1,objGarmentSourceRow.section.length);
+                    objGarmentSourceRow.section = firstLetter + restOfWord;
                     objGarmentSourceRow.garmentUseId = $(this).find('hbiGarmentUse').text();
                     objGarmentSourceRow.Garment_Use = $(this).find('hbiGarmentUseDisplay').text();
                     objGarmentSourceRow.minorCategory = $(this).find('hbiMinorCategory').text();
@@ -4117,7 +4177,7 @@ function standardRowProcessorForBoms(bomData,objSelfReference){
                     objSelfReference.sourceBomTableString += '<tr>';
                     var strTdBegin = '<td>';
                     var strTdEnd = '</td>';
-                    objSelfReference.sourceBomTableString += strTdBegin + objGarmentSourceRow.Garment_Use + strTdEnd + strTdBegin + objGarmentSourceRow.materialName + strTdEnd + strTdBegin + objGarmentSourceRow.minorCategory.toUpperCase() + strTdEnd + strTdBegin + objGarmentSourceRow.description + strTdEnd + strTdBegin + objGarmentSourceRow.uom.toUpperCase();
+                    objSelfReference.sourceBomTableString += strTdBegin + objGarmentSourceRow.sortingNumber + strTdEnd + strTdBegin + objGarmentSourceRow.section + strTdEnd + strTdBegin + objGarmentSourceRow.Garment_Use + strTdEnd + strTdBegin + objGarmentSourceRow.materialName + strTdEnd + strTdBegin + objGarmentSourceRow.minorCategory.toUpperCase() + strTdEnd + strTdBegin + objGarmentSourceRow.description + strTdEnd + strTdBegin + objGarmentSourceRow.uom.toUpperCase();
                     objSelfReference.sourceBomTableString += '</tr>';
              });
              objSelfReference.sourceBomTableString += '</tbody></table>';
@@ -4146,6 +4206,7 @@ function standardRowProcessorForBoms(bomData,objSelfReference){
             objSelfReference.sewSizes = [];
             $(arrOfPatternInstances).each(function () {
                 var objPatternSewRow = {};
+               
                 objPatternSewRow.garmentUseId = $(this).find('hbiGarmentUse').text();
                 objPatternSewRow.garmentUseDisplay = $(this).find('hbiGarmentUseDisplay').text();
                 objPatternSewRow.uom = $(this).find('hbiUOM').text();
@@ -4207,6 +4268,7 @@ function standardRowProcessorForBoms(bomData,objSelfReference){
                         var strCurrent = objCurrent.sizeName;
                         objGarmentSewRow[strCurrent] = '';
                     };
+                    objGarmentSewRow.sortingNumber = $(this).find('sortingNumber').text();
                     objGarmentSewRow.garmentUseId = $(this).find('hbiGarmentUse').text();
                     objGarmentSewRow.Garment_Use = $(this).find('hbiGarmentUseDisplay').text();
                     objGarmentSewRow.minorCategory = $(this).find('hbiMinorCategory').text();
@@ -4243,7 +4305,7 @@ function standardRowProcessorForBoms(bomData,objSelfReference){
 
             }).done(function(){
 
-                objSelfReference.sewBomTableString = '<h1>Sew BOMs</h1><table class="display" id="sewBomTable" ><thead><th>Garment Use</th><th>Material</th><th>Minor Category</th><th>Description</th><th>Usage UOM</th>';
+                objSelfReference.sewBomTableString = '<h1>Sew BOMs</h1><table class="display" id="sewBomTable" ><thead><th>Sorting Number</th><th>Garment Use</th><th>Material</th><th>Minor Category</th><th>Description</th><th>Usage UOM</th>';
                 for(var k = 0;k < objSelfReference.sewSizes.length;k++){
                     //var strCurrentSize = objSelfReference.sewSizes[k];
                     var objCurrentSize = objSelfReference.sewSizes[k];
@@ -4254,7 +4316,7 @@ function standardRowProcessorForBoms(bomData,objSelfReference){
 
                 };
                 objSelfReference.sewBomTableString += '</thead><tbody>';
-                var arrManualProperties = ["materialName","description","minorCategory","Garment_Use","uom","garmentUseId",'dimensions'];
+                var arrManualProperties = ["sortingNumber","materialName","description","minorCategory","Garment_Use","uom","garmentUseId",'dimensions'];
                 for(var k = 0;k < objSelfReference.garmentSewData2.length;k++){
 
                     var objToParse = objSelfReference.garmentSewData2[k];
@@ -4262,7 +4324,7 @@ function standardRowProcessorForBoms(bomData,objSelfReference){
                     var strTdBegin = '<td>';
                     var strTdEnd = '</td>';
                     objSelfReference.sewBomTableString += '<tr>';
-                    objSelfReference.sewBomTableString += strTdBegin + objToParse.Garment_Use + strTdEnd + strTdBegin + objToParse.materialName + strTdEnd + strTdBegin + objToParse.minorCategory.toUpperCase() + strTdEnd + strTdBegin + objToParse.description + strTdEnd + strTdBegin + objToParse.uom.toUpperCase() + strTdEnd;
+                    objSelfReference.sewBomTableString += strTdBegin + objToParse.sortingNumber + strTdEnd + strTdBegin + objToParse.Garment_Use + strTdEnd + strTdBegin + objToParse.materialName + strTdEnd + strTdBegin + objToParse.minorCategory.toUpperCase() + strTdEnd + strTdBegin + objToParse.description + strTdEnd + strTdBegin + objToParse.uom.toUpperCase() + strTdEnd;
                     for(var q = 0;q < arrOfProperties.length;q++){
                         var strValue = arrOfProperties[q];
                         var value = objToParse[strValue];
@@ -4304,3 +4366,4 @@ function objCompareBysortingIndex(a, b) {
             return 1;
         return 0;
     };
+

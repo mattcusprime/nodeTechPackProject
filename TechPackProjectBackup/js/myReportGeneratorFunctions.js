@@ -1,8 +1,13 @@
 ﻿//Global Variables
 var arrGarmentProductsArrayForTypeAhead = [];
-var strDomString = '<"top"fp>rt<"bottom"l><"clear">';
+/*var strDomString = '<"top"fp>rt<"bottom"l><"clear">';
+search turned off
+*/
+var strDomString = '<"top"p>rt<"bottom"l><"clear">';
 var strCwayBomDomString = 'l<"top"fp>rt<"bottom"l><"clear">';
-var strDomMeasurementString = 'frtip';
+var strDomMeasurementString = 'rtip';//use this one if Wendy wants to turn off measurement search
+//var strDomMeasurementString = 'frtip';
+var strDomSizingString = 'rtip';
 var arrButtons = ['copy', {
 	extend : 'pdf',
 	text : 'Save section as PDF',
@@ -23,6 +28,10 @@ var constructionTableOptions = {
 	'columnDefs' : [{
 		'visible' : false,
 		'targets' : [0, 11]
+	},
+	{
+		'targets' : [0,1,2,3,4,5,6,7,8,9,10,11],
+		'sortable':false
 	}],
 	'buttons' : arrButtonsNoButtons,
 	'responsive' : false,
@@ -40,7 +49,8 @@ var measurementTableOptions = {
 		"searchable" : false
 	}],
 	'responsive' : false,
-	'paging' : true
+	'paging' : true,
+	//'ordering' : false
 };
 /*var sewBomTableOptions = {
 
@@ -52,15 +62,35 @@ var measurementTableOptions = {
 	'buttons' : arrButtonsNoButtons,
 
 };*/
-
-var sewBomTableOptions = {
-
+var routingBomTableOptions = {
+	"pageLength" : 1000,
+	"dom" : strDomString,
     'buttons': arrButtonsNoButtons,
 
 };
-var sourceBomTableOptions = {
+var sewBomTableOptions = {
+	"pageLength" : 1000,
+	"dom" : strDomString,
+    'buttons': arrButtonsNoButtons,
+	'columnDefs': [{
+	    'targets': [0],
+	    'orderData': [0],
+		'visible': false
+	}]
 
+};
+var sourceBomTableOptions = {
+	"pageLength" : 1000,
+	"dom" : strDomString,
 	'buttons' : arrButtonsNoButtons,
+	'columnDefs': [{
+	    'targets': [0,1],
+	    'orderData': [1,0],
+	},
+	{
+	    'targets': [0],
+		'visible': false
+	}]
 
 };
 var colorwayListTableOptions = {
@@ -190,11 +220,18 @@ var labelBomTableOptions = {
 };
 var sizeTableOptions = {
 
-	"order" : [[11, "asc"]],
+    "order": [[11, "asc"]],
+    "dom":strDomSizingString,
 	"columnDefs" : [{
 		"targets" : [0, 1, 2, 5, 6, 7, 8, 9, 10, 11, 12],
 		"visible" : false,
 		"searchable" : false
+	},
+	{
+		"targets" : [3,13],
+		"visible" : true,
+		"searchable" : false,
+		"sortable":false
 	}],
 	'buttons' : arrButtonsNoButtons
 };
@@ -206,6 +243,10 @@ var revisionTableTableOptions = {
 		"targets" : [0, 2, 3, 4, 11,13],
 		"visible" : false,
 		"searchable" : false
+	},
+	{
+		"targets" : [0,1,2,3,4,5,6,7,8,9,11,12,13],
+		"sortable" : false
 	}],
 	"pageLength" : 10,
 	'buttons': arrButtonsNoButtons,
@@ -227,7 +268,9 @@ var reportsTableOptions = {
 	'buttons' : arrButtonsNoButtons
 };
 var approvedSupplierTableOptions = {
-
+	"pageLength" : 1000,
+	"dom" : strDomString,
+	'buttons' : arrButtonsNoButtons
 };
 
 // table options
@@ -251,22 +294,27 @@ function createRelatedProductsDiv(objCurrentGarmentProduct) {
 	};
 	if ( typeof (objCurrentGarmentProduct.patternProduct) != 'undefined') {
 		strTableString = strTableString + "<tr><td>Pattern Product</td><td>" + objCurrentGarmentProduct.patternProduct.name + "</td></td>";
-		$('#topLeftNav').html('Season (' + objCurrentGarmentProduct.activeSeason + ') Spec (' + objCurrentGarmentProduct.activeSpecName + ') <br>Garment (' + objCurrentGarmentProduct.name + ') <br>Pattern (' + objCurrentGarmentProduct.patternProduct.name + ')');
+		$('#seasonSpecHeadersDiv').html('<p class="mb-0 col-md-offset-2 col-md-10 col-lg-offset-2 col-lg-10 col-xs-offset-2 col-xs-10 col-sm-offset-2 col-sm-10"><i>Season</i> (' + objCurrentGarmentProduct.activeSeason + ') <i>Spec</i> (' + objCurrentGarmentProduct.activeSpecName + ') </p><p class="mb-0 col-md-offset-2 col-md-10 col-lg-offset-2 col-lg-10 col-xs-offset-2 col-xs-10 col-sm-offset-2 col-sm-10"><i>Garment</i> (' + objCurrentGarmentProduct.name + ') </p><p class="mb-0 col-md-offset-2 col-md-10 col-lg-offset-2 col-lg-10 col-xs-offset-2 col-xs-10 col-sm-offset-2 col-sm-10"><i>Pattern</i> (' + objCurrentGarmentProduct.patternProduct.name + ')</p>');
 		//$('#garmentFormContainer').fadeIn();
-		$('nav,li,#topLeftNav').fadeIn();
+		$('nav,li,#topLeftNav,#seasonSpecHeadersDiv,hr').fadeIn();
 		//$('#runNew,.clearThisComponentOnNewGarmentLoad,nav,li').fadeIn();
 	} else {
-	    $('#topLeftNav').html('Season (' + objCurrentGarmentProduct.activeSeason + ') Spec (' + objCurrentGarmentProduct.activeSpecName + ') <br>Garment (' + objCurrentGarmentProduct.name + ')');
+	    $('#seasonSpecHeadersDiv').html('<p class="mb-0 col-md-offset-2 col-md-10 col-lg-offset-2 col-lg-10 col-xs-offset-2 col-xs-10 col-sm-offset-2 col-sm-10"><i>Season</i> (' + objCurrentGarmentProduct.activeSeason + ') <i>Spec</i> (' + objCurrentGarmentProduct.activeSpecName + ') </p><p class="mb-0 col-md-offset-2 col-md-10 col-lg-offset-2 col-lg-10 col-xs-offset-2 col-xs-10 col-sm-offset-2 col-sm-10"><i>Garment</i> (' + objCurrentGarmentProduct.name + ')</p><br>');
 
 		//$('#garmentFormContainer').fadeIn();
-		$('nav,li,#topLeftNav').fadeIn();
+		$('nav,li,#topLeftNav,#seasonSpecHeadersDiv,hr').fadeIn();
 		//$('#runNew,.clearThisComponentOnNewGarmentLoad,nav,li').fadeIn();
 	};
 	if ( typeof (objCurrentGarmentProduct.labelProduct) != 'undefined') {
 		strTableString = strTableString + "<tr><td>Label Product</td><td>" + objCurrentGarmentProduct.labelProduct.name + "</td></td>";
 	};
 	if ( typeof (objCurrentGarmentProduct.sellingProduct) != 'undefined') {
-		strTableString = strTableString + "<tr><td>Selling Product</td><td>" + objCurrentGarmentProduct.sellingProduct.name + "</td></td>";
+		//NOT YET READY TILL SELLING SPEC IS FURTHER ALONG
+		
+		//strTableString = strTableString + "<tr><td>Selling Product</td><td>" + objCurrentGarmentProduct.sellingProduct.name + "</td></td>";
+		
+		//NOT YET READY TILL SELLING SPEC IS FURTHER ALONG
+
 		//SELLING PRODUCT NEEDS TO BE CHANGED TO PROCESS AN ARRAY OF SELLING PRODUCTS
 	};
 	strTableString = strTableString + "</tbody></table>";
@@ -499,11 +547,8 @@ function compare(a, b) {
 	return 0;
 };
 
+
 function getLogin(arrAttributeValueListArray, objCurrentGarmentProduct, arrReportsArray) {
-	var strParsedStringOfUrl = window.location.href;
-	if (strParsedStringOfUrl.indexOf('dontRunPrompt') != -1) {
-		return false;
-	};
 	var strInput1 = '<input id="usr" placeholder="User Name" type="text" name="username"></input>';
 	var strInput2 = '<input id="pwd" placeholder="Password" type="password" name="password"></input>';
 	var strInput3 = '<button class="closer">Close Application</button>';
@@ -511,35 +556,32 @@ function getLogin(arrAttributeValueListArray, objCurrentGarmentProduct, arrRepor
 	var strReportsXmlSuffix = 'Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/invokeAction?oid=OR%3Awt.query.template.ReportTemplate%3A12143436&action=ProduceReport&u8=1'
 	var strCacheReportUrl;
 	var strUrlPrefixWithPass;
-	$(strInput4).confirm(function (e) {
-	//$('document').ready(function () {
-		$('#loadingInfo').parent().fadeIn();
-		var strUser = $('#usr').val();
-		var strPwd = $('#pwd').val();
-		localStorage.setItem('mattAppUser', strUser);
-		localStorage.setItem('mattAppPass', strPwd);
-		strUrlPrefixWithPass = 'http://' + strUser + ':' + strPwd + '@wsflexwebprd1v.res.hbi.net/'
-		var strCurrentEnvironment = window.location.href;
-		var strCurrentEnvironment = window.location.href;
-		var numIndexOfWindChill = strCurrentEnvironment.indexOf('Windchill');
-		strUrlPrefixWithPass = strCurrentEnvironment.substring(0, numIndexOfWindChill);
-		strReportsXmlUrl = strUrlPrefixWithPass + strReportsXmlSuffix;
-		var numReportCheck = typeof (objParsedObject.report);
-		strCacheReportUrl = (numReportCheck != 'undefined') ? strReportsXmlUrl : 'cachedReports.xml';
-		if (window.location.href.indexOf('wsflexwebprd1v') != -1) {
-			strCacheReportUrl = 'prodCachedReports.xml';
-		};
-		var strBase64 = btoa(strUser + ":" + strPwd);
-		$.ajax({
+	//var strBase64 = btoa('reportuser' + ":" + 'reportuser');
+	//var strUser = $('#usr').val();
+	//var strPwd = $('#pwd').val();
+	//localStorage.setItem('mattAppUser', strUser);
+	//localStorage.setItem('mattAppPass', strPwd);
+	//strUrlPrefixWithPass = 'http://' + strUser + ':' + strPwd + '@wsflexwebprd1v.res.hbi.net/'
+	var strCurrentEnvironment = window.location.href;
+	var numIndexOfWindChill = strCurrentEnvironment.indexOf('Windchill');
+	//strUrlPrefixWithPass = strCurrentEnvironment.substring(0, numIndexOfWindChill);
+	//strReportsXmlUrl = strUrlPrefixWithPass + strReportsXmlSuffix;
+	//var numReportCheck = typeof (objParsedObject.report);
+	//strCacheReportUrl = (numReportCheck != 'undefined') ? strReportsXmlUrl : 'cachedReports.xml';
+	strCacheReportUrl = 'cachedReports.xml';
+	if (window.location.href.indexOf('wsflexwebprd1v') != -1) {
+		strCacheReportUrl = 'prodCachedReports.xml';
+	};
+	$.ajax({
 			url : strCacheReportUrl,
 			crossDomain : true,
 			xhrFields : {
 				withCredentials : true
 			},
-			type : "GET",
-			beforeSend : function(xhr) {
-				xhr.setRequestHeader("Authorization", "Basic " + strBase64, 'Access-Control-Allow-Origin');
-			}
+			type : "GET"//,
+			//beforeSend : function(xhr) {
+			//	xhr.setRequestHeader("Authorization", "Basic " + strBase64, 'Access-Control-Allow-Origin');
+			//}
 		}).done(function(data) {
 			$('row', data).each(function() {
 			    var strObjectId = $(this).find('report').attr('objectId').trim();
@@ -562,10 +604,9 @@ function getLogin(arrAttributeValueListArray, objCurrentGarmentProduct, arrRepor
 
 			$('#loadingInfo').parent().fadeOut().delay(500);
 			$('#garmentFormContainer').fadeIn();
-		});
-	});
-};
 
+		});
+};
 function runNewProduct(wipeThisGarmentProductOut) {
 	for (var property in wipeThisGarmentProductOut) {
 		if (wipeThisGarmentProductOut.hasOwnProperty(property)) {
@@ -574,7 +615,7 @@ function runNewProduct(wipeThisGarmentProductOut) {
 			};
 		};
 	};
-	$('#runNew,.clearThisComponentOnNewGarmentLoad,nav,#topLeftNav').fadeOut();
+	$('#runNew,.clearThisComponentOnNewGarmentLoad,nav,#topLeftNav,hr').fadeOut();
 	//$('#topLeftNav *').remove();
 	$('#garmentFormContainer').fadeIn();
 	

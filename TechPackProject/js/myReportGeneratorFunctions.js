@@ -72,12 +72,25 @@ var sewBomTableOptions = {
 	"pageLength" : 1000,
 	"dom" : strDomString,
     'buttons': arrButtonsNoButtons,
+	'columnDefs': [{
+	    'targets': [0],
+	    'orderData': [0],
+		'visible': false
+	}]
 
 };
 var sourceBomTableOptions = {
 	"pageLength" : 1000,
 	"dom" : strDomString,
 	'buttons' : arrButtonsNoButtons,
+	'columnDefs': [{
+	    'targets': [0,1],
+	    'orderData': [1,0],
+	},
+	{
+	    'targets': [0],
+		'visible': false
+	}]
 
 };
 var colorwayListTableOptions = {
