@@ -4,6 +4,7 @@ var arrGarmentProductsArrayForTypeAhead = [];
 search turned off
 */
 var strDomString = '<"top"p>rt<"bottom"l><"clear">';
+var strDomRevisionString = '<"top"p>rflt<"bottom"><"clear">';
 var strCwayBomDomString = 'l<"top"fp>rt<"bottom"l><"clear">';
 var strDomMeasurementString = 'rtip';//use this one if Wendy wants to turn off measurement search
 //var strDomMeasurementString = 'frtip';
@@ -66,6 +67,8 @@ var routingBomTableOptions = {
 	"pageLength" : 1000,
 	"dom" : strDomString,
     'buttons': arrButtonsNoButtons,
+	'order':[[1,'asc'],[2,'asc'],[3,'asc'],[4,'asc'],[5,'desc'],[6,'asc'],[7,'asc'],[8,'asc']]
+	
 
 };
 var sewBomTableOptions = {
@@ -235,20 +238,21 @@ var sizeTableOptions = {
 	}],
 	'buttons' : arrButtonsNoButtons
 };
+var numRevisionsToGet = 10;
 var revisionTableTableOptions = {
 
     "order": [[10, "desc"]],
-	"dom" : strDomString,
+	"dom" : strDomRevisionString,
 	"columnDefs" : [{
 		"targets" : [0, 2, 3, 4, 11,13],
 		"visible" : false,
 		"searchable" : false
-	},
+},
 	{
 		"targets" : [0,1,2,3,4,5,6,7,8,9,11,12,13],
 		"sortable" : false
-	}],
-	"pageLength" : 10,
+}],
+	"pageLength" : numRevisionsToGet,
 	'buttons': arrButtonsNoButtons,
 	'colReorder': true
 };
@@ -270,7 +274,8 @@ var reportsTableOptions = {
 var approvedSupplierTableOptions = {
 	"pageLength" : 1000,
 	"dom" : strDomString,
-	'buttons' : arrButtonsNoButtons
+	'buttons' : arrButtonsNoButtons,
+    'colReorder':true
 };
 
 // table options
