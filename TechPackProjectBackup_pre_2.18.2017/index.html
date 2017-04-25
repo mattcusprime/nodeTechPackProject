@@ -1,0 +1,667 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="Garment Spec Report">
+    <meta name="author" content="Matthew English">
+    <title></title>
+    <!-- Bootstrap core CSS -->
+    <link href="bootstrap-3.3.4-dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Custom styles for this template -->
+    <link href="css/starter-template.css" rel="stylesheet">
+    <link href="css/carousel.css" rel="stylesheet" />
+    <link href="DataTables-1.10.7/media/css/jquery.dataTables_themeroller.css" rel="stylesheet" />
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="js/jquery-2.1.3.js"></script>
+    <script src="js/d3.v3.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="js/ie10-viewport-bug-workaround.js"></script>
+    <script src="typeAhead/typeAheadBundle.js"></script>
+    <!--
+    <link href="DataTables-1.10.7/extensions/Bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="DataTables-1.10.7/extensions/Bootstrap-3.3.5/css/bootstrap-theme.min.css" rel="stylesheet" />
+    <script src="DataTables-1.10.7/extensions/Bootstrap-3.3.5/js/bootstrap.min.js"></script>
+
+    DataTables
+    <script src="DataTables-1.10.7/media/js/jquery.dataTables.js"></script>
+
+    <script src="DataTables-1.10.7/extensions/ColVis/js/dataTables.colVis.js"></script>
+    <script src="DataTables-1.10.7/extensions/TableTools/js/dataTables.tableTools.js"></script>
+    <script src="DataTables-1.10.7/extensions/FixedHeader/js/dataTables.fixedHeader.js"></script>
+    <script src="DataTables-1.10.7/extensions/Responsive/js/dataTables.responsive.js"></script>
+    <link href="DataTables-1.10.7/extensions/FixedHeader/css/dataTables.fixedHeader.css" rel="stylesheet" />
+    <link href="DataTables-1.10.7/extensions/Responsive/css/dataTables.responsive.css" rel="stylesheet" />
+    <link href="DataTables-1.10.7/media/css/jquery.dataTables.css" rel="stylesheet" />
+    <link href="DataTables-1.10.7/extensions/TableTools/css/dataTables.tableTools.css" rel="stylesheet" />
+    <link href="DataTables-1.10.7/extensions/ColVis/css/dataTables.colVis.css" rel="stylesheet" />
+    <link href="DataTables-1.10.7/Plugins/integration/bootstrap/3/dataTables.bootstrap.css" rel="stylesheet" />
+    -->
+    <link rel="stylesheet" type="text/css" href="css/print.css" media="print" />
+    <script src="DataTablesDownloadBuilder/DataTables-1.10.9/js/jquery.dataTables.min.js"></script>
+    <script src="DataTablesDownloadBuilder/DataTables-1.10.9/js/dataTables.bootstrap.min.js"></script>
+    <script src="DataTablesDownloadBuilder/JSZip-2.5.0/jszip.min.js"></script>
+
+    <!--<script src="DataTablesDownloadBuilder/pdfmake-0.1.18/build/pdfmake.min.js"></script>-->
+    <script src="DataTablesDownloadBuilder/pdfmake-0.1.18/build/pdfmake.min.js"></script>
+    <script src="DataTablesDownloadBuilder/pdfmake-0.1.18/build/vfs_fonts.js"></script>
+    <script src="DataTablesDownloadBuilder/Buttons-1.0.3/js/dataTables.buttons.min.js"></script>
+    <!--NEED TO ALWAYS PUT THE CORE MIN LIBRARY BEFORE THE EXTENSIONS-->
+    <script src="DataTablesDownloadBuilder/Buttons-1.0.3/js/buttons.bootstrap.min.js"></script>
+    <script src="DataTablesDownloadBuilder/Buttons-1.0.3/js/buttons.colVis.min.js"></script>
+    <script src="DataTablesDownloadBuilder/Buttons-1.0.3/js/buttons.foundation.min.js"></script>
+    <script src="DataTablesDownloadBuilder/Buttons-1.0.3/js/buttons.html5.min.js"></script>
+    <script src="DataTablesDownloadBuilder/Buttons-1.0.3/js/buttons.jqueryui.min.js"></script>
+    <script src="DataTablesDownloadBuilder/Buttons-1.0.3/js/buttons.print.min.js"></script>
+    <script src="DataTablesDownloadBuilder/DataTables-1.10.9/js/dataTables.bootstrap.min.js"></script>
+    <script src="DataTablesDownloadBuilder/ColReorder-1.2.0/js/dataTables.colReorder.min.js"></script>
+
+    <!--<link href="DataTablesDownloadBuilder/Buttons-1.0.3/css/buttons.bootstrap.min.css" rel="stylesheet" />
+    <link href="DataTablesDownloadBuilder/Buttons-1.0.3/css/buttons.dataTables.min.css" rel="stylesheet" />
+    <link href="DataTablesDownloadBuilder/Buttons-1.0.3/css/buttons.foundation.min.css" rel="stylesheet" />
+    <link href="DataTablesDownloadBuilder/Buttons-1.0.3/css/buttons.jqueryui.min.css" rel="stylesheet" />-->
+    <link href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/buttons/1.2.1/css/buttons.dataTables.min.css" rel="stylesheet">
+    <link href="DataTablesDownloadBuilder/ColReorder-1.2.0/css/colReorder.dataTables.min.css" rel="stylesheet" />
+
+    <!--DataTables-->
+    <link href="css/jquery.prompt.css" rel="stylesheet" />
+
+    <!--PrettyLoader-->
+    <link href="prettyLoader.css" rel="stylesheet" />
+    <!--PrettyLoader-->
+    <!--PrettyLoader-->
+
+    <script src="js/jquery.browser.js"></script>
+    <script src="js/jquery.prettyLoader.js"></script>
+    <!--PrettyLoader-->
+    <!--jsPdf precursors -->
+    <script src="node_modules/rasterizehtml/dist/rasterizeHTML.allinone.js"></script>
+    <!--jsPdf-->
+    <script src="jsPdf/jspdf.js"></script>
+    <script src="jsPdf/plugins/addhtml.js"></script>
+    <script src="jsPdf/plugins/addimage.js"></script>
+    <script src="jsPdf/plugins/annotations.js"></script>
+    <script src="jsPdf/plugins/autoprint.js"></script>
+    <script src="jsPdf/plugins/canvas.js"></script>
+    <!-- <script src="jsPdf/plugins/cell.js"></script>-->
+    <script src="jsPdf/plugins/cellMattV2.js"></script>
+    <script src="jsPdf/plugins/context2d.js"></script>
+    <script src="jsPdf/plugins/from_html.js"></script>
+    <script src="jsPdf/plugins/javascript.js"></script>
+    <script src="jsPdf/plugins/outline.js"></script>
+    <script src="jsPdf/plugins/png_support.js"></script>
+    <script src="jsPdf/plugins/split_text_to_size.js"></script>
+    <script src="jsPdf/plugins/standard_fonts_metrics.js"></script>
+    <script src="jsPdf/plugins/svg.js"></script>
+    <script src="jsPdf/plugins/total_pages.js"></script>
+    <script src="jsPdf/libs/png_support/png.js"></script>
+    <script src="jsPdf/libs/png_support/zlib.js"></script>
+    <script src="jsPdf/libs/deflate.js"></script>
+    <script src="jsPdf/libs/FileSaver.js/FileSaver.js"></script>
+    <script src="jsPdf/libs/Blob.js/Blob.js"></script>
+    <script src="jsPdf/libs/adler32cs.js/adler32cs.js"></script>
+
+    <!-- <script src="jsPdf_Newest/jspdf.js"></script>
+     <script src="jsPdf_Newest/plugins/addhtml.js"></script>
+     <script src="jsPdf_Newest/plugins/addimage.js"></script>
+     <script src="jsPdf_Newest/plugins/annotations.js"></script>
+     <script src="jsPdf_Newest/plugins/autoprint.js"></script>
+     <script src="jsPdf_Newest/plugins/canvas.js"></script>
+     <script src="jsPdf_Newest/plugins/cell.js"></script>
+     <script src="jsPdf_Newest/plugins/context2d.js"></script>
+     <script src="jsPdf_Newest/plugins/from_html.js"></script>
+     <script src="jsPdf_Newest/plugins/javascript.js"></script>
+     <script src="jsPdf_Newest/plugins/outline.js"></script>
+     <script src="jsPdf_Newest/plugins/png_support.js"></script>
+     <script src="jsPdf_Newest/plugins/prevent_scale_to_fit.js"></script>
+     <script src="jsPdf_Newest/plugins/split_text_to_size.js"></script>
+     <script src="jsPdf_Newest/plugins/standard_fonts_metrics.js"></script>
+     <script src="jsPdf_Newest/plugins/svg.js"></script>
+     <script src="jsPdf_Newest/plugins/total_pages.js"></script>
+     <script src="jsPdf_Newest/plugins/xmp_metadata.js"></script>
+     <script src="jsPdf_Newest/libs/png_support/png.js"></script>
+     <script src="jsPdf_Newest/libs/png_support/zlib.js"></script>
+     <script src="jsPdf_Newest/libs/deflate.js"></script>-->
+    <!--libs-->
+    <!--jspdf-->
+    <script src="js/jquery.prompt.js"></script>
+    <script src="js/imagesloaded.pkgd.min.js"></script>
+    <!--My Scripts begin here-->
+    <!--end construction of prototype of Garment Product Class-->
+    <!--Svg items
+    <link href="jquery.svg.package-1.5.0/jquery.svg.css" rel="stylesheet" />
+    <script src="jquery.svg.package-1.5.0/jquery.svg.js"></script>
+    <script src="jquery.svg.package-1.5.0/jquery.svgdom.js"></script>-->
+    <!--Svg items-->
+    <style>
+        .page {
+            page-break-after: always;
+        }
+
+        tr.notInGarment {
+            background-color: red;
+        }
+
+        #topLeftNav2, .navbar-nav > li {
+            font-size: 13px;
+        }
+        /* Dropdown Button */
+        .dropbtn {
+            background-color: #222;
+            color: #9d9d9d;
+            padding: 13px;
+            font-size: 13px;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* The container <div> - needed to position the dropdown content */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        /* Dropdown Content (Hidden by Default) */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        }
+
+            /* Links inside the dropdown */
+            .dropdown-content a {
+                color: black;
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+            }
+
+                /* Change color of dropdown links on hover */
+                .dropdown-content a:hover {
+                    background-color: #f1f1f1;
+                }
+
+        /* Show the dropdown menu on hover */
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* Change the background color of the dropdown button when the dropdown content is shown */
+        .dropdown:hover .dropbtn {
+            background-color: #ffffff;
+        }
+    </style>
+
+</head>
+<body>
+    <div id="scriptsToIgnore">
+        <!--killBeginPoint-->
+        <!--Beginning of HBI custom scripts-->
+        <script src="js/myReportGeneratorFunctions.js"></script>
+        <script class="dontPostScript" src="js/myProjectFunctionsV2Deferred.js"></script>
+        <script class="dontPostScript" src="js/nwJsFunctions.js"></script>
+
+        <!--<script src="js/customPdfer.js"></script>-->
+        <script src="js/customPdferWithJsPdf.js"></script>
+
+        <!--End of HBI custom scripts-->
+        <script class="dontPostScript">
+            /**
+             * $.parseParams - parse query string paramaters into an object.
+             */
+            (function ($) {
+                var re = /([^&=]+)=?([^&]*)/g;
+                var decodeRE = /\+/g;
+                // Regex for replacing addition symbol with a space
+                var decode = function (str) {
+                    return decodeURIComponent(str.replace(decodeRE, " "));
+                };
+                $.parseParams = function (query) {
+                    var params = {}, e;
+                    while (e = re.exec(query)) {
+                        var k = decode(e[1]), v = decode(e[2]);
+                        if (k.substring(k.length - 2) === '[]') {
+                            k = k.substring(0, k.length - 2);
+                            (params[k] || (params[k] = [])).push(v);
+                        } else
+                            params[k] = v;
+                    }
+                    return params;
+                };
+            })(jQuery);
+
+            //report id creator, only hard coded required url, import the rest and
+            //this should read them 'ReportsXml' report.
+            //later to get the report id we will get the indexOf the Name and then the id value should be at
+            //one position less in the array.
+
+            var arrMasterReportIndexer = [];
+            var objMasterReportObject = {};
+            //report names to avoid constant id lookups and to use with environment changes
+
+            var garmentProdSpecsAndSuchAttributeValueListCall = 'garmentProdSpecsAndSuchAttributeValueListCall';
+            var GarmentProdtoGarmentSpecs = 'Garment Prod to Garment Specs';
+            var garmentProdSpecGarmentAndPatternComponentsDOCUMENTSV3 = 'garmentProdSpecGarmentAndPatternComponentsDOCUMENTSV3';
+            var garmentProdSpecGarmentAndPatternComponentsDOCUMENTSV3NoPattern = 'garmentProdSpecGarmentAndPatternComponentsDOCUMENTSV3NoPattern';
+            var garmentProdSpecsGarmentAndPatternComponentsWEachConnectionMEASUREMENTS = 'garmentProdSpecsGarmentAndPatternComponentsWEachConnectionMEASUREMENTS';
+            var garmentProdSpecGarmentAndPatternComponentsWEachConnectionCONSTRUCTION = 'garmentProdSpecGarmentAndPatternComponentsWEachConnectionCONSTRUCTION';
+            var garmentProdSpecGarmentAndPatternComponentsWEachConnectionBOMS = 'garmentProdSpecGarmentAndPatternComponentsWEachConnectionBOMS';
+            var garmentToLinkedProducts = 'garmentToLinkedProducts';
+            var garmentProdSpecGarmentAndPatternComponentsGarmentSewBom = 'garmentProdSpecGarmentAndPatternComponentsGarmentSewBom';
+            var garmentProdSpecGarmentAndColorwayBomsV2AllColors = 'garmentProdSpecGarmentAndColorwayBomsV2AllColors';
+            var garmentProdSpecGarmentAndColorwayBoms = 'garmentProdSpecGarmentAndColorwayBoms';
+            var garmentProdSpecGarmentAndColorwayColorways = 'garmentProdSpecGarmentAndColorwayColorways';
+            var garmentProdSpecsGarmentLabelProductBom = 'garmentProdSpecsGarmentLabelProductBom';
+            var garmentProdSpecsGarmentMOAs = 'garmentProdSpecsGarmentMOAs';
+            var garmentProdSpecsGarmentAndPatternComponentsApprovedSuppliers = 'garmentProdSpecsGarmentAndPatternComponentsApprovedSuppliers';
+            var garmentProdSpecGarmentAndPatternComponentsRevisionObjects = 'garmentProdSpecGarmentAndPatternComponentsRevisionObjects';
+            var garmentProdSpecGarmentAndPatternComponentsUserIds = 'garmentProdSpecGarmentAndPatternComponentsUserIds';
+            var garmentProdSpecGarmentAllBomMaterials = 'garmentProdSpecGarmentAllBomMaterials';
+            var garmentProdSpecBomsOfColorwayProduct = 'garmentProdSpecBomsOfColorwayProduct';
+            var materialColorsByMaterialColorIds = 'materialColorsByMaterialColorIds';
+            var colorsByColorId = 'colorsByColorId';
+            var measResave2 = 'measResave2';
+            var arrReportsThatIRun = [];
+            arrReportsThatIRun.push(garmentProdSpecsAndSuchAttributeValueListCall);
+            arrReportsThatIRun.push(GarmentProdtoGarmentSpecs);
+            arrReportsThatIRun.push(garmentProdSpecsGarmentAndPatternComponentsWEachConnectionMEASUREMENTS);
+            arrReportsThatIRun.push(garmentProdSpecGarmentAndPatternComponentsWEachConnectionCONSTRUCTION);
+            arrReportsThatIRun.push(garmentProdSpecGarmentAndPatternComponentsWEachConnectionBOMS);
+            arrReportsThatIRun.push(garmentToLinkedProducts);
+            arrReportsThatIRun.push(garmentProdSpecGarmentAndPatternComponentsGarmentSewBom);
+            arrReportsThatIRun.push(garmentProdSpecGarmentAndColorwayBomsV2AllColors);
+            arrReportsThatIRun.push(garmentProdSpecGarmentAndColorwayBoms);
+            arrReportsThatIRun.push(garmentProdSpecGarmentAndColorwayColorways);
+            arrReportsThatIRun.push(garmentProdSpecsGarmentLabelProductBom);
+            arrReportsThatIRun.push(garmentProdSpecsGarmentMOAs);
+            arrReportsThatIRun.push(garmentProdSpecsGarmentAndPatternComponentsApprovedSuppliers);
+            arrReportsThatIRun.push(garmentProdSpecGarmentAndPatternComponentsRevisionObjects);
+            arrReportsThatIRun.push(garmentProdSpecGarmentAndPatternComponentsUserIds);
+            arrReportsThatIRun.push(garmentProdSpecGarmentAllBomMaterials);
+            arrReportsThatIRun.push(garmentProdSpecBomsOfColorwayProduct);
+            arrReportsThatIRun.push(materialColorsByMaterialColorIds);
+            arrReportsThatIRun.push(colorsByColorId);
+            arrReportsThatIRun.push(garmentProdSpecGarmentAndPatternComponentsDOCUMENTSV3NoPattern);
+            arrReportsThatIRun.push(measResave2);
+            //report names to avoid constant id lookups and to use with environment changes
+            //only required URL above
+            //infoengines
+            //http://wsflexappdev2v/Windchill/servlet/IE/tasks/com/lcs/wc/measurements/FindMeasurements.xml?oid=VR%3Acom.lcs.wc.measurements.LCSMeasurements%3A2394285&instance=net.hbi.res.wsflexappdev1v.windchillAdapter
+            //http://wsflexappdev2v/Windchill/servlet/IE/tasks/com/lcs/wc/construction/FindConstructionInfo.xml?oid=VR%3Acom.lcs.wc.construction.LCSConstructionInfo%3A2710813&instance=net.hbi.res.wsflexappdev1v.windchillAdapter
+            //infoengines
+            //begin code for type ahead in g prod form
+            //use below for prd
+            var url = location.href;
+            if (url.indexOf('TechPackProjectBackup') != -1) {
+                $('title').text('Dev verson TPAPP')
+            }
+            else {
+                $('title').text('Techpack App -GP')
+            }
+            var strUrlPrefix = 'http://wsflexwebprd1v.res.hbi.net/';
+            var strDevPrefix = 'http://wsflexappdev2v/';
+            var arrSeasonNamesArray = [];
+            var currentGarmentProduct = new garmentProduct();
+            var strTypeBaseLink = strUrlPrefix + 'Windchill/servlet/TypeBasedIncludeServlet?oid=VR%3A';
+            var strEncodeColonString = '%3A';
+            var strU8 = '&u8=1';
+            var strLinkBeginTag = '<a href="';
+            var strLinkMidTag = '">';
+            var strLinkCloseTag = '</a>';
+            var gProdQueryURL;
+            var returnArrays;
+            var arrOfAttributeValueListIds = ['16699146', '16699175', '2377385', '2378941', '10661752', '2381876'/*Prod Only*/, '102771', '2381693'/*Prod Only*/, '368058', '100575', '368793'/*Maybe Dev Only.*/, '406136', '406161', '1333792', '17429704'];
+            var strCurrentEnvironment = window.location.href;
+            var numIndexOfWindChill = strCurrentEnvironment.indexOf('Windchill');
+            strUrlPrefix = strCurrentEnvironment.substring(0, numIndexOfWindChill);
+            var objParsedObject = {};
+            objParsedObject = $.parseParams(strCurrentEnvironment.split('?')[1] || '');
+            console.log(objParsedObject);
+            $('document').ready(function () {
+                originalNavBar = $('#navbar *').html();
+                $('#runNew,.clearThisComponentOnNewGarmentLoad,nav').hide();
+                $('#loadingInfo').parent().hide();
+                //$.prettyLoader();
+                $.prettyLoader({
+                    animation_speed: 'slow', /* fast/normal/slow/integer */
+                    bind_to_ajax: true, /* true/false */
+                    delay: 200, /* false OR time in milliseconds (ms) */
+                    offset_top: 13, /* integer */
+                    offset_left: 10 /* integer */
+                });
+                getLogin(arrOfAttributeValueListIds, currentGarmentProduct, arrMasterReportIndexer);
+                $('#garmentProd').submit(function (e) {
+                    e.preventDefault();
+                    var nameToUse = $('#gProd').val();
+                    if (arrGarmentProductsArrayForTypeAhead.indexOf(nameToUse) != -1) {
+                        //http://wsflexwebprd1v.res.hbi.net/Windchill/servlet/WindchillAuthGW/wt.enterprise.URLProcessor/URLTemplateAction?
+                        $('#garmentFormContainer').fadeOut();
+                        $('.clearThisComponentOnNewGarmentLoad *').remove();
+                        $('#runNew,.clearThisComponentOnNewGarmentLoad').fadeIn();
+                        localStorage.setItem('lastGarmentRan', nameToUse);
+                        currentGarmentProduct.getSpecByNameButNotJustActiveSpec(strUrlPrefix, nameToUse, currentGarmentProduct.thenCallSpecs, returnArrays, currentGarmentProduct);
+                        //replacing old version that just grabbed active spec and switching to version that will serve up
+                        //all seasons and specs
+                    }
+                    else {
+                        $('#gProd').val('');
+                        $('#gProd').focus();
+                        $('#garmentHeader').append('<p class="clearThisComponentOnNewGarmentLoad" id="noGarment">' + nameToUse + ' is not in the list of valid choices for a garment product.  Please use the typeahead to select a valid option.</p>')
+                        $('#noGarment').delay(2500).fadeOut();
+                    }
+                });
+                $('#fileinput').on("change", function (e) {
+                    readSingleFile(e, currentGarmentProduct);
+                    $('#garmentFormContainer').fadeOut();
+                    $('#runNew,.clearThisComponentOnNewGarmentLoad').fadeIn();
+                });
+                makeMeSCrollSlow();
+                checkStorageFor('lastGarmentRan', '#gProd');
+                $('#loadLastGarmentProduct').click(function () {
+                    var strGarmentProdString = localStorage.getItem('garmentProductString');
+                    if (typeof (strGarmentProdString) != 'undefined') {
+                        currentGarmentProduct = JSON.parse(strGarmentProdString);
+                        console.log(currentGarmentProduct);
+                    };
+                });
+                $('#fromSaved').click(function () {
+                    currentGarmentProduct.saveMe();
+                });
+                $('#garmentFormContainer,#runNew').hide();
+                $('#usr').focus();
+                if (typeof (localStorage.getItem('mattAppUser')) != 'undefined' && typeof (localStorage.getItem('mattAppPass')) != 'undefined') {
+                    $('#usr').val(localStorage.getItem('mattAppUser'));
+                    $('#pwd').val(localStorage.getItem('mattAppPass'));
+                };
+                $('#exportToCsv').click(function () {
+                    saveFile('#export_blocks', '#spreadReport');
+                });
+            });
+
+        </script><!--killEndPoint-->
+
+    </div>
+    <script>
+        function makeMeScrollToDefinedTarget(strJquerySelectorTarget, numDelayTimer, offsetter) {
+            var $target = $(strJquerySelectorTarget);
+            var arrChildren = jQuery($target).children();
+            var numChildren = arrChildren.length;
+            console.log(numChildren + ' of children')
+            if (numChildren < 1) {
+                alert('No content was found for this section.')
+            }
+            else {
+                if (typeof (offsetter) == 'undefined') {
+                    offsetter = -100;
+                };
+                if (typeof (numDelayTimer) == 'undefined') {
+                    numDelayTimer = 0;
+                };
+                $('html, body').stop().delay(numDelayTimer).animate({
+                    'scrollTop': $target.offset().top + offsetter
+                }, 900, 'swing', function () {
+
+                });
+                if ($(strJquerySelectorTarget).find('table').length && $(strJquerySelectorTarget).find('img').length) {
+                    alert('No Content was found for this item');
+                };
+            };
+        };
+    </script>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container" id="navTopDiv">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a id="topLeftNav2" class="navbar-brand" href="#navTopDiv">Garment Spec Report Page</a>
+            </div>
+           
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <!--<li>
+                        <a href="javascript:makeMeScrollToDefinedTarget('#garmentHeader',50,-100);">Product Relationships</a>
+                    </li>
+                    <li>
+                    <a href="javascript:makeMeScrollToDefinedTarget('#imagesDiv',50,-100);">Documents</a>
+                    </li>-->
+                    <!--<li id="constructionsLi">
+                        
+                    </li>
+                    <li id="measurementsLi">
+                       
+                    </li>-->
+                    <!--<li id="labelBomLi">
+                        <a href="javascript:makeMeScrollToDefinedTarget('#labelsDiv',50,-100);">Label BOM</a>
+                    </li>
+                    <li id="routingBomLi">
+                        <a href="javascript:makeMeScrollToDefinedTarget('#routingBomDiv',0,-100);">Routing</a>
+                    </li>
+                    <li id="sewBomLi">
+                        <a href="javascript:makeMeScrollToDefinedTarget('#sewBomDiv',50,-100);">Sew BOM</a>
+                    </li>
+                    <li id="sourcedBomLi">
+                        <a href="javascript:makeMeScrollToDefinedTarget('#sourceBomDiv',50,-100);">Sourced BOM</a>
+                    </li>
+                    <li id="colorwayBomLi">
+                        <a href="javascript:makeMeScrollToDefinedTarget('#cwayGroupingNew',50,-150);">Colorway BOMs</a>
+                    </li>
+                    <li>
+                        <a href="javascript:makeMeScrollToDefinedTarget('#sizeTableDiv',50,-100);">Sizing</a>
+                    </li>
+                    <li id="revisionsLi">
+                        <a href="javascript:makeMeScrollToDefinedTarget('#prodRevisionDiv',50,-100);">Product Revisions</a>
+                    </li>
+                    <li id="approvedSuppliersLi">
+                        <a href="javascript:makeMeScrollToDefinedTarget('#approvedSupplierDiv',50,-100);">Approved Suppliers</a>
+                    </li>-->
+                   
+                    <li>
+                        <div class="dropdown">
+                            <button class="dropbtn">Product Details</button>
+                            <div class="dropdown-content">
+                                <a href="javascript:makeMeScrollToDefinedTarget('#garmentHeader',50,-100);">Product Relationships</a>
+                                <a href="javascript:makeMeScrollToDefinedTarget('#prodRevisionDiv',50,-100);">Product Revisions</a>
+                                <a href="javascript:makeMeScrollToDefinedTarget('#sizeTableDiv',50,-100);">Sizing</a>
+                                <a href="javascript:makeMeScrollToDefinedTarget('#approvedSupplierDiv',50,-100);">Approved Suppliers</a>
+                                <a href="javascript:makeMeScrollToDefinedTarget('#routingBomDiv',0,-100);">Routing</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="dropdown">
+                            <button class="dropbtn">Pattern related</button>
+                            <div class="dropdown-content">
+                                <a href="javascript:makeMeScrollToDefinedTarget('#constructionDiv',50, -100);">Constructions</a>
+                                <a href="javascript:makeMeScrollToDefinedTarget('#measurementDiv',50,-100);">Measurements</a>
+
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="dropdown">
+                            <button class="dropbtn">BOMs</button>
+                            <div class="dropdown-content">
+                                <a href="javascript:makeMeScrollToDefinedTarget('#sewBomDiv',50,-100);">Sew BOM</a>
+                                <a href="javascript:makeMeScrollToDefinedTarget('#sourceBomDiv',50,-100);">Sourced BOM</a>
+                                <a href="javascript:makeMeScrollToDefinedTarget('#cwayGroupingNew',50,-150);">Colorway BOMs</a>
+                                <a href="javascript:makeMeScrollToDefinedTarget('#labelsDiv',50,-100);">Label BOM</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="dropdown">
+                            <button class="dropbtn">External Reports</button>
+                            <div class="dropdown-content">
+                                <a href="http://wsflexwebprd1v.res.hbi.net/Windchill/wtcore/jsp/report/adhocReportCriteria.jsp?oid=OR%3Awt.query.template.ReportTemplate%3A23394008&u8=1" target="_blank">Block Weights</a>
+                                <a id="complianceReport" href="" target="_blank">Compliance Report</a>
+                            </div>
+                        </div>
+                    </li>
+                 
+                    <li>
+                        <div class="dropdown">
+                            <button class="dropbtn">Image Sections</button>
+                            <div class="dropdown-content">
+                                <a href="javascript:makeMeScrollToDefinedTarget('#frontSketch',50,-100);">Front/Back</a>
+                                <a href="javascript:makeMeScrollToDefinedTarget('#measurementImages',50,-100);">Measurements</a>
+                                <a href="javascript:makeMeScrollToDefinedTarget('#constructionDetailsImages',50,-100);">Construction Details</a>
+                                <a href="javascript:makeMeScrollToDefinedTarget('#placementImages',50,-100);">Placement</a>
+                                <a href="javascript:makeMeScrollToDefinedTarget('#markerLayoutImages',50,-100);">Marker Layout</a>
+                                <a href="javascript:makeMeScrollToDefinedTarget('#developmentImages',50,-100);">Development</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="dropdown">
+                            <button class="dropbtn">Run/Publish</button>
+                            <div class="dropdown-content">
+                                <a href='javascript:runNewProduct(currentGarmentProduct);'>Run a New Product</a>
+                                <a href="javascript:pdfGarmetProductFromDocProcessor(currentGarmentProduct)">PDF Garment Spec</a>
+                            </div>
+                        </div>
+                    </li>
+                     <!--<li id="runNew">
+                      
+                    </li>
+                    <li>
+                      
+                    </li>-->
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <br>
+    <br>
+    
+    <div class="container-fluid" id="garmentFormContainer">
+        <div class="col-md-10 starter-template row">
+            <form id="garmentProd">
+
+                <input class=".col-md-4" type="text" name="Product Name" size="50" id="gProd" placeholder="Enter Garment Product">
+                <input class=".col-md-4" type="submit">
+                <!--<input id="fileinput" type="file" class=".col-md-offset-4 .col-md-4 .col-md-offset-4 filestyle" data-classbutton="btn btn-primary" data-input="false" data-classicon="icon-plus" data-buttontext="Load Garment From File">-->
+            </form>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <h4 id="topLeftNav" class="col-md-offset-4 col-md-8 col-lg-offset-4 col-lg-8 col-xs-offset-4 col-xs-8 col-sm-offset-4 col-sm-8"></h4>
+    </div>
+    <br>
+    <br>
+   
+    <div class="page" id="max">
+       
+        <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="frontBackImages">
+           
+        </div>
+    </div>
+    <div class="page">
+        <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="loadingInfo">
+            <h3 class="col-md-offset-4 col-md-4">Acquiring Product List.</h3>
+        </div>
+    </div>
+    <div class="page">
+        <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="seasonSpecSelection">
+        </div>
+    </div>
+    <div class="page">
+        
+        <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="generalAttributes">
+        </div>
+    </div>
+    <div class="page">
+        <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="sizeTableDiv">
+        </div>
+    </div>
+    <div class="page">
+        <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="approvedSupplierDiv">
+        </div>
+    </div>
+    <div class="page">
+        <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="prodRevisionDiv">
+        </div>
+    </div>
+    <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="garmentHeader">
+    </div>
+
+
+    <div class="page">
+        <div id="measurementDiv" class="container-fluid clearThisComponentOnNewGarmentLoad">
+        </div>
+    </div>
+    <div class="page">
+        <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="measurementImages">
+        </div>
+    </div>
+    <div class="page">
+        <div id="constructionDiv" class="container-fluid clearThisComponentOnNewGarmentLoad">
+        </div>
+    </div>
+    <div class="page">
+        <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="constructionDetailsImages">
+        </div>
+    </div>
+    <div class="page">
+        <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="placementImages">
+        </div>
+    </div>
+    <div class="page">
+        <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="markerLayoutImages">
+        </div>
+    </div>
+
+   
+    <div class="page">
+        <div class="container-fluid clearThisComponentOnNewGarmentLoad" id="colorwaysListDiv">
+        </div>
+    </div>
+    <div class="page">
+        <div id="colorwaysDiv" class="container-fluid clearThisComponentOnNewGarmentLoad">
+        </div>
+    </div>
+    <div class="page">
+        <div id="labelsDiv" class="container-fluid clearThisComponentOnNewGarmentLoad">
+        </div>
+    </div>
+    <div class="page">
+        <div id="routingBomDiv" class="container-fluid clearThisComponentOnNewGarmentLoad">
+        </div>
+    </div>
+    <div class="page">
+        <div id="sewBomDiv" class="container-fluid clearThisComponentOnNewGarmentLoad">
+        </div>
+    </div>
+    <div class="page">
+        <div id="sourceBomDiv" class="container-fluid clearThisComponentOnNewGarmentLoad">
+        </div>
+    </div>
+
+    <div class="page">
+        <div id="blockWeightSpreadDiv" class="container-fluid clearThisComponentOnNewGarmentLoad">
+        </div>
+    </div>
+    <div class="page">
+        <div id="blockWeightTrimDiv" class="container-fluid clearThisComponentOnNewGarmentLoad">
+        </div>
+    </div>
+    <div class="page">
+        <div id="developmentImages" class="container-fluid clearThisComponentOnNewGarmentLoad">
+        </div>
+    </div>
+    <div class="page">
+        <div id="imagesDiv" class="container-fluid clearThisComponentOnNewGarmentLoad">
+        </div>
+    </div>
+</body>
+</html>

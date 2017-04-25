@@ -1,0 +1,187 @@
+<queryResult>
+<script id="tinyhippos-injected"/>
+<metadata>
+<name>garmentToPatternToColorway</name>
+<description/>
+<objectIdentifier>wt.query.template.ReportTemplate:9990008</objectIdentifier>
+<sourceSystem>http://wsflexwebprd1v.res.hbi.net:80/Windchill</sourceSystem>
+<sourceGateway>
+http://wsflexwebprd1v.res.hbi.net/Windchill/servlet/WindchillAuthGW/
+</sourceGateway>
+<executingPrincipal>
+<fullName>menglish</fullName>
+<objectIdentifier>wt.org.WTUser:150128</objectIdentifier>
+</executingPrincipal>
+<timeOfExecution>2015-06-10 18:02:16 GMT</timeOfExecution>
+<locale>en_US</locale>
+</metadata>
+<auxData>
+<dataItem name="xsl2"/>
+<dataItem name="oid">OR:wt.query.template.ReportTemplate:9990008</dataItem>
+<dataItem name="xsl1"/>
+<dataItem name="action">ExecuteReport</dataItem>
+<dataItem name="format">formatDelegate</dataItem>
+<dataItem name="delegateName">XML</dataItem>
+<dataItem name="gProd">GP 10188 Boys Knit Brief ExpWB B252</dataItem>
+<dataItem name="jrb">wt.query.template.reportTemplateRB</dataItem>
+</auxData>
+<qml bypassAccessControl="false">
+<parameter name="gProd" type="java.lang.Object"/>
+<statement>
+<query>
+<select distinct="false" group="false">
+<object alias="Garment Product" heading="Garment Product Name" propertyName=""/>
+<object alias="Colorway Product" heading="Colorway Product Name" propertyName=""/>
+<object alias="Pattern product" heading="Pattern Product Name" propertyName=""/>
+</select>
+<from>
+<table alias="Colorway Product" isExternal="false">com.lcs.wc.product.LCSProduct</table>
+<table alias="com.lcs.wc.product.ProductToProductLink" isExternal="false">com.lcs.wc.product.ProductToProductLink</table>
+<table alias="Garment Product" isExternal="false">com.lcs.wc.product.LCSProduct</table>
+<table alias="Pattern product" isExternal="false">com.lcs.wc.product.LCSProduct</table>
+<table alias="Pattern Product link" isExternal="false">com.lcs.wc.product.ProductToProductLink</table>
+</from>
+<where>
+<compositeCondition type="and">
+<condition>
+<operand>
+<column alias="Colorway Product" heading="Master Reference.Object Id.Id" isExternal="false" propertyName="masterReference.objectId.id" selectOnly="false" type="long">masterReference.key.id</column>
+</operand>
+<operator type="equal"/>
+<operand>
+<column alias="com.lcs.wc.product.ProductToProductLink" heading="roleAObjectRef.key.id" isExternal="false" selectOnly="false" type="long">roleAObjectRef.key.id</column>
+</operand>
+</condition>
+<condition>
+<operand>
+<column alias="Garment Product" heading="Master Reference.Object Id.Id" isExternal="false" propertyName="masterReference.objectId.id" selectOnly="false" type="long">masterReference.key.id</column>
+</operand>
+<operator type="equal"/>
+<operand>
+<column alias="com.lcs.wc.product.ProductToProductLink" heading="roleBObjectRef.key.id" isExternal="false" selectOnly="false" type="long">roleBObjectRef.key.id</column>
+</operand>
+</condition>
+<condition>
+<operand>
+<column alias="Colorway Product" heading="Latest Iteration" isExternal="false" propertyName="latestIteration" selectOnly="false" type="boolean">iterationInfo.latest</column>
+</operand>
+<operator type="equal"/>
+<operand>
+<constant heading="1" isMacro="false" type="java.lang.Object">1</constant>
+</operand>
+</condition>
+<condition>
+<operand>
+<column alias="Garment Product" heading="Latest Iteration" isExternal="false" propertyName="latestIteration" selectOnly="false" type="boolean">iterationInfo.latest</column>
+</operand>
+<operator type="equal"/>
+<operand>
+<constant heading="1" isMacro="false" type="java.lang.Object">1</constant>
+</operand>
+</condition>
+<condition>
+<operand>
+<column alias="Colorway Product" heading="Flex Type Id Path" isExternal="false" propertyName="flexTypeIdPath" selectOnly="false" type="java.lang.String">flexTypeIdPath</column>
+</operand>
+<operator type="like"/>
+<operand>
+<constant heading="%1984481%" isMacro="false" type="java.lang.String">%1984481%</constant>
+</operand>
+</condition>
+<condition>
+<operand>
+<column alias="Pattern product" heading="Master Reference.Object Id.Id" isExternal="false" propertyName="masterReference.objectId.id" selectOnly="false" type="long">masterReference.key.id</column>
+</operand>
+<operator type="equal"/>
+<operand>
+<column alias="Pattern Product link" heading="roleAObjectRef.key.id" isExternal="false" selectOnly="false" type="long">roleAObjectRef.key.id</column>
+</operand>
+</condition>
+<condition>
+<operand>
+<column alias="Garment Product" heading="Master Reference.Object Id.Id" isExternal="false" propertyName="masterReference.objectId.id" selectOnly="false" type="long">masterReference.key.id</column>
+</operand>
+<operator type="equal"/>
+<operand>
+<column alias="Pattern Product link" heading="roleBObjectRef.key.id" isExternal="false" selectOnly="false" type="long">roleBObjectRef.key.id</column>
+</operand>
+</condition>
+<condition>
+<operand>
+<column alias="Pattern product" heading="Flex Type Id Path" isExternal="false" propertyName="flexTypeIdPath" selectOnly="false" type="java.lang.String">flexTypeIdPath</column>
+</operand>
+<operator type="like"/>
+<operand>
+<constant heading="%2377400%" isMacro="false" type="java.lang.Object">%2377400%</constant>
+</operand>
+</condition>
+<condition>
+<operand>
+<column alias="Pattern product" heading="Latest Iteration" isExternal="false" propertyName="latestIteration" selectOnly="false" type="boolean">iterationInfo.latest</column>
+</operand>
+<operator type="equal"/>
+<operand>
+<constant heading="1" isMacro="false" type="java.lang.Object">1</constant>
+</operand>
+</condition>
+<condition>
+<operand>
+<column alias="Garment Product" heading="Season Master Reference.Object Id.Id" isExternal="false" propertyName="seasonMasterReference.objectId.id" selectOnly="false" type="long">seasonMasterReference.key.id</column>
+</operand>
+<operator type="notEqual"/>
+<operand>
+<constant heading="0" isMacro="false" type="java.lang.Object">0</constant>
+</operand>
+</condition>
+<condition>
+<operand>
+<column alias="Pattern product" heading="Season Master Reference.Object Id.Id" isExternal="false" propertyName="seasonMasterReference.objectId.id" selectOnly="false" type="long">seasonMasterReference.key.id</column>
+</operand>
+<operator type="notEqual"/>
+<operand>
+<constant heading="0" isMacro="false" type="java.lang.Object">0</constant>
+</operand>
+</condition>
+<condition>
+<operand>
+<column alias="Colorway Product" heading="Season Master Reference.Object Id.Id" isExternal="false" propertyName="seasonMasterReference.objectId.id" selectOnly="false" type="long">seasonMasterReference.key.id</column>
+</operand>
+<operator type="notEqual"/>
+<operand>
+<constant heading="0" isMacro="false" type="java.lang.Object">0</constant>
+</operand>
+</condition>
+<condition>
+<operand>
+<column alias="Garment Product" heading="Name" isExternal="false" propertyName="name" selectOnly="false" type="java.lang.String">master>name</column>
+</operand>
+<operator type="like"/>
+<operand>
+<function heading="Concatenate" name="CONCAT" type="java.lang.String">
+<constant heading="%" isMacro="false" type="java.lang.Object">%</constant>
+<parameterTarget name="gProd"/>
+<constant heading="%" isMacro="false" type="java.lang.Object">%</constant>
+</function>
+</operand>
+</condition>
+</compositeCondition>
+</where>
+</query>
+</statement>
+</qml>
+<actualParameter parameterId="gProd" displayName="GP 10188 Boys Knit Brief ExpWB B252">GP 10188 Boys Knit Brief ExpWB B252</actualParameter>
+<result>
+<heading type="com.lcs.wc.product.LCSProduct" tag="Garment_Product_Name">Garment Product Name</heading>
+<heading type="com.lcs.wc.product.LCSProduct" tag="Colorway_Product_Name">Colorway Product Name</heading>
+<heading type="com.lcs.wc.product.LCSProduct" tag="Pattern_Product_Name">Pattern Product Name</heading>
+<row idx="1">
+<Garment_Product_Name type="com.lcs.wc.product.LCSProduct" objectId="2384183" branchId="2384182">B252 Boys Ctn Knit Rib ExpWB (Garment BIW)</Garment_Product_Name>
+<Colorway_Product_Name type="com.lcs.wc.product.LCSProduct" objectId="3202483" branchId="3202482">
+B252 Boys RL White/Dyed & Dunk Stripe Exp WB OE Brief (Colorways BIW)
+</Colorway_Product_Name>
+<Pattern_Product_Name type="com.lcs.wc.product.LCSProduct" objectId="2394098" branchId="2394097">
+T0409 Boys--Size:XS-2X Rib - Body 1x1 Brief (Innerwear Boys Patterns)
+</Pattern_Product_Name>
+</row>
+</result>
+</queryResult>

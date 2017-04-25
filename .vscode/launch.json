@@ -6,7 +6,7 @@
             "type": "chrome",
             "request": "attach",
             "port": 9222,
-            "sourceMaps": true,
+            "sourceMaps": false,
             "url": "http://wsflexwebprd1v/Windchill/rfa/hbi/reports/nodeTechPackProject/TechPackProjectBackup/"
         },
         {
@@ -15,9 +15,7 @@
             "request": "attach",
             "port": 9222,
             "url": "http://wsflexwebprd1v/Windchill/rfa/hbi/reports/nodeTechPackProject/TechPackProjectBackup/",
-            "webRoot": "${workspaceRoot}/out"
+            "webRoot": "${workspaceRoot}/TechPackProjectBackup/"
         }
     ]
 }
-
-// "url": "http://wsflexwebprd1v/Windchill/rfa/hbi/reports/nodeTechPackProject/TechPackProjectBackup/",

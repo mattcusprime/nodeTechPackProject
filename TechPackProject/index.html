@@ -78,7 +78,7 @@
             background-color: red;
         }
 
-        #topLeftNav2, .navbar-nav > li {
+        #topLeftNav, .navbar-nav > li {
             font-size: 13px;
         }
         /* Dropdown Button */
@@ -261,10 +261,12 @@
                         )
                     var nameToUse = $('#gProd').val();
                     if (arrGarmentProductsArrayForTypeAhead.indexOf(nameToUse) != -1 && !($('#spin').is(":visible"))) {
+                        $('#topLeftNav').text('GP ' + nameToUse);
                         $("#spin").show();
                         function doSomething() {
                             if ($.active == 0) {
                                 $('#spin').hide();
+                                 saveDataOfAllTables();
                                 clearInterval(IntervalId);
                             };
                         }
@@ -316,6 +318,7 @@
                                         function doSomething() {
                                             if ($.active == 0) {
                                                 $('#spin').hide();
+                                                 saveDataOfAllTables();
                                                 clearInterval(IntervalId);
                                             };
                                         }
@@ -414,7 +417,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a id="topLeftNav2" class="navbar-brand" href="#navTopDiv">Garment Spec Report Page</a>
+                <a id="topLeftNav" class="navbar-brand" href="javascript:makeMeScrollToDefinedTarget('#seasonSpecHeadersDiv',50,-100);">Garment Spec Report Page</a>
             </div>
 
             <div id="navbar" class="collapse navbar-collapse">
@@ -423,7 +426,7 @@
                         <div class="dropdown">
                             <button class="dropbtn">Product Details</button>
                             <div class="dropdown-content">
-                                <a href="javascript:makeMeScrollToDefinedTarget('#gattributeHolder',50,-100);">General Attributes</a>
+                                <a href="javascript:makeMeScrollToDefinedTarget('#seasonSpecHeadersDiv',50,-100);">General Attributes</a>
                                 <a href="javascript:makeMeScrollToDefinedTarget('#garmentHeader',50,-100);">Product Relationships</a>
                                 <a href="javascript:makeMeScrollToDefinedTarget('#sizeTableDiv',50,-100);">Sizing</a>
                                 <a href="javascript:makeMeScrollToDefinedTarget('#approvedSupplierDiv',50,-100);">Approved Suppliers</a>
@@ -499,9 +502,9 @@
             </form>
         </div>
     </div>
-    <div class="container-fluid">
-        <h4 id="topLeftNav" class="col-md-offset-4 col-md-8 col-lg-offset-4 col-lg-8 col-xs-offset-4 col-xs-8 col-sm-offset-4 col-sm-8"></h4>
-    </div>
+    <!--<div class="container-fluid">
+        <h4 id="topLeftNav" class="col-md-12 col-lg-12 col-xs-12 col-sm-12"></h4>
+    </div>-->
 
     <div class="page">
         <hr>

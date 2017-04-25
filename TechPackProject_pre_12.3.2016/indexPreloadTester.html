@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="Garment Spec Report">
+    <meta name="author" content="Matthew English">
+    <title>Garment Spec Report Page</title>
+    <!-- Bootstrap core CSS -->
+    <link href="bootstrap-3.3.4-dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Custom styles for this template -->
+    <link href="css/starter-template.css" rel="stylesheet">
+    <link href="css/carousel.css" rel="stylesheet" />
+    <link href="DataTables-1.10.1/media/css/jquery.dataTables_themeroller.css" rel="stylesheet" />
+
+    <script src="js/jquery-1.11.2.min.js"></script>
+    <script src="bootstrap-3.3.4-dist/js/bootstrap.min.js"></script>
+    <script src="js/d3.v3.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="js/ie10-viewport-bug-workaround.js"></script>
+    <script src="typeAhead/typeAheadBundle.js"></script>
+    <!--DataTables-->
+    <script src="DataTables-1.10.1/media/js/jquery.dataTables.js"></script>
+    <script src="DataTables-1.10.1/extensions/ColVis/js/dataTables.colVis.js"></script>
+    <script src="DataTables-1.10.1/extensions/TableTools/js/dataTables.tableTools.js"></script>
+    <script src="DataTables-1.10.1/extensions/FixedHeader/js/dataTables.fixedHeader.js"></script>
+    <link href="DataTables-1.10.1/media/css/jquery.dataTables.css" rel="stylesheet" />
+    <link href="DataTables-1.10.1/extensions/TableTools/css/dataTables.tableTools.css" rel="stylesheet" />
+    <link href="DataTables-1.10.1/extensions/ColVis/css/dataTables.colVis.css" rel="stylesheet" />
+    <link href="DataTables-1.10.1/extensions/FixedHeader/css/dataTables.fixedHeader.css" rel="stylesheet" />
+
+    <!--DataTables-->
+
+    <!--PrettyLoader-->
+    <link href="prettyLoader.css" rel="stylesheet" />
+    <!--PrettyLoader-->
+
+
+    <!--PrettyLoader-->
+    <script src="js/jquery.browser.js"></script>
+    <script src="js/jquery.prettyLoader.js"></script>
+    <!--PrettyLoader-->
+    <!--jsPdf-->
+    <script src="jsPdf/jspdf.js"></script>
+    <script src="jsPdf/libs/Deflate/adler32cs.js"></script>
+    <script src="jsPdf/libs/FileSaver.js/FileSaver.js"></script>
+    <script src="jsPdf/libs/Blob.js/BlobBuilder.js"></script>
+    <script src="jsPdf/jspdf.plugin.addimage.js"></script>
+    <script src="jsPdf/libs/png_support/zlib.js"></script>
+    <script src="jsPdf/libs/png_support/png.js"></script>
+    <script src="jsPdf/jspdf.plugin.png_support.js"></script>
+    <script src="jsPdf/jspdf.plugin.standard_fonts_metrics.js"></script>
+    <script src="jsPdf/jspdf.plugin.split_text_to_size.js"></script>
+    <script src="jsPdf/jspdf.plugin.from_html.js"></script>
+    <script src="jsPdf/examples/js/basic.js"></script>
+    <!--jsPdf-->
+    <!--Instantiation of custom object for garment product and other custom scripts-->
+    <!--<script src="js/garmentProductClass.js"></script> replaced this with more aptly named 'myfunctions.js'-->
+    <script src="js/createjs-2015.05.21.combined.js"></script>
+    <script src="js/myPreloadJsFunctions.js"></script>
+    <script src="js/myProjectFunctionsV2Deferred.js"></script>
+    <!--end construction of prototype of Garment Product Class-->
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="col-md-5"></div>
+        <div class="col-md-4">
+            <button id="btnTestStuff">Use me to test things!</button>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+    
+
+    <script>
+
+        var currentGarmentProduct = new garmentProduct();
+        
+        $('document').ready(function () {
+            $('#btnTestStuff').click(function () {
+                currentGarmentProduct.name = 'GP 10188 Boys Knit Brief ExpWB B252';
+                currentGarmentProduct.getAllMyDataForMyActiveSpec('http://wsflexwebprd1v.res.hbi.net/', 5535179);
+                console.log(currentGarmentProduct);
+
+            });
+        });
+
+
+
+    </script>
+</body>
+</html>

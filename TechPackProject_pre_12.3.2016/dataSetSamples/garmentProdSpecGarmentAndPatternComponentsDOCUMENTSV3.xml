@@ -1,0 +1,1072 @@
+<queryResult>
+<script id="tinyhippos-injected"/>
+<metadata>
+<name>
+garmentProdSpecGarmentAndPatternComponentsDOCUMENTSV3
+</name>
+<description/>
+<objectIdentifier>wt.query.template.ReportTemplate:9996723</objectIdentifier>
+<sourceSystem>http://wsflexwebprd1v.res.hbi.net:80/Windchill</sourceSystem>
+<sourceGateway>
+http://wsflexwebprd1v.res.hbi.net/Windchill/servlet/WindchillAuthGW/
+</sourceGateway>
+<executingPrincipal>
+<fullName>menglish</fullName>
+<objectIdentifier>wt.org.WTUser:150128</objectIdentifier>
+</executingPrincipal>
+<timeOfExecution>2015-06-10 18:02:19 GMT</timeOfExecution>
+<locale>en_US</locale>
+</metadata>
+<auxData>
+<dataItem name="xsl2"/>
+<dataItem name="oid">OR:wt.query.template.ReportTemplate:9996723</dataItem>
+<dataItem name="xsl1"/>
+<dataItem name="action">ExecuteReport</dataItem>
+<dataItem name="gSpecId">5535179</dataItem>
+<dataItem name="format">formatDelegate</dataItem>
+<dataItem name="delegateName">XML</dataItem>
+<dataItem name="jrb">wt.query.template.reportTemplateRB</dataItem>
+</auxData>
+<qml bypassAccessControl="true">
+<parameter name="gSpecId" type="java.lang.Object"/>
+<statement>
+<query>
+<select distinct="true" group="false">
+<column alias="com.lcs.wc.specification.FlexSpecToComponentLink" heading="Component Type" isExternal="false" propertyName="componentType" selectOnly="false" type="java.lang.String">componentType</column>
+<column alias="com.lcs.wc.specification.FlexSpecToComponentLink" heading="Component Parent Id" isExternal="false" propertyName="componentParentId" selectOnly="false" type="java.lang.String">componentParentId</column>
+<column alias="com.lcs.wc.specification.FlexSpecToComponentLink" heading="Spec Version" isExternal="false" propertyName="specVersion" selectOnly="false" type="java.lang.String">specVersion</column>
+<column alias="com.lcs.wc.specification.FlexSpecToComponentLink" heading="Component Reference.Object Id.Id" isExternal="false" propertyName="componentReference.objectId.id" selectOnly="false" type="long">componentReference.key.id</column>
+<object alias="com.lcs.wc.document.LCSDocument" heading="com.lcs.wc.document.LCSDocument" propertyName=""/>
+<object alias="Document Master" heading="Document Master" propertyName=""/>
+<column alias="Document Master" heading="Document Master Persist Info.Object Identifier.Id" isExternal="false" propertyName="persistInfo.objectIdentifier.id" selectOnly="false" type="long">thePersistInfo.theObjectIdentifier.id</column>
+<column alias="Document Master" heading="Document Master Name" isExternal="false" propertyName="name" selectOnly="false" type="java.lang.String">name</column>
+<column alias="Document Master" heading="Document Master Number" isExternal="false" propertyName="number" selectOnly="false" type="java.lang.String">number</column>
+<column alias="com.lcs.wc.specification.FlexSpecToComponentLink" heading="specToCompMasterSpecId" isExternal="false" propertyName="specificationMasterReference.objectId.id" selectOnly="false" type="long">specificationMasterReference.key.id</column>
+<column alias="Garment Spec" heading="gSpecMasterSpecId" isExternal="false" selectOnly="false" type="long">master>thePersistInfo.theObjectIdentifier.id</column>
+<column alias="Holder To Content" heading="roleAObjectRef.key.id" isExternal="false" selectOnly="false" type="long">roleAObjectRef.key.id</column>
+<column alias="Holder To Content" heading="roleBObjectRef.key.id" isExternal="false" selectOnly="false" type="long">roleBObjectRef.key.id</column>
+<column alias="Application Data" heading="fileName" isExternal="false" propertyName="fileName" selectOnly="false" type="java.lang.String">fileName</column>
+<column alias="Application Data" heading="Role" isExternal="false" propertyName="role" selectOnly="false" type="wt.content.ContentRoleType">role</column>
+<column alias="Application Data" heading="File Size" isExternal="false" propertyName="fileSize" selectOnly="false" type="long">fileSize</column>
+<column alias="Application Data" heading="File Version" isExternal="false" propertyName="fileVersion" selectOnly="false" type="java.lang.String">fileVersion</column>
+<object alias="Application Data" heading="Format Name" propertyName="formatName">
+<property name="formatName"/>
+</object>
+<object alias="Application Data" heading="Application Data" propertyName=""/>
+<column alias="Application Data" heading="Description" isExternal="false" propertyName="description" selectOnly="false" type="java.lang.String">description</column>
+<column alias="Garment Spec" heading="garmentSpecId" isExternal="false" propertyName="persistInfo.objectIdentifier.id" selectOnly="false" type="long">thePersistInfo.theObjectIdentifier.id</column>
+<column alias="Garment Spec" heading="gSpecName" isExternal="false" propertyName="name" selectOnly="false" type="java.lang.String">master>name</column>
+<column alias="PatternSpec" heading="patternSpecId" isExternal="false" propertyName="persistInfo.objectIdentifier.id" selectOnly="false" type="long">thePersistInfo.theObjectIdentifier.id</column>
+<column alias="PatternSpec" heading="pSpecName" isExternal="false" propertyName="name" selectOnly="false" type="java.lang.String">master>name</column>
+<column alias="Fv Item" heading="Unique Sequence Number" isExternal="false" propertyName="uniqueSequenceNumber" selectOnly="false" type="long">uniqueSequenceNumber</column>
+<object alias="Fv Item" heading="fileNameOnVault" propertyName="name">
+<property name="name"/>
+</object>
+</select>
+<from>
+<table alias="Garment Spec" isExternal="false">com.lcs.wc.specification.FlexSpecification</table>
+<table alias="com.lcs.wc.specification.FlexSpecToComponentLink" isExternal="false">com.lcs.wc.specification.FlexSpecToComponentLink</table>
+<table alias="Document Master" isExternal="false">wt.doc.WTDocumentMaster</table>
+<table alias="com.lcs.wc.document.LCSDocument" isExternal="false">com.lcs.wc.document.LCSDocument</table>
+<table alias="Holder To Content" isExternal="false">wt.content.HolderToContent</table>
+<table alias="Application Data" isExternal="false">wt.content.ApplicationData</table>
+<table alias="PatternSpec" isExternal="false">com.lcs.wc.specification.FlexSpecification</table>
+<table alias="SpecToSpecLink" isExternal="false">com.lcs.wc.specification.SpecToSpecLink</table>
+<table alias="Fv Item" isExternal="false">wt.fv.FvItem</table>
+</from>
+<where>
+<compositeCondition type="and">
+<condition>
+<operand>
+<column alias="Garment Spec" heading="Latest Iteration" isExternal="false" propertyName="latestIteration" selectOnly="false" type="boolean">iterationInfo.latest</column>
+</operand>
+<operator type="equal"/>
+<operand>
+<constant heading="1" isMacro="false" type="java.lang.Object">1</constant>
+</operand>
+</condition>
+<compositeCondition type="or">
+<condition>
+<operand>
+<column alias="com.lcs.wc.specification.FlexSpecToComponentLink" heading="Specification Master Reference.Object Id.Id" isExternal="false" propertyName="specificationMasterReference.objectId.id" selectOnly="false" type="long">specificationMasterReference.key.id</column>
+</operand>
+<operator type="equal"/>
+<operand>
+<column alias="Garment Spec" heading="master>thePersistInfo.theObjectIdentifier.id" isExternal="false" selectOnly="false" type="long">master>thePersistInfo.theObjectIdentifier.id</column>
+</operand>
+</condition>
+<condition>
+<operand>
+<column alias="PatternSpec" heading="master>thePersistInfo.theObjectIdentifier.id" isExternal="false" selectOnly="false" type="long">master>thePersistInfo.theObjectIdentifier.id</column>
+</operand>
+<operator type="equal"/>
+<operand>
+<column alias="com.lcs.wc.specification.FlexSpecToComponentLink" heading="Specification Master Reference.Object Id.Id" isExternal="false" propertyName="specificationMasterReference.objectId.id" selectOnly="false" type="long">specificationMasterReference.key.id</column>
+</operand>
+</condition>
+</compositeCondition>
+<condition>
+<operand>
+<column alias="com.lcs.wc.specification.FlexSpecToComponentLink" heading="Component Reference.Object Id.Id" isExternal="false" propertyName="componentReference.objectId.id" selectOnly="false" type="long">componentReference.key.id</column>
+</operand>
+<operator type="equal"/>
+<operand>
+<column alias="Document Master" heading="Persist Info.Object Identifier.Id" isExternal="false" propertyName="persistInfo.objectIdentifier.id" selectOnly="false" type="long">thePersistInfo.theObjectIdentifier.id</column>
+</operand>
+</condition>
+<condition>
+<operand>
+<column alias="Garment Spec" heading="Persist Info.Object Identifier.Id" isExternal="false" propertyName="persistInfo.objectIdentifier.id" selectOnly="false" type="long">thePersistInfo.theObjectIdentifier.id</column>
+</operand>
+<operator type="equal"/>
+<operand>
+<parameterTarget name="gSpecId"/>
+</operand>
+</condition>
+<condition>
+<operand>
+<column alias="com.lcs.wc.document.LCSDocument" heading="master>thePersistInfo.theObjectIdentifier.id" isExternal="false" selectOnly="false" type="long">master>thePersistInfo.theObjectIdentifier.id</column>
+</operand>
+<operator type="equal"/>
+<operand>
+<column alias="Document Master" heading="Persist Info.Object Identifier.Id" isExternal="false" propertyName="persistInfo.objectIdentifier.id" selectOnly="false" type="long">thePersistInfo.theObjectIdentifier.id</column>
+</operand>
+</condition>
+<condition>
+<operand>
+<column alias="com.lcs.wc.document.LCSDocument" heading="iterationInfo.identifier.iterationId" isExternal="false" selectOnly="false" type="java.lang.String">iterationInfo.identifier.iterationId</column>
+</operand>
+<operator type="equal"/>
+<operand>
+<constant heading="1" isMacro="false" type="java.lang.Object">1</constant>
+</operand>
+</condition>
+<condition>
+<operand>
+<column alias="Application Data" heading="File Name" isExternal="false" propertyName="fileName" selectOnly="false" type="java.lang.String">fileName</column>
+</operand>
+<operator type="like"/>
+<operand>
+<constant heading="%.png%" isMacro="false" type="java.lang.Object">%.png%</constant>
+</operand>
+</condition>
+<condition>
+<operand>
+<column alias="Garment Spec" heading="master>thePersistInfo.theObjectIdentifier.id" isExternal="false" selectOnly="false" type="long">master>thePersistInfo.theObjectIdentifier.id</column>
+</operand>
+<operator type="equal"/>
+<operand>
+<column alias="SpecToSpecLink" heading="roleAObjectRef.key.id" isExternal="false" selectOnly="false" type="long">roleAObjectRef.key.id</column>
+</operand>
+</condition>
+<condition>
+<operand>
+<column alias="SpecToSpecLink" heading="roleBObjectRef.key.id" isExternal="false" selectOnly="false" type="long">roleBObjectRef.key.id</column>
+</operand>
+<operator type="equal"/>
+<operand>
+<column alias="PatternSpec" heading="master>thePersistInfo.theObjectIdentifier.id" isExternal="false" selectOnly="false" type="long">master>thePersistInfo.theObjectIdentifier.id</column>
+</operand>
+</condition>
+<condition>
+<operand>
+<column alias="Fv Item" heading="Stream Id" isExternal="false" propertyName="streamId" selectOnly="false" type="long">streamId</column>
+</operand>
+<operator type="equal"/>
+<operand>
+<column alias="Application Data" heading="Stream Id" isExternal="false" propertyName="streamId" selectOnly="false" type="long">streamId</column>
+</operand>
+</condition>
+</compositeCondition>
+</where>
+<referenceJoin>
+<join name="roleAObjectRef">
+<aliasTarget alias="Holder To Content"/>
+<aliasTarget alias="com.lcs.wc.document.LCSDocument"/>
+</join>
+<join name="roleBObjectRef">
+<aliasTarget alias="Holder To Content"/>
+<aliasTarget alias="Application Data"/>
+</join>
+</referenceJoin>
+</query>
+</statement>
+</qml>
+<actualParameter parameterId="gSpecId" displayName="5535179">5535179</actualParameter>
+<result>
+<heading type="java.lang.String" tag="Component_Type">Component Type</heading>
+<heading type="java.lang.String" tag="Component_Parent_Id">Component Parent Id</heading>
+<heading type="java.lang.String" tag="Spec_Version">Spec Version</heading>
+<heading type="java.lang.Long" tag="Component_Reference_Object_Id_Id">Component Reference.Object Id.Id</heading>
+<heading type="com.lcs.wc.document.LCSDocument" tag="com_lcs_wc_document_LCSDocument">com.lcs.wc.document.LCSDocument</heading>
+<heading type="wt.doc.WTDocumentMaster" tag="Document_Master">Document Master</heading>
+<heading type="java.lang.Long" tag="Document_Master_Persist_Info_Object_Identifier_Id">Document Master Persist Info.Object Identifier.Id</heading>
+<heading type="java.lang.String" tag="Document_Master_Name">Document Master Name</heading>
+<heading type="java.lang.String" tag="Document_Master_Number">Document Master Number</heading>
+<heading type="java.lang.Long" tag="specToCompMasterSpecId">specToCompMasterSpecId</heading>
+<heading type="java.lang.Long" tag="gSpecMasterSpecId">gSpecMasterSpecId</heading>
+<heading type="java.lang.Long" tag="roleAObjectRef_key_id">roleAObjectRef.key.id</heading>
+<heading type="java.lang.Long" tag="roleBObjectRef_key_id">roleBObjectRef.key.id</heading>
+<heading type="java.lang.String" tag="fileName">fileName</heading>
+<heading type="wt.content.ContentRoleType" tag="Role">Role</heading>
+<heading type="java.lang.Long" tag="File_Size">File Size</heading>
+<heading type="java.lang.String" tag="File_Version">File Version</heading>
+<heading type="java.lang.String" tag="Format_Name">Format Name</heading>
+<heading type="wt.content.ApplicationData" tag="Application_Data">Application Data</heading>
+<heading type="java.lang.String" tag="Description">Description</heading>
+<heading type="java.lang.Long" tag="garmentSpecId">garmentSpecId</heading>
+<heading type="java.lang.String" tag="gSpecName">gSpecName</heading>
+<heading type="java.lang.Long" tag="patternSpecId">patternSpecId</heading>
+<heading type="java.lang.String" tag="pSpecName">pSpecName</heading>
+<heading type="java.lang.Long" tag="Unique_Sequence_Number">Unique Sequence Number</heading>
+<heading type="java.lang.String" tag="fileNameOnVault">fileNameOnVault</heading>
+<row idx="1">
+<Component_Type>IMAGES</Component_Type>
+<Component_Parent_Id isNull="true"/>
+<Spec_Version>A</Spec_Version>
+<Component_Reference_Object_Id_Id>2394233</Component_Reference_Object_Id_Id>
+<com_lcs_wc_document_LCSDocument type="com.lcs.wc.document.LCSDocument" objectId="2394236" branchId="2394235">DOCUMENT:14166, A.1</com_lcs_wc_document_LCSDocument>
+<Document_Master type="wt.doc.WTDocumentMaster" objectId="2394233">DOCUMENT:14166</Document_Master>
+<Document_Master_Persist_Info_Object_Identifier_Id>2394233</Document_Master_Persist_Info_Object_Identifier_Id>
+<Document_Master_Name>004 : Marker Layout - T0409A-60 FT,BK-70.5</Document_Master_Name>
+<Document_Master_Number>DOCUMENT:14166</Document_Master_Number>
+<specToCompMasterSpecId>2394169</specToCompMasterSpecId>
+<gSpecMasterSpecId>5532943</gSpecMasterSpecId>
+<roleAObjectRef_key_id>2394236</roleAObjectRef_key_id>
+<roleBObjectRef_key_id>2394241</roleBObjectRef_key_id>
+<fileName>T0409A2XS-S-M.png</fileName>
+<Role>SECONDARY</Role>
+<File_Size>13660</File_Size>
+<File_Version isNull="true"/>
+<Format_Name isNull="true"/>
+<Application_Data type="wt.content.ApplicationData" objectId="2394241">
+T0409A2XS-S-M.png (com.lcs.wc.document.LCSDocument - DOCUMENT:14166, A.1)
+</Application_Data>
+<Description>IMAGE1|~*~|1076x400</Description>
+<garmentSpecId>5535179</garmentSpecId>
+<gSpecName>002 :</gSpecName>
+<patternSpecId>2394172</patternSpecId>
+<pSpecName>001 :</pSpecName>
+<Unique_Sequence_Number>2595</Unique_Sequence_Number>
+<fileNameOnVault>00000000000a23</fileNameOnVault>
+</row>
+<row idx="2">
+<Component_Type>IMAGES</Component_Type>
+<Component_Parent_Id isNull="true"/>
+<Spec_Version>A</Spec_Version>
+<Component_Reference_Object_Id_Id>2394245</Component_Reference_Object_Id_Id>
+<com_lcs_wc_document_LCSDocument type="com.lcs.wc.document.LCSDocument" objectId="2394248" branchId="2394247">DOCUMENT:14168, A.1</com_lcs_wc_document_LCSDocument>
+<Document_Master type="wt.doc.WTDocumentMaster" objectId="2394245">DOCUMENT:14168</Document_Master>
+<Document_Master_Persist_Info_Object_Identifier_Id>2394245</Document_Master_Persist_Info_Object_Identifier_Id>
+<Document_Master_Name>005 : Marker Layout - T0409A-60 FT,BK-31</Document_Master_Name>
+<Document_Master_Number>DOCUMENT:14168</Document_Master_Number>
+<specToCompMasterSpecId>2394169</specToCompMasterSpecId>
+<gSpecMasterSpecId>5532943</gSpecMasterSpecId>
+<roleAObjectRef_key_id>2394248</roleAObjectRef_key_id>
+<roleBObjectRef_key_id>2394254</roleBObjectRef_key_id>
+<fileName>T0409A4L-XL.png</fileName>
+<Role>SECONDARY</Role>
+<File_Size>5779</File_Size>
+<File_Version isNull="true"/>
+<Format_Name isNull="true"/>
+<Application_Data type="wt.content.ApplicationData" objectId="2394254">
+T0409A4L-XL.png (com.lcs.wc.document.LCSDocument - DOCUMENT:14168, A.1)
+</Application_Data>
+<Description>IMAGE2|~*~|1116x177</Description>
+<garmentSpecId>5535179</garmentSpecId>
+<gSpecName>002 :</gSpecName>
+<patternSpecId>2427375</patternSpecId>
+<pSpecName>001 :</pSpecName>
+<Unique_Sequence_Number>2598</Unique_Sequence_Number>
+<fileNameOnVault>00000000000a26</fileNameOnVault>
+</row>
+<row idx="3">
+<Component_Type>IMAGES</Component_Type>
+<Component_Parent_Id isNull="true"/>
+<Spec_Version>A</Spec_Version>
+<Component_Reference_Object_Id_Id>2394257</Component_Reference_Object_Id_Id>
+<com_lcs_wc_document_LCSDocument type="com.lcs.wc.document.LCSDocument" objectId="2394260" branchId="2394259">DOCUMENT:14170, A.1</com_lcs_wc_document_LCSDocument>
+<Document_Master type="wt.doc.WTDocumentMaster" objectId="2394257">DOCUMENT:14170</Document_Master>
+<Document_Master_Persist_Info_Object_Identifier_Id>2394257</Document_Master_Persist_Info_Object_Identifier_Id>
+<Document_Master_Name>006 : Marker Layout - T0409A-60 FT,BK-35</Document_Master_Name>
+<Document_Master_Number>DOCUMENT:14170</Document_Master_Number>
+<specToCompMasterSpecId>2394169</specToCompMasterSpecId>
+<gSpecMasterSpecId>5532943</gSpecMasterSpecId>
+<roleAObjectRef_key_id>2394260</roleAObjectRef_key_id>
+<roleBObjectRef_key_id>2394265</roleBObjectRef_key_id>
+<fileName>T0409A35.png</fileName>
+<Role>SECONDARY</Role>
+<File_Size>21096</File_Size>
+<File_Version isNull="true"/>
+<Format_Name isNull="true"/>
+<Application_Data type="wt.content.ApplicationData" objectId="2394265">
+T0409A35.png (com.lcs.wc.document.LCSDocument - DOCUMENT:14170, A.1)
+</Application_Data>
+<Description>IMAGE1|~*~|733x1310</Description>
+<garmentSpecId>5535179</garmentSpecId>
+<gSpecName>002 :</gSpecName>
+<patternSpecId>2427375</patternSpecId>
+<pSpecName>001 :</pSpecName>
+<Unique_Sequence_Number>3639</Unique_Sequence_Number>
+<fileNameOnVault>00000000000e37</fileNameOnVault>
+</row>
+<row idx="4">
+<Component_Type>IMAGES</Component_Type>
+<Component_Parent_Id isNull="true"/>
+<Spec_Version>A</Spec_Version>
+<Component_Reference_Object_Id_Id>2394206</Component_Reference_Object_Id_Id>
+<com_lcs_wc_document_LCSDocument type="com.lcs.wc.document.LCSDocument" objectId="2394209" branchId="2394208">DOCUMENT:14162, A.1</com_lcs_wc_document_LCSDocument>
+<Document_Master type="wt.doc.WTDocumentMaster" objectId="2394206">DOCUMENT:14162</Document_Master>
+<Document_Master_Persist_Info_Object_Identifier_Id>2394206</Document_Master_Persist_Info_Object_Identifier_Id>
+<Document_Master_Name>002 : Measurements - T0409A PMEAS</Document_Master_Name>
+<Document_Master_Number>DOCUMENT:14162</Document_Master_Number>
+<specToCompMasterSpecId>2394169</specToCompMasterSpecId>
+<gSpecMasterSpecId>5532943</gSpecMasterSpecId>
+<roleAObjectRef_key_id>2394209</roleAObjectRef_key_id>
+<roleBObjectRef_key_id>2394215</roleBObjectRef_key_id>
+<fileName>B252 PMEAS-Cell1.png</fileName>
+<Role>SECONDARY</Role>
+<File_Size>33838</File_Size>
+<File_Version isNull="true"/>
+<Format_Name isNull="true"/>
+<Application_Data type="wt.content.ApplicationData" objectId="2394215">
+B252 PMEAS-Cell1.png (com.lcs.wc.document.LCSDocument - DOCUMENT:14162, A.1)
+</Application_Data>
+<Description>IMAGE1|~*~|795x597</Description>
+<garmentSpecId>5535179</garmentSpecId>
+<gSpecName>002 :</gSpecName>
+<patternSpecId>2394172</patternSpecId>
+<pSpecName>001 :</pSpecName>
+<Unique_Sequence_Number>2548</Unique_Sequence_Number>
+<fileNameOnVault>000000000009f4</fileNameOnVault>
+</row>
+<row idx="5">
+<Component_Type>IMAGES</Component_Type>
+<Component_Parent_Id isNull="true"/>
+<Spec_Version>A</Spec_Version>
+<Component_Reference_Object_Id_Id>2394223</Component_Reference_Object_Id_Id>
+<com_lcs_wc_document_LCSDocument type="com.lcs.wc.document.LCSDocument" objectId="2394226" branchId="2394225">DOCUMENT:14164, A.1</com_lcs_wc_document_LCSDocument>
+<Document_Master type="wt.doc.WTDocumentMaster" objectId="2394223">DOCUMENT:14164</Document_Master>
+<Document_Master_Persist_Info_Object_Identifier_Id>2394223</Document_Master_Persist_Info_Object_Identifier_Id>
+<Document_Master_Name>003 : Marker Layout - T0409A-60 FT,BK-36.5</Document_Master_Name>
+<Document_Master_Number>DOCUMENT:14164</Document_Master_Number>
+<specToCompMasterSpecId>2394169</specToCompMasterSpecId>
+<gSpecMasterSpecId>5532943</gSpecMasterSpecId>
+<roleAObjectRef_key_id>2394226</roleAObjectRef_key_id>
+<roleBObjectRef_key_id>2394231</roleBObjectRef_key_id>
+<fileName>T0409A-36.5.png</fileName>
+<Role>SECONDARY</Role>
+<File_Size>29218</File_Size>
+<File_Version isNull="true"/>
+<Format_Name isNull="true"/>
+<Application_Data type="wt.content.ApplicationData" objectId="2394231">
+T0409A-36.5.png (com.lcs.wc.document.LCSDocument - DOCUMENT:14164, A.1)
+</Application_Data>
+<Description>IMAGE1|~*~|1139x1507</Description>
+<garmentSpecId>5535179</garmentSpecId>
+<gSpecName>002 :</gSpecName>
+<patternSpecId>2427375</patternSpecId>
+<pSpecName>001 :</pSpecName>
+<Unique_Sequence_Number>3621</Unique_Sequence_Number>
+<fileNameOnVault>00000000000e25</fileNameOnVault>
+</row>
+<row idx="6">
+<Component_Type>IMAGES</Component_Type>
+<Component_Parent_Id isNull="true"/>
+<Spec_Version>A</Spec_Version>
+<Component_Reference_Object_Id_Id>2394233</Component_Reference_Object_Id_Id>
+<com_lcs_wc_document_LCSDocument type="com.lcs.wc.document.LCSDocument" objectId="2394236" branchId="2394235">DOCUMENT:14166, A.1</com_lcs_wc_document_LCSDocument>
+<Document_Master type="wt.doc.WTDocumentMaster" objectId="2394233">DOCUMENT:14166</Document_Master>
+<Document_Master_Persist_Info_Object_Identifier_Id>2394233</Document_Master_Persist_Info_Object_Identifier_Id>
+<Document_Master_Name>004 : Marker Layout - T0409A-60 FT,BK-70.5</Document_Master_Name>
+<Document_Master_Number>DOCUMENT:14166</Document_Master_Number>
+<specToCompMasterSpecId>2394169</specToCompMasterSpecId>
+<gSpecMasterSpecId>5532943</gSpecMasterSpecId>
+<roleAObjectRef_key_id>2394236</roleAObjectRef_key_id>
+<roleBObjectRef_key_id>2394241</roleBObjectRef_key_id>
+<fileName>T0409A2XS-S-M.png</fileName>
+<Role>SECONDARY</Role>
+<File_Size>13660</File_Size>
+<File_Version isNull="true"/>
+<Format_Name isNull="true"/>
+<Application_Data type="wt.content.ApplicationData" objectId="2394241">
+T0409A2XS-S-M.png (com.lcs.wc.document.LCSDocument - DOCUMENT:14166, A.1)
+</Application_Data>
+<Description>IMAGE1|~*~|1076x400</Description>
+<garmentSpecId>5535179</garmentSpecId>
+<gSpecName>002 :</gSpecName>
+<patternSpecId>2427375</patternSpecId>
+<pSpecName>001 :</pSpecName>
+<Unique_Sequence_Number>2595</Unique_Sequence_Number>
+<fileNameOnVault>00000000000a23</fileNameOnVault>
+</row>
+<row idx="7">
+<Component_Type>IMAGES</Component_Type>
+<Component_Parent_Id isNull="true"/>
+<Spec_Version>A</Spec_Version>
+<Component_Reference_Object_Id_Id>2394185</Component_Reference_Object_Id_Id>
+<com_lcs_wc_document_LCSDocument type="com.lcs.wc.document.LCSDocument" objectId="2394188" branchId="2394187">DOCUMENT:14160, A.1</com_lcs_wc_document_LCSDocument>
+<Document_Master type="wt.doc.WTDocumentMaster" objectId="2394185">DOCUMENT:14160</Document_Master>
+<Document_Master_Persist_Info_Object_Identifier_Id>2394185</Document_Master_Persist_Info_Object_Identifier_Id>
+<Document_Master_Name>001 : Front/Back Image - Boys Ctn Knit Rib ExpWB</Document_Master_Name>
+<Document_Master_Number>DOCUMENT:14160</Document_Master_Number>
+<specToCompMasterSpecId>2394169</specToCompMasterSpecId>
+<gSpecMasterSpecId>5532943</gSpecMasterSpecId>
+<roleAObjectRef_key_id>2394188</roleAObjectRef_key_id>
+<roleBObjectRef_key_id>2394196</roleBObjectRef_key_id>
+<fileName>B252.2252.7764ft.bk-Cell2.png</fileName>
+<Role>SECONDARY</Role>
+<File_Size>9931</File_Size>
+<File_Version isNull="true"/>
+<Format_Name isNull="true"/>
+<Application_Data type="wt.content.ApplicationData" objectId="2394196">
+B252.2252.7764ft.bk-Cell2.png (com.lcs.wc.document.LCSDocument - DOCUMENT:14160, A.1)
+</Application_Data>
+<Description>IMAGE2|~*~|185x166</Description>
+<garmentSpecId>5535179</garmentSpecId>
+<gSpecName>002 :</gSpecName>
+<patternSpecId>2394172</patternSpecId>
+<pSpecName>001 :</pSpecName>
+<Unique_Sequence_Number>3180</Unique_Sequence_Number>
+<fileNameOnVault>00000000000c6c</fileNameOnVault>
+</row>
+<row idx="8">
+<Component_Type>IMAGES</Component_Type>
+<Component_Parent_Id isNull="true"/>
+<Spec_Version>A</Spec_Version>
+<Component_Reference_Object_Id_Id>2394185</Component_Reference_Object_Id_Id>
+<com_lcs_wc_document_LCSDocument type="com.lcs.wc.document.LCSDocument" objectId="2394188" branchId="2394187">DOCUMENT:14160, A.1</com_lcs_wc_document_LCSDocument>
+<Document_Master type="wt.doc.WTDocumentMaster" objectId="2394185">DOCUMENT:14160</Document_Master>
+<Document_Master_Persist_Info_Object_Identifier_Id>2394185</Document_Master_Persist_Info_Object_Identifier_Id>
+<Document_Master_Name>001 : Front/Back Image - Boys Ctn Knit Rib ExpWB</Document_Master_Name>
+<Document_Master_Number>DOCUMENT:14160</Document_Master_Number>
+<specToCompMasterSpecId>2394169</specToCompMasterSpecId>
+<gSpecMasterSpecId>5532943</gSpecMasterSpecId>
+<roleAObjectRef_key_id>2394188</roleAObjectRef_key_id>
+<roleBObjectRef_key_id>2394195</roleBObjectRef_key_id>
+<fileName>B252.2252.7764ft.bk-Cell1.png</fileName>
+<Role>SECONDARY</Role>
+<File_Size>16881</File_Size>
+<File_Version isNull="true"/>
+<Format_Name isNull="true"/>
+<Application_Data type="wt.content.ApplicationData" objectId="2394195">
+B252.2252.7764ft.bk-Cell1.png (com.lcs.wc.document.LCSDocument - DOCUMENT:14160, A.1)
+</Application_Data>
+<Description>IMAGE1|~*~|185x167</Description>
+<garmentSpecId>5535179</garmentSpecId>
+<gSpecName>002 :</gSpecName>
+<patternSpecId>2427375</patternSpecId>
+<pSpecName>001 :</pSpecName>
+<Unique_Sequence_Number>3179</Unique_Sequence_Number>
+<fileNameOnVault>00000000000c6b</fileNameOnVault>
+</row>
+<row idx="9">
+<Component_Type>IMAGES</Component_Type>
+<Component_Parent_Id isNull="true"/>
+<Spec_Version>A</Spec_Version>
+<Component_Reference_Object_Id_Id>2394185</Component_Reference_Object_Id_Id>
+<com_lcs_wc_document_LCSDocument type="com.lcs.wc.document.LCSDocument" objectId="2394188" branchId="2394187">DOCUMENT:14160, A.1</com_lcs_wc_document_LCSDocument>
+<Document_Master type="wt.doc.WTDocumentMaster" objectId="2394185">DOCUMENT:14160</Document_Master>
+<Document_Master_Persist_Info_Object_Identifier_Id>2394185</Document_Master_Persist_Info_Object_Identifier_Id>
+<Document_Master_Name>001 : Front/Back Image - Boys Ctn Knit Rib ExpWB</Document_Master_Name>
+<Document_Master_Number>DOCUMENT:14160</Document_Master_Number>
+<specToCompMasterSpecId>2394169</specToCompMasterSpecId>
+<gSpecMasterSpecId>5532943</gSpecMasterSpecId>
+<roleAObjectRef_key_id>2394188</roleAObjectRef_key_id>
+<roleBObjectRef_key_id>2394195</roleBObjectRef_key_id>
+<fileName>B252.2252.7764ft.bk-Cell1.png</fileName>
+<Role>SECONDARY</Role>
+<File_Size>16881</File_Size>
+<File_Version isNull="true"/>
+<Format_Name isNull="true"/>
+<Application_Data type="wt.content.ApplicationData" objectId="2394195">
+B252.2252.7764ft.bk-Cell1.png (com.lcs.wc.document.LCSDocument - DOCUMENT:14160, A.1)
+</Application_Data>
+<Description>IMAGE1|~*~|185x167</Description>
+<garmentSpecId>5535179</garmentSpecId>
+<gSpecName>002 :</gSpecName>
+<patternSpecId>2394172</patternSpecId>
+<pSpecName>001 :</pSpecName>
+<Unique_Sequence_Number>3179</Unique_Sequence_Number>
+<fileNameOnVault>00000000000c6b</fileNameOnVault>
+</row>
+<row idx="10">
+<Component_Type>IMAGES</Component_Type>
+<Component_Parent_Id isNull="true"/>
+<Spec_Version>A</Spec_Version>
+<Component_Reference_Object_Id_Id>2394245</Component_Reference_Object_Id_Id>
+<com_lcs_wc_document_LCSDocument type="com.lcs.wc.document.LCSDocument" objectId="2394248" branchId="2394247">DOCUMENT:14168, A.1</com_lcs_wc_document_LCSDocument>
+<Document_Master type="wt.doc.WTDocumentMaster" objectId="2394245">DOCUMENT:14168</Document_Master>
+<Document_Master_Persist_Info_Object_Identifier_Id>2394245</Document_Master_Persist_Info_Object_Identifier_Id>
+<Document_Master_Name>005 : Marker Layout - T0409A-60 FT,BK-31</Document_Master_Name>
+<Document_Master_Number>DOCUMENT:14168</Document_Master_Number>
+<specToCompMasterSpecId>2394169</specToCompMasterSpecId>
+<gSpecMasterSpecId>5532943</gSpecMasterSpecId>
+<roleAObjectRef_key_id>2394248</roleAObjectRef_key_id>
+<roleBObjectRef_key_id>2394254</roleBObjectRef_key_id>
+<fileName>T0409A4L-XL.png</fileName>
+<Role>SECONDARY</Role>
+<File_Size>5779</File_Size>
+<File_Version isNull="true"/>
+<Format_Name isNull="true"/>
+<Application_Data type="wt.content.ApplicationData" objectId="2394254">
+T0409A4L-XL.png (com.lcs.wc.document.LCSDocument - DOCUMENT:14168, A.1)
+</Application_Data>
+<Description>IMAGE2|~*~|1116x177</Description>
+<garmentSpecId>5535179</garmentSpecId>
+<gSpecName>002 :</gSpecName>
+<patternSpecId>2394172</patternSpecId>
+<pSpecName>001 :</pSpecName>
+<Unique_Sequence_Number>2598</Unique_Sequence_Number>
+<fileNameOnVault>00000000000a26</fileNameOnVault>
+</row>
+<row idx="11">
+<Component_Type>IMAGES</Component_Type>
+<Component_Parent_Id isNull="true"/>
+<Spec_Version>A</Spec_Version>
+<Component_Reference_Object_Id_Id>1390163</Component_Reference_Object_Id_Id>
+<com_lcs_wc_document_LCSDocument type="com.lcs.wc.document.LCSDocument" objectId="1390166" branchId="1390165">DOCUMENT:11943, A.1</com_lcs_wc_document_LCSDocument>
+<Document_Master type="wt.doc.WTDocumentMaster" objectId="1390163">DOCUMENT:11943</Document_Master>
+<Document_Master_Persist_Info_Object_Identifier_Id>1390163</Document_Master_Persist_Info_Object_Identifier_Id>
+<Document_Master_Name>001 : Front/Back Image - Boys Ctn Knit Rib ExpWB</Document_Master_Name>
+<Document_Master_Number>DOCUMENT:11943</Document_Master_Number>
+<specToCompMasterSpecId>5532943</specToCompMasterSpecId>
+<gSpecMasterSpecId>5532943</gSpecMasterSpecId>
+<roleAObjectRef_key_id>1390166</roleAObjectRef_key_id>
+<roleBObjectRef_key_id>1390176</roleBObjectRef_key_id>
+<fileName>B252.2252.7764ft.bk-Cell2.png</fileName>
+<Role>SECONDARY</Role>
+<File_Size>9926</File_Size>
+<File_Version isNull="true"/>
+<Format_Name isNull="true"/>
+<Application_Data type="wt.content.ApplicationData" objectId="1390176">
+B252.2252.7764ft.bk-Cell2.png (com.lcs.wc.document.LCSDocument - DOCUMENT:11943, A.1)
+</Application_Data>
+<Description>IMAGE2|~*~|185x166</Description>
+<garmentSpecId>5535179</garmentSpecId>
+<gSpecName>002 :</gSpecName>
+<patternSpecId>2394172</patternSpecId>
+<pSpecName>001 :</pSpecName>
+<Unique_Sequence_Number>2526</Unique_Sequence_Number>
+<fileNameOnVault>000000000009de</fileNameOnVault>
+</row>
+<row idx="12">
+<Component_Type>IMAGES</Component_Type>
+<Component_Parent_Id isNull="true"/>
+<Spec_Version>A</Spec_Version>
+<Component_Reference_Object_Id_Id>2700911</Component_Reference_Object_Id_Id>
+<com_lcs_wc_document_LCSDocument type="com.lcs.wc.document.LCSDocument" objectId="2700914" branchId="2700913">DOCUMENT:15617, A.1</com_lcs_wc_document_LCSDocument>
+<Document_Master type="wt.doc.WTDocumentMaster" objectId="2700911">DOCUMENT:15617</Document_Master>
+<Document_Master_Persist_Info_Object_Identifier_Id>2700911</Document_Master_Persist_Info_Object_Identifier_Id>
+<Document_Master_Name>002 : Development Details - Boys Core Brief</Document_Master_Name>
+<Document_Master_Number>DOCUMENT:15617</Document_Master_Number>
+<specToCompMasterSpecId>5532943</specToCompMasterSpecId>
+<gSpecMasterSpecId>5532943</gSpecMasterSpecId>
+<roleAObjectRef_key_id>2700914</roleAObjectRef_key_id>
+<roleBObjectRef_key_id>2700920</roleBObjectRef_key_id>
+<fileName>B252 Development Details-Cell1.png</fileName>
+<Role>SECONDARY</Role>
+<File_Size>96820</File_Size>
+<File_Version isNull="true"/>
+<Format_Name isNull="true"/>
+<Application_Data type="wt.content.ApplicationData" objectId="2700920">
+B252 Development Details-Cell1.png (com.lcs.wc.document.LCSDocument - DOCUMENT:15617, A.1)
+</Application_Data>
+<Description>IMAGE1|~*~|791x597</Description>
+<garmentSpecId>5535179</garmentSpecId>
+<gSpecName>002 :</gSpecName>
+<patternSpecId>2394172</patternSpecId>
+<pSpecName>001 :</pSpecName>
+<Unique_Sequence_Number>8273</Unique_Sequence_Number>
+<fileNameOnVault>00000000002051</fileNameOnVault>
+</row>
+<row idx="13">
+<Component_Type>IMAGES</Component_Type>
+<Component_Parent_Id isNull="true"/>
+<Spec_Version>A</Spec_Version>
+<Component_Reference_Object_Id_Id>2394233</Component_Reference_Object_Id_Id>
+<com_lcs_wc_document_LCSDocument type="com.lcs.wc.document.LCSDocument" objectId="2394236" branchId="2394235">DOCUMENT:14166, A.1</com_lcs_wc_document_LCSDocument>
+<Document_Master type="wt.doc.WTDocumentMaster" objectId="2394233">DOCUMENT:14166</Document_Master>
+<Document_Master_Persist_Info_Object_Identifier_Id>2394233</Document_Master_Persist_Info_Object_Identifier_Id>
+<Document_Master_Name>004 : Marker Layout - T0409A-60 FT,BK-70.5</Document_Master_Name>
+<Document_Master_Number>DOCUMENT:14166</Document_Master_Number>
+<specToCompMasterSpecId>2394169</specToCompMasterSpecId>
+<gSpecMasterSpecId>5532943</gSpecMasterSpecId>
+<roleAObjectRef_key_id>2394236</roleAObjectRef_key_id>
+<roleBObjectRef_key_id>2394242</roleBObjectRef_key_id>
+<fileName>T0409A2L-XL.png</fileName>
+<Role>SECONDARY</Role>
+<File_Size>11565</File_Size>
+<File_Version isNull="true"/>
+<Format_Name isNull="true"/>
+<Application_Data type="wt.content.ApplicationData" objectId="2394242">
+T0409A2L-XL.png (com.lcs.wc.document.LCSDocument - DOCUMENT:14166, A.1)
+</Application_Data>
+<Description>IMAGE2|~*~|1051x403</Description>
+<garmentSpecId>5535179</garmentSpecId>
+<gSpecName>002 :</gSpecName>
+<patternSpecId>2394172</patternSpecId>
+<pSpecName>001 :</pSpecName>
+<Unique_Sequence_Number>2596</Unique_Sequence_Number>
+<fileNameOnVault>00000000000a24</fileNameOnVault>
+</row>
+<row idx="14">
+<Component_Type>IMAGES</Component_Type>
+<Component_Parent_Id isNull="true"/>
+<Spec_Version>A</Spec_Version>
+<Component_Reference_Object_Id_Id>2394257</Component_Reference_Object_Id_Id>
+<com_lcs_wc_document_LCSDocument type="com.lcs.wc.document.LCSDocument" objectId="2394260" branchId="2394259">DOCUMENT:14170, A.1</com_lcs_wc_document_LCSDocument>
+<Document_Master type="wt.doc.WTDocumentMaster" objectId="2394257">DOCUMENT:14170</Document_Master>
+<Document_Master_Persist_Info_Object_Identifier_Id>2394257</Document_Master_Persist_Info_Object_Identifier_Id>
+<Document_Master_Name>006 : Marker Layout - T0409A-60 FT,BK-35</Document_Master_Name>
+<Document_Master_Number>DOCUMENT:14170</Document_Master_Number>
+<specToCompMasterSpecId>2394169</specToCompMasterSpecId>
+<gSpecMasterSpecId>5532943</gSpecMasterSpecId>
+<roleAObjectRef_key_id>2394260</roleAObjectRef_key_id>
+<roleBObjectRef_key_id>2394265</roleBObjectRef_key_id>
+<fileName>T0409A35.png</fileName>
+<Role>SECONDARY</Role>
+<File_Size>21096</File_Size>
+<File_Version isNull="true"/>
+<Format_Name isNull="true"/>
+<Application_Data type="wt.content.ApplicationData" objectId="2394265">
+T0409A35.png (com.lcs.wc.document.LCSDocument - DOCUMENT:14170, A.1)
+</Application_Data>
+<Description>IMAGE1|~*~|733x1310</Description>
+<garmentSpecId>5535179</garmentSpecId>
+<gSpecName>002 :</gSpecName>
+<patternSpecId>2394172</patternSpecId>
+<pSpecName>001 :</pSpecName>
+<Unique_Sequence_Number>3639</Unique_Sequence_Number>
+<fileNameOnVault>00000000000e37</fileNameOnVault>
+</row>
+<row idx="15">
+<Component_Type>IMAGES</Component_Type>
+<Component_Parent_Id isNull="true"/>
+<Spec_Version>A</Spec_Version>
+<Component_Reference_Object_Id_Id>2394185</Component_Reference_Object_Id_Id>
+<com_lcs_wc_document_LCSDocument type="com.lcs.wc.document.LCSDocument" objectId="2394188" branchId="2394187">DOCUMENT:14160, A.1</com_lcs_wc_document_LCSDocument>
+<Document_Master type="wt.doc.WTDocumentMaster" objectId="2394185">DOCUMENT:14160</Document_Master>
+<Document_Master_Persist_Info_Object_Identifier_Id>2394185</Document_Master_Persist_Info_Object_Identifier_Id>
+<Document_Master_Name>001 : Front/Back Image - Boys Ctn Knit Rib ExpWB</Document_Master_Name>
+<Document_Master_Number>DOCUMENT:14160</Document_Master_Number>
+<specToCompMasterSpecId>2394169</specToCompMasterSpecId>
+<gSpecMasterSpecId>5532943</gSpecMasterSpecId>
+<roleAObjectRef_key_id>2394188</roleAObjectRef_key_id>
+<roleBObjectRef_key_id>2394196</roleBObjectRef_key_id>
+<fileName>B252.2252.7764ft.bk-Cell2.png</fileName>
+<Role>SECONDARY</Role>
+<File_Size>9931</File_Size>
+<File_Version isNull="true"/>
+<Format_Name isNull="true"/>
+<Application_Data type="wt.content.ApplicationData" objectId="2394196">
+B252.2252.7764ft.bk-Cell2.png (com.lcs.wc.document.LCSDocument - DOCUMENT:14160, A.1)
+</Application_Data>
+<Description>IMAGE2|~*~|185x166</Description>
+<garmentSpecId>5535179</garmentSpecId>
+<gSpecName>002 :</gSpecName>
+<patternSpecId>2427375</patternSpecId>
+<pSpecName>001 :</pSpecName>
+<Unique_Sequence_Number>3180</Unique_Sequence_Number>
+<fileNameOnVault>00000000000c6c</fileNameOnVault>
+</row>
+<row idx="16">
+<Component_Type>IMAGES</Component_Type>
+<Component_Parent_Id isNull="true"/>
+<Spec_Version>A</Spec_Version>
+<Component_Reference_Object_Id_Id>2394233</Component_Reference_Object_Id_Id>
+<com_lcs_wc_document_LCSDocument type="com.lcs.wc.document.LCSDocument" objectId="2394236" branchId="2394235">DOCUMENT:14166, A.1</com_lcs_wc_document_LCSDocument>
+<Document_Master type="wt.doc.WTDocumentMaster" objectId="2394233">DOCUMENT:14166</Document_Master>
+<Document_Master_Persist_Info_Object_Identifier_Id>2394233</Document_Master_Persist_Info_Object_Identifier_Id>
+<Document_Master_Name>004 : Marker Layout - T0409A-60 FT,BK-70.5</Document_Master_Name>
+<Document_Master_Number>DOCUMENT:14166</Document_Master_Number>
+<specToCompMasterSpecId>2394169</specToCompMasterSpecId>
+<gSpecMasterSpecId>5532943</gSpecMasterSpecId>
+<roleAObjectRef_key_id>2394236</roleAObjectRef_key_id>
+<roleBObjectRef_key_id>2394242</roleBObjectRef_key_id>
+<fileName>T0409A2L-XL.png</fileName>
+<Role>SECONDARY</Role>
+<File_Size>11565</File_Size>
+<File_Version isNull="true"/>
+<Format_Name isNull="true"/>
+<Application_Data type="wt.content.ApplicationData" objectId="2394242">
+T0409A2L-XL.png (com.lcs.wc.document.LCSDocument - DOCUMENT:14166, A.1)
+</Application_Data>
+<Description>IMAGE2|~*~|1051x403</Description>
+<garmentSpecId>5535179</garmentSpecId>
+<gSpecName>002 :</gSpecName>
+<patternSpecId>2427375</patternSpecId>
+<pSpecName>001 :</pSpecName>
+<Unique_Sequence_Number>2596</Unique_Sequence_Number>
+<fileNameOnVault>00000000000a24</fileNameOnVault>
+</row>
+<row idx="17">
+<Component_Type>IMAGES</Component_Type>
+<Component_Parent_Id isNull="true"/>
+<Spec_Version>A</Spec_Version>
+<Component_Reference_Object_Id_Id>1390163</Component_Reference_Object_Id_Id>
+<com_lcs_wc_document_LCSDocument type="com.lcs.wc.document.LCSDocument" objectId="1390166" branchId="1390165">DOCUMENT:11943, A.1</com_lcs_wc_document_LCSDocument>
+<Document_Master type="wt.doc.WTDocumentMaster" objectId="1390163">DOCUMENT:11943</Document_Master>
+<Document_Master_Persist_Info_Object_Identifier_Id>1390163</Document_Master_Persist_Info_Object_Identifier_Id>
+<Document_Master_Name>001 : Front/Back Image - Boys Ctn Knit Rib ExpWB</Document_Master_Name>
+<Document_Master_Number>DOCUMENT:11943</Document_Master_Number>
+<specToCompMasterSpecId>5532943</specToCompMasterSpecId>
+<gSpecMasterSpecId>5532943</gSpecMasterSpecId>
+<roleAObjectRef_key_id>1390166</roleAObjectRef_key_id>
+<roleBObjectRef_key_id>1390176</roleBObjectRef_key_id>
+<fileName>B252.2252.7764ft.bk-Cell2.png</fileName>
+<Role>SECONDARY</Role>
+<File_Size>9926</File_Size>
+<File_Version isNull="true"/>
+<Format_Name isNull="true"/>
+<Application_Data type="wt.content.ApplicationData" objectId="1390176">
+B252.2252.7764ft.bk-Cell2.png (com.lcs.wc.document.LCSDocument - DOCUMENT:11943, A.1)
+</Application_Data>
+<Description>IMAGE2|~*~|185x166</Description>
+<garmentSpecId>5535179</garmentSpecId>
+<gSpecName>002 :</gSpecName>
+<patternSpecId>2427375</patternSpecId>
+<pSpecName>001 :</pSpecName>
+<Unique_Sequence_Number>2526</Unique_Sequence_Number>
+<fileNameOnVault>000000000009de</fileNameOnVault>
+</row>
+<row idx="18">
+<Component_Type>IMAGES</Component_Type>
+<Component_Parent_Id isNull="true"/>
+<Spec_Version>A</Spec_Version>
+<Component_Reference_Object_Id_Id>2394223</Component_Reference_Object_Id_Id>
+<com_lcs_wc_document_LCSDocument type="com.lcs.wc.document.LCSDocument" objectId="2394226" branchId="2394225">DOCUMENT:14164, A.1</com_lcs_wc_document_LCSDocument>
+<Document_Master type="wt.doc.WTDocumentMaster" objectId="2394223">DOCUMENT:14164</Document_Master>
+<Document_Master_Persist_Info_Object_Identifier_Id>2394223</Document_Master_Persist_Info_Object_Identifier_Id>
+<Document_Master_Name>003 : Marker Layout - T0409A-60 FT,BK-36.5</Document_Master_Name>
+<Document_Master_Number>DOCUMENT:14164</Document_Master_Number>
+<specToCompMasterSpecId>2394169</specToCompMasterSpecId>
+<gSpecMasterSpecId>5532943</gSpecMasterSpecId>
+<roleAObjectRef_key_id>2394226</roleAObjectRef_key_id>
+<roleBObjectRef_key_id>2394231</roleBObjectRef_key_id>
+<fileName>T0409A-36.5.png</fileName>
+<Role>SECONDARY</Role>
+<File_Size>29218</File_Size>
+<File_Version isNull="true"/>
+<Format_Name isNull="true"/>
+<Application_Data type="wt.content.ApplicationData" objectId="2394231">
+T0409A-36.5.png (com.lcs.wc.document.LCSDocument - DOCUMENT:14164, A.1)
+</Application_Data>
+<Description>IMAGE1|~*~|1139x1507</Description>
+<garmentSpecId>5535179</garmentSpecId>
+<gSpecName>002 :</gSpecName>
+<patternSpecId>2394172</patternSpecId>
+<pSpecName>001 :</pSpecName>
+<Unique_Sequence_Number>3621</Unique_Sequence_Number>
+<fileNameOnVault>00000000000e25</fileNameOnVault>
+</row>
+<row idx="19">
+<Component_Type>IMAGES</Component_Type>
+<Component_Parent_Id isNull="true"/>
+<Spec_Version>A</Spec_Version>
+<Component_Reference_Object_Id_Id>2394267</Component_Reference_Object_Id_Id>
+<com_lcs_wc_document_LCSDocument type="com.lcs.wc.document.LCSDocument" objectId="2394270" branchId="2394269">DOCUMENT:14172, A.1</com_lcs_wc_document_LCSDocument>
+<Document_Master type="wt.doc.WTDocumentMaster" objectId="2394267">DOCUMENT:14172</Document_Master>
+<Document_Master_Persist_Info_Object_Identifier_Id>2394267</Document_Master_Persist_Info_Object_Identifier_Id>
+<Document_Master_Name>007 : Pattern Information - T0409A</Document_Master_Name>
+<Document_Master_Number>DOCUMENT:14172</Document_Master_Number>
+<specToCompMasterSpecId>2394169</specToCompMasterSpecId>
+<gSpecMasterSpecId>5532943</gSpecMasterSpecId>
+<roleAObjectRef_key_id>2394270</roleAObjectRef_key_id>
+<roleBObjectRef_key_id>2394277</roleBObjectRef_key_id>
+<fileName>T0409a-Cell1.png</fileName>
+<Role>SECONDARY</Role>
+<File_Size>36626</File_Size>
+<File_Version isNull="true"/>
+<Format_Name isNull="true"/>
+<Application_Data type="wt.content.ApplicationData" objectId="2394277">
+T0409a-Cell1.png (com.lcs.wc.document.LCSDocument - DOCUMENT:14172, A.1)
+</Application_Data>
+<Description>IMAGE1|~*~|780x590</Description>
+<garmentSpecId>5535179</garmentSpecId>
+<gSpecName>002 :</gSpecName>
+<patternSpecId>2394172</patternSpecId>
+<pSpecName>001 :</pSpecName>
+<Unique_Sequence_Number>5762</Unique_Sequence_Number>
+<fileNameOnVault>00000000001682</fileNameOnVault>
+</row>
+<row idx="20">
+<Component_Type>IMAGES</Component_Type>
+<Component_Parent_Id isNull="true"/>
+<Spec_Version>A</Spec_Version>
+<Component_Reference_Object_Id_Id>1390163</Component_Reference_Object_Id_Id>
+<com_lcs_wc_document_LCSDocument type="com.lcs.wc.document.LCSDocument" objectId="1390166" branchId="1390165">DOCUMENT:11943, A.1</com_lcs_wc_document_LCSDocument>
+<Document_Master type="wt.doc.WTDocumentMaster" objectId="1390163">DOCUMENT:11943</Document_Master>
+<Document_Master_Persist_Info_Object_Identifier_Id>1390163</Document_Master_Persist_Info_Object_Identifier_Id>
+<Document_Master_Name>001 : Front/Back Image - Boys Ctn Knit Rib ExpWB</Document_Master_Name>
+<Document_Master_Number>DOCUMENT:11943</Document_Master_Number>
+<specToCompMasterSpecId>5532943</specToCompMasterSpecId>
+<gSpecMasterSpecId>5532943</gSpecMasterSpecId>
+<roleAObjectRef_key_id>1390166</roleAObjectRef_key_id>
+<roleBObjectRef_key_id>1390173</roleBObjectRef_key_id>
+<fileName>B252.2252.7764ft.bk-Cell1.png</fileName>
+<Role>SECONDARY</Role>
+<File_Size>16916</File_Size>
+<File_Version isNull="true"/>
+<Format_Name isNull="true"/>
+<Application_Data type="wt.content.ApplicationData" objectId="1390173">
+B252.2252.7764ft.bk-Cell1.png (com.lcs.wc.document.LCSDocument - DOCUMENT:11943, A.1)
+</Application_Data>
+<Description>IMAGE1|~*~|185x167</Description>
+<garmentSpecId>5535179</garmentSpecId>
+<gSpecName>002 :</gSpecName>
+<patternSpecId>2394172</patternSpecId>
+<pSpecName>001 :</pSpecName>
+<Unique_Sequence_Number>2525</Unique_Sequence_Number>
+<fileNameOnVault>000000000009dd</fileNameOnVault>
+</row>
+<row idx="21">
+<Component_Type>IMAGES</Component_Type>
+<Component_Parent_Id isNull="true"/>
+<Spec_Version>A</Spec_Version>
+<Component_Reference_Object_Id_Id>1390163</Component_Reference_Object_Id_Id>
+<com_lcs_wc_document_LCSDocument type="com.lcs.wc.document.LCSDocument" objectId="1390166" branchId="1390165">DOCUMENT:11943, A.1</com_lcs_wc_document_LCSDocument>
+<Document_Master type="wt.doc.WTDocumentMaster" objectId="1390163">DOCUMENT:11943</Document_Master>
+<Document_Master_Persist_Info_Object_Identifier_Id>1390163</Document_Master_Persist_Info_Object_Identifier_Id>
+<Document_Master_Name>001 : Front/Back Image - Boys Ctn Knit Rib ExpWB</Document_Master_Name>
+<Document_Master_Number>DOCUMENT:11943</Document_Master_Number>
+<specToCompMasterSpecId>5532943</specToCompMasterSpecId>
+<gSpecMasterSpecId>5532943</gSpecMasterSpecId>
+<roleAObjectRef_key_id>1390166</roleAObjectRef_key_id>
+<roleBObjectRef_key_id>1390173</roleBObjectRef_key_id>
+<fileName>B252.2252.7764ft.bk-Cell1.png</fileName>
+<Role>SECONDARY</Role>
+<File_Size>16916</File_Size>
+<File_Version isNull="true"/>
+<Format_Name isNull="true"/>
+<Application_Data type="wt.content.ApplicationData" objectId="1390173">
+B252.2252.7764ft.bk-Cell1.png (com.lcs.wc.document.LCSDocument - DOCUMENT:11943, A.1)
+</Application_Data>
+<Description>IMAGE1|~*~|185x167</Description>
+<garmentSpecId>5535179</garmentSpecId>
+<gSpecName>002 :</gSpecName>
+<patternSpecId>2427375</patternSpecId>
+<pSpecName>001 :</pSpecName>
+<Unique_Sequence_Number>2525</Unique_Sequence_Number>
+<fileNameOnVault>000000000009dd</fileNameOnVault>
+</row>
+<row idx="22">
+<Component_Type>IMAGES</Component_Type>
+<Component_Parent_Id>OR:wt.part.WTPartMaster:1301154</Component_Parent_Id>
+<Spec_Version>A</Spec_Version>
+<Component_Reference_Object_Id_Id>1359069</Component_Reference_Object_Id_Id>
+<com_lcs_wc_document_LCSDocument type="com.lcs.wc.document.LCSDocument" objectId="1359072" branchId="1359071">DOCUMENT:11816, A.1</com_lcs_wc_document_LCSDocument>
+<Document_Master type="wt.doc.WTDocumentMaster" objectId="1359069">DOCUMENT:11816</Document_Master>
+<Document_Master_Persist_Info_Object_Identifier_Id>1359069</Document_Master_Persist_Info_Object_Identifier_Id>
+<Document_Master_Name>
+005 : Placement Details - LP016: Fitted UW Inside Waist (no CB seam)
+</Document_Master_Name>
+<Document_Master_Number>DOCUMENT:11816</Document_Master_Number>
+<specToCompMasterSpecId>2394169</specToCompMasterSpecId>
+<gSpecMasterSpecId>5532943</gSpecMasterSpecId>
+<roleAObjectRef_key_id>1359072</roleAObjectRef_key_id>
+<roleBObjectRef_key_id>1359078</roleBObjectRef_key_id>
+<fileName>
+LP006 Fitted UW Inside Waist (no CB seam)-Cell1.png
+</fileName>
+<Role>SECONDARY</Role>
+<File_Size>49602</File_Size>
+<File_Version isNull="true"/>
+<Format_Name isNull="true"/>
+<Application_Data type="wt.content.ApplicationData" objectId="1359078">
+LP006 Fitted UW Inside Waist (no CB seam)-Cell1.png (com.lcs.wc.document.LCSDocument - DOCUMENT:11816, A.1)
+</Application_Data>
+<Description>IMAGE1|~*~|639x485</Description>
+<garmentSpecId>5535179</garmentSpecId>
+<gSpecName>002 :</gSpecName>
+<patternSpecId>2427375</patternSpecId>
+<pSpecName>001 :</pSpecName>
+<Unique_Sequence_Number>2210</Unique_Sequence_Number>
+<fileNameOnVault>000000000008a2</fileNameOnVault>
+</row>
+<row idx="23">
+<Component_Type>IMAGES</Component_Type>
+<Component_Parent_Id isNull="true"/>
+<Spec_Version>A</Spec_Version>
+<Component_Reference_Object_Id_Id>2394267</Component_Reference_Object_Id_Id>
+<com_lcs_wc_document_LCSDocument type="com.lcs.wc.document.LCSDocument" objectId="2394270" branchId="2394269">DOCUMENT:14172, A.1</com_lcs_wc_document_LCSDocument>
+<Document_Master type="wt.doc.WTDocumentMaster" objectId="2394267">DOCUMENT:14172</Document_Master>
+<Document_Master_Persist_Info_Object_Identifier_Id>2394267</Document_Master_Persist_Info_Object_Identifier_Id>
+<Document_Master_Name>007 : Pattern Information - T0409A</Document_Master_Name>
+<Document_Master_Number>DOCUMENT:14172</Document_Master_Number>
+<specToCompMasterSpecId>2394169</specToCompMasterSpecId>
+<gSpecMasterSpecId>5532943</gSpecMasterSpecId>
+<roleAObjectRef_key_id>2394270</roleAObjectRef_key_id>
+<roleBObjectRef_key_id>2394277</roleBObjectRef_key_id>
+<fileName>T0409a-Cell1.png</fileName>
+<Role>SECONDARY</Role>
+<File_Size>36626</File_Size>
+<File_Version isNull="true"/>
+<Format_Name isNull="true"/>
+<Application_Data type="wt.content.ApplicationData" objectId="2394277">
+T0409a-Cell1.png (com.lcs.wc.document.LCSDocument - DOCUMENT:14172, A.1)
+</Application_Data>
+<Description>IMAGE1|~*~|780x590</Description>
+<garmentSpecId>5535179</garmentSpecId>
+<gSpecName>002 :</gSpecName>
+<patternSpecId>2427375</patternSpecId>
+<pSpecName>001 :</pSpecName>
+<Unique_Sequence_Number>5762</Unique_Sequence_Number>
+<fileNameOnVault>00000000001682</fileNameOnVault>
+</row>
+<row idx="24">
+<Component_Type>IMAGES</Component_Type>
+<Component_Parent_Id>OR:wt.part.WTPartMaster:1301154</Component_Parent_Id>
+<Spec_Version>A</Spec_Version>
+<Component_Reference_Object_Id_Id>1359069</Component_Reference_Object_Id_Id>
+<com_lcs_wc_document_LCSDocument type="com.lcs.wc.document.LCSDocument" objectId="1359072" branchId="1359071">DOCUMENT:11816, A.1</com_lcs_wc_document_LCSDocument>
+<Document_Master type="wt.doc.WTDocumentMaster" objectId="1359069">DOCUMENT:11816</Document_Master>
+<Document_Master_Persist_Info_Object_Identifier_Id>1359069</Document_Master_Persist_Info_Object_Identifier_Id>
+<Document_Master_Name>
+005 : Placement Details - LP016: Fitted UW Inside Waist (no CB seam)
+</Document_Master_Name>
+<Document_Master_Number>DOCUMENT:11816</Document_Master_Number>
+<specToCompMasterSpecId>2394169</specToCompMasterSpecId>
+<gSpecMasterSpecId>5532943</gSpecMasterSpecId>
+<roleAObjectRef_key_id>1359072</roleAObjectRef_key_id>
+<roleBObjectRef_key_id>1359078</roleBObjectRef_key_id>
+<fileName>
+LP006 Fitted UW Inside Waist (no CB seam)-Cell1.png
+</fileName>
+<Role>SECONDARY</Role>
+<File_Size>49602</File_Size>
+<File_Version isNull="true"/>
+<Format_Name isNull="true"/>
+<Application_Data type="wt.content.ApplicationData" objectId="1359078">
+LP006 Fitted UW Inside Waist (no CB seam)-Cell1.png (com.lcs.wc.document.LCSDocument - DOCUMENT:11816, A.1)
+</Application_Data>
+<Description>IMAGE1|~*~|639x485</Description>
+<garmentSpecId>5535179</garmentSpecId>
+<gSpecName>002 :</gSpecName>
+<patternSpecId>2394172</patternSpecId>
+<pSpecName>001 :</pSpecName>
+<Unique_Sequence_Number>2210</Unique_Sequence_Number>
+<fileNameOnVault>000000000008a2</fileNameOnVault>
+</row>
+<row idx="25">
+<Component_Type>IMAGES</Component_Type>
+<Component_Parent_Id isNull="true"/>
+<Spec_Version>A</Spec_Version>
+<Component_Reference_Object_Id_Id>2394245</Component_Reference_Object_Id_Id>
+<com_lcs_wc_document_LCSDocument type="com.lcs.wc.document.LCSDocument" objectId="2394248" branchId="2394247">DOCUMENT:14168, A.1</com_lcs_wc_document_LCSDocument>
+<Document_Master type="wt.doc.WTDocumentMaster" objectId="2394245">DOCUMENT:14168</Document_Master>
+<Document_Master_Persist_Info_Object_Identifier_Id>2394245</Document_Master_Persist_Info_Object_Identifier_Id>
+<Document_Master_Name>005 : Marker Layout - T0409A-60 FT,BK-31</Document_Master_Name>
+<Document_Master_Number>DOCUMENT:14168</Document_Master_Number>
+<specToCompMasterSpecId>2394169</specToCompMasterSpecId>
+<gSpecMasterSpecId>5532943</gSpecMasterSpecId>
+<roleAObjectRef_key_id>2394248</roleAObjectRef_key_id>
+<roleBObjectRef_key_id>2394253</roleBObjectRef_key_id>
+<fileName>T0409A4XS-S-M.png</fileName>
+<Role>SECONDARY</Role>
+<File_Size>6142</File_Size>
+<File_Version isNull="true"/>
+<Format_Name isNull="true"/>
+<Application_Data type="wt.content.ApplicationData" objectId="2394253">
+T0409A4XS-S-M.png (com.lcs.wc.document.LCSDocument - DOCUMENT:14168, A.1)
+</Application_Data>
+<Description>IMAGE1|~*~|1005x180</Description>
+<garmentSpecId>5535179</garmentSpecId>
+<gSpecName>002 :</gSpecName>
+<patternSpecId>2394172</patternSpecId>
+<pSpecName>001 :</pSpecName>
+<Unique_Sequence_Number>2597</Unique_Sequence_Number>
+<fileNameOnVault>00000000000a25</fileNameOnVault>
+</row>
+<row idx="26">
+<Component_Type>IMAGES</Component_Type>
+<Component_Parent_Id isNull="true"/>
+<Spec_Version>A</Spec_Version>
+<Component_Reference_Object_Id_Id>2394206</Component_Reference_Object_Id_Id>
+<com_lcs_wc_document_LCSDocument type="com.lcs.wc.document.LCSDocument" objectId="2394209" branchId="2394208">DOCUMENT:14162, A.1</com_lcs_wc_document_LCSDocument>
+<Document_Master type="wt.doc.WTDocumentMaster" objectId="2394206">DOCUMENT:14162</Document_Master>
+<Document_Master_Persist_Info_Object_Identifier_Id>2394206</Document_Master_Persist_Info_Object_Identifier_Id>
+<Document_Master_Name>002 : Measurements - T0409A PMEAS</Document_Master_Name>
+<Document_Master_Number>DOCUMENT:14162</Document_Master_Number>
+<specToCompMasterSpecId>2394169</specToCompMasterSpecId>
+<gSpecMasterSpecId>5532943</gSpecMasterSpecId>
+<roleAObjectRef_key_id>2394209</roleAObjectRef_key_id>
+<roleBObjectRef_key_id>2394215</roleBObjectRef_key_id>
+<fileName>B252 PMEAS-Cell1.png</fileName>
+<Role>SECONDARY</Role>
+<File_Size>33838</File_Size>
+<File_Version isNull="true"/>
+<Format_Name isNull="true"/>
+<Application_Data type="wt.content.ApplicationData" objectId="2394215">
+B252 PMEAS-Cell1.png (com.lcs.wc.document.LCSDocument - DOCUMENT:14162, A.1)
+</Application_Data>
+<Description>IMAGE1|~*~|795x597</Description>
+<garmentSpecId>5535179</garmentSpecId>
+<gSpecName>002 :</gSpecName>
+<patternSpecId>2427375</patternSpecId>
+<pSpecName>001 :</pSpecName>
+<Unique_Sequence_Number>2548</Unique_Sequence_Number>
+<fileNameOnVault>000000000009f4</fileNameOnVault>
+</row>
+<row idx="27">
+<Component_Type>IMAGES</Component_Type>
+<Component_Parent_Id isNull="true"/>
+<Spec_Version>A</Spec_Version>
+<Component_Reference_Object_Id_Id>2394245</Component_Reference_Object_Id_Id>
+<com_lcs_wc_document_LCSDocument type="com.lcs.wc.document.LCSDocument" objectId="2394248" branchId="2394247">DOCUMENT:14168, A.1</com_lcs_wc_document_LCSDocument>
+<Document_Master type="wt.doc.WTDocumentMaster" objectId="2394245">DOCUMENT:14168</Document_Master>
+<Document_Master_Persist_Info_Object_Identifier_Id>2394245</Document_Master_Persist_Info_Object_Identifier_Id>
+<Document_Master_Name>005 : Marker Layout - T0409A-60 FT,BK-31</Document_Master_Name>
+<Document_Master_Number>DOCUMENT:14168</Document_Master_Number>
+<specToCompMasterSpecId>2394169</specToCompMasterSpecId>
+<gSpecMasterSpecId>5532943</gSpecMasterSpecId>
+<roleAObjectRef_key_id>2394248</roleAObjectRef_key_id>
+<roleBObjectRef_key_id>2394253</roleBObjectRef_key_id>
+<fileName>T0409A4XS-S-M.png</fileName>
+<Role>SECONDARY</Role>
+<File_Size>6142</File_Size>
+<File_Version isNull="true"/>
+<Format_Name isNull="true"/>
+<Application_Data type="wt.content.ApplicationData" objectId="2394253">
+T0409A4XS-S-M.png (com.lcs.wc.document.LCSDocument - DOCUMENT:14168, A.1)
+</Application_Data>
+<Description>IMAGE1|~*~|1005x180</Description>
+<garmentSpecId>5535179</garmentSpecId>
+<gSpecName>002 :</gSpecName>
+<patternSpecId>2427375</patternSpecId>
+<pSpecName>001 :</pSpecName>
+<Unique_Sequence_Number>2597</Unique_Sequence_Number>
+<fileNameOnVault>00000000000a25</fileNameOnVault>
+</row>
+<row idx="28">
+<Component_Type>IMAGES</Component_Type>
+<Component_Parent_Id isNull="true"/>
+<Spec_Version>A</Spec_Version>
+<Component_Reference_Object_Id_Id>2700911</Component_Reference_Object_Id_Id>
+<com_lcs_wc_document_LCSDocument type="com.lcs.wc.document.LCSDocument" objectId="2700914" branchId="2700913">DOCUMENT:15617, A.1</com_lcs_wc_document_LCSDocument>
+<Document_Master type="wt.doc.WTDocumentMaster" objectId="2700911">DOCUMENT:15617</Document_Master>
+<Document_Master_Persist_Info_Object_Identifier_Id>2700911</Document_Master_Persist_Info_Object_Identifier_Id>
+<Document_Master_Name>002 : Development Details - Boys Core Brief</Document_Master_Name>
+<Document_Master_Number>DOCUMENT:15617</Document_Master_Number>
+<specToCompMasterSpecId>5532943</specToCompMasterSpecId>
+<gSpecMasterSpecId>5532943</gSpecMasterSpecId>
+<roleAObjectRef_key_id>2700914</roleAObjectRef_key_id>
+<roleBObjectRef_key_id>2700920</roleBObjectRef_key_id>
+<fileName>B252 Development Details-Cell1.png</fileName>
+<Role>SECONDARY</Role>
+<File_Size>96820</File_Size>
+<File_Version isNull="true"/>
+<Format_Name isNull="true"/>
+<Application_Data type="wt.content.ApplicationData" objectId="2700920">
+B252 Development Details-Cell1.png (com.lcs.wc.document.LCSDocument - DOCUMENT:15617, A.1)
+</Application_Data>
+<Description>IMAGE1|~*~|791x597</Description>
+<garmentSpecId>5535179</garmentSpecId>
+<gSpecName>002 :</gSpecName>
+<patternSpecId>2427375</patternSpecId>
+<pSpecName>001 :</pSpecName>
+<Unique_Sequence_Number>8273</Unique_Sequence_Number>
+<fileNameOnVault>00000000002051</fileNameOnVault>
+</row>
+</result>
+</queryResult>

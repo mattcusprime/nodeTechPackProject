@@ -1,0 +1,1619 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<queryResult>
+  <metadata>
+    <name>Spec to Spec</name>
+
+    <description></description>
+
+    <objectIdentifier>wt.query.template.ReportTemplate:4790566</objectIdentifier>
+
+    <sourceSystem>http://wsflexwebprd1v.res.hbi.net:80/Windchill</sourceSystem>
+
+    <sourceGateway>http://wsflexwebprd1v.res.hbi.net/Windchill/servlet/WindchillAuthGW/</sourceGateway>
+
+    <executingPrincipal>
+      <fullName>menglish</fullName>
+
+      <objectIdentifier>wt.org.WTUser:150128</objectIdentifier>
+</executingPrincipal>
+
+    <timeOfExecution>2015-07-07 22:25:48 GMT</timeOfExecution>
+
+    <locale>en_US</locale>
+</metadata>
+
+  <auxData>
+    <dataItem name="Garment Product">10188 Boys Knit Brief ExpWB B252</dataItem>
+
+    <dataItem name="Garment Season">BIW</dataItem>
+
+    <dataItem name="oid">OR:wt.query.template.ReportTemplate:4790566</dataItem>
+
+    <dataItem name="action">ExecuteReport</dataItem>
+
+    <dataItem name="delegateName">XML</dataItem>
+
+    <dataItem name="Spec Name">002</dataItem>
+
+    <dataItem name="format">formatDelegate</dataItem>
+
+    <dataItem name="xsl2"></dataItem>
+
+    <dataItem name="xsl1"></dataItem>
+
+    <dataItem name="jrb">wt.query.template.reportTemplateRB</dataItem>
+</auxData>
+
+  <qml bypassAccessControl="true">
+	
+    <parameter name="Spec Name" type="java.lang.Object"></parameter>
+
+	
+    <parameter name="Garment Product" type="java.lang.Object"></parameter>
+
+	
+    <parameter name="Garment Season" type="java.lang.String"></parameter>
+
+	
+    <statement>
+		
+      <query>
+			
+        <select distinct="true" group="false">
+				
+          <object alias="Garment Product" heading="com.lcs.wc.product.LCSProduct" propertyName=""></object>
+
+				
+          <object alias="Garment Spec" heading="Garment Spec" propertyName=""></object>
+
+				
+          <object alias="Pattern Spec" heading="Pattern Spec" propertyName=""></object>
+
+				
+          <column alias="Pattern Spec" heading="Master Reference.Object Id.Id" isExternal="false" propertyName="masterReference.objectId.id" selectOnly="false" type="long">
+					masterReference.key.id
+				</column>
+
+				
+          <column alias="Pattern Spec" heading="Pattern Spec Persist Info.Object Identifier.Id" isExternal="false" propertyName="persistInfo.objectIdentifier.id" selectOnly="false" type="long">
+					thePersistInfo.theObjectIdentifier.id
+				</column>
+
+				
+          <column alias="com.lcs.wc.specification.SpecToSpecLink" heading="roleAObjectRef.key.id" isExternal="false" selectOnly="false" type="long">
+					roleAObjectRef.key.id
+				</column>
+
+				
+          <column alias="com.lcs.wc.specification.SpecToSpecLink" heading="roleBObjectRef.key.id" isExternal="false" selectOnly="false" type="long">
+					roleBObjectRef.key.id
+				</column>
+
+				
+          <column alias="Pattern Spec" heading="Pattern Spec Name" isExternal="false" propertyName="name" selectOnly="false" type="java.lang.String">
+					master&gt;name
+				</column>
+
+				
+          <column alias="Garment Spec" heading="Garment Spec Name" isExternal="false" propertyName="name" selectOnly="false" type="java.lang.String">
+					master&gt;name
+				</column>
+
+				
+          <object alias="Pattern Bom" heading="com.lcs.wc.flexbom.FlexBOMPart" propertyName=""></object>
+
+				
+          <column alias="Pattern Bom" heading="com.lcs.wc.flexbom.FlexBOMPart Name" isExternal="false" propertyName="name" selectOnly="false" type="java.lang.String">
+					master&gt;name
+				</column>
+
+				
+          <object alias="com.lcs.wc.season.LCSSeason" heading="com.lcs.wc.season.LCSSeason" propertyName=""></object>
+
+				
+          <column alias="com.lcs.wc.season.LCSSeason" heading="com.lcs.wc.season.LCSSeason Name" isExternal="false" propertyName="name" selectOnly="false" type="java.lang.String">
+					master&gt;name
+				</column>
+
+				
+          <function heading="Branch and size" name="CONCAT" type="java.lang.String">
+					
+            <column alias="Pattern Product BOM Like" heading="Branch Id" isExternal="false" propertyName="branchId" selectOnly="false" type="int">
+						branchId
+					</column>
+
+					
+            <column alias="Pattern Product BOM Like" heading="Size1" isExternal="false" propertyName="size1" selectOnly="false" type="java.lang.String">
+						size1
+					</column>
+
+				</function>
+
+				
+          <column alias="Pattern Product BOM Like" heading="Pattern Garment Use" isExternal="false" propertyName="num6" selectOnly="false" type="double">
+					num6
+				</column>
+
+				
+          <column alias="Pattern Product BOM Like" heading="Branch Id" isExternal="false" propertyName="branchId" selectOnly="false" type="int">
+					branchId
+				</column>
+
+				
+          <column alias="Pattern Product BOM Like" heading="Size" isExternal="false" propertyName="size1" selectOnly="false" type="java.lang.String">
+					size1
+				</column>
+
+				
+          <column alias="Pattern Product BOM Like" heading="Usage Per Dozen" isExternal="false" propertyName="num1" selectOnly="false" type="double">
+					num1
+				</column>
+
+				
+          <column alias="Pattern Product BOM Like" heading="Accessory Size" isExternal="false" propertyName="num7" selectOnly="false" type="double">
+					num7
+				</column>
+
+				
+          <column alias="Pattern Product BOM Like" heading="Dimension Id" isExternal="false" propertyName="dimensionId" selectOnly="false" type="java.lang.String">
+					dimensionId
+				</column>
+
+				
+          <column alias="Pattern Product BOM Like" heading="Garment Use LifceCycle id" isExternal="false" propertyName="num6" selectOnly="false" type="double">
+					num6
+				</column>
+
+				
+          <column alias="Pattern Product BOM Like" heading="UOM" isExternal="false" propertyName="att12" selectOnly="false" type="java.lang.String">
+					att12
+				</column>
+
+				
+          <column alias="Pattern Product BOM Like" heading="Pattern Product BOM Link Branch Id" isExternal="false" propertyName="branchId" selectOnly="false" type="int">
+					branchId
+				</column>
+
+				
+          <column alias="Pattern Product BOM Like" heading="Dimension Name" isExternal="false" propertyName="dimensionName" selectOnly="false" type="java.lang.String">
+					dimensionName
+				</column>
+
+				
+          <column alias="Garment Product" heading="Name" isExternal="false" propertyName="name" selectOnly="false" type="java.lang.String">
+					master&gt;name
+				</column>
+
+				
+          <column alias="com.lcs.wc.season.LCSSeason" heading="com.lcs.wc.season.LCSSeason Name 1" isExternal="false" propertyName="name" selectOnly="false" type="java.lang.String">
+					master&gt;name
+				</column>
+
+			</select>
+
+			
+        <from>
+				
+          <table alias="Pattern Spec" isExternal="false">
+					com.lcs.wc.specification.FlexSpecification
+				</table>
+
+				
+          <table alias="com.lcs.wc.specification.SpecToSpecLink" isExternal="false">
+					com.lcs.wc.specification.SpecToSpecLink
+				</table>
+
+				
+          <table alias="Garment Spec" isExternal="false">
+					com.lcs.wc.specification.FlexSpecification
+				</table>
+
+				
+          <table alias="Pattern Bom" isExternal="false">
+					com.lcs.wc.flexbom.FlexBOMPart
+				</table>
+
+				
+          <table alias="com.lcs.wc.specification.FlexSpecToComponentLink" isExternal="false">
+					com.lcs.wc.specification.FlexSpecToComponentLink
+				</table>
+
+				
+          <table alias="Garment Product" isExternal="false">
+					com.lcs.wc.product.LCSProduct
+				</table>
+
+				
+          <table alias="com.lcs.wc.season.LCSSeason" isExternal="false">
+					com.lcs.wc.season.LCSSeason
+				</table>
+
+				
+          <table alias="Pattern Product BOM Like" isExternal="false">
+					com.lcs.wc.flexbom.FlexBOMLink
+				</table>
+
+			</from>
+
+			
+        <where>
+				
+          <compositeCondition type="and">
+					
+            <condition>
+						
+              <operand>
+							
+                <column alias="Pattern Spec" heading="Latest Iteration" isExternal="false" propertyName="latestIteration" selectOnly="false" type="boolean">
+								iterationInfo.latest
+							</column>
+
+						</operand>
+
+						
+              <operator type="equal"></operator>
+
+						
+              <operand>
+							
+                <constant heading="1" isMacro="false" type="java.lang.Object">
+								1
+							</constant>
+
+						</operand>
+
+					</condition>
+
+					
+            <condition>
+						
+              <operand>
+							
+                <column alias="Garment Spec" heading="Name" isExternal="false" propertyName="name" selectOnly="false" type="java.lang.String">
+								master&gt;name
+							</column>
+
+						</operand>
+
+						
+              <operator type="like"></operator>
+
+						
+              <operand>
+							
+                <function heading="Concatenate" name="CONCAT" type="java.lang.String">
+								
+                  <constant heading="%" isMacro="false" type="java.lang.Object">
+									%
+								</constant>
+
+								
+                  <parameterTarget name="Spec Name"></parameterTarget>
+
+								
+                  <constant heading="%" isMacro="false" type="java.lang.Object">
+									%
+								</constant>
+
+							</function>
+
+						</operand>
+
+					</condition>
+
+					
+            <condition>
+						
+              <operand>
+							
+                <column alias="com.lcs.wc.specification.SpecToSpecLink" heading="roleBObjectRef.key.id" isExternal="false" selectOnly="false" type="long">
+								roleBObjectRef.key.id
+							</column>
+
+						</operand>
+
+						
+              <operator type="equal"></operator>
+
+						
+              <operand>
+							
+                <column alias="Pattern Spec" heading="Master Reference.Object Id.Id" isExternal="false" propertyName="masterReference.objectId.id" selectOnly="false" type="long">
+								masterReference.key.id
+							</column>
+
+						</operand>
+
+					</condition>
+
+					
+            <condition>
+						
+              <operand>
+							
+                <column alias="Garment Spec" heading="Master Reference.Object Id.Id" isExternal="false" propertyName="masterReference.objectId.id" selectOnly="false" type="long">
+								masterReference.key.id
+							</column>
+
+						</operand>
+
+						
+              <operator type="equal"></operator>
+
+						
+              <operand>
+							
+                <column alias="com.lcs.wc.specification.SpecToSpecLink" heading="roleAObjectRef.key.id" isExternal="false" selectOnly="false" type="long">
+								roleAObjectRef.key.id
+							</column>
+
+						</operand>
+
+					</condition>
+
+					
+            <condition>
+						
+              <operand>
+							
+                <column alias="Garment Spec" heading="Latest Iteration" isExternal="false" propertyName="latestIteration" selectOnly="false" type="boolean">
+								iterationInfo.latest
+							</column>
+
+						</operand>
+
+						
+              <operator type="equal"></operator>
+
+						
+              <operand>
+							
+                <constant heading="1" isMacro="false" type="java.lang.Object">
+								1
+							</constant>
+
+						</operand>
+
+					</condition>
+
+					
+            <condition>
+						
+              <operand>
+							
+                <column alias="Pattern Bom" heading="Master Reference.Object Id.Id" isExternal="false" propertyName="masterReference.objectId.id" selectOnly="false" type="long">
+								masterReference.key.id
+							</column>
+
+						</operand>
+
+						
+              <operator type="equal"></operator>
+
+						
+              <operand>
+							
+                <column alias="com.lcs.wc.specification.FlexSpecToComponentLink" heading="Component Reference.Object Id.Id" isExternal="false" propertyName="componentReference.objectId.id" selectOnly="false" type="long">
+								componentReference.key.id
+							</column>
+
+						</operand>
+
+					</condition>
+
+					
+            <condition>
+						
+              <operand>
+							
+                <column alias="Pattern Spec" heading="Master Reference.Object Id.Id" isExternal="false" propertyName="masterReference.objectId.id" selectOnly="false" type="long">
+								masterReference.key.id
+							</column>
+
+						</operand>
+
+						
+              <operator type="equal"></operator>
+
+						
+              <operand>
+							
+                <column alias="com.lcs.wc.specification.FlexSpecToComponentLink" heading="Specification Master Reference.Object Id.Id" isExternal="false" propertyName="specificationMasterReference.objectId.id" selectOnly="false" type="long">
+								specificationMasterReference.key.id
+							</column>
+
+						</operand>
+
+					</condition>
+
+					
+            <condition>
+						
+              <operand>
+							
+                <column alias="Pattern Bom" heading="Latest Iteration" isExternal="false" propertyName="latestIteration" selectOnly="false" type="boolean">
+								iterationInfo.latest
+							</column>
+
+						</operand>
+
+						
+              <operator type="equal"></operator>
+
+						
+              <operand>
+							
+                <constant heading="1" isMacro="false" type="java.lang.Object">
+								1
+							</constant>
+
+						</operand>
+
+					</condition>
+
+					
+            <condition>
+						
+              <operand>
+							
+                <column alias="Pattern Bom" heading="Flex Type Id Path" isExternal="false" propertyName="flexTypeIdPath" selectOnly="false" type="java.lang.String">
+								flexTypeIdPath
+							</column>
+
+						</operand>
+
+						
+              <operator type="like"></operator>
+
+						
+              <operand>
+							
+                <constant heading="%2374607%" isMacro="false" type="java.lang.Object">
+								%2374607%
+							</constant>
+
+						</operand>
+
+					</condition>
+
+					
+            <condition>
+						
+              <operand>
+							
+                <column alias="Garment Spec" heading="Spec Owner Reference.Object Id.Id" isExternal="false" propertyName="specOwnerReference.objectId.id" selectOnly="false" type="long">
+								specOwnerReference.key.id
+							</column>
+
+						</operand>
+
+						
+              <operator type="equal"></operator>
+
+						
+              <operand>
+							
+                <column alias="Garment Product" heading="Master Reference.Object Id.Id" isExternal="false" propertyName="masterReference.objectId.id" selectOnly="false" type="long">
+								masterReference.key.id
+							</column>
+
+						</operand>
+
+					</condition>
+
+					
+            <condition>
+						
+              <operand>
+							
+                <column alias="Garment Product" heading="Latest Iteration" isExternal="false" propertyName="latestIteration" selectOnly="false" type="boolean">
+								iterationInfo.latest
+							</column>
+
+						</operand>
+
+						
+              <operator type="equal"></operator>
+
+						
+              <operand>
+							
+                <constant heading="1" isMacro="false" type="java.lang.Object">
+								1
+							</constant>
+
+						</operand>
+
+					</condition>
+
+					
+            <condition>
+						
+              <operand>
+							
+                <column alias="Garment Product" heading="Flex Type Id Path" isExternal="false" propertyName="flexTypeIdPath" selectOnly="false" type="java.lang.String">
+								flexTypeIdPath
+							</column>
+
+						</operand>
+
+						
+              <operator type="like"></operator>
+
+						
+              <operand>
+							
+                <function heading="Concatenate" name="CONCAT" type="java.lang.String">
+								
+                  <constant heading="%" isMacro="false" type="java.lang.Object">
+									%
+								</constant>
+
+								
+                  <constant heading="1157890" isMacro="false" type="java.lang.Object">
+									1157890
+								</constant>
+
+								
+                  <constant heading="%" isMacro="false" type="java.lang.Object">
+									%
+								</constant>
+
+							</function>
+
+						</operand>
+
+					</condition>
+
+					
+            <condition>
+						
+              <operand>
+							
+                <column alias="Garment Product" heading="Season Master Reference.Object Id.Id" isExternal="false" propertyName="seasonMasterReference.objectId.id" selectOnly="false" type="long">
+								seasonMasterReference.key.id
+							</column>
+
+						</operand>
+
+						
+              <operator type="notEqual"></operator>
+
+						
+              <operand>
+							
+                <constant heading="0" isMacro="false" type="java.lang.Object">
+								0
+							</constant>
+
+						</operand>
+
+					</condition>
+
+					
+            <condition>
+						
+              <operand>
+							
+                <column alias="Garment Product" heading="Name" isExternal="false" propertyName="name" selectOnly="false" type="java.lang.String">
+								master&gt;name
+							</column>
+
+						</operand>
+
+						
+              <operator type="like"></operator>
+
+						
+              <operand>
+							
+                <function heading="Concatenate" name="CONCAT" type="java.lang.String">
+								
+                  <constant heading="%" isMacro="false" type="java.lang.Object">
+									%
+								</constant>
+
+								
+                  <parameterTarget name="Garment Product"></parameterTarget>
+
+								
+                  <constant heading="%" isMacro="false" type="java.lang.Object">
+									%
+								</constant>
+
+							</function>
+
+						</operand>
+
+					</condition>
+
+					
+            <condition>
+						
+              <operand>
+							
+                <column alias="com.lcs.wc.season.LCSSeason" heading="Master Reference.Object Id.Id" isExternal="false" propertyName="masterReference.objectId.id" selectOnly="false" type="long">
+								masterReference.key.id
+							</column>
+
+						</operand>
+
+						
+              <operator type="equal"></operator>
+
+						
+              <operand>
+							
+                <column alias="Garment Product" heading="Season Master Reference.Object Id.Id" isExternal="false" propertyName="seasonMasterReference.objectId.id" selectOnly="false" type="long">
+								seasonMasterReference.key.id
+							</column>
+
+						</operand>
+
+					</condition>
+
+					
+            <condition>
+						
+              <operand>
+							
+                <column alias="com.lcs.wc.season.LCSSeason" heading="Latest Iteration" isExternal="false" propertyName="latestIteration" selectOnly="false" type="boolean">
+								iterationInfo.latest
+							</column>
+
+						</operand>
+
+						
+              <operator type="equal"></operator>
+
+						
+              <operand>
+							
+                <constant heading="1" isMacro="false" type="java.lang.Object">
+								1
+							</constant>
+
+						</operand>
+
+					</condition>
+
+					
+            <condition>
+						
+              <operand>
+							
+                <column alias="Pattern Product BOM Like" heading="Parent Reference.Object Id.Id" isExternal="false" propertyName="parentReference.objectId.id" selectOnly="false" type="long">
+								parentReference.key.id
+							</column>
+
+						</operand>
+
+						
+              <operator type="equal"></operator>
+
+						
+              <operand>
+							
+                <column alias="Pattern Bom" heading="Master Reference.Object Id.Id" isExternal="false" propertyName="masterReference.objectId.id" selectOnly="false" type="long">
+								masterReference.key.id
+							</column>
+
+						</operand>
+
+					</condition>
+
+					
+            <condition>
+						
+              <operand>
+							
+                <column alias="Pattern Product BOM Like" heading="Out Date" isExternal="false" propertyName="outDate" selectOnly="false" type="java.sql.Timestamp">
+								outDate
+							</column>
+
+						</operand>
+
+						
+              <nullOperator type="isNull"></nullOperator>
+
+					</condition>
+
+					
+            <condition>
+						
+              <operand>
+							
+                <column alias="Pattern Product BOM Like" heading="Dropped" isExternal="false" propertyName="dropped" selectOnly="false" type="boolean">
+								dropped
+							</column>
+
+						</operand>
+
+						
+              <operator type="equal"></operator>
+
+						
+              <operand>
+							
+                <constant heading="0" isMacro="false" type="java.lang.Object">
+								0
+							</constant>
+
+						</operand>
+
+					</condition>
+
+					
+            <condition>
+						
+              <operand>
+							
+                <column alias="com.lcs.wc.season.LCSSeason" heading="Name" isExternal="false" propertyName="name" selectOnly="false" type="java.lang.String">
+								master&gt;name
+							</column>
+
+						</operand>
+
+						
+              <operator type="like"></operator>
+
+						
+              <operand>
+							
+                <function heading="Concatenate" name="CONCAT" type="java.lang.String">
+								
+                  <constant heading="%" isMacro="false" type="java.lang.String">
+									%
+								</constant>
+
+								
+                  <parameterTarget name="Garment Season"></parameterTarget>
+
+								
+                  <constant heading="%" isMacro="false" type="java.lang.String">
+									%
+								</constant>
+
+							</function>
+
+						</operand>
+
+					</condition>
+
+				</compositeCondition>
+
+			</where>
+
+			
+        <orderBy>
+				
+          <orderByItem type="asc">
+					
+            <columnTarget heading="Name"></columnTarget>
+
+				</orderByItem>
+
+			</orderBy>
+
+		</query>
+
+	</statement>
+
+</qml>
+
+  <actualParameter parameterId="Garment Product" displayName="10188 Boys Knit Brief ExpWB B252">10188 Boys Knit Brief ExpWB B252</actualParameter>
+
+  <actualParameter parameterId="Garment Season" displayName="BIW">BIW</actualParameter>
+
+  <actualParameter parameterId="Spec Name" displayName="002">002</actualParameter>
+
+  <result>
+    <heading type="com.lcs.wc.product.LCSProduct" tag="com_lcs_wc_product_LCSProduct">com.lcs.wc.product.LCSProduct</heading>
+
+    <heading type="com.lcs.wc.specification.FlexSpecification" tag="Garment_Spec">Garment Spec</heading>
+
+    <heading type="com.lcs.wc.specification.FlexSpecification" tag="Pattern_Spec">Pattern Spec</heading>
+
+    <heading type="java.lang.Long" tag="Master_Reference_Object_Id_Id">Master Reference.Object Id.Id</heading>
+
+    <heading type="java.lang.Long" tag="Pattern_Spec_Persist_Info_Object_Identifier_Id">Pattern Spec Persist Info.Object Identifier.Id</heading>
+
+    <heading type="java.lang.Long" tag="roleAObjectRef_key_id">roleAObjectRef.key.id</heading>
+
+    <heading type="java.lang.Long" tag="roleBObjectRef_key_id">roleBObjectRef.key.id</heading>
+
+    <heading type="java.lang.String" tag="Pattern_Spec_Name">Pattern Spec Name</heading>
+
+    <heading type="java.lang.String" tag="Garment_Spec_Name">Garment Spec Name</heading>
+
+    <heading type="com.lcs.wc.flexbom.FlexBOMPart" tag="com_lcs_wc_flexbom_FlexBOMPart">com.lcs.wc.flexbom.FlexBOMPart</heading>
+
+    <heading type="java.lang.String" tag="com_lcs_wc_flexbom_FlexBOMPart_Name">com.lcs.wc.flexbom.FlexBOMPart Name</heading>
+
+    <heading type="com.lcs.wc.season.LCSSeason" tag="com_lcs_wc_season_LCSSeason">com.lcs.wc.season.LCSSeason</heading>
+
+    <heading type="java.lang.String" tag="com_lcs_wc_season_LCSSeason_Name">com.lcs.wc.season.LCSSeason Name</heading>
+
+    <heading type="java.lang.String" tag="Branch_and_size">Branch and size</heading>
+
+    <heading type="java.lang.Double" tag="Pattern_Garment_Use">Pattern Garment Use</heading>
+
+    <heading type="java.lang.Integer" tag="Branch_Id">Branch Id</heading>
+
+    <heading type="java.lang.String" tag="Size">Size</heading>
+
+    <heading type="java.lang.Double" tag="Usage_Per_Dozen">Usage Per Dozen</heading>
+
+    <heading type="java.lang.Double" tag="Accessory_Size">Accessory Size</heading>
+
+    <heading type="java.lang.String" tag="Dimension_Id">Dimension Id</heading>
+
+    <heading type="java.lang.Double" tag="Garment_Use_LifceCycle_id">Garment Use LifceCycle id</heading>
+
+    <heading type="java.lang.String" tag="UOM">UOM</heading>
+
+    <heading type="java.lang.Integer" tag="Pattern_Product_BOM_Link_Branch_Id">Pattern Product BOM Link Branch Id</heading>
+
+    <heading type="java.lang.String" tag="Dimension_Name">Dimension Name</heading>
+
+    <heading type="java.lang.String" tag="Name">Name</heading>
+
+    <heading type="java.lang.String" tag="com_lcs_wc_season_LCSSeason_Name__">com.lcs.wc.season.LCSSeason Name 1</heading>
+
+    <row idx="1">
+      <com_lcs_wc_product_LCSProduct type="com.lcs.wc.product.LCSProduct" objectId="2384183" branchId="2384182">B252 Boys Ctn Knit Rib ExpWB (Garment  BIW)</com_lcs_wc_product_LCSProduct>
+
+      <Garment_Spec type="com.lcs.wc.specification.FlexSpecification" objectId="5535179" branchId="5532945">FLEXSPEC:15974, A.2</Garment_Spec>
+
+      <Pattern_Spec type="com.lcs.wc.specification.FlexSpecification" objectId="2427375" branchId="2394171">FLEXSPEC:10941, A.2</Pattern_Spec>
+
+      <Master_Reference_Object_Id_Id>2394169</Master_Reference_Object_Id_Id>
+
+      <Pattern_Spec_Persist_Info_Object_Identifier_Id>2427375</Pattern_Spec_Persist_Info_Object_Identifier_Id>
+
+      <roleAObjectRef_key_id>5532943</roleAObjectRef_key_id>
+
+      <roleBObjectRef_key_id>2394169</roleBObjectRef_key_id>
+
+      <Pattern_Spec_Name>001 :</Pattern_Spec_Name>
+
+      <Garment_Spec_Name>002 :</Garment_Spec_Name>
+
+      <com_lcs_wc_flexbom_FlexBOMPart type="com.lcs.wc.flexbom.FlexBOMPart" objectId="8116006" branchId="2427563">BOMPART:13325, A.19</com_lcs_wc_flexbom_FlexBOMPart>
+
+      <com_lcs_wc_flexbom_FlexBOMPart_Name>T0409A Sew</com_lcs_wc_flexbom_FlexBOMPart_Name>
+
+      <com_lcs_wc_season_LCSSeason type="com.lcs.wc.season.LCSSeason" objectId="2382466" branchId="2382465">SEASON:10422, A.1</com_lcs_wc_season_LCSSeason>
+
+      <com_lcs_wc_season_LCSSeason_Name>Garment  BIW</com_lcs_wc_season_LCSSeason_Name>
+
+      <Branch_and_size>3L</Branch_and_size>
+
+      <Pattern_Garment_Use>0</Pattern_Garment_Use>
+
+      <Branch_Id>3</Branch_Id>
+
+      <Size>L</Size>
+
+      <Usage_Per_Dozen>0.0373</Usage_Per_Dozen>
+
+      <Accessory_Size>0</Accessory_Size>
+
+      <Dimension_Id>-PARENT:wt.part.WTPartMaster:2427561-REV:A-BRANCH:3-SIZE1:L</Dimension_Id>
+
+      <Garment_Use_LifceCycle_id>0</Garment_Use_LifceCycle_id>
+
+      <UOM isNull="true"></UOM>
+
+      <Pattern_Product_BOM_Link_Branch_Id>3</Pattern_Product_BOM_Link_Branch_Id>
+
+      <Dimension_Name>:SIZE1</Dimension_Name>
+
+      <Name>GP 10188 Boys Knit Brief ExpWB B252</Name>
+
+      <com_lcs_wc_season_LCSSeason_Name__>Garment  BIW</com_lcs_wc_season_LCSSeason_Name__>
+</row>
+
+    <row idx="2">
+      <com_lcs_wc_product_LCSProduct type="com.lcs.wc.product.LCSProduct" objectId="2384183" branchId="2384182">B252 Boys Ctn Knit Rib ExpWB (Garment  BIW)</com_lcs_wc_product_LCSProduct>
+
+      <Garment_Spec type="com.lcs.wc.specification.FlexSpecification" objectId="5535179" branchId="5532945">FLEXSPEC:15974, A.2</Garment_Spec>
+
+      <Pattern_Spec type="com.lcs.wc.specification.FlexSpecification" objectId="2427375" branchId="2394171">FLEXSPEC:10941, A.2</Pattern_Spec>
+
+      <Master_Reference_Object_Id_Id>2394169</Master_Reference_Object_Id_Id>
+
+      <Pattern_Spec_Persist_Info_Object_Identifier_Id>2427375</Pattern_Spec_Persist_Info_Object_Identifier_Id>
+
+      <roleAObjectRef_key_id>5532943</roleAObjectRef_key_id>
+
+      <roleBObjectRef_key_id>2394169</roleBObjectRef_key_id>
+
+      <Pattern_Spec_Name>001 :</Pattern_Spec_Name>
+
+      <Garment_Spec_Name>002 :</Garment_Spec_Name>
+
+      <com_lcs_wc_flexbom_FlexBOMPart type="com.lcs.wc.flexbom.FlexBOMPart" objectId="8116006" branchId="2427563">BOMPART:13325, A.19</com_lcs_wc_flexbom_FlexBOMPart>
+
+      <com_lcs_wc_flexbom_FlexBOMPart_Name>T0409A Sew</com_lcs_wc_flexbom_FlexBOMPart_Name>
+
+      <com_lcs_wc_season_LCSSeason type="com.lcs.wc.season.LCSSeason" objectId="2382466" branchId="2382465">SEASON:10422, A.1</com_lcs_wc_season_LCSSeason>
+
+      <com_lcs_wc_season_LCSSeason_Name>Garment  BIW</com_lcs_wc_season_LCSSeason_Name>
+
+      <Branch_and_size>3XS</Branch_and_size>
+
+      <Pattern_Garment_Use>0</Pattern_Garment_Use>
+
+      <Branch_Id>3</Branch_Id>
+
+      <Size>XS</Size>
+
+      <Usage_Per_Dozen>0.0284</Usage_Per_Dozen>
+
+      <Accessory_Size>0</Accessory_Size>
+
+      <Dimension_Id>-PARENT:wt.part.WTPartMaster:2427561-REV:A-BRANCH:3-SIZE1:XS</Dimension_Id>
+
+      <Garment_Use_LifceCycle_id>0</Garment_Use_LifceCycle_id>
+
+      <UOM isNull="true"></UOM>
+
+      <Pattern_Product_BOM_Link_Branch_Id>3</Pattern_Product_BOM_Link_Branch_Id>
+
+      <Dimension_Name>:SIZE1</Dimension_Name>
+
+      <Name>GP 10188 Boys Knit Brief ExpWB B252</Name>
+
+      <com_lcs_wc_season_LCSSeason_Name__>Garment  BIW</com_lcs_wc_season_LCSSeason_Name__>
+</row>
+
+    <row idx="3">
+      <com_lcs_wc_product_LCSProduct type="com.lcs.wc.product.LCSProduct" objectId="2384183" branchId="2384182">B252 Boys Ctn Knit Rib ExpWB (Garment  BIW)</com_lcs_wc_product_LCSProduct>
+
+      <Garment_Spec type="com.lcs.wc.specification.FlexSpecification" objectId="5535179" branchId="5532945">FLEXSPEC:15974, A.2</Garment_Spec>
+
+      <Pattern_Spec type="com.lcs.wc.specification.FlexSpecification" objectId="2427375" branchId="2394171">FLEXSPEC:10941, A.2</Pattern_Spec>
+
+      <Master_Reference_Object_Id_Id>2394169</Master_Reference_Object_Id_Id>
+
+      <Pattern_Spec_Persist_Info_Object_Identifier_Id>2427375</Pattern_Spec_Persist_Info_Object_Identifier_Id>
+
+      <roleAObjectRef_key_id>5532943</roleAObjectRef_key_id>
+
+      <roleBObjectRef_key_id>2394169</roleBObjectRef_key_id>
+
+      <Pattern_Spec_Name>001 :</Pattern_Spec_Name>
+
+      <Garment_Spec_Name>002 :</Garment_Spec_Name>
+
+      <com_lcs_wc_flexbom_FlexBOMPart type="com.lcs.wc.flexbom.FlexBOMPart" objectId="8116006" branchId="2427563">BOMPART:13325, A.19</com_lcs_wc_flexbom_FlexBOMPart>
+
+      <com_lcs_wc_flexbom_FlexBOMPart_Name>T0409A Sew</com_lcs_wc_flexbom_FlexBOMPart_Name>
+
+      <com_lcs_wc_season_LCSSeason type="com.lcs.wc.season.LCSSeason" objectId="2382466" branchId="2382465">SEASON:10422, A.1</com_lcs_wc_season_LCSSeason>
+
+      <com_lcs_wc_season_LCSSeason_Name>Garment  BIW</com_lcs_wc_season_LCSSeason_Name>
+
+      <Branch_and_size>1M</Branch_and_size>
+
+      <Pattern_Garment_Use>0</Pattern_Garment_Use>
+
+      <Branch_Id>1</Branch_Id>
+
+      <Size>M</Size>
+
+      <Usage_Per_Dozen>7.4167</Usage_Per_Dozen>
+
+      <Accessory_Size>0</Accessory_Size>
+
+      <Dimension_Id>-PARENT:wt.part.WTPartMaster:2427561-REV:A-BRANCH:1-SIZE1:M</Dimension_Id>
+
+      <Garment_Use_LifceCycle_id>0</Garment_Use_LifceCycle_id>
+
+      <UOM isNull="true"></UOM>
+
+      <Pattern_Product_BOM_Link_Branch_Id>1</Pattern_Product_BOM_Link_Branch_Id>
+
+      <Dimension_Name>:SIZE1</Dimension_Name>
+
+      <Name>GP 10188 Boys Knit Brief ExpWB B252</Name>
+
+      <com_lcs_wc_season_LCSSeason_Name__>Garment  BIW</com_lcs_wc_season_LCSSeason_Name__>
+</row>
+
+    <row idx="4">
+      <com_lcs_wc_product_LCSProduct type="com.lcs.wc.product.LCSProduct" objectId="2384183" branchId="2384182">B252 Boys Ctn Knit Rib ExpWB (Garment  BIW)</com_lcs_wc_product_LCSProduct>
+
+      <Garment_Spec type="com.lcs.wc.specification.FlexSpecification" objectId="5535179" branchId="5532945">FLEXSPEC:15974, A.2</Garment_Spec>
+
+      <Pattern_Spec type="com.lcs.wc.specification.FlexSpecification" objectId="2427375" branchId="2394171">FLEXSPEC:10941, A.2</Pattern_Spec>
+
+      <Master_Reference_Object_Id_Id>2394169</Master_Reference_Object_Id_Id>
+
+      <Pattern_Spec_Persist_Info_Object_Identifier_Id>2427375</Pattern_Spec_Persist_Info_Object_Identifier_Id>
+
+      <roleAObjectRef_key_id>5532943</roleAObjectRef_key_id>
+
+      <roleBObjectRef_key_id>2394169</roleBObjectRef_key_id>
+
+      <Pattern_Spec_Name>001 :</Pattern_Spec_Name>
+
+      <Garment_Spec_Name>002 :</Garment_Spec_Name>
+
+      <com_lcs_wc_flexbom_FlexBOMPart type="com.lcs.wc.flexbom.FlexBOMPart" objectId="8116006" branchId="2427563">BOMPART:13325, A.19</com_lcs_wc_flexbom_FlexBOMPart>
+
+      <com_lcs_wc_flexbom_FlexBOMPart_Name>T0409A Sew</com_lcs_wc_flexbom_FlexBOMPart_Name>
+
+      <com_lcs_wc_season_LCSSeason type="com.lcs.wc.season.LCSSeason" objectId="2382466" branchId="2382465">SEASON:10422, A.1</com_lcs_wc_season_LCSSeason>
+
+      <com_lcs_wc_season_LCSSeason_Name>Garment  BIW</com_lcs_wc_season_LCSSeason_Name>
+
+      <Branch_and_size>1XS</Branch_and_size>
+
+      <Pattern_Garment_Use>0</Pattern_Garment_Use>
+
+      <Branch_Id>1</Branch_Id>
+
+      <Size>XS</Size>
+
+      <Usage_Per_Dozen>6.25</Usage_Per_Dozen>
+
+      <Accessory_Size>0</Accessory_Size>
+
+      <Dimension_Id>-PARENT:wt.part.WTPartMaster:2427561-REV:A-BRANCH:1-SIZE1:XS</Dimension_Id>
+
+      <Garment_Use_LifceCycle_id>0</Garment_Use_LifceCycle_id>
+
+      <UOM isNull="true"></UOM>
+
+      <Pattern_Product_BOM_Link_Branch_Id>1</Pattern_Product_BOM_Link_Branch_Id>
+
+      <Dimension_Name>:SIZE1</Dimension_Name>
+
+      <Name>GP 10188 Boys Knit Brief ExpWB B252</Name>
+
+      <com_lcs_wc_season_LCSSeason_Name__>Garment  BIW</com_lcs_wc_season_LCSSeason_Name__>
+</row>
+
+    <row idx="5">
+      <com_lcs_wc_product_LCSProduct type="com.lcs.wc.product.LCSProduct" objectId="2384183" branchId="2384182">B252 Boys Ctn Knit Rib ExpWB (Garment  BIW)</com_lcs_wc_product_LCSProduct>
+
+      <Garment_Spec type="com.lcs.wc.specification.FlexSpecification" objectId="5535179" branchId="5532945">FLEXSPEC:15974, A.2</Garment_Spec>
+
+      <Pattern_Spec type="com.lcs.wc.specification.FlexSpecification" objectId="2427375" branchId="2394171">FLEXSPEC:10941, A.2</Pattern_Spec>
+
+      <Master_Reference_Object_Id_Id>2394169</Master_Reference_Object_Id_Id>
+
+      <Pattern_Spec_Persist_Info_Object_Identifier_Id>2427375</Pattern_Spec_Persist_Info_Object_Identifier_Id>
+
+      <roleAObjectRef_key_id>5532943</roleAObjectRef_key_id>
+
+      <roleBObjectRef_key_id>2394169</roleBObjectRef_key_id>
+
+      <Pattern_Spec_Name>001 :</Pattern_Spec_Name>
+
+      <Garment_Spec_Name>002 :</Garment_Spec_Name>
+
+      <com_lcs_wc_flexbom_FlexBOMPart type="com.lcs.wc.flexbom.FlexBOMPart" objectId="8116006" branchId="2427563">BOMPART:13325, A.19</com_lcs_wc_flexbom_FlexBOMPart>
+
+      <com_lcs_wc_flexbom_FlexBOMPart_Name>T0409A Sew</com_lcs_wc_flexbom_FlexBOMPart_Name>
+
+      <com_lcs_wc_season_LCSSeason type="com.lcs.wc.season.LCSSeason" objectId="2382466" branchId="2382465">SEASON:10422, A.1</com_lcs_wc_season_LCSSeason>
+
+      <com_lcs_wc_season_LCSSeason_Name>Garment  BIW</com_lcs_wc_season_LCSSeason_Name>
+
+      <Branch_and_size>3XL</Branch_and_size>
+
+      <Pattern_Garment_Use>0</Pattern_Garment_Use>
+
+      <Branch_Id>3</Branch_Id>
+
+      <Size>XL</Size>
+
+      <Usage_Per_Dozen>0.0408</Usage_Per_Dozen>
+
+      <Accessory_Size>0</Accessory_Size>
+
+      <Dimension_Id>-PARENT:wt.part.WTPartMaster:2427561-REV:A-BRANCH:3-SIZE1:XL</Dimension_Id>
+
+      <Garment_Use_LifceCycle_id>0</Garment_Use_LifceCycle_id>
+
+      <UOM isNull="true"></UOM>
+
+      <Pattern_Product_BOM_Link_Branch_Id>3</Pattern_Product_BOM_Link_Branch_Id>
+
+      <Dimension_Name>:SIZE1</Dimension_Name>
+
+      <Name>GP 10188 Boys Knit Brief ExpWB B252</Name>
+
+      <com_lcs_wc_season_LCSSeason_Name__>Garment  BIW</com_lcs_wc_season_LCSSeason_Name__>
+</row>
+
+    <row idx="6">
+      <com_lcs_wc_product_LCSProduct type="com.lcs.wc.product.LCSProduct" objectId="2384183" branchId="2384182">B252 Boys Ctn Knit Rib ExpWB (Garment  BIW)</com_lcs_wc_product_LCSProduct>
+
+      <Garment_Spec type="com.lcs.wc.specification.FlexSpecification" objectId="5535179" branchId="5532945">FLEXSPEC:15974, A.2</Garment_Spec>
+
+      <Pattern_Spec type="com.lcs.wc.specification.FlexSpecification" objectId="2427375" branchId="2394171">FLEXSPEC:10941, A.2</Pattern_Spec>
+
+      <Master_Reference_Object_Id_Id>2394169</Master_Reference_Object_Id_Id>
+
+      <Pattern_Spec_Persist_Info_Object_Identifier_Id>2427375</Pattern_Spec_Persist_Info_Object_Identifier_Id>
+
+      <roleAObjectRef_key_id>5532943</roleAObjectRef_key_id>
+
+      <roleBObjectRef_key_id>2394169</roleBObjectRef_key_id>
+
+      <Pattern_Spec_Name>001 :</Pattern_Spec_Name>
+
+      <Garment_Spec_Name>002 :</Garment_Spec_Name>
+
+      <com_lcs_wc_flexbom_FlexBOMPart type="com.lcs.wc.flexbom.FlexBOMPart" objectId="8116006" branchId="2427563">BOMPART:13325, A.19</com_lcs_wc_flexbom_FlexBOMPart>
+
+      <com_lcs_wc_flexbom_FlexBOMPart_Name>T0409A Sew</com_lcs_wc_flexbom_FlexBOMPart_Name>
+
+      <com_lcs_wc_season_LCSSeason type="com.lcs.wc.season.LCSSeason" objectId="2382466" branchId="2382465">SEASON:10422, A.1</com_lcs_wc_season_LCSSeason>
+
+      <com_lcs_wc_season_LCSSeason_Name>Garment  BIW</com_lcs_wc_season_LCSSeason_Name>
+
+      <Branch_and_size>3M</Branch_and_size>
+
+      <Pattern_Garment_Use>0</Pattern_Garment_Use>
+
+      <Branch_Id>3</Branch_Id>
+
+      <Size>M</Size>
+
+      <Usage_Per_Dozen>0.0338</Usage_Per_Dozen>
+
+      <Accessory_Size>0</Accessory_Size>
+
+      <Dimension_Id>-PARENT:wt.part.WTPartMaster:2427561-REV:A-BRANCH:3-SIZE1:M</Dimension_Id>
+
+      <Garment_Use_LifceCycle_id>0</Garment_Use_LifceCycle_id>
+
+      <UOM isNull="true"></UOM>
+
+      <Pattern_Product_BOM_Link_Branch_Id>3</Pattern_Product_BOM_Link_Branch_Id>
+
+      <Dimension_Name>:SIZE1</Dimension_Name>
+
+      <Name>GP 10188 Boys Knit Brief ExpWB B252</Name>
+
+      <com_lcs_wc_season_LCSSeason_Name__>Garment  BIW</com_lcs_wc_season_LCSSeason_Name__>
+</row>
+
+    <row idx="7">
+      <com_lcs_wc_product_LCSProduct type="com.lcs.wc.product.LCSProduct" objectId="2384183" branchId="2384182">B252 Boys Ctn Knit Rib ExpWB (Garment  BIW)</com_lcs_wc_product_LCSProduct>
+
+      <Garment_Spec type="com.lcs.wc.specification.FlexSpecification" objectId="5535179" branchId="5532945">FLEXSPEC:15974, A.2</Garment_Spec>
+
+      <Pattern_Spec type="com.lcs.wc.specification.FlexSpecification" objectId="2427375" branchId="2394171">FLEXSPEC:10941, A.2</Pattern_Spec>
+
+      <Master_Reference_Object_Id_Id>2394169</Master_Reference_Object_Id_Id>
+
+      <Pattern_Spec_Persist_Info_Object_Identifier_Id>2427375</Pattern_Spec_Persist_Info_Object_Identifier_Id>
+
+      <roleAObjectRef_key_id>5532943</roleAObjectRef_key_id>
+
+      <roleBObjectRef_key_id>2394169</roleBObjectRef_key_id>
+
+      <Pattern_Spec_Name>001 :</Pattern_Spec_Name>
+
+      <Garment_Spec_Name>002 :</Garment_Spec_Name>
+
+      <com_lcs_wc_flexbom_FlexBOMPart type="com.lcs.wc.flexbom.FlexBOMPart" objectId="8116006" branchId="2427563">BOMPART:13325, A.19</com_lcs_wc_flexbom_FlexBOMPart>
+
+      <com_lcs_wc_flexbom_FlexBOMPart_Name>T0409A Sew</com_lcs_wc_flexbom_FlexBOMPart_Name>
+
+      <com_lcs_wc_season_LCSSeason type="com.lcs.wc.season.LCSSeason" objectId="2382466" branchId="2382465">SEASON:10422, A.1</com_lcs_wc_season_LCSSeason>
+
+      <com_lcs_wc_season_LCSSeason_Name>Garment  BIW</com_lcs_wc_season_LCSSeason_Name>
+
+      <Branch_and_size>1</Branch_and_size>
+
+      <Pattern_Garment_Use>1157836</Pattern_Garment_Use>
+
+      <Branch_Id>1</Branch_Id>
+
+      <Size isNull="true"></Size>
+
+      <Usage_Per_Dozen>0</Usage_Per_Dozen>
+
+      <Accessory_Size>0</Accessory_Size>
+
+      <Dimension_Id>-PARENT:wt.part.WTPartMaster:2427561-REV:A-BRANCH:1</Dimension_Id>
+
+      <Garment_Use_LifceCycle_id>1157836</Garment_Use_LifceCycle_id>
+
+      <UOM>yd</UOM>
+
+      <Pattern_Product_BOM_Link_Branch_Id>1</Pattern_Product_BOM_Link_Branch_Id>
+
+      <Dimension_Name isNull="true"></Dimension_Name>
+
+      <Name>GP 10188 Boys Knit Brief ExpWB B252</Name>
+
+      <com_lcs_wc_season_LCSSeason_Name__>Garment  BIW</com_lcs_wc_season_LCSSeason_Name__>
+</row>
+
+    <row idx="8">
+      <com_lcs_wc_product_LCSProduct type="com.lcs.wc.product.LCSProduct" objectId="2384183" branchId="2384182">B252 Boys Ctn Knit Rib ExpWB (Garment  BIW)</com_lcs_wc_product_LCSProduct>
+
+      <Garment_Spec type="com.lcs.wc.specification.FlexSpecification" objectId="5535179" branchId="5532945">FLEXSPEC:15974, A.2</Garment_Spec>
+
+      <Pattern_Spec type="com.lcs.wc.specification.FlexSpecification" objectId="2427375" branchId="2394171">FLEXSPEC:10941, A.2</Pattern_Spec>
+
+      <Master_Reference_Object_Id_Id>2394169</Master_Reference_Object_Id_Id>
+
+      <Pattern_Spec_Persist_Info_Object_Identifier_Id>2427375</Pattern_Spec_Persist_Info_Object_Identifier_Id>
+
+      <roleAObjectRef_key_id>5532943</roleAObjectRef_key_id>
+
+      <roleBObjectRef_key_id>2394169</roleBObjectRef_key_id>
+
+      <Pattern_Spec_Name>001 :</Pattern_Spec_Name>
+
+      <Garment_Spec_Name>002 :</Garment_Spec_Name>
+
+      <com_lcs_wc_flexbom_FlexBOMPart type="com.lcs.wc.flexbom.FlexBOMPart" objectId="8116006" branchId="2427563">BOMPART:13325, A.19</com_lcs_wc_flexbom_FlexBOMPart>
+
+      <com_lcs_wc_flexbom_FlexBOMPart_Name>T0409A Sew</com_lcs_wc_flexbom_FlexBOMPart_Name>
+
+      <com_lcs_wc_season_LCSSeason type="com.lcs.wc.season.LCSSeason" objectId="2382466" branchId="2382465">SEASON:10422, A.1</com_lcs_wc_season_LCSSeason>
+
+      <com_lcs_wc_season_LCSSeason_Name>Garment  BIW</com_lcs_wc_season_LCSSeason_Name>
+
+      <Branch_and_size>12X</Branch_and_size>
+
+      <Pattern_Garment_Use>0</Pattern_Garment_Use>
+
+      <Branch_Id>1</Branch_Id>
+
+      <Size>2X</Size>
+
+      <Usage_Per_Dozen>9.0833</Usage_Per_Dozen>
+
+      <Accessory_Size>0</Accessory_Size>
+
+      <Dimension_Id>-PARENT:wt.part.WTPartMaster:2427561-REV:A-BRANCH:1-SIZE1:2X</Dimension_Id>
+
+      <Garment_Use_LifceCycle_id>0</Garment_Use_LifceCycle_id>
+
+      <UOM isNull="true"></UOM>
+
+      <Pattern_Product_BOM_Link_Branch_Id>1</Pattern_Product_BOM_Link_Branch_Id>
+
+      <Dimension_Name>:SIZE1</Dimension_Name>
+
+      <Name>GP 10188 Boys Knit Brief ExpWB B252</Name>
+
+      <com_lcs_wc_season_LCSSeason_Name__>Garment  BIW</com_lcs_wc_season_LCSSeason_Name__>
+</row>
+
+    <row idx="9">
+      <com_lcs_wc_product_LCSProduct type="com.lcs.wc.product.LCSProduct" objectId="2384183" branchId="2384182">B252 Boys Ctn Knit Rib ExpWB (Garment  BIW)</com_lcs_wc_product_LCSProduct>
+
+      <Garment_Spec type="com.lcs.wc.specification.FlexSpecification" objectId="5535179" branchId="5532945">FLEXSPEC:15974, A.2</Garment_Spec>
+
+      <Pattern_Spec type="com.lcs.wc.specification.FlexSpecification" objectId="2427375" branchId="2394171">FLEXSPEC:10941, A.2</Pattern_Spec>
+
+      <Master_Reference_Object_Id_Id>2394169</Master_Reference_Object_Id_Id>
+
+      <Pattern_Spec_Persist_Info_Object_Identifier_Id>2427375</Pattern_Spec_Persist_Info_Object_Identifier_Id>
+
+      <roleAObjectRef_key_id>5532943</roleAObjectRef_key_id>
+
+      <roleBObjectRef_key_id>2394169</roleBObjectRef_key_id>
+
+      <Pattern_Spec_Name>001 :</Pattern_Spec_Name>
+
+      <Garment_Spec_Name>002 :</Garment_Spec_Name>
+
+      <com_lcs_wc_flexbom_FlexBOMPart type="com.lcs.wc.flexbom.FlexBOMPart" objectId="8116006" branchId="2427563">BOMPART:13325, A.19</com_lcs_wc_flexbom_FlexBOMPart>
+
+      <com_lcs_wc_flexbom_FlexBOMPart_Name>T0409A Sew</com_lcs_wc_flexbom_FlexBOMPart_Name>
+
+      <com_lcs_wc_season_LCSSeason type="com.lcs.wc.season.LCSSeason" objectId="2382466" branchId="2382465">SEASON:10422, A.1</com_lcs_wc_season_LCSSeason>
+
+      <com_lcs_wc_season_LCSSeason_Name>Garment  BIW</com_lcs_wc_season_LCSSeason_Name>
+
+      <Branch_and_size>1XL</Branch_and_size>
+
+      <Pattern_Garment_Use>0</Pattern_Garment_Use>
+
+      <Branch_Id>1</Branch_Id>
+
+      <Size>XL</Size>
+
+      <Usage_Per_Dozen>8.75</Usage_Per_Dozen>
+
+      <Accessory_Size>0</Accessory_Size>
+
+      <Dimension_Id>-PARENT:wt.part.WTPartMaster:2427561-REV:A-BRANCH:1-SIZE1:XL</Dimension_Id>
+
+      <Garment_Use_LifceCycle_id>0</Garment_Use_LifceCycle_id>
+
+      <UOM isNull="true"></UOM>
+
+      <Pattern_Product_BOM_Link_Branch_Id>1</Pattern_Product_BOM_Link_Branch_Id>
+
+      <Dimension_Name>:SIZE1</Dimension_Name>
+
+      <Name>GP 10188 Boys Knit Brief ExpWB B252</Name>
+
+      <com_lcs_wc_season_LCSSeason_Name__>Garment  BIW</com_lcs_wc_season_LCSSeason_Name__>
+</row>
+
+    <row idx="10">
+      <com_lcs_wc_product_LCSProduct type="com.lcs.wc.product.LCSProduct" objectId="2384183" branchId="2384182">B252 Boys Ctn Knit Rib ExpWB (Garment  BIW)</com_lcs_wc_product_LCSProduct>
+
+      <Garment_Spec type="com.lcs.wc.specification.FlexSpecification" objectId="5535179" branchId="5532945">FLEXSPEC:15974, A.2</Garment_Spec>
+
+      <Pattern_Spec type="com.lcs.wc.specification.FlexSpecification" objectId="2427375" branchId="2394171">FLEXSPEC:10941, A.2</Pattern_Spec>
+
+      <Master_Reference_Object_Id_Id>2394169</Master_Reference_Object_Id_Id>
+
+      <Pattern_Spec_Persist_Info_Object_Identifier_Id>2427375</Pattern_Spec_Persist_Info_Object_Identifier_Id>
+
+      <roleAObjectRef_key_id>5532943</roleAObjectRef_key_id>
+
+      <roleBObjectRef_key_id>2394169</roleBObjectRef_key_id>
+
+      <Pattern_Spec_Name>001 :</Pattern_Spec_Name>
+
+      <Garment_Spec_Name>002 :</Garment_Spec_Name>
+
+      <com_lcs_wc_flexbom_FlexBOMPart type="com.lcs.wc.flexbom.FlexBOMPart" objectId="8116006" branchId="2427563">BOMPART:13325, A.19</com_lcs_wc_flexbom_FlexBOMPart>
+
+      <com_lcs_wc_flexbom_FlexBOMPart_Name>T0409A Sew</com_lcs_wc_flexbom_FlexBOMPart_Name>
+
+      <com_lcs_wc_season_LCSSeason type="com.lcs.wc.season.LCSSeason" objectId="2382466" branchId="2382465">SEASON:10422, A.1</com_lcs_wc_season_LCSSeason>
+
+      <com_lcs_wc_season_LCSSeason_Name>Garment  BIW</com_lcs_wc_season_LCSSeason_Name>
+
+      <Branch_and_size>1L</Branch_and_size>
+
+      <Pattern_Garment_Use>0</Pattern_Garment_Use>
+
+      <Branch_Id>1</Branch_Id>
+
+      <Size>L</Size>
+
+      <Usage_Per_Dozen>8.0833</Usage_Per_Dozen>
+
+      <Accessory_Size>0</Accessory_Size>
+
+      <Dimension_Id>-PARENT:wt.part.WTPartMaster:2427561-REV:A-BRANCH:1-SIZE1:L</Dimension_Id>
+
+      <Garment_Use_LifceCycle_id>0</Garment_Use_LifceCycle_id>
+
+      <UOM isNull="true"></UOM>
+
+      <Pattern_Product_BOM_Link_Branch_Id>1</Pattern_Product_BOM_Link_Branch_Id>
+
+      <Dimension_Name>:SIZE1</Dimension_Name>
+
+      <Name>GP 10188 Boys Knit Brief ExpWB B252</Name>
+
+      <com_lcs_wc_season_LCSSeason_Name__>Garment  BIW</com_lcs_wc_season_LCSSeason_Name__>
+</row>
+
+    <row idx="11">
+      <com_lcs_wc_product_LCSProduct type="com.lcs.wc.product.LCSProduct" objectId="2384183" branchId="2384182">B252 Boys Ctn Knit Rib ExpWB (Garment  BIW)</com_lcs_wc_product_LCSProduct>
+
+      <Garment_Spec type="com.lcs.wc.specification.FlexSpecification" objectId="5535179" branchId="5532945">FLEXSPEC:15974, A.2</Garment_Spec>
+
+      <Pattern_Spec type="com.lcs.wc.specification.FlexSpecification" objectId="2427375" branchId="2394171">FLEXSPEC:10941, A.2</Pattern_Spec>
+
+      <Master_Reference_Object_Id_Id>2394169</Master_Reference_Object_Id_Id>
+
+      <Pattern_Spec_Persist_Info_Object_Identifier_Id>2427375</Pattern_Spec_Persist_Info_Object_Identifier_Id>
+
+      <roleAObjectRef_key_id>5532943</roleAObjectRef_key_id>
+
+      <roleBObjectRef_key_id>2394169</roleBObjectRef_key_id>
+
+      <Pattern_Spec_Name>001 :</Pattern_Spec_Name>
+
+      <Garment_Spec_Name>002 :</Garment_Spec_Name>
+
+      <com_lcs_wc_flexbom_FlexBOMPart type="com.lcs.wc.flexbom.FlexBOMPart" objectId="8116006" branchId="2427563">BOMPART:13325, A.19</com_lcs_wc_flexbom_FlexBOMPart>
+
+      <com_lcs_wc_flexbom_FlexBOMPart_Name>T0409A Sew</com_lcs_wc_flexbom_FlexBOMPart_Name>
+
+      <com_lcs_wc_season_LCSSeason type="com.lcs.wc.season.LCSSeason" objectId="2382466" branchId="2382465">SEASON:10422, A.1</com_lcs_wc_season_LCSSeason>
+
+      <com_lcs_wc_season_LCSSeason_Name>Garment  BIW</com_lcs_wc_season_LCSSeason_Name>
+
+      <Branch_and_size>1S</Branch_and_size>
+
+      <Pattern_Garment_Use>0</Pattern_Garment_Use>
+
+      <Branch_Id>1</Branch_Id>
+
+      <Size>S</Size>
+
+      <Usage_Per_Dozen>6.9167</Usage_Per_Dozen>
+
+      <Accessory_Size>0</Accessory_Size>
+
+      <Dimension_Id>-PARENT:wt.part.WTPartMaster:2427561-REV:A-BRANCH:1-SIZE1:S</Dimension_Id>
+
+      <Garment_Use_LifceCycle_id>0</Garment_Use_LifceCycle_id>
+
+      <UOM isNull="true"></UOM>
+
+      <Pattern_Product_BOM_Link_Branch_Id>1</Pattern_Product_BOM_Link_Branch_Id>
+
+      <Dimension_Name>:SIZE1</Dimension_Name>
+
+      <Name>GP 10188 Boys Knit Brief ExpWB B252</Name>
+
+      <com_lcs_wc_season_LCSSeason_Name__>Garment  BIW</com_lcs_wc_season_LCSSeason_Name__>
+</row>
+
+    <row idx="12">
+      <com_lcs_wc_product_LCSProduct type="com.lcs.wc.product.LCSProduct" objectId="2384183" branchId="2384182">B252 Boys Ctn Knit Rib ExpWB (Garment  BIW)</com_lcs_wc_product_LCSProduct>
+
+      <Garment_Spec type="com.lcs.wc.specification.FlexSpecification" objectId="5535179" branchId="5532945">FLEXSPEC:15974, A.2</Garment_Spec>
+
+      <Pattern_Spec type="com.lcs.wc.specification.FlexSpecification" objectId="2427375" branchId="2394171">FLEXSPEC:10941, A.2</Pattern_Spec>
+
+      <Master_Reference_Object_Id_Id>2394169</Master_Reference_Object_Id_Id>
+
+      <Pattern_Spec_Persist_Info_Object_Identifier_Id>2427375</Pattern_Spec_Persist_Info_Object_Identifier_Id>
+
+      <roleAObjectRef_key_id>5532943</roleAObjectRef_key_id>
+
+      <roleBObjectRef_key_id>2394169</roleBObjectRef_key_id>
+
+      <Pattern_Spec_Name>001 :</Pattern_Spec_Name>
+
+      <Garment_Spec_Name>002 :</Garment_Spec_Name>
+
+      <com_lcs_wc_flexbom_FlexBOMPart type="com.lcs.wc.flexbom.FlexBOMPart" objectId="8116006" branchId="2427563">BOMPART:13325, A.19</com_lcs_wc_flexbom_FlexBOMPart>
+
+      <com_lcs_wc_flexbom_FlexBOMPart_Name>T0409A Sew</com_lcs_wc_flexbom_FlexBOMPart_Name>
+
+      <com_lcs_wc_season_LCSSeason type="com.lcs.wc.season.LCSSeason" objectId="2382466" branchId="2382465">SEASON:10422, A.1</com_lcs_wc_season_LCSSeason>
+
+      <com_lcs_wc_season_LCSSeason_Name>Garment  BIW</com_lcs_wc_season_LCSSeason_Name>
+
+      <Branch_and_size>32X</Branch_and_size>
+
+      <Pattern_Garment_Use>0</Pattern_Garment_Use>
+
+      <Branch_Id>3</Branch_Id>
+
+      <Size>2X</Size>
+
+      <Usage_Per_Dozen>0.0433</Usage_Per_Dozen>
+
+      <Accessory_Size>0</Accessory_Size>
+
+      <Dimension_Id>-PARENT:wt.part.WTPartMaster:2427561-REV:A-BRANCH:3-SIZE1:2X</Dimension_Id>
+
+      <Garment_Use_LifceCycle_id>0</Garment_Use_LifceCycle_id>
+
+      <UOM isNull="true"></UOM>
+
+      <Pattern_Product_BOM_Link_Branch_Id>3</Pattern_Product_BOM_Link_Branch_Id>
+
+      <Dimension_Name>:SIZE1</Dimension_Name>
+
+      <Name>GP 10188 Boys Knit Brief ExpWB B252</Name>
+
+      <com_lcs_wc_season_LCSSeason_Name__>Garment  BIW</com_lcs_wc_season_LCSSeason_Name__>
+</row>
+
+    <row idx="13">
+      <com_lcs_wc_product_LCSProduct type="com.lcs.wc.product.LCSProduct" objectId="2384183" branchId="2384182">B252 Boys Ctn Knit Rib ExpWB (Garment  BIW)</com_lcs_wc_product_LCSProduct>
+
+      <Garment_Spec type="com.lcs.wc.specification.FlexSpecification" objectId="5535179" branchId="5532945">FLEXSPEC:15974, A.2</Garment_Spec>
+
+      <Pattern_Spec type="com.lcs.wc.specification.FlexSpecification" objectId="2427375" branchId="2394171">FLEXSPEC:10941, A.2</Pattern_Spec>
+
+      <Master_Reference_Object_Id_Id>2394169</Master_Reference_Object_Id_Id>
+
+      <Pattern_Spec_Persist_Info_Object_Identifier_Id>2427375</Pattern_Spec_Persist_Info_Object_Identifier_Id>
+
+      <roleAObjectRef_key_id>5532943</roleAObjectRef_key_id>
+
+      <roleBObjectRef_key_id>2394169</roleBObjectRef_key_id>
+
+      <Pattern_Spec_Name>001 :</Pattern_Spec_Name>
+
+      <Garment_Spec_Name>002 :</Garment_Spec_Name>
+
+      <com_lcs_wc_flexbom_FlexBOMPart type="com.lcs.wc.flexbom.FlexBOMPart" objectId="8116006" branchId="2427563">BOMPART:13325, A.19</com_lcs_wc_flexbom_FlexBOMPart>
+
+      <com_lcs_wc_flexbom_FlexBOMPart_Name>T0409A Sew</com_lcs_wc_flexbom_FlexBOMPart_Name>
+
+      <com_lcs_wc_season_LCSSeason type="com.lcs.wc.season.LCSSeason" objectId="2382466" branchId="2382465">SEASON:10422, A.1</com_lcs_wc_season_LCSSeason>
+
+      <com_lcs_wc_season_LCSSeason_Name>Garment  BIW</com_lcs_wc_season_LCSSeason_Name>
+
+      <Branch_and_size>3S</Branch_and_size>
+
+      <Pattern_Garment_Use>0</Pattern_Garment_Use>
+
+      <Branch_Id>3</Branch_Id>
+
+      <Size>S</Size>
+
+      <Usage_Per_Dozen>0.0303</Usage_Per_Dozen>
+
+      <Accessory_Size>0</Accessory_Size>
+
+      <Dimension_Id>-PARENT:wt.part.WTPartMaster:2427561-REV:A-BRANCH:3-SIZE1:S</Dimension_Id>
+
+      <Garment_Use_LifceCycle_id>0</Garment_Use_LifceCycle_id>
+
+      <UOM isNull="true"></UOM>
+
+      <Pattern_Product_BOM_Link_Branch_Id>3</Pattern_Product_BOM_Link_Branch_Id>
+
+      <Dimension_Name>:SIZE1</Dimension_Name>
+
+      <Name>GP 10188 Boys Knit Brief ExpWB B252</Name>
+
+      <com_lcs_wc_season_LCSSeason_Name__>Garment  BIW</com_lcs_wc_season_LCSSeason_Name__>
+</row>
+
+    <row idx="14">
+      <com_lcs_wc_product_LCSProduct type="com.lcs.wc.product.LCSProduct" objectId="2384183" branchId="2384182">B252 Boys Ctn Knit Rib ExpWB (Garment  BIW)</com_lcs_wc_product_LCSProduct>
+
+      <Garment_Spec type="com.lcs.wc.specification.FlexSpecification" objectId="5535179" branchId="5532945">FLEXSPEC:15974, A.2</Garment_Spec>
+
+      <Pattern_Spec type="com.lcs.wc.specification.FlexSpecification" objectId="2427375" branchId="2394171">FLEXSPEC:10941, A.2</Pattern_Spec>
+
+      <Master_Reference_Object_Id_Id>2394169</Master_Reference_Object_Id_Id>
+
+      <Pattern_Spec_Persist_Info_Object_Identifier_Id>2427375</Pattern_Spec_Persist_Info_Object_Identifier_Id>
+
+      <roleAObjectRef_key_id>5532943</roleAObjectRef_key_id>
+
+      <roleBObjectRef_key_id>2394169</roleBObjectRef_key_id>
+
+      <Pattern_Spec_Name>001 :</Pattern_Spec_Name>
+
+      <Garment_Spec_Name>002 :</Garment_Spec_Name>
+
+      <com_lcs_wc_flexbom_FlexBOMPart type="com.lcs.wc.flexbom.FlexBOMPart" objectId="8116006" branchId="2427563">BOMPART:13325, A.19</com_lcs_wc_flexbom_FlexBOMPart>
+
+      <com_lcs_wc_flexbom_FlexBOMPart_Name>T0409A Sew</com_lcs_wc_flexbom_FlexBOMPart_Name>
+
+      <com_lcs_wc_season_LCSSeason type="com.lcs.wc.season.LCSSeason" objectId="2382466" branchId="2382465">SEASON:10422, A.1</com_lcs_wc_season_LCSSeason>
+
+      <com_lcs_wc_season_LCSSeason_Name>Garment  BIW</com_lcs_wc_season_LCSSeason_Name>
+
+      <Branch_and_size>3</Branch_and_size>
+
+      <Pattern_Garment_Use>1157716</Pattern_Garment_Use>
+
+      <Branch_Id>3</Branch_Id>
+
+      <Size isNull="true"></Size>
+
+      <Usage_Per_Dozen>0</Usage_Per_Dozen>
+
+      <Accessory_Size>0</Accessory_Size>
+
+      <Dimension_Id>-PARENT:wt.part.WTPartMaster:2427561-REV:A-BRANCH:3</Dimension_Id>
+
+      <Garment_Use_LifceCycle_id>1157716</Garment_Use_LifceCycle_id>
+
+      <UOM>lb</UOM>
+
+      <Pattern_Product_BOM_Link_Branch_Id>3</Pattern_Product_BOM_Link_Branch_Id>
+
+      <Dimension_Name isNull="true"></Dimension_Name>
+
+      <Name>GP 10188 Boys Knit Brief ExpWB B252</Name>
+
+      <com_lcs_wc_season_LCSSeason_Name__>Garment  BIW</com_lcs_wc_season_LCSSeason_Name__>
+</row>
+</result>
+</queryResult>

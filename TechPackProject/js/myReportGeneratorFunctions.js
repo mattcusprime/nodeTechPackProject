@@ -4,9 +4,11 @@ var arrGarmentProductsArrayForTypeAhead = [];
 search turned off
 */
 var strDomString = '<"top"p>rt<"bottom"l><"clear">';
+var strDomRevisionString = '<"top"p>rlt<"bottom"><"clear">';
 var strCwayBomDomString = 'l<"top"fp>rt<"bottom"l><"clear">';
-var strDomMeasurementString = 'rtip';//use this one if Wendy wants to turn off measurement search
-//var strDomMeasurementString = 'frtip';
+//var strDomMeasurementString = 'Brtip';//use this one if Wendy wants to turn off measurement search
+// comment the above one with the B in to turn undo button on
+var strDomMeasurementString = 'rtip';
 var strDomSizingString = 'rtip';
 var arrButtons = ['copy', {
 	extend : 'pdf',
@@ -18,7 +20,7 @@ var arrButtons = ['copy', {
 		filename : 'testing filename'
 	}
 }];
-var arrButtonsMasurementButtons = ['colvis'];
+//var arrButtonsMasurementButtons = ['colvis'];
 var arrButtonsNoButtons = [];
 // maybe put a second DOM string???
 // table options
@@ -40,16 +42,39 @@ var constructionTableOptions = {
 };
 var measurementTableOptions = {
 	'pageLength' : 50,
-	'order' : [[0, 'asc']],
+	//'order' : [[0, 'asc']],
 	'dom': strDomMeasurementString,
-	'buttons': arrButtonsMasurementButtons,
+	//'buttons': arrButtonsMasurementButtons,
+	"buttons":[
+            /*{
+                text: 'Save',
+                action: function ( e, dt, node, config ) {
+                    //alert( 'Button activated' );
+					//console.log($(dt).attr('id'));
+					var strId = $(node).parent().find('a.dt-button').attr('aria-controls');
+					saveStateOfTable(strId);
+					//alert('state saved')
+					//console.log();
+
+                }
+			},*/
+			{
+                text: 'Reload',
+                action: function ( e, dt, node, config ) {
+                    var strId = $(node).parent().find('a.dt-button').attr('aria-controls');
+					loadStateOfTable(strId);
+					//alert('state saved')
+                }
+            }
+        ],
 	"columnDefs" : [{
 		"targets" : [0, 3, 4, 7, 8],
+		//"targets" : [3, 4, 7, 8],
 		"visible" : false,
 		"searchable" : false
 	}],
 	'responsive' : false,
-	'paging' : true,
+	'paging' : true
 	//'ordering' : false
 };
 /*var sewBomTableOptions = {
@@ -66,6 +91,8 @@ var routingBomTableOptions = {
 	"pageLength" : 1000,
 	"dom" : strDomString,
     'buttons': arrButtonsNoButtons,
+	'order':[[1,'asc'],[2,'asc'],[3,'asc'],[4,'asc'],[5,'desc'],[6,'asc'],[7,'asc'],[8,'asc']]
+	
 
 };
 var sewBomTableOptions = {
@@ -88,7 +115,7 @@ var sourceBomTableOptions = {
 	    'orderData': [1,0],
 	},
 	{
-	    'targets': [0],
+	    'targets': [0,1],
 		'visible': false
 	}]
 
@@ -98,7 +125,12 @@ var colorwayListTableOptions = {
 	'paging' : false,
 	'length' : 1000,
 	'dom' : strDomString,
-	'buttons' : arrButtonsNoButtons
+	'buttons' : arrButtonsNoButtons,
+	'columnDefs': [{
+	    'targets': [0,1,2],
+	    'orderData': [0,1,2],
+		"sortable":false
+	}]
 
 };
 var cwayReportTableOptions = {
@@ -107,7 +139,8 @@ var cwayReportTableOptions = {
 	'dom': strDomString,
 	'columnDefs': [{
 	    'targets': [0, 1,2],
-	    'orderData': [0, 1,2]
+	    'orderData': [0, 1,2],
+		"sortable":false
 	}],
 	'buttons' : arrButtonsNoButtons
 };
@@ -227,28 +260,31 @@ var sizeTableOptions = {
 		"visible" : false,
 		"searchable" : false
 	},
+	
 	{
-		"targets" : [3,13],
+		"targets" : [3,13,14],
 		"visible" : true,
 		"searchable" : false,
 		"sortable":false
 	}],
-	'buttons' : arrButtonsNoButtons
+	'buttons' : arrButtonsNoButtons,
+	'colReorder': true
 };
+var numRevisionsToGet = 10;
 var revisionTableTableOptions = {
 
     "order": [[10, "desc"]],
-	"dom" : strDomString,
+	"dom" : strDomRevisionString,
 	"columnDefs" : [{
-		"targets" : [0, 2, 3, 4, 11,13],
+		"targets" : [0, 2, 3, 4, 11,13,14],
 		"visible" : false,
 		"searchable" : false
-	},
+},
 	{
-		"targets" : [0,1,2,3,4,5,6,7,8,9,11,12,13],
+		"targets" : [0,1,2,3,4,5,6,7,8,9,10,11,12,13],
 		"sortable" : false
-	}],
-	"pageLength" : 10,
+}],
+	"pageLength" : numRevisionsToGet,
 	'buttons': arrButtonsNoButtons,
 	'colReorder': true
 };
@@ -270,7 +306,8 @@ var reportsTableOptions = {
 var approvedSupplierTableOptions = {
 	"pageLength" : 1000,
 	"dom" : strDomString,
-	'buttons' : arrButtonsNoButtons
+	'buttons' : arrButtonsNoButtons,
+    'colReorder':true
 };
 
 // table options
@@ -616,6 +653,9 @@ function runNewProduct(wipeThisGarmentProductOut) {
 		};
 	};
 	$('#runNew,.clearThisComponentOnNewGarmentLoad,nav,#topLeftNav,hr').fadeOut();
+	var strGPname = $('#topLeftNav').text();
+	strGPname = strGPname.replace(/GP\W/g,'');
+	
 	//$('#topLeftNav *').remove();
 	$('#garmentFormContainer').fadeIn();
 	
@@ -743,4 +783,47 @@ function makeMyRowsClickableToRemove(idSelector) {
 
 	});
 
+};
+var lastStateSave = {};
+function saveStateOfTable(strId){
+	//$(".dataTable").each(function(){
+		//var strId = $(this).attr('id');
+		var table = $('#' + strId).DataTable();
+		var myData = table.data();
+		var arrOfSelected = table.rows().nodes();
+		lastStateSave[strId] = myData;
+		lastStateSave[strId + '_Nodes'] = arrOfSelected;
+	//});
+	alert('State saved.');
+};
+function saveDataOfAllTables(){
+	$(".dataTable").each(function(){
+		var strId = $(this).attr('id');
+		var table = $('#' + strId).DataTable();
+		var myData = table.data();
+		var arrOfSelected = table.rows().nodes();
+		lastStateSave[strId] = myData;
+		//lastStateSave[strId + '_Nodes'] = arrOfSelected;
+	});
+};
+function loadStateOfTable(strId){
+	//$(".dataTable").each(function(){
+		//var strId = $(this).attr('id');
+		var myData = lastStateSave[strId];
+		var myNodes = lastStateSave[strId + '_Nodes'];
+		var table = $('#' + strId).DataTable();
+		table.clear().rows.add(myData).draw();
+		table.rows().every( function ( rowIdx, tableLoop, rowLoop ) {
+			var oldNode = myNodes[rowLoop];
+			var newNode = table.row(rowIdx).node();
+			if($(oldNode).is('.selected')){
+				$(newNode).addClass('selected');
+			};
+		} );
+		table.draw();
+
+		//console.log(myData	);
+		
+	//});
+	alert('State loaded.');
 };

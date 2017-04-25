@@ -1,0 +1,30 @@
+add product type instead of product name on product revisions
+
+Also add filter in BOMs from garment to color to just materials.  
+
+History
+•	No Active Spec attribute populated
+•	Does have the Active Development Spec attribute populated
+•	Does have the Active Development Spec Complete attribute populated
+•	Primary Source attribute=no
+
+Current
+Active
+•	Does have the Active Spec attribute populated
+•	Does have the Active Development Spec attribute populated
+•	Does have the Active Development Spec Complete attribute populated
+•	Primary Source attribute=no
+
+Active/Primary
+•	Does have the Active Spec attribute populated
+•	Does have the Active Development Spec attribute populated
+•	Does have the Active Development Spec Complete attribute populated
+•	Primary Source attribute=yes
+
+*we will have situations where the active spec data does not align with the active development spec and the source is marked primary- in this situation the active development spec is the correct one to be flagged as primary for the combination.
+
+In Development
+•	No Active Spec attribute populated
+•	Does have the Active Development Spec attribute populated
+•	No date in the Active Development Spec Complete attribute populated
+•	Primary Source attribute=no

@@ -1,0 +1,741 @@
+<wc:COLLECTION xmlns:wc="http://www.ptc.com/infoengine/1.0">
+<script id="tinyhippos-injected"/>
+<Unknown-Class-Name NAME="results" TYPE="Unknown" STATUS="0">
+<wc:INSTANCE>
+<id javaType="java.lang.Integer">43</id>
+<sortingNumber javaType="java.lang.Integer">13</sortingNumber>
+<name NIL="true"/>
+<point1 NIL="true"/>
+<point2 NIL="true"/>
+<plusTolerance javaType="java.lang.Float">99.0</plusTolerance>
+<plusTolerance javaType="java.lang.Double">99.0</plusTolerance>
+<minusTolerance javaType="java.lang.Float">0.0</minusTolerance>
+<minusTolerance javaType="java.lang.Double">0.0</minusTolerance>
+<IDA2A2>
+OR:com.lcs.wc.measurements.LCSPointsOfMeasure:9097482
+</IDA2A2>
+<pointsOfMeasureType>INSTANCE</pointsOfMeasureType>
+<effectSequence javaType="java.lang.Integer">1</effectSequence>
+<hbiPatternPiece NIL="true"/>
+<placementAmount NIL="true"/>
+<actualMeasurement javaType="java.lang.Double">0.0</actualMeasurement>
+<Illustration NIL="true"/>
+<measurementName>Min. Leg Opening - Extended (half)</measurementName>
+<section NIL="true"/>
+<hbiGradeCode>206x Min. Leg Opening - Extended (half) Inseam 0-2</hbiGradeCode>
+<hbiPiecesPerGarment javaType="java.lang.Double">0.0</hbiPiecesPerGarment>
+<htmInstruction NIL="true"/>
+<quotedMeasurementDelta javaType="java.lang.Double">0.0</quotedMeasurementDelta>
+<number>206x</number>
+<criticalPom NIL="true"/>
+<libraryItemReference>
+OR:com.lcs.wc.measurements.LCSPointsOfMeasure:174264
+</libraryItemReference>
+<howToMeasure>/Windchill/images/X4.jpg</howToMeasure>
+<placementReference>inseam0To2</placementReference>
+<actualMeasurementDelta javaType="java.lang.Double">0.0</actualMeasurementDelta>
+<requestedMeasurement javaType="java.lang.Double">0.0</requestedMeasurement>
+<newMeasurement javaType="java.lang.Double">0.0</newMeasurement>
+<sampleMeasurementComments NIL="true"/>
+<quotedMeasurement javaType="java.lang.Double">0.0</quotedMeasurement>
+<highLight NIL="true"/>
+<placeholderRow javaType="java.lang.Double">0.0</placeholderRow>
+<size_XS>7.875</size_XS>
+<size_S>8.75</size_S>
+<size_M>9.5</size_M>
+<size_L>10.25</size_L>
+<size_XL>11.0</size_XL>
+<size_2X>11.375</size_2X>
+</wc:INSTANCE>
+<wc:INSTANCE>
+<id javaType="java.lang.Integer">30</id>
+<sortingNumber javaType="java.lang.Integer">9</sortingNumber>
+<name NIL="true"/>
+<point1 NIL="true"/>
+<point2 NIL="true"/>
+<plusTolerance javaType="java.lang.Float">0.5</plusTolerance>
+<plusTolerance javaType="java.lang.Double">0.5</plusTolerance>
+<minusTolerance javaType="java.lang.Float">0.5</minusTolerance>
+<minusTolerance javaType="java.lang.Double">0.5</minusTolerance>
+<IDA2A2>
+OR:com.lcs.wc.measurements.LCSPointsOfMeasure:9097483
+</IDA2A2>
+<pointsOfMeasureType>INSTANCE</pointsOfMeasureType>
+<effectSequence javaType="java.lang.Integer">1</effectSequence>
+<hbiPatternPiece NIL="true"/>
+<placementAmount>four</placementAmount>
+<actualMeasurement javaType="java.lang.Double">0.0</actualMeasurement>
+<Illustration NIL="true"/>
+<measurementName>Panel Width - 4” Down (front or back)</measurementName>
+<section NIL="true"/>
+<hbiGradeCode>243 Panel Width - 4” Down (front or back)</hbiGradeCode>
+<hbiPiecesPerGarment javaType="java.lang.Double">0.0</hbiPiecesPerGarment>
+<htmInstruction NIL="true"/>
+<quotedMeasurementDelta javaType="java.lang.Double">0.0</quotedMeasurementDelta>
+<number>243</number>
+<criticalPom NIL="true"/>
+<libraryItemReference>
+OR:com.lcs.wc.measurements.LCSPointsOfMeasure:174200
+</libraryItemReference>
+<howToMeasure>/Windchill/images/243_image.jpg</howToMeasure>
+<placementReference NIL="true"/>
+<actualMeasurementDelta javaType="java.lang.Double">0.0</actualMeasurementDelta>
+<requestedMeasurement javaType="java.lang.Double">0.0</requestedMeasurement>
+<newMeasurement javaType="java.lang.Double">0.0</newMeasurement>
+<sampleMeasurementComments>(c1) tolerance</sampleMeasurementComments>
+<quotedMeasurement javaType="java.lang.Double">0.0</quotedMeasurement>
+<highLight NIL="true"/>
+<placeholderRow javaType="java.lang.Double">0.0</placeholderRow>
+<size_XS>3.5</size_XS>
+<size_S>3.625</size_S>
+<size_M>3.75</size_M>
+<size_L>4.0</size_L>
+<size_XL>4.25</size_XL>
+<size_2X>4.375</size_2X>
+</wc:INSTANCE>
+<wc:INSTANCE>
+<id javaType="java.lang.Integer">33</id>
+<sortingNumber javaType="java.lang.Integer">6</sortingNumber>
+<name NIL="true"/>
+<point1 NIL="true"/>
+<point2 NIL="true"/>
+<plusTolerance javaType="java.lang.Float">0.75</plusTolerance>
+<plusTolerance javaType="java.lang.Double">0.75</plusTolerance>
+<minusTolerance javaType="java.lang.Float">0.75</minusTolerance>
+<minusTolerance javaType="java.lang.Double">0.75</minusTolerance>
+<IDA2A2>
+OR:com.lcs.wc.measurements.LCSPointsOfMeasure:2394291
+</IDA2A2>
+<pointsOfMeasureType>INSTANCE</pointsOfMeasureType>
+<effectSequence javaType="java.lang.Integer">0</effectSequence>
+<hbiPatternPiece NIL="true"/>
+<placementAmount NIL="true"/>
+<actualMeasurement javaType="java.lang.Double">0.0</actualMeasurement>
+<Illustration NIL="true"/>
+<measurementName>Back Rise - Top of Waistband</measurementName>
+<section NIL="true"/>
+<hbiGradeCode>211a Back Rise - Top of Waistband</hbiGradeCode>
+<hbiPiecesPerGarment javaType="java.lang.Double">0.0</hbiPiecesPerGarment>
+<htmInstruction NIL="true"/>
+<quotedMeasurementDelta javaType="java.lang.Double">0.0</quotedMeasurementDelta>
+<number>211a</number>
+<criticalPom NIL="true"/>
+<libraryItemReference>
+OR:com.lcs.wc.measurements.LCSPointsOfMeasure:174167
+</libraryItemReference>
+<howToMeasure>/Windchill/images/211a.jpg</howToMeasure>
+<placementReference NIL="true"/>
+<actualMeasurementDelta javaType="java.lang.Double">0.0</actualMeasurementDelta>
+<requestedMeasurement javaType="java.lang.Double">0.0</requestedMeasurement>
+<newMeasurement javaType="java.lang.Double">0.0</newMeasurement>
+<sampleMeasurementComments>kids (c1) tolerance</sampleMeasurementComments>
+<quotedMeasurement javaType="java.lang.Double">0.0</quotedMeasurement>
+<highLight NIL="true"/>
+<placeholderRow javaType="java.lang.Double">0.0</placeholderRow>
+<size_XS>7.375</size_XS>
+<size_S>7.875</size_S>
+<size_M>8.875</size_M>
+<size_L>9.75</size_L>
+<size_XL>10.5</size_XL>
+<size_2X>11.125</size_2X>
+</wc:INSTANCE>
+<wc:INSTANCE>
+<id javaType="java.lang.Integer">32</id>
+<sortingNumber javaType="java.lang.Integer">7</sortingNumber>
+<name NIL="true"/>
+<point1 NIL="true"/>
+<point2 NIL="true"/>
+<plusTolerance javaType="java.lang.Float">0.25</plusTolerance>
+<plusTolerance javaType="java.lang.Double">0.25</plusTolerance>
+<minusTolerance javaType="java.lang.Float">0.25</minusTolerance>
+<minusTolerance javaType="java.lang.Double">0.25</minusTolerance>
+<IDA2A2>
+OR:com.lcs.wc.measurements.LCSPointsOfMeasure:2394292
+</IDA2A2>
+<pointsOfMeasureType>INSTANCE</pointsOfMeasureType>
+<effectSequence javaType="java.lang.Integer">0</effectSequence>
+<hbiPatternPiece NIL="true"/>
+<placementAmount NIL="true"/>
+<actualMeasurement javaType="java.lang.Double">0.0</actualMeasurement>
+<Illustration NIL="true"/>
+<measurementName>Fly Length</measurementName>
+<section NIL="true"/>
+<hbiGradeCode>215 Fly Length</hbiGradeCode>
+<hbiPiecesPerGarment javaType="java.lang.Double">0.0</hbiPiecesPerGarment>
+<htmInstruction>.</htmInstruction>
+<quotedMeasurementDelta javaType="java.lang.Double">0.0</quotedMeasurementDelta>
+<number>215</number>
+<criticalPom NIL="true"/>
+<libraryItemReference>
+OR:com.lcs.wc.measurements.LCSPointsOfMeasure:174162
+</libraryItemReference>
+<howToMeasure>/Windchill/images/215.jpg</howToMeasure>
+<placementReference NIL="true"/>
+<actualMeasurementDelta javaType="java.lang.Double">0.0</actualMeasurementDelta>
+<requestedMeasurement javaType="java.lang.Double">0.0</requestedMeasurement>
+<newMeasurement javaType="java.lang.Double">0.0</newMeasurement>
+<sampleMeasurementComments NIL="true"/>
+<quotedMeasurement javaType="java.lang.Double">0.0</quotedMeasurement>
+<highLight NIL="true"/>
+<placeholderRow javaType="java.lang.Double">0.0</placeholderRow>
+<size_XS>2.75</size_XS>
+<size_S>3.0</size_S>
+<size_M>3.25</size_M>
+<size_L>4.0</size_L>
+<size_XL>4.75</size_XL>
+<size_2X>5.25</size_2X>
+</wc:INSTANCE>
+<wc:INSTANCE>
+<id javaType="java.lang.Integer">31</id>
+<sortingNumber javaType="java.lang.Integer">8</sortingNumber>
+<name NIL="true"/>
+<point1 NIL="true"/>
+<point2 NIL="true"/>
+<plusTolerance javaType="java.lang.Float">0.25</plusTolerance>
+<plusTolerance javaType="java.lang.Double">0.25</plusTolerance>
+<minusTolerance javaType="java.lang.Float">0.25</minusTolerance>
+<minusTolerance javaType="java.lang.Double">0.25</minusTolerance>
+<IDA2A2>
+OR:com.lcs.wc.measurements.LCSPointsOfMeasure:2394293
+</IDA2A2>
+<pointsOfMeasureType>INSTANCE</pointsOfMeasureType>
+<effectSequence javaType="java.lang.Integer">0</effectSequence>
+<hbiPatternPiece NIL="true"/>
+<placementAmount NIL="true"/>
+<actualMeasurement javaType="java.lang.Double">0.0</actualMeasurement>
+<Illustration NIL="true"/>
+<measurementName>Fly Position</measurementName>
+<section NIL="true"/>
+<hbiGradeCode>215b Fly Position</hbiGradeCode>
+<hbiPiecesPerGarment javaType="java.lang.Double">0.0</hbiPiecesPerGarment>
+<htmInstruction NIL="true"/>
+<quotedMeasurementDelta javaType="java.lang.Double">0.0</quotedMeasurementDelta>
+<number>215b</number>
+<criticalPom NIL="true"/>
+<libraryItemReference>
+OR:com.lcs.wc.measurements.LCSPointsOfMeasure:174193
+</libraryItemReference>
+<howToMeasure>/Windchill/images/215b_image.jpg</howToMeasure>
+<placementReference NIL="true"/>
+<actualMeasurementDelta javaType="java.lang.Double">0.0</actualMeasurementDelta>
+<requestedMeasurement javaType="java.lang.Double">0.0</requestedMeasurement>
+<newMeasurement javaType="java.lang.Double">0.0</newMeasurement>
+<sampleMeasurementComments NIL="true"/>
+<quotedMeasurement javaType="java.lang.Double">0.0</quotedMeasurement>
+<highLight NIL="true"/>
+<placeholderRow javaType="java.lang.Double">0.0</placeholderRow>
+<size_XS>1.75</size_XS>
+<size_S>1.875</size_S>
+<size_M>2.0</size_M>
+<size_L>2.125</size_L>
+<size_XL>2.125</size_XL>
+<size_2X>2.125</size_2X>
+</wc:INSTANCE>
+<wc:INSTANCE>
+<id javaType="java.lang.Integer">28</id>
+<sortingNumber javaType="java.lang.Integer">11</sortingNumber>
+<name NIL="true"/>
+<point1 NIL="true"/>
+<point2 NIL="true"/>
+<plusTolerance javaType="java.lang.Float">0.75</plusTolerance>
+<plusTolerance javaType="java.lang.Double">0.75</plusTolerance>
+<minusTolerance javaType="java.lang.Float">0.75</minusTolerance>
+<minusTolerance javaType="java.lang.Double">0.75</minusTolerance>
+<IDA2A2>
+OR:com.lcs.wc.measurements.LCSPointsOfMeasure:2394294
+</IDA2A2>
+<pointsOfMeasureType>INSTANCE</pointsOfMeasureType>
+<effectSequence javaType="java.lang.Integer">0</effectSequence>
+<hbiPatternPiece NIL="true"/>
+<placementAmount NIL="true"/>
+<actualMeasurement javaType="java.lang.Double">0.0</actualMeasurement>
+<Illustration NIL="true"/>
+<measurementName>Seat - At Top of Leg (half)</measurementName>
+<section NIL="true"/>
+<hbiGradeCode>202e Seat - At Top of Leg (half)</hbiGradeCode>
+<hbiPiecesPerGarment javaType="java.lang.Double">0.0</hbiPiecesPerGarment>
+<htmInstruction NIL="true"/>
+<quotedMeasurementDelta javaType="java.lang.Double">0.0</quotedMeasurementDelta>
+<number>202e</number>
+<criticalPom NIL="true"/>
+<libraryItemReference>
+OR:com.lcs.wc.measurements.LCSPointsOfMeasure:174161
+</libraryItemReference>
+<howToMeasure>/Windchill/images/202e.jpg</howToMeasure>
+<placementReference NIL="true"/>
+<actualMeasurementDelta javaType="java.lang.Double">0.0</actualMeasurementDelta>
+<requestedMeasurement javaType="java.lang.Double">0.0</requestedMeasurement>
+<newMeasurement javaType="java.lang.Double">0.0</newMeasurement>
+<sampleMeasurementComments>kids (c1) tolerance</sampleMeasurementComments>
+<quotedMeasurement javaType="java.lang.Double">0.0</quotedMeasurement>
+<highLight NIL="true"/>
+<placeholderRow javaType="java.lang.Double">0.0</placeholderRow>
+<size_XS>8.625</size_XS>
+<size_S>9.625</size_S>
+<size_M>10.625</size_M>
+<size_L>11.75</size_L>
+<size_XL>12.875</size_XL>
+<size_2X>13.375</size_2X>
+</wc:INSTANCE>
+<wc:INSTANCE>
+<id javaType="java.lang.Integer">27</id>
+<sortingNumber javaType="java.lang.Integer">12</sortingNumber>
+<name NIL="true"/>
+<point1 NIL="true"/>
+<point2 NIL="true"/>
+<plusTolerance javaType="java.lang.Float">0.5</plusTolerance>
+<plusTolerance javaType="java.lang.Double">0.5</plusTolerance>
+<minusTolerance javaType="java.lang.Float">0.5</minusTolerance>
+<minusTolerance javaType="java.lang.Double">0.5</minusTolerance>
+<IDA2A2>
+OR:com.lcs.wc.measurements.LCSPointsOfMeasure:2394296
+</IDA2A2>
+<pointsOfMeasureType>INSTANCE</pointsOfMeasureType>
+<effectSequence javaType="java.lang.Integer">0</effectSequence>
+<hbiPatternPiece NIL="true"/>
+<placementAmount NIL="true"/>
+<actualMeasurement javaType="java.lang.Double">0.0</actualMeasurement>
+<Illustration NIL="true"/>
+<measurementName>Leg Opening - At Edge (half)</measurementName>
+<section NIL="true"/>
+<hbiGradeCode>206a Leg Opening - At Edge (half) Inseam 0-2</hbiGradeCode>
+<hbiPiecesPerGarment javaType="java.lang.Double">0.0</hbiPiecesPerGarment>
+<htmInstruction NIL="true"/>
+<quotedMeasurementDelta javaType="java.lang.Double">0.0</quotedMeasurementDelta>
+<number>206a</number>
+<criticalPom NIL="true"/>
+<libraryItemReference>
+OR:com.lcs.wc.measurements.LCSPointsOfMeasure:174163
+</libraryItemReference>
+<howToMeasure>/Windchill/images/206a_image.jpg</howToMeasure>
+<placementReference>inseam0To2</placementReference>
+<actualMeasurementDelta javaType="java.lang.Double">0.0</actualMeasurementDelta>
+<requestedMeasurement javaType="java.lang.Double">0.0</requestedMeasurement>
+<newMeasurement javaType="java.lang.Double">0.0</newMeasurement>
+<sampleMeasurementComments>short-kids (c1) tolerance</sampleMeasurementComments>
+<quotedMeasurement javaType="java.lang.Double">0.0</quotedMeasurement>
+<highLight NIL="true"/>
+<placeholderRow javaType="java.lang.Double">0.0</placeholderRow>
+<size_XS>6.125</size_XS>
+<size_S>6.75</size_S>
+<size_M>7.375</size_M>
+<size_L>8.375</size_L>
+<size_XL>9.25</size_XL>
+<size_2X>9.875</size_2X>
+</wc:INSTANCE>
+<wc:INSTANCE>
+<id javaType="java.lang.Integer">45</id>
+<sortingNumber javaType="java.lang.Integer">10</sortingNumber>
+<name NIL="true"/>
+<point1 NIL="true"/>
+<point2 NIL="true"/>
+<plusTolerance javaType="java.lang.Float">0.25</plusTolerance>
+<plusTolerance javaType="java.lang.Double">0.25</plusTolerance>
+<minusTolerance javaType="java.lang.Float">0.25</minusTolerance>
+<minusTolerance javaType="java.lang.Double">0.25</minusTolerance>
+<IDA2A2>
+OR:com.lcs.wc.measurements.LCSPointsOfMeasure:2394297
+</IDA2A2>
+<pointsOfMeasureType>INSTANCE</pointsOfMeasureType>
+<effectSequence javaType="java.lang.Integer">0</effectSequence>
+<hbiPatternPiece NIL="true"/>
+<placementAmount NIL="true"/>
+<actualMeasurement javaType="java.lang.Double">0.0</actualMeasurement>
+<Illustration NIL="true"/>
+<measurementName>Crotch Width - At Seam (front or back)</measurementName>
+<section NIL="true"/>
+<hbiGradeCode>245b Crotch Width - At Seam (front or back)</hbiGradeCode>
+<hbiPiecesPerGarment javaType="java.lang.Double">0.0</hbiPiecesPerGarment>
+<htmInstruction NIL="true"/>
+<quotedMeasurementDelta javaType="java.lang.Double">0.0</quotedMeasurementDelta>
+<number>245b</number>
+<criticalPom NIL="true"/>
+<libraryItemReference>
+OR:com.lcs.wc.measurements.LCSPointsOfMeasure:174204
+</libraryItemReference>
+<howToMeasure>/Windchill/images/245b_image.jpg</howToMeasure>
+<placementReference NIL="true"/>
+<actualMeasurementDelta javaType="java.lang.Double">0.0</actualMeasurementDelta>
+<requestedMeasurement javaType="java.lang.Double">0.0</requestedMeasurement>
+<newMeasurement javaType="java.lang.Double">0.0</newMeasurement>
+<sampleMeasurementComments NIL="true"/>
+<quotedMeasurement javaType="java.lang.Double">0.0</quotedMeasurement>
+<highLight NIL="true"/>
+<placeholderRow javaType="java.lang.Double">0.0</placeholderRow>
+<size_XS>3.875</size_XS>
+<size_S>4.0</size_S>
+<size_M>4.125</size_M>
+<size_L>4.375</size_L>
+<size_XL>4.625</size_XL>
+<size_2X>4.75</size_2X>
+</wc:INSTANCE>
+<wc:INSTANCE>
+<id javaType="java.lang.Integer">42</id>
+<sortingNumber javaType="java.lang.Integer">14</sortingNumber>
+<name NIL="true"/>
+<point1 NIL="true"/>
+<point2 NIL="true"/>
+<plusTolerance javaType="java.lang.Float">0.5</plusTolerance>
+<plusTolerance javaType="java.lang.Double">0.5</plusTolerance>
+<minusTolerance javaType="java.lang.Float">0.5</minusTolerance>
+<minusTolerance javaType="java.lang.Double">0.5</minusTolerance>
+<IDA2A2>
+OR:com.lcs.wc.measurements.LCSPointsOfMeasure:2394299
+</IDA2A2>
+<pointsOfMeasureType>INSTANCE</pointsOfMeasureType>
+<effectSequence javaType="java.lang.Integer">0</effectSequence>
+<hbiPatternPiece NIL="true"/>
+<placementAmount NIL="true"/>
+<actualMeasurement javaType="java.lang.Double">0.0</actualMeasurement>
+<Illustration NIL="true"/>
+<measurementName>Outseam - Top of Waistband</measurementName>
+<section NIL="true"/>
+<hbiGradeCode>209a Outseam - Top of Waistband Inseam 0-2</hbiGradeCode>
+<hbiPiecesPerGarment javaType="java.lang.Double">0.0</hbiPiecesPerGarment>
+<htmInstruction NIL="true"/>
+<quotedMeasurementDelta javaType="java.lang.Double">0.0</quotedMeasurementDelta>
+<number>209a</number>
+<criticalPom NIL="true"/>
+<libraryItemReference>
+OR:com.lcs.wc.measurements.LCSPointsOfMeasure:174184
+</libraryItemReference>
+<howToMeasure>/Windchill/images/209a_image.jpg</howToMeasure>
+<placementReference>inseam0To2</placementReference>
+<actualMeasurementDelta javaType="java.lang.Double">0.0</actualMeasurementDelta>
+<requestedMeasurement javaType="java.lang.Double">0.0</requestedMeasurement>
+<newMeasurement javaType="java.lang.Double">0.0</newMeasurement>
+<sampleMeasurementComments>short-kids (c1) tolerance</sampleMeasurementComments>
+<quotedMeasurement javaType="java.lang.Double">0.0</quotedMeasurement>
+<highLight NIL="true"/>
+<placeholderRow javaType="java.lang.Double">0.0</placeholderRow>
+<size_XS>4.375</size_XS>
+<size_S>4.625</size_S>
+<size_M>5.125</size_M>
+<size_L>5.375</size_L>
+<size_XL>5.5</size_XL>
+<size_2X>5.625</size_2X>
+</wc:INSTANCE>
+<wc:INSTANCE>
+<id javaType="java.lang.Integer">41</id>
+<sortingNumber javaType="java.lang.Integer">16</sortingNumber>
+<name NIL="true"/>
+<point1 NIL="true"/>
+<point2 NIL="true"/>
+<plusTolerance javaType="java.lang.Float">0.125</plusTolerance>
+<plusTolerance javaType="java.lang.Double">0.125</plusTolerance>
+<minusTolerance javaType="java.lang.Float">0.125</minusTolerance>
+<minusTolerance javaType="java.lang.Double">0.125</minusTolerance>
+<IDA2A2>
+OR:com.lcs.wc.measurements.LCSPointsOfMeasure:2394300
+</IDA2A2>
+<pointsOfMeasureType>INSTANCE</pointsOfMeasureType>
+<effectSequence javaType="java.lang.Integer">0</effectSequence>
+<hbiPatternPiece NIL="true"/>
+<placementAmount NIL="true"/>
+<actualMeasurement javaType="java.lang.Double">0.0</actualMeasurement>
+<Illustration NIL="true"/>
+<measurementName>Leg Trim / Binding Width / Height</measurementName>
+<section NIL="true"/>
+<hbiGradeCode>302 Leg Trim / Binding Width / Height</hbiGradeCode>
+<hbiPiecesPerGarment javaType="java.lang.Double">0.0</hbiPiecesPerGarment>
+<htmInstruction NIL="true"/>
+<quotedMeasurementDelta javaType="java.lang.Double">0.0</quotedMeasurementDelta>
+<number>302</number>
+<criticalPom NIL="true"/>
+<libraryItemReference>
+OR:com.lcs.wc.measurements.LCSPointsOfMeasure:174173
+</libraryItemReference>
+<howToMeasure>/Windchill/images/302_image.jpg</howToMeasure>
+<placementReference NIL="true"/>
+<actualMeasurementDelta javaType="java.lang.Double">0.0</actualMeasurementDelta>
+<requestedMeasurement javaType="java.lang.Double">0.0</requestedMeasurement>
+<newMeasurement javaType="java.lang.Double">0.0</newMeasurement>
+<sampleMeasurementComments NIL="true"/>
+<quotedMeasurement javaType="java.lang.Double">0.0</quotedMeasurement>
+<highLight NIL="true"/>
+<placeholderRow javaType="java.lang.Double">0.0</placeholderRow>
+<size_XS>0.5625</size_XS>
+<size_S>0.5625</size_S>
+<size_M>0.5625</size_M>
+<size_L>0.5625</size_L>
+<size_XL>0.5625</size_XL>
+<size_2X>0.5625</size_2X>
+</wc:INSTANCE>
+<wc:INSTANCE>
+<id javaType="java.lang.Integer">40</id>
+<sortingNumber javaType="java.lang.Integer">17</sortingNumber>
+<name NIL="true"/>
+<point1 NIL="true"/>
+<point2 NIL="true"/>
+<plusTolerance javaType="java.lang.Float">0.125</plusTolerance>
+<plusTolerance javaType="java.lang.Double">0.125</plusTolerance>
+<minusTolerance javaType="java.lang.Float">0.125</minusTolerance>
+<minusTolerance javaType="java.lang.Double">0.125</minusTolerance>
+<IDA2A2>
+OR:com.lcs.wc.measurements.LCSPointsOfMeasure:2394301
+</IDA2A2>
+<pointsOfMeasureType>INSTANCE</pointsOfMeasureType>
+<effectSequence javaType="java.lang.Integer">0</effectSequence>
+<hbiPatternPiece NIL="true"/>
+<placementAmount NIL="true"/>
+<actualMeasurement javaType="java.lang.Double">0.0</actualMeasurement>
+<Illustration NIL="true"/>
+<measurementName>Fly Trim / Binding Width / Height</measurementName>
+<section NIL="true"/>
+<hbiGradeCode>302 Fly Trim / Binding Width / Height</hbiGradeCode>
+<hbiPiecesPerGarment javaType="java.lang.Double">0.0</hbiPiecesPerGarment>
+<htmInstruction NIL="true"/>
+<quotedMeasurementDelta javaType="java.lang.Double">0.0</quotedMeasurementDelta>
+<number>302</number>
+<criticalPom NIL="true"/>
+<libraryItemReference>
+OR:com.lcs.wc.measurements.LCSPointsOfMeasure:174173
+</libraryItemReference>
+<howToMeasure>/Windchill/images/302_image.jpg</howToMeasure>
+<placementReference NIL="true"/>
+<actualMeasurementDelta javaType="java.lang.Double">0.0</actualMeasurementDelta>
+<requestedMeasurement javaType="java.lang.Double">0.0</requestedMeasurement>
+<newMeasurement javaType="java.lang.Double">0.0</newMeasurement>
+<sampleMeasurementComments NIL="true"/>
+<quotedMeasurement javaType="java.lang.Double">0.0</quotedMeasurement>
+<highLight NIL="true"/>
+<placeholderRow javaType="java.lang.Double">0.0</placeholderRow>
+<size_XS>0.3125</size_XS>
+<size_S>0.3125</size_S>
+<size_M>0.3125</size_M>
+<size_L>0.3125</size_L>
+<size_XL>0.3125</size_XL>
+<size_2X>0.3125</size_2X>
+</wc:INSTANCE>
+<wc:INSTANCE>
+<id javaType="java.lang.Integer">38</id>
+<sortingNumber javaType="java.lang.Integer">1</sortingNumber>
+<name NIL="true"/>
+<point1 NIL="true"/>
+<point2 NIL="true"/>
+<plusTolerance javaType="java.lang.Float">0.75</plusTolerance>
+<plusTolerance javaType="java.lang.Double">0.75</plusTolerance>
+<minusTolerance javaType="java.lang.Float">0.75</minusTolerance>
+<minusTolerance javaType="java.lang.Double">0.75</minusTolerance>
+<IDA2A2>
+OR:com.lcs.wc.measurements.LCSPointsOfMeasure:2394302
+</IDA2A2>
+<pointsOfMeasureType>INSTANCE</pointsOfMeasureType>
+<effectSequence javaType="java.lang.Integer">0</effectSequence>
+<hbiPatternPiece NIL="true"/>
+<placementAmount NIL="true"/>
+<actualMeasurement javaType="java.lang.Double">0.0</actualMeasurement>
+<Illustration NIL="true"/>
+<measurementName>Waist - at top (half)</measurementName>
+<section NIL="true"/>
+<hbiGradeCode>200a Waist - at top (half)</hbiGradeCode>
+<hbiPiecesPerGarment javaType="java.lang.Double">0.0</hbiPiecesPerGarment>
+<htmInstruction NIL="true"/>
+<quotedMeasurementDelta javaType="java.lang.Double">0.0</quotedMeasurementDelta>
+<number>200a</number>
+<criticalPom NIL="true"/>
+<libraryItemReference>
+OR:com.lcs.wc.measurements.LCSPointsOfMeasure:174160
+</libraryItemReference>
+<howToMeasure>/Windchill/images/200a.jpg</howToMeasure>
+<placementReference NIL="true"/>
+<actualMeasurementDelta javaType="java.lang.Double">0.0</actualMeasurementDelta>
+<requestedMeasurement javaType="java.lang.Double">0.0</requestedMeasurement>
+<newMeasurement javaType="java.lang.Double">0.0</newMeasurement>
+<sampleMeasurementComments>kids (c1) tolerance</sampleMeasurementComments>
+<quotedMeasurement javaType="java.lang.Double">0.0</quotedMeasurement>
+<highLight NIL="true"/>
+<placeholderRow javaType="java.lang.Double">0.0</placeholderRow>
+<size_XS>9.25</size_XS>
+<size_S>10.25</size_S>
+<size_M>11.0</size_M>
+<size_L>12.0</size_L>
+<size_XL>13.0</size_XL>
+<size_2X>13.5</size_2X>
+</wc:INSTANCE>
+<wc:INSTANCE>
+<id javaType="java.lang.Integer">37</id>
+<sortingNumber javaType="java.lang.Integer">2</sortingNumber>
+<name NIL="true"/>
+<point1 NIL="true"/>
+<point2 NIL="true"/>
+<plusTolerance javaType="java.lang.Float">99.0</plusTolerance>
+<plusTolerance javaType="java.lang.Double">99.0</plusTolerance>
+<minusTolerance javaType="java.lang.Float">0.0</minusTolerance>
+<minusTolerance javaType="java.lang.Double">0.0</minusTolerance>
+<IDA2A2>
+OR:com.lcs.wc.measurements.LCSPointsOfMeasure:2394303
+</IDA2A2>
+<pointsOfMeasureType>INSTANCE</pointsOfMeasureType>
+<effectSequence javaType="java.lang.Integer">0</effectSequence>
+<hbiPatternPiece NIL="true"/>
+<placementAmount NIL="true"/>
+<actualMeasurement javaType="java.lang.Double">0.0</actualMeasurement>
+<Illustration NIL="true"/>
+<measurementName>Min. Waist - Extended (half)</measurementName>
+<section NIL="true"/>
+<hbiGradeCode>200x Min. Waist - Extended (half)</hbiGradeCode>
+<hbiPiecesPerGarment javaType="java.lang.Double">0.0</hbiPiecesPerGarment>
+<htmInstruction NIL="true"/>
+<quotedMeasurementDelta javaType="java.lang.Double">0.0</quotedMeasurementDelta>
+<number>200x</number>
+<criticalPom NIL="true"/>
+<libraryItemReference>
+OR:com.lcs.wc.measurements.LCSPointsOfMeasure:174172
+</libraryItemReference>
+<howToMeasure>/Windchill/images/X3.jpg</howToMeasure>
+<placementReference NIL="true"/>
+<actualMeasurementDelta javaType="java.lang.Double">0.0</actualMeasurementDelta>
+<requestedMeasurement javaType="java.lang.Double">0.0</requestedMeasurement>
+<newMeasurement javaType="java.lang.Double">0.0</newMeasurement>
+<sampleMeasurementComments NIL="true"/>
+<quotedMeasurement javaType="java.lang.Double">0.0</quotedMeasurement>
+<highLight NIL="true"/>
+<placeholderRow javaType="java.lang.Double">0.0</placeholderRow>
+<size_XS>13.5</size_XS>
+<size_S>14.75</size_S>
+<size_M>16.0</size_M>
+<size_L>17.5</size_L>
+<size_XL>19.0</size_XL>
+<size_2X>19.75</size_2X>
+</wc:INSTANCE>
+<wc:INSTANCE>
+<id javaType="java.lang.Integer">36</id>
+<sortingNumber javaType="java.lang.Integer">3</sortingNumber>
+<name NIL="true"/>
+<point1 NIL="true"/>
+<point2 NIL="true"/>
+<plusTolerance javaType="java.lang.Float">0.25</plusTolerance>
+<plusTolerance javaType="java.lang.Double">0.25</plusTolerance>
+<minusTolerance javaType="java.lang.Float">0.25</minusTolerance>
+<minusTolerance javaType="java.lang.Double">0.25</minusTolerance>
+<IDA2A2>
+OR:com.lcs.wc.measurements.LCSPointsOfMeasure:2394304
+</IDA2A2>
+<pointsOfMeasureType>INSTANCE</pointsOfMeasureType>
+<effectSequence javaType="java.lang.Integer">0</effectSequence>
+<hbiPatternPiece NIL="true"/>
+<placementAmount NIL="true"/>
+<actualMeasurement javaType="java.lang.Double">0.0</actualMeasurement>
+<Illustration NIL="true"/>
+<measurementName>Waistband Width / Height</measurementName>
+<section NIL="true"/>
+<hbiGradeCode>300 Waistband Width / Height</hbiGradeCode>
+<hbiPiecesPerGarment javaType="java.lang.Double">0.0</hbiPiecesPerGarment>
+<htmInstruction NIL="true"/>
+<quotedMeasurementDelta javaType="java.lang.Double">0.0</quotedMeasurementDelta>
+<number>300</number>
+<criticalPom NIL="true"/>
+<libraryItemReference>
+OR:com.lcs.wc.measurements.LCSPointsOfMeasure:174170
+</libraryItemReference>
+<howToMeasure>/Windchill/images/300.jpg</howToMeasure>
+<placementReference NIL="true"/>
+<actualMeasurementDelta javaType="java.lang.Double">0.0</actualMeasurementDelta>
+<requestedMeasurement javaType="java.lang.Double">0.0</requestedMeasurement>
+<newMeasurement javaType="java.lang.Double">0.0</newMeasurement>
+<sampleMeasurementComments>(c1) tolerance</sampleMeasurementComments>
+<quotedMeasurement javaType="java.lang.Double">0.0</quotedMeasurement>
+<highLight NIL="true"/>
+<placeholderRow javaType="java.lang.Double">0.0</placeholderRow>
+<size_XS>1.25</size_XS>
+<size_S>1.25</size_S>
+<size_M>1.25</size_M>
+<size_L>1.25</size_L>
+<size_XL>1.25</size_XL>
+<size_2X>1.25</size_2X>
+</wc:INSTANCE>
+<wc:INSTANCE>
+<id javaType="java.lang.Integer">35</id>
+<sortingNumber javaType="java.lang.Integer">4</sortingNumber>
+<name NIL="true"/>
+<point1 NIL="true"/>
+<point2 NIL="true"/>
+<plusTolerance javaType="java.lang.Float">0.75</plusTolerance>
+<plusTolerance javaType="java.lang.Double">0.75</plusTolerance>
+<minusTolerance javaType="java.lang.Float">0.75</minusTolerance>
+<minusTolerance javaType="java.lang.Double">0.75</minusTolerance>
+<IDA2A2>
+OR:com.lcs.wc.measurements.LCSPointsOfMeasure:2394305
+</IDA2A2>
+<pointsOfMeasureType>INSTANCE</pointsOfMeasureType>
+<effectSequence javaType="java.lang.Integer">0</effectSequence>
+<hbiPatternPiece NIL="true"/>
+<placementAmount NIL="true"/>
+<actualMeasurement javaType="java.lang.Double">0.0</actualMeasurement>
+<Illustration NIL="true"/>
+<measurementName>Rise/Trunk Length - Flat</measurementName>
+<section NIL="true"/>
+<hbiGradeCode>210 Rise/Trunk Length - Flat</hbiGradeCode>
+<hbiPiecesPerGarment javaType="java.lang.Double">0.0</hbiPiecesPerGarment>
+<htmInstruction NIL="true"/>
+<quotedMeasurementDelta javaType="java.lang.Double">0.0</quotedMeasurementDelta>
+<number>210</number>
+<criticalPom NIL="true"/>
+<libraryItemReference>
+OR:com.lcs.wc.measurements.LCSPointsOfMeasure:174185
+</libraryItemReference>
+<howToMeasure>/Windchill/images/210_image.jpg</howToMeasure>
+<placementReference NIL="true"/>
+<actualMeasurementDelta javaType="java.lang.Double">0.0</actualMeasurementDelta>
+<requestedMeasurement javaType="java.lang.Double">0.0</requestedMeasurement>
+<newMeasurement javaType="java.lang.Double">0.0</newMeasurement>
+<sampleMeasurementComments>kids (c1) tolerance</sampleMeasurementComments>
+<quotedMeasurement javaType="java.lang.Double">0.0</quotedMeasurement>
+<highLight NIL="true"/>
+<placeholderRow javaType="java.lang.Double">0.0</placeholderRow>
+<size_XS>9.0</size_XS>
+<size_S>9.5</size_S>
+<size_M>10.5</size_M>
+<size_L>11.375</size_L>
+<size_XL>12.125</size_XL>
+<size_2X>12.75</size_2X>
+</wc:INSTANCE>
+<wc:INSTANCE>
+<id javaType="java.lang.Integer">34</id>
+<sortingNumber javaType="java.lang.Integer">5</sortingNumber>
+<name NIL="true"/>
+<point1 NIL="true"/>
+<point2 NIL="true"/>
+<plusTolerance javaType="java.lang.Float">0.75</plusTolerance>
+<plusTolerance javaType="java.lang.Double">0.75</plusTolerance>
+<minusTolerance javaType="java.lang.Float">0.75</minusTolerance>
+<minusTolerance javaType="java.lang.Double">0.75</minusTolerance>
+<IDA2A2>
+OR:com.lcs.wc.measurements.LCSPointsOfMeasure:2394306
+</IDA2A2>
+<pointsOfMeasureType>INSTANCE</pointsOfMeasureType>
+<effectSequence javaType="java.lang.Integer">0</effectSequence>
+<hbiPatternPiece NIL="true"/>
+<placementAmount NIL="true"/>
+<actualMeasurement javaType="java.lang.Double">0.0</actualMeasurement>
+<Illustration NIL="true"/>
+<measurementName>Front Rise - Top of Waistband</measurementName>
+<section NIL="true"/>
+<hbiGradeCode>210a Front Rise - Top of Waistband</hbiGradeCode>
+<hbiPiecesPerGarment javaType="java.lang.Double">0.0</hbiPiecesPerGarment>
+<htmInstruction NIL="true"/>
+<quotedMeasurementDelta javaType="java.lang.Double">0.0</quotedMeasurementDelta>
+<number>210a</number>
+<criticalPom NIL="true"/>
+<libraryItemReference>
+OR:com.lcs.wc.measurements.LCSPointsOfMeasure:174186
+</libraryItemReference>
+<howToMeasure>/Windchill/images/210a_image.jpg</howToMeasure>
+<placementReference NIL="true"/>
+<actualMeasurementDelta javaType="java.lang.Double">0.0</actualMeasurementDelta>
+<requestedMeasurement javaType="java.lang.Double">0.0</requestedMeasurement>
+<newMeasurement javaType="java.lang.Double">0.0</newMeasurement>
+<sampleMeasurementComments>kids (c1) tolerance</sampleMeasurementComments>
+<quotedMeasurement javaType="java.lang.Double">0.0</quotedMeasurement>
+<highLight NIL="true"/>
+<placeholderRow javaType="java.lang.Double">0.0</placeholderRow>
+<size_XS>10.625</size_XS>
+<size_S>11.125</size_S>
+<size_M>12.125</size_M>
+<size_L>13.0</size_L>
+<size_XL>13.75</size_XL>
+<size_2X>14.375</size_2X>
+</wc:INSTANCE>
+</Unknown-Class-Name>
+</wc:COLLECTION>
