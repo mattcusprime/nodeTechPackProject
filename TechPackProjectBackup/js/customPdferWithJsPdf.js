@@ -307,10 +307,15 @@ function docProcessor(garmentProduct) {
         var curr_month = d.getMonth();
         var curr_year = d.getFullYear();
         var dateForStuff = m_names[curr_month] + '-' + curr_date + '-' + curr_year;
+        //adding issued verbiage
+        dateForStuff = 'Date Issued:' +  dateForStuff;
+        //adding issued verbiage
         var numHeaderFontSize = numGlobalFontSize;
         var numLogoWidth = 35;
+        var numThumbNailXCoordinate = numLogoWidth + 6;
         var numLogoHeight = 20.38;
-        var numFrontBackWidth = 30;
+        var numFrontBackWidth = 55;
+        var numFrontBackHeight;// = numFrontBackWidth * (5 / 6);
         var numSpacer = 10;
         var numHeaderYoffset = 3.5;
         var numLineLength = 400;
@@ -330,9 +335,15 @@ function docProcessor(garmentProduct) {
         funcxMarginReset += numLogoWidth;
         if (frontImage) {
             funcxMarginReset += numSpacer;
-            var objDimensionForImagesFront = getImageDimensions(frontImage.width, frontImage.height, numFrontBackWidth, 25)
+            var objDimensionForImagesFront = getImageDimensions(frontImage.width, frontImage.height, numFrontBackWidth, frontImage.height);
             try{
-                jsPdfDoc.addImage(frontImage.src, 'PNG', funcxMarginReset, 0, objDimensionForImagesFront.width, objDimensionForImagesFront.height, 0, 'fast');
+                numFrontBackHeight = numFrontBackWidth * (frontImage.height / frontImage.width);
+                while(numFrontBackHeight > 25){
+                    numFrontBackWidth = numFrontBackWidth - 0.1;
+                    numFrontBackHeight = numFrontBackWidth * (frontImage.height / frontImage.width);
+                };
+                //jsPdfDoc.addImage(frontImage.src, 'PNG', funcxMarginReset, 0, objDimensionForImagesFront.width, objDimensionForImagesFront.height, 0, 'fast');
+                jsPdfDoc.addImage(frontImage.src, 'PNG', numThumbNailXCoordinate, 0, numFrontBackWidth, numFrontBackHeight, 0, 'fast');
             } catch (e) {
                 console.log(e);
             }
@@ -348,15 +359,25 @@ function docProcessor(garmentProduct) {
         jsPdfDoc.setDrawColor(0, 0, 0);
         //jsPdfDoc.setLineWidth(1.5);funcyMarginReset
         jsPdfDoc.text(funcxMarginReset, funcyMarginReset, "Product Name:" + garment.name);
-        var numPatternSpecX = jsPdfDoc.getTextWidth("Product Name:" + garment.name) + funcxMarginReset + 4;
+        //var numPatternSpecX = jsPdfDoc.getTextWidth("Product Name:" + garment.name) + funcxMarginReset + 4;
         var numPatternSpecY = funcyMarginReset;
-        if (jsPdfDoc.getTextWidth("Source:" + garment.activeSource) > jsPdfDoc.getTextWidth("Product Name:" + garment.name)) {
+        var numSourceWidth = jsPdfDoc.getTextWidth("Source:" + garment.activeSource);
+        var numSpecWidth = jsPdfDoc.getTextWidth("Spec:" + garment.activeSpecName);
+        var numGarmentNameWidth = jsPdfDoc.getTextWidth("Product Name:" + garment.name);
+        var numPatternSpecX = Math.max(numSourceWidth, numSpecWidth, numGarmentNameWidth) + funcxMarginReset + 4;
+        /*if (jsPdfDoc.getTextWidth("Source:" + garment.activeSource) > jsPdfDoc.getTextWidth("Product Name:" + garment.name)) {
             numPatternSpecX = jsPdfDoc.getTextWidth(jsPdfDoc.getTextWidth("Source:" + garment.activeSource) + funcxMarginReset + 4);
         };
         if (jsPdfDoc.getTextWidth("Spec:" + garment.activeSpecName) > jsPdfDoc.getTextWidth("Product Name:" + garment.name)) {
             numPatternSpecX = jsPdfDoc.getTextWidth("Spec:" + garment.activeSpecName) + funcxMarginReset + 4;
-        };
-        jsPdfDoc.text(numPatternSpecX, funcyMarginReset, "Pattern Spec:" + garment.patternSpec);
+        };*/
+        var pSpec = garment.patternSpec;
+        //removing spec number at end of string
+        pSpec = pSpec.replace(/\s[-]\s[0,1,2,3,4,5,6,7,9][0,1,2,3,4,5,6,7,9][0,1,2,3,4,5,6,7,9]\s[:]/g,'');
+        //removing hyphen between
+        pSpec = pSpec.replace(/\s[-]\s/g,'');
+        //jsPdfDoc.text(numPatternSpecX, funcyMarginReset, "Pattern #:" + garment.patternSpec);
+        jsPdfDoc.text(numPatternSpecX, funcyMarginReset, "Pattern #:" + pSpec);
         jsPdfDoc.line(funcxMarginReset, funcyMarginReset + 1, numLineLength + numLineLength, funcyMarginReset + 1);
         var numDrawDevBoxX = numPatternSpecX - 1.85;
         var numDrawDevBoxWidth = numLineLength + numLineLength;
@@ -457,13 +478,32 @@ function docProcessor(garmentProduct) {
         if(checkIfReset){
             this.addPageAndReset('Front Back Images');
         };
+        var numOfWidthLength = arrOfWidth.length - 1;
+        var numOfHeightLength = arrOfHeights.length - 1;
+        var numOriginalSmallestPosition = arrOfWidth[0];
+        arrOfWidth.sort();
+        arrOfHeights.sort();
+        if(numOriginalSmallestPosition == arrOfWidth[0]){
+            var numSmallestWidth = arrOfWidth[0];
+            var numSmallestHeight = arrOfHeights[0];
+        }else{
+            var numSmallestWidth = arrOfWidth[0];
+            var numSmallestHeight = arrOfHeights[numOfHeightLength];
+        };
+        //var numSmallestWidth = arrOfWidth[numOfWidthLength];
+        //var numSmallestHeight = arrOfHeights[numOfHeightLength];
+        //var numSmallestWidth = arrOfWidth[0];
+        //var numSmallestHeight = arrOfHeights[0];
+        //var objImageDimensionDataMin = getImageDimensions(numSmallestWidth, numSmallestHeight, numImageWidth, numImageHeight);
+
         for (var i = 0; i < arrOfImages.length; i++) {
             //var numImageWidth = 150 - xMarginReset;
             var numImageWidth = 120;
             var numImageHeight = 120;
             var numXIncrement = (maxWidth - (numImageWidth * 2)) / 2;
             var numNewX = (numImageWidth * i) + numXIncrement;
-            var objImageDimensionData = getImageDimensions(arrOfWidth[i], arrOfHeights[i], numImageWidth, numImageHeight);
+            //var objImageDimensionData = getImageDimensions(arrOfWidth[i], arrOfHeights[i], numImageWidth, numImageHeight);
+            var objImageDimensionData = getImageDimensions(numSmallestWidth, numSmallestHeight, numImageWidth, numImageHeight);
             jsPdfDoc.addImage(arrOfImages[i], 'PNG', numNewX, this.yPosition, objImageDimensionData.width, objImageDimensionData.height, i.toString(), 'fast');
             /*if (i == arrOfImages.length - 1) {
                 this.addPageAndReset();
@@ -939,7 +979,7 @@ function docProcessor(garmentProduct) {
         this.xPosition = xMarginReset;
         this.yPosition = 70;
         //this.moveOneLineDown(3);
-        jsPdfDoc.outline.add(this.node, 'General Attributes', { pageNumber: 1 });
+        //jsPdfDoc.outline.add(this.node, 'General Attributes', { pageNumber: 0 });
         this.addFrontBackImages(false);
         //this.addSizingTable();
         //this.addApprovedSupplier();
@@ -1143,7 +1183,9 @@ function docProcessor(garmentProduct) {
         else {
             numOfColorwaysToAllow = 4;
         };
-        var numOfStaticColumnsAllow = 6;
+        //var numOfStaticColumnsAllow = 6;
+        // changed to 7 for supplier and fiber content temporary fix.
+        var numOfStaticColumnsAllow = 7;
         var numTotalNumberOfColumns = arrayToProcess[0].length;
 
         var numIndexer = (Math.floor((numTotalNumberOfColumns - numOfStaticColumnsAllow) / numOfColorwaysToAllow));
@@ -1193,7 +1235,7 @@ function docProcessor(garmentProduct) {
                 //if ((numOfStaticColumnsAllow + numOfColorwaysToAllow) > xOffsetPerCell.length) {
                 var numPageWidth = jsPdfDoc.internal.pageSize.width;
                 var numOfColumns = arrToUse[0].length;
-                var arrOfColumnWidths = [25, 25, 25, 32, 30,30];// need to add functionality to compress around the header
+                var arrOfColumnWidths = [25, 25, 25, 32, 30,30,30];// need to add functionality to compress around the header
                 var numOfColorwayColumns = arrToUse[0].length - arrOfColumnWidths.length;
                 var numSumOfAllColumns = 0;
                 var strTitleText = this.arrayOfArraysToProcess[k].name;
@@ -1310,18 +1352,20 @@ function docProcessor(garmentProduct) {
             //pageOneColumnsSectionTwo.push(objContentSizeTbl);
             //this.processADataTableResponseArray(arrSizeTbl, arrOfColumnWidths);
             //var numMidpointY = jsPdfDoc.internal.pageSize.height / 3;
-            var arrOfColumnWidths = [40, 40, 40];
+            var arrOfColumnWidths = [40, 40, 40, 40];
             var arrSizeTbl = pdfThisTableV2('sizeTbl');
             this.numSizingTableRows = arrSizeTbl.length;
             var numMidpointY = 42;
             if(arrSizeTbl.length > 1){
-            this.reprocessUsingJsPdfTable(this.xPosition, numMidpointY, arrSizeTbl, arrOfColumnWidths);
+                this.processTextUsingCurrentXandYPosition('Sizing Table and Approved Suppliers');
+                this.reprocessUsingJsPdfTable(this.xPosition, numMidpointY, arrSizeTbl, arrOfColumnWidths);
             }else{
-                 var arrHeaderArray =[{style:'tableHeader',text:'Garment Size'},{style:'tableHeader',text:'Size Code'},{style:'tableHeader',text:'X Size'}];
-                 var arrBlankSingleRow = ['----','----','----'];
+                 var arrHeaderArray =[{style:'tableHeader',text:'Garment Size'},{style:'tableHeader',text:'Pattern Size'},{style:'tableHeader',text:'Size Code'},{style:'tableHeader',text:'X Size'}];
+                 var arrBlankSingleRow = ['----','----','----','----'];
                  arrSizeTbl = [];
                  arrSizeTbl[0] = arrHeaderArray;
                  arrSizeTbl[1] = arrBlankSingleRow;
+                 this.processTextUsingCurrentXandYPosition('Sizing Table and Approved Suppliers');
                  this.reprocessUsingJsPdfTable(this.xPosition, numMidpointY, arrSizeTbl, arrOfColumnWidths);
                  /*jsPdfDoc.setFontSize(18);
                 this.processTextUsingCurrentXandYPosition('Sizing Table \n - No data available in table.');
@@ -1368,7 +1412,7 @@ function docProcessor(garmentProduct) {
             this.addPageAndReset('Source BOM');
             var arrSourceBomTbl = pdfThisTableV2('sourceBomTable');
             console.log(arrSourceBomTbl);
-            var arrOfColumnWidths = [35/*Section*/, 55/*Garment Use*/, /*Material*/65, /*Minor Category*/45, /*Description*/105,/*UOM*/45];
+            var arrOfColumnWidths = [55/*Garment Use*/, /*Material*/65, /*Description*/105, /*Minor Categor*/65,/*Supplier*/65];
             //pageOneColumns.push(objContentSizeTbl);
             //pageOneColumnsSectionTwo.push(objContentSizeTbl);
             jsPdfDoc.setFontSize(numGlobalFontSize);
@@ -1402,10 +1446,12 @@ function docProcessor(garmentProduct) {
         var arrApprovedSupplierTbl = [];
         var strEmpty = '__________'
         if ($("#approvedSupplierTbl").length) {
+             //this.processTextUsingCurrentXandYPosition('Approved Suppliers');
             arrApprovedSupplierTbl = pdfThisTableV2('approvedSupplierTbl');
 
         }
         else {
+             //this.processTextUsingCurrentXandYPosition('Approved Supplier');
             arrApprovedSupplierTbl = [[{ text: 'Supplier', style: 'tableHeader' }, { text: 'Mfg Flow', style: 'tableHeader' }, { text: 'Green Seal', style: 'tableHeader' }, { text: 'Red Seal', style: 'tableHeader' }, { text: 'Comments', style: 'tableHeader' }], [strEmpty, strEmpty, strEmpty, strEmpty, strEmpty]];
 
         };
@@ -1429,7 +1475,7 @@ function docProcessor(garmentProduct) {
             numToSliceTo += pageInfoObject.length;
             arrRevisionAttributeData = arrRevisionAttributeData.splice(0, numToSliceTo);
             this.addPageAndReset('Revision Table');
-            var arrOfColumnWidths = [35,15, 20, 20, 20, 35, 205, 35];
+            var arrOfColumnWidths = [35,15, 20, 20, 20, 205, 35, 35];
             if(arrRevisionAttributeData.length > 1){
                
 
@@ -1511,6 +1557,15 @@ function docProcessor(garmentProduct) {
                 objConstruction.name = strConstructionTableName;
                 arrOfConstructions.push(objConstruction);
             });
+            function compareByNameConstruction(a, b) {
+                if (a.name < b.name)
+                    return -1;
+                if (a.name > b.name)
+                    return 1;
+                return 0;
+            };
+            arrOfConstructions.sort(compareByNameConstruction);
+
             for (var i = 0; i < arrOfConstructions.length; i++) {
                 try {
                     var objCurrent = arrOfConstructions[i];
@@ -1568,7 +1623,15 @@ function docProcessor(garmentProduct) {
                 objCway.name = strCwayTableName;
                 arrOfColorwayBoms.push(objCway);
             });
+            function compareByNameColorway(a, b) {
+                if (a.name < b.name)
+                    return -1;
+                if (a.name > b.name)
+                    return 1;
+                return 0;
+            };
             //console.log(arrOfColorwayBoms);
+            arrOfColorwayBoms.sort(compareByNameColorway);
             for (var i = 0; i < arrOfColorwayBoms.length; i++) {
                 var objCurrent = arrOfColorwayBoms[i];
                 if (i == 0) {
@@ -1669,12 +1732,21 @@ function docProcessor(garmentProduct) {
                 var imageObject = {};
                 imageObject.imageSrc = imageSrc;
                 imageObject.decodedHeader = decodedHeader
+                imageObject.name = imageObject.decodedHeader
                 imageObject.width = width;
                 imageObject.height = height;
                 //this.processTheTitleAndItsImage(decodedHeader, imageSrc, 10, 10, 400, 400);
                 arrOfImageObjectsWithTitles.push(imageObject);
                 //funcScope(decodedHeader, imageSrc);
             });
+            function compareByNameImage(a, b) {
+                if (a.name < b.name)
+                    return -1;
+                if (a.name > b.name)
+                    return 1;
+                return 0;
+            };
+            arrOfImageObjectsWithTitles.sort(compareByNameImage);
             for (var i = 0; i < arrOfImageObjectsWithTitles.length; i++) {
                 var objCurrent = arrOfImageObjectsWithTitles[i];
                 //this.processTheTitleAndItsImage(objCurrent.decodedHeader, objCurrent.imageSrc, 50, 50, 150, 150);
