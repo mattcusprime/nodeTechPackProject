@@ -376,6 +376,10 @@ function docProcessor(garmentProduct) {
         pSpec = pSpec.replace(/\s[-]\s[0,1,2,3,4,5,6,7,9][0,1,2,3,4,5,6,7,9][0,1,2,3,4,5,6,7,9]\s[:]/g,'');
         //removing hyphen between
         pSpec = pSpec.replace(/\s[-]\s/g,'');
+        numOfAnySpace = pSpec.indexOf(' ');
+        if(numOfAnySpace != -1 && numOfAnySpace != 0){
+            pSpec = pSpec.substring(0,numOfAnySpace)
+        };
         //jsPdfDoc.text(numPatternSpecX, funcyMarginReset, "Pattern #:" + garment.patternSpec);
         jsPdfDoc.text(numPatternSpecX, funcyMarginReset, "Pattern #:" + pSpec);
         jsPdfDoc.line(funcxMarginReset, funcyMarginReset + 1, numLineLength + numLineLength, funcyMarginReset + 1);
@@ -866,7 +870,11 @@ function docProcessor(garmentProduct) {
         //this.resetPreviousPositions();
         if (typeof (sectionName) != 'undefined') {
             //var numPage = jsPdfDoc.internal.pages.length - 1;
-            jsPdfDoc.outline.add(this.node, sectionName, { pageNumber: jsPdfDoc.internal.pages.length - 1});
+            
+            //commenting out bookmarks
+            //jsPdfDoc.outline.add(this.node, sectionName, { pageNumber: jsPdfDoc.internal.pages.length - 1});
+            //commenting out bookmarks
+
         };
         //this.footer();
         pageNumber++;
@@ -1765,7 +1773,7 @@ function docProcessor(garmentProduct) {
                 strOutlineString = strOutlineString.substring(0, numIndexOf_);
 
                 //jsPdfDoc.outline.add(this.node, objCurrent.decodedHeader, { pageNumber: pageNumber });
-                jsPdfDoc.outline.add(this.node, strOutlineString, { pageNumber: pageNumber });
+                //jsPdfDoc.outline.add(this.node, strOutlineString, { pageNumber: pageNumber });
                 this.processTheTitleAndItsImage(objCurrent.decodedHeader, objCurrent.imageSrc, numX, this.yPosition - yFooterSize, objCurrent.width, objCurrent.height);
                 
             };
@@ -1849,6 +1857,11 @@ function docProcessor(garmentProduct) {
         };*/
         //blocker was here
         $("#spin").hide();
+        var numQuantityOfPage = jsPdfDoc.internal.pages.length;
+        /*var node = jsPdfDoc.outline.add(null, 'Test Pages', null);
+        for (var i = 0; i < numQuantityOfPage; i++) {
+            jsPdfDoc.outline.add(node, 'Hello', {pageNumber:1});
+        };*/
         jsPdfDoc.save(garment.name + '_' + dateForStuff + '.pdf');
         
     };

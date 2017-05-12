@@ -645,7 +645,9 @@ function getLogin(arrAttributeValueListArray, objCurrentGarmentProduct, arrRepor
 		});
 };
 function runNewProduct(wipeThisGarmentProductOut) {
-	for (var property in wipeThisGarmentProductOut) {
+
+	window.location.reload();
+	/*for (var property in wipeThisGarmentProductOut) {
 		if (wipeThisGarmentProductOut.hasOwnProperty(property)) {
 			if (wipeThisGarmentProductOut[property] != wipeThisGarmentProductOut.sortingArray && wipeThisGarmentProductOut[property] != wipeThisGarmentProductOut.displayKeys && wipeThisGarmentProductOut[property] != wipeThisGarmentProductOut.displayValues) {
 				wipeThisGarmentProductOut[property] = undefined;
@@ -655,11 +657,8 @@ function runNewProduct(wipeThisGarmentProductOut) {
 	$('#runNew,.clearThisComponentOnNewGarmentLoad,nav,#topLeftNav,hr').fadeOut();
 	var strGPname = $('#topLeftNav').text();
 	strGPname = strGPname.replace(/GP\W/g,'');
-	
-	//$('#topLeftNav *').remove();
 	$('#garmentFormContainer').fadeIn();
-	
-	$('#gProd').val('').focus();
+	$('#gProd').val('').focus();*/
 
 };
 /*
