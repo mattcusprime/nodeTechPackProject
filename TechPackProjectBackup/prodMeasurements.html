@@ -1,0 +1,539 @@
+<html>
+<head>
+    <!-- http://wsflexwebdev1v.res.hbi.net/Windchill/servlet/IE/tasks/com/lcs/wc/measurements/FindMeasurements2.xml?oid=VR:com.lcs.wc.measurements.LCSMeasurements:3757245 -->
+    <script type="text/javascript" language="javascript" src="jquery.js"></script>
+    <script type="text/javascript" language="javascript" src="jquery.browser.js"></script>
+    <script type="text/javascript" language="javascript" src="DataTables-1.9.4/media/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" language="javascript" src="DataTables-1.9.4/extras/ColVis/media/js/ColVis.js"></script>
+    <script type="text/javascript" language="javascript" src="DataTables-1.9.4/extras/TableTools/media/js/TableTools.js"></script>
+    <script type="text/javascript" language="javascript" src="DataTables-1.9.4/extras/TableTools/media/js/TableTools.js"></script>
+    <script type="text/javascript" language="javascript" src="DataTables-1.9.4/extras/TableTools/media/js/ZeroClipboard.js"></script>
+    <script src="js/jquery.prettyLoader.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="stylesheet" type="text/css" href="DataTables-1.9.4/extras/TableTools/media/css/TableTools.css">
+
+    <link rel="stylesheet" type="text/css" href="completeFabric.css">
+    <link rel="stylesheet" type="text/css" href="measurementHeader.css">
+    <link rel="stylesheet" type="text/css" href="css/prettyLoader.css">
+    <style>
+        @media print {
+            @page {
+                size: landscape;
+                margin-top: 1em;
+                margin-right: 1em;
+                margin-bottom: 1em;
+                margin-left: 1em;
+            }
+        }
+    </style>
+    <script>
+        $('document').ready(function () {
+            $.prettyLoader();
+            $.prettyLoader.show();
+        });
+
+    </script>
+    <script>
+        var techDesignerValueObjectArray = [];
+        $.ajax({
+            type: 'GET',
+            url: 'http://wsflexwebqa1v.res.hbi.net/Windchill/servlet/IE/tasks/runReport2.xml',
+            beforeSend: function () {
+
+            },
+            error: function () {
+
+                $('body').html('<p class="error"><strong>Oops!</strong> Try that again in a few moments.</p>');
+            }
+        }).done(function (data) {
+
+        }).done(function (data) {
+            console.log(techDesignerValueObjectArray);
+            //and so on like this
+        });
+        var currentMeasType = 0; //0 will be inches, 1 will be cm
+        var parsedObject;
+        var gradeToggle = 0;
+        var currentMaster;
+        var currentName;
+        var measurementMasterUrl;
+        var sampleSize, sampleSizeColumn;
+        var measurementMasterArray = [];
+        var measurementArray = [];
+        var rowArray = [];
+        var sizeArray = [];
+        var baseSizeValueArray = [];
+        var allVisibleRowsArray = [];
+        var sizeObjectArray = [];
+        var techDesigner;
+        var pomUrl;
+        var currentPomType, currentPomMeasurementValues;
+        var numberOfColumnsBeforeSizesStart = 7;
+        var addToNumberOfColumns = 0;
+        var sizesBeginAtThisIndex = 0;
+
+        (function ($) {
+            var re = /([^&=]+)=?([^&]*)/g;
+            var decodeRE = /\+/g;  // Regex for replacing addition symbol with a space
+            var decode = function (str) { return decodeURIComponent(str.replace(decodeRE, " ")); };
+            $.parseParams = function (query) {
+                var params = {}, e;
+                while (e = re.exec(query)) {
+                    var k = decode(e[1]), v = decode(e[2]);
+                    if (k.substring(k.length - 2) === '[]') {
+                        k = k.substring(0, k.length - 2);
+                        (params[k] || (params[k] = [])).push(v);
+                    }
+                    else params[k] = v;
+                }
+                return params;
+            };
+        })(jQuery);
+        $('document').ready(function () {
+            var url = $(location).attr('href');
+            console.log(url);
+            parsedObject = $.parseParams(url.split('?')[1] || '');
+            console.log(parsedObject);
+            var productToGet = parsedObject.productName;
+            for (var i = 0; i < 20; i++) {
+                productToGet = productToGet.replace(" ", "*");
+                productToGet = productToGet.replace("-", "*");
+                productToGet = productToGet.replace("**", "*");
+                productToGet = productToGet.replace("'", "*");
+                productToGet = productToGet.replace(":", "*");
+            };
+
+            var productUrl = "http://wsflexwebqa1v.res.hbi.net/Windchill/servlet/IE/tasks/product.xml?name=" + productToGet;
+
+            console.log(productUrl);
+            $.get('http://wsflexwebqa1v.res.hbi.net/Windchill/servlet/IE/tasks/runReport2.xml', function (data) {
+                var value, display;
+
+
+                $('*', data).each(function () {
+                    target = $(this);
+                    if (target.is('valueKey')) {
+                        value = $(this).text();
+                    };
+                    if (target.is('display')) {
+                        display = $(this).text();
+                    };
+                    if (target.is('obid')) {
+                        //var displayValObject = {};
+                        //displayValObject.valKey = value
+                        //displayValObject.displayShow = display
+                        techDesignerValueObjectArray.push(value, display);
+
+
+                    };
+                })
+
+
+
+
+            }).done(function () {
+
+
+                $.ajax({
+                    type: 'GET',
+                    url: productUrl,
+                    beforeSend: function () {
+
+                    },
+                    error: function () {
+
+                        $('body').html('<p class="error"><strong>Oops!</strong> Try that again in a few moments.</p>');
+                    }
+                }).done(function (data) {
+
+                    //getNameAndMasterReference(data);
+                    $('*', data).each(function (index) {
+                        target = $(this);
+                        if (target.is("name")) {
+                            targetText = $(this).text();
+                            currentName = targetText;
+                            $('#name').html('');
+                            $('#name').append(targetText);
+
+                        };
+                        if (target.is("masterReference")) {
+                            targetText = $(this).text();
+                            currentMaster = targetText;
+
+                        };
+                        if (target.is("att9")) {
+                            targetText = $(this).text();
+                            currentName = targetText;
+                            $('#pNo').html('');
+                            $('#pNo').append(targetText);
+
+                        };
+                        if (target.is("att11")) {
+                            targetText = $(this).text();
+                            seasonText = $(target).parent().find('seasonMasterReference').text();
+                            console.log(seasonText);
+                            if (seasonText.indexOf("OR") == -1) {
+                                techDesigner = targetText;
+                                indexOfDisplay = techDesignerValueObjectArray.indexOf(techDesigner) + 1;
+                                displayVal = techDesignerValueObjectArray[indexOfDisplay];
+                                $('#tDesign').append(displayVal);
+
+
+                            };
+                        };
+
+
+                    });
+                    var indexHolder = 15;
+                    console.log(currentMaster);
+                    measurementMasterUrl = 'http://wsflexwebqa1v.res.hbi.net/Windchill/servlet/IE/tasks/measurementMaster.xml?pMaster=' + currentMaster;
+                    console.log(measurementMasterUrl)
+                    //working
+                }).done(function () {
+                    $.get(measurementMasterUrl, function (data) {
+                        $('containerReference', data).parent().each(function () {
+                            var resultMeasName = $(this).find('measurementsName').text();
+                            var URLmeasName = parsedObject.att1;//might change this to another parameter for this
+                            var thisMeasValue = $(this).find('*').eq(4).text();
+                            var currentMeasValue = $('#measName').val();
+                            if (resultMeasName == URLmeasName) {
+                                $(this).find('*').each(function () {
+                                    var target = $(this);
+                                    var tText = $(this).text();
+                                    if (target.is('measurementsName')) {
+                                        var textOfElement = $(this).text();
+                                        var specNum = textOfElement.substring(0, 3);
+                                        $('#specName').append(specNum);
+                                        //$('body').append('<h2 class="mesaurementMaster">' + textOfElement + '</h2><table id="headerData"></table>');
+                                        $('#measName').append(textOfElement);
+                                    };
+                                    if (target.is('obid')) {
+                                        measurementMaster = $(this).text();
+                                        measurementMasterArray.push(measurementMaster);
+                                    };
+                                })
+                            };
+                        });
+                    }).done(function () {
+                        console.log(measurementMasterArray);
+                        for (var i = 0; i < 1; i++) {
+                            var newForMeasSetUrl = parsedObject.measname;
+                            /*
+                        replace this with a regex
+                        for(var i = 0; i < 20; i++){
+                        measurementSetUrl = measurementSetUrl.replace(" ","*");
+                        measurementSetUrl = measurementSetUrl.replace("-","*");
+                        measurementSetUrl = measurementSetUrl.replace("**","*");
+                        measurementSetUrl = measurementSetUrl.replace("'","*");
+                        measurementSetUrl = measurementSetUrl.replace(":","*");
+                        };*/
+                            var measurementSetUrl = "http://wsflexwebqa1v.res.hbi.net/Windchill/servlet/IE/tasks/measurementTaskParam.xml?master=" + measurementMasterArray[i];
+                            $.get(measurementSetUrl, function (data) {
+                                tableCounter = 0;
+                                $('*', data).find('thePersistInfo\\.createStamp').each(function () {
+                                    var createDateFromElement = $(this).text().substring(0, 10);
+                                    $('#cDate').html('');
+                                    $('#cDate').append(createDateFromElement);
+                                });
+                                $('*', data).find('thePersistInfo\\.updateStamp').each(function () {
+                                    var updateDateText = $(this).text().substring(0, 10);
+                                    $('#uDate').html('');
+                                    $('#uDate').append(updateDateText);
+                                });
+                                $('*', data).each(function () {
+                                    target = $(this);
+                                    if (target.is('att1')) {
+                                        targetText = $(this).text();
+                                        $('body').append('<table class ="pretty" id="Set"><thead><th>Sort #</th><th>Part #</th><th>POM (English)</th><th>Placement Reference</th><th>Placement Amount</th><th>Tol (+)</th><th>Tol (-)</th></thead><tbody></tbody><tfoot></tfoot>' + '</table>');
+                                        tableIdString = '#' + targetText + 'Set';
+                                        //$(tableIdString).append('<thead></thead><tbody></tbody><tfooter></tfooter>');
+                                        tableCounter++;
+                                    };
+                                    if (target.is('sampleSize')) {
+                                        sampleSize = $(this).text();
+                                    };
+                                    if (target.is('sizeRun')) {
+                                        var sizes = $(this).text();
+                                        sizeArray = sizes.split("|~*~|");
+                                        less1 = sizeArray.length - 1;
+                                        for (var i = 0; i < less1; i++) {
+                                            console.log(sizeArray[i]);
+                                            //tableIdStringWithThead = "#Set" + tableCounter + "thead";
+                                            //$('table thead').append('<th>' + sizeArray[i] + '</th>');
+                                            appendMe = '<th>' + sizeArray[i] + '</th>';
+                                            $(appendMe).appendTo($('#Set thead tr'));
+                                            if (sizeArray[i] == sampleSize) {
+                                                sampleSizeColumn = i;
+                                                console.log(sampleSizeColumn);
+                                            };
+                                        };
+                                        $('#Set').dataTable({
+                                            "sDom": 'TC<"clear">lfrtip',
+                                            "aoColumnDefs": [
+                                                { "bSearchable": false, "bVisible": false, "aTargets": [numberOfColumnsBeforeSizesStart - 4] },
+                                                { "bSearchable": false, "bVisible": false, "aTargets": [numberOfColumnsBeforeSizesStart - 3] }
+                                                /*,{ "bSearchable": false, "bVisible": false, "aTargets":0 },*/
+                                            ],
+                                            "oTableTools": {
+                                                "sSwfPath": "DataTables-1.9.4/extras/TableTools/media/swf/copy_csv_xls_pdf.swf",
+                                                "aButtons": ["copy", "print", "xls"]
+                                            }
+                                        });
+                                        $('select option').each(function () {
+                                            myText = $(this).text();
+                                            if (myText == 10) { $(this).attr('selected', '') };
+                                            if (myText == 25) {
+                                                $(this).attr('selected', 'selected');
+                                                $(this).change();
+                                            };
+                                        });
+                                    };
+                                    if (target.is('obid')) {
+                                        measurementPiece = $(this).text();
+                                        var measurement = measurementPiece.substring(0, 50)
+                                        //var measNum = Number(measurementPiece.substring(43,50));
+                                        pomUrl = "http://wsflexwebqa1v.res.hbi.net/Windchill/servlet/IE/tasks/com/lcs/wc/measurements/FindMeasurements2.xml?oid=" + measurement
+                                    };
+                                });
+                            }).done(function () {
+                                //for(var i = 0; i < measurementArray.length; i = i+2){
+                                $.get(pomUrl, function (data) {
+                                    $('*', data).each(function () {
+                                        target = $(this);
+                                        var textGrabber
+                                        if (target.is('sortingNumber')) {
+                                            textGrabber = $(this).text();
+                                            rowArray[0] = textGrabber;
+                                        }
+                                        if (target.is('number')) {
+                                            textGrabber = $(this).text();
+                                            rowArray[1] = textGrabber;
+                                        }
+                                        if (target.is('measurementName')) {
+                                            textGrabber = $(this).text();
+                                            rowArray[2] = textGrabber;
+                                        }
+                                        if (target.is('placementReference')) {
+                                            textGrabber = $(this).text();
+                                            rowArray[3] = textGrabber;
+                                        }
+                                        if (target.is('placementAmount')) {
+                                            textGrabber = $(this).text();
+                                            rowArray[4] = textGrabber;
+
+                                        }
+                                        if (target.is('plusTolerance')) {
+                                            textGrabber = $(this).text();
+                                            rowArray[5] = textGrabber;
+                                        }
+                                        if (target.is('minusTolerance')) {
+                                            textGrabber = $(this).text();
+                                            rowArray[6] = textGrabber;
+                                        }
+                                        if (target.is('placeholderRow')) {
+                                            target = $(this);
+                                            $(this).nextAll().each(function (index) {
+                                                nextTarget = $(this).text();
+                                                rowArray[index + numberOfColumnsBeforeSizesStart] = nextTarget;
+                                            });
+                                            $('#Set').dataTable().fnAddData(rowArray);
+                                            rowArray = [];
+                                            sizeObjectArray = [];
+                                        };
+                                    });
+                                });
+                            });
+                        };
+                    });
+                });
+            });
+            $('#grade').click(function () {
+                var columnOfBaseSizeColumn = numberOfColumnsBeforeSizesStart + sampleSizeColumn;
+                var oTable = $('#Set').dataTable();
+                var numberOfColumnsInTable = $("#Set th").length;
+                for (var i = 0; i < numberOfColumnsInTable; i++) {
+                    oTable.fnSetColumnVis(i, true);
+                };
+                if (gradeToggle == 0) {
+                    oTable.$('tr').each(function () {
+                        var thisRowArray = [];
+                        var baseSizeValueForRow;
+                        $(this).find('td').each(function (index) {
+                            if (index == numberOfColumnsBeforeSizesStart + sampleSizeColumn) {
+                                baseSizeValueForRow = $(this).text();
+                                baseSizeValueArray.push(baseSizeValueForRow);
+                                console.log(baseSizeValueForRow);
+                                //in this loop you are getting the value of the base size for the row
+                            };
+                        });
+                        $(this).find('td').each(function (index) {
+                            if (index >= numberOfColumnsBeforeSizesStart) {
+                                myValue = $(this).text();
+                                myValue = Number(myValue);
+                                thisRowArray.push(myValue);
+                            };
+                        });
+                        console.log(thisRowArray);
+                        for (var z = 0; z < thisRowArray.length; z++) {
+                            var indexOfGet = numberOfColumnsBeforeSizesStart + z;
+                            var cellValueFromRowArray = thisRowArray[z];
+                            var iPlusOne = z + 1;
+                            var iMinusOne = z - 1;
+                            var cellValueInArrayFromOneToTheRight = thisRowArray[iPlusOne];
+                            if (z != 0) {
+                                var cellValueInArrayFromOneToTheLeft = thisRowArray[iMinusOne];
+                            }
+                            else {
+                                var cellValueInArrayFromOneToTheLeft = 0
+                            }
+                            var cellValueFromTable = $(this).find('td').eq(indexOfGet).text();
+                            var valueToPutInCellIfLowerThanBaseColumn = cellValueFromRowArray - cellValueInArrayFromOneToTheRight;
+                            var valueToPutInCellIfHigherThanBaseColumn = cellValueFromRowArray - cellValueInArrayFromOneToTheLeft;
+                            if (indexOfGet == columnOfBaseSizeColumn) {
+                                $(this).find('td').eq(indexOfGet).text('0');
+                            }
+                            if (indexOfGet < columnOfBaseSizeColumn) {
+                                $(this).find('td').eq(indexOfGet).text(valueToPutInCellIfLowerThanBaseColumn);
+                                if (valueToPutInCellIfLowerThanBaseColumn < 0) {
+                                    $(this).find('td').eq(indexOfGet).css("color", "red");
+                                };
+                            }
+                            if (indexOfGet > columnOfBaseSizeColumn) {
+                                $(this).find('td').eq(indexOfGet).text(valueToPutInCellIfHigherThanBaseColumn);
+                                if (valueToPutInCellIfHigherThanBaseColumn < 0) {
+                                    $(this).find('td').eq(indexOfGet).css("color", "red");
+                                };
+                            }
+                        };
+                        allVisibleRowsArray.push(thisRowArray);
+                        console.log(allVisibleRowsArray);
+                    });
+                    gradeToggle = 1;
+                } else {
+                    oTable.$('tr').each(function (rowIndex) {
+                        var rowNum = rowIndex;
+                        getMyRowValues = allVisibleRowsArray[rowIndex];
+                        for (var a = 0; a < getMyRowValues.length; a++) {
+                            cellIndex = a + numberOfColumnsBeforeSizesStart;
+                            cellValueToEnterIn = Math.round(getMyRowValues[a] * 1000) / 1000;
+                            //cellValueToEnterIn = Math.round(cellValueToEnterIn * 1000) / 1000;
+                            $(this).find('td').eq(cellIndex).text(cellValueToEnterIn).css("color", "black");
+                        };
+                    });
+                    gradeToggle = 0;
+                };
+                for (var i = 0; i < numberOfColumnsInTable; i++) {
+                    oTable.fnSetColumnVis(i, true);
+                };
+                //this is still not working correctly
+                oTable.fnSetColumnVis(numberOfColumnsBeforeSizesStart - 4, false);
+                oTable.fnSetColumnVis(numberOfColumnsBeforeSizesStart - 3, false);
+            });
+            $('#cmConvert').click(function () {
+                var oTable = $('#Set').dataTable();
+                var numberOfColumnsInTable = $("#Set th").length;
+                for (var i = 0; i < numberOfColumnsInTable; i++) {
+                    oTable.fnSetColumnVis(i, true);
+                };
+                $('#Set').find('tr').each(function () {
+                    $(this).find('td').each(function (gradeIndex) {
+                        if (gradeIndex >= numberOfColumnsBeforeSizesStart) {
+                            if (currentMeasType == 0) {
+                                var myCurrentVal = $(this).text();
+                                var myNewVal = Math.round((myCurrentVal / 0.39370) * 10000) / 10000;
+                                $(this).text(myNewVal);
+                            }
+                            else {
+                                var myCurrentVal = $(this).text();
+                                var myNewVal = Math.round((myCurrentVal * 0.39370) * 10000) / 10000;
+                                $(this).text(myNewVal);
+                            };
+                        };
+                    });
+                });
+                if (currentMeasType == 0) {
+                    $('#currentMeasure').text('Current Measurements are in Centimeters');
+                    currentMeasType = 1;
+                }
+                else {
+                    $('#currentMeasure').text('Current Measurements are in Inches');
+                    currentMeasType = 0;
+                };
+                oTable.fnSetColumnVis(numberOfColumnsBeforeSizesStart - 4, false);
+                oTable.fnSetColumnVis(numberOfColumnsBeforeSizesStart - 3, false);
+            });
+        });
+    </script>
+    <script>
+        function reportToggle() {
+            $("button").toggle('slow', function () { });
+            $("#reportViewSwitch").toggle('slow', function () { });
+            $("p").not('#confidential,#reportViewSwitch').toggle('slow', function () { });
+            $(".notReportItem").toggle('slow', function () { });
+            $(".dataTables_paginate").toggle('slow', function () { });
+            $(".paginate_disabled_previous ").toggle('slow', function () { });
+            $(".paginate_enabled_previous").toggle('slow', function () { });
+            $(".paginate_disabled_next ").toggle('slow', function () { });
+            $(".paginate_enabled_next").toggle('slow', function () { });
+            $(".dataTables_filter").toggle('slow', function () { });
+            $(".dataTables_info").toggle('slow', function () { });
+            $(".dataTables_length").toggle('slow', function () { });
+            $(".DTTT_button").toggle('slow', function () { });
+        };
+    </script>
+</head>
+<body>
+    <button id="grade">Toggle Grade</button>
+    <button id="cmConvert">Toggle CM to Inch Conversion</button>
+    </br>
+    <img src="Images/hanesLogo.PNG" id="logo" onclick="reportToggle();" height="30" />
+    <p id="currentMeasure">Current Measurements are in Inches </p>
+    <p> Only convert to CM for display or printing purposes.  Toggling the Grade while in centimeter mode will result in incorrect rounding.</p>
+    <p style="font-weight:bold" id="reportViewSwitch"> Click the image to toggle report view</p>
+    <table class="measHeader">
+
+        <tbody>
+            <tr>
+
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+
+
+            </tr>
+            <tr>
+
+                <td>Product Name:</td>
+                <td id="name"></td>
+                <td>Product Type:</td>
+                <td id="pType">Pattern</td>
+
+            <tr>
+                <td>Measurement Name</td>
+                <td id="measName"></td>
+                <td>Technical Designer</td>
+                <td id="tDesign"></td>
+
+            </tr>
+
+            <tr>
+                <td>Created Date</td>
+                <td id="cDate"></td>
+
+                <td>Updated Date:</td>
+                <td id="uDate"></td>
+            </tr>
+
+        </tbody>
+        <p id="confidential" style="font-weight:bold">Confidential: Not to be copied or distributed without the permission of Hanesbrands, Inc.</p>
+
+        <div id="pomDiv">
+
+        </div>
+
+
+
+
+
+</body>
+</html>
